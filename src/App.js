@@ -1,14 +1,16 @@
 
 import './App.css';
 import ButtonCloseModal from './components/buttons/buttonCloseModal';
-
+import Login from './components/pages/Login.js';
+import LoginPage from './components/pages/Login.js';
 import TabelaMaterialUI from './components/tables/table';
 
 
 function App() {
   return (
     <div className="App">
-    <ButtonCloseModal></ButtonCloseModal>
+    <LoginPage></LoginPage>
+    {/* <ButtonCloseModal></ButtonCloseModal> */}
     </div>
   );
 }
