@@ -2,11 +2,11 @@ import Header from '../header/Header.js'
 import myStockLogo from '../../assets/icons/logoMyStock.png'
 import Notification from '../buttons/buttonNotification.js'
 import Footer from '../footer/Footer.js'
+import MenuIcon from '../buttons/buttonMenu.js'
 
 function Menu(){
     return(
         <section class="flex flex-col items-center h-[100vh] w-full justify-center">
-            <img src={myStockLogo}></img>
             <div class="absolute right-4 top-4">
                 <Notification></Notification>
             </div>

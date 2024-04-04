@@ -1,5 +1,7 @@
-import menuIcon from '../../assets/icons/menuIcon.png'
-import menuIconCrossed from '../../assets/icons/menuIconCrossed.png'
+//Componentes
+import MenuIcon from '../buttons/buttonMenu.js' 
+
+//Bibliotecas
 import { useEffect, useState } from 'react';
 
 
@@ -18,12 +20,10 @@ function Header(props){
         definirTempo(new Date());
     }
 
-    const icone = props.telaAtual === "Menu" ? menuIconCrossed : menuIcon;
-
     return(
         <div class="flex flex-row justify-between">
             <div class="flex flex-row w-2/4 items-center gap-4">
-                <img class="w-[38px] h-[39px] cursor-pointer" src={icone}></img>
+                <MenuIcon icon="crossed"></MenuIcon>
                 <p class="text-white text-[1.875rem]">{props.telaAtual}</p>
             </div>
             <ul class="flex flex-row justify-between gap-6">
