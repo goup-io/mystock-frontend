@@ -38,7 +38,7 @@ function Header(props){
     }
 
     return(
-        <div class="flex flex-row justify-between px-12 h-[4rem] pt-2 items-center " style={divEmBranco}>
+        <div class="flex flex-row justify-between px-12 h-[4rem] pt-2 items-center" style={divEmBranco}>
             <div class="flex flex-row w-2/4 items-center gap-4">
                 <MenuIcon icon={props.icon}></MenuIcon>
                 <p class="text-white text-[1.875rem] font-semibold" style={textBranco}>{props.telaAtual}</p>

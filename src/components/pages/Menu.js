@@ -16,23 +16,47 @@ import React, { Component, useEffect, useState } from "react";
 function Menu(){
 
     var [paginaAtual, setProximaPagina] = useState('menu')
+    
+    var [corAtual, setCorAtual] = useState(corMenu)
 
+    useEffect(() => {
+
+        if(paginaAtual == "menu"){
+            setCorAtual(corMenu)
+        
+        }else{
+            console.log('Passou no corbranco');
+            setCorAtual(corBranco)
+        }
+    }, [paginaAtual])
+
+    var corMenu = {
+        backgroundColor : "#355070",
+        boxShadow: "1px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+    }
+
+    var corBranco = {
+        backgroundColor : "#fff",
+    }
+    
     function Pagina(props){
 
         if(props.pagina == "menu"){
-            console.log("Cheguei aqui");
             return <MenuItems></MenuItems>
         
         }else if(props.pagina == "estoque"){
             return <Estoque></Estoque>
         
         }else if(props.pagina == "transacao"){
+        
             return <Transacoes></Transacoes>
         
         }else if(props.pagina == "venda"){
+        
             return <Venda></Venda>
         
         }else if(props.pagina == "historico"){
+        
             return <Historico></Historico>
         }
     }
@@ -59,7 +83,7 @@ function Menu(){
             </li>
         )
     }
-    
+
     return(
         <section class="flex flex-col items-center h-[100vh] w-full justify-center">
             <div class="flex flex-row w-full justify-between px-8 pl-[5%]">
@@ -67,9 +91,10 @@ function Menu(){
                 <Notification></Notification>
             </div>
 
-            <div id="mainDiv" class="w-[89%] h-4/5 bg-[#355070] shadow overflow-auto rounded-[8px]">
+            <div id="mainDiv" class="w-[89%] h-4/5 overflow-auto rounded-[8px]" style={corAtual}>
                 <Pagina pagina={paginaAtual}></Pagina>
             </div>
+            
             <Footer></Footer>
         </section>
     )
