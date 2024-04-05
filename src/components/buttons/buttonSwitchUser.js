@@ -1,4 +1,4 @@
-import switchUserIcon from '../../assets/icons/switchUserIcon.png'
+import switchUserIcon from '../../assets/icons/switchUserIcon.svg'
 
 function buttonSwitchUser(){
     return(

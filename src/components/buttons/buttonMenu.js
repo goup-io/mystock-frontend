@@ -1,5 +1,5 @@
-import menuIcon from '../../assets/icons/menuIcon.png'
-import menuIconCrossed from '../../assets/icons/menuIconCrossed.png'
+import menuIcon from '../../assets/icons/menuIcon.svg'
+import menuIconCrossed from '../../assets/icons/menuIconCrossed.svg'
 
 
 function buttonMenu(props){

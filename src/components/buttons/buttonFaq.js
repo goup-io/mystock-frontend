@@ -1,4 +1,4 @@
-import faqIcon02 from '../../assets/icons/faqIcon.png'
+import faqIcon02 from '../../assets/icons/faqIcon.svg'
 
 function buttonFaq(){
     return(
