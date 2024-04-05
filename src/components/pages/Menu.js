@@ -41,8 +41,8 @@ function Menu(){
 
         return(
             <>
-                <Header telaAtual="menu"></Header>
-                <ul class="flex flex-col items-center gap-7 mt-20">
+                <Header telaAtual="Menu" icon="crossed"></Header>
+                <ul class="flex flex-col items-center gap-7 mt-20 px-12">
                     <ItemLista pagina={"venda"}>ÁREA DE PRÉ-VENDA</ItemLista>
                     <ItemLista pagina={"estoque"}>ESTOQUE</ItemLista>
                     <ItemLista pagina={"historico"}>HISTÓRICO DE VENDAS</ItemLista>
@@ -67,7 +67,7 @@ function Menu(){
                 <Notification></Notification>
             </div>
 
-            <div id="mainDiv" class="w-[89%] h-4/5 bg-[#355070] shadow px-12 pt-2 overflow-auto ">
+            <div id="mainDiv" class="w-[89%] h-4/5 bg-[#355070] shadow overflow-auto rounded-[8px]">
                 <Pagina pagina={paginaAtual}></Pagina>
             </div>
             <Footer></Footer>

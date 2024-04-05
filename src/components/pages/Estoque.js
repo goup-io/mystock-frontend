@@ -1,3 +1,4 @@
+import Header from '../header/Header.js'
 
 function Estoque() {
     return(
