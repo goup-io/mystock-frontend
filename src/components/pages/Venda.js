@@ -1,9 +1,12 @@
-
 import Header from '../header/Header.js'
+import PageLayout from './PageLayout.js'
+
 function Venda() {
     return(
         <>
-        <Header telaAtual="Área de Pré-venda"></Header>
+            <PageLayout>
+                <Header telaAtual="Área de Pré-venda"></Header>
+            </PageLayout>
         </>
     )
 }

@@ -1,10 +1,12 @@
 import Header from '../header/Header.js'
-
+import PageLayout from './PageLayout.js'
 
 function Transacoes() {
     return(
         <>
-        <Header telaAtual="Área de Transações"></Header>
+            <PageLayout>
+                <Header telaAtual="Área de Transações"></Header>
+            </PageLayout>
         </>
     )
 }

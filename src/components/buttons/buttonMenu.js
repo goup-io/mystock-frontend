@@ -5,26 +5,19 @@ import Menu from '../pages/Menu'
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { useNavigate } from 'react-router-dom';
 
+function ButtonMenu(props){
 
-function buttonMenu(props){
+    const navigate = useNavigate();
 
     var icon = props.icon == "crossed" ? menuIconCrossed : menuIcon
 
     return(
-        <a onClick={() => {irParaMenu()}} class="cursor-pointer">
+        <a onClick={() => navigate("/menu")} class="cursor-pointer">
             <img src={icon}></img>
         </a>
     )
 }
 
-function irParaMenu(){
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(
-        <React.StrictMode>
-            <Menu />
-        </React.StrictMode>
-    );
-}
-
-export default buttonMenu;
+export default ButtonMenu;

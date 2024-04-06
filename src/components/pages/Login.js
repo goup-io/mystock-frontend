@@ -8,8 +8,12 @@ import goUpLogo from '../../assets/loginPage/Group 89.svg';
 import userIcon from '../../assets/icons/userIcon.svg'
 import lockIcon from '../../assets/icons/lockIcon.svg'
 
+import { useNavigate } from 'react-router-dom';
 
 function Login(){
+
+    const navigate = useNavigate();
+
     return(
         <section class="flex flex-col items-center justify-center h-[100vh]">
             <img class="absolute top-4 left-0" src={`${myStockLogo}`}></img>
@@ -36,7 +40,8 @@ function Login(){
                         placeholder="*******"
                     ></Input>
                 </div>
-                <ButtonEnter>Entrar</ButtonEnter>
+                <button onClick={() => navigate("/menu")} >SIMMMM</button>
+                <ButtonEnter onClick={() => navigate("/menu")}>Entrar</ButtonEnter>
                 <div class=" mb-[2.69rem] mt-[0.6rem]">
                     <a class="text-[1.56rem]" href="">Esqueci a senha</a>
                 </div>

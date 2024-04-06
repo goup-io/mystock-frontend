@@ -1,9 +1,12 @@
 import Header from '../header/Header.js'
+import PageLayout from './PageLayout.js'
 
 function Estoque() {
     return(
         <>
-        <Header telaAtual="Estoque"></Header>
+            <PageLayout>
+                <Header telaAtual="Estoque"></Header>
+            </PageLayout>
         </>
     )
 }

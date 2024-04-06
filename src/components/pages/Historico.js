@@ -1,9 +1,12 @@
 import Header from '../header/Header.js'
+import PageLayout from './PageLayout.js'
 
 function Historico() {
     return(
         <>
-        <Header telaAtual="Histórico de Vendas"></Header>
+            <PageLayout>
+                <Header telaAtual="Histórico de Vendas"></Header>
+            </PageLayout>
         </>
     )
 }
