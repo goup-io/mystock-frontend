@@ -3,7 +3,7 @@ import App from '../App.js'
 import Login from '../components/pages/Login.js'
 import Estoque from '../components/pages/Estoque.js'
 import Venda from '../components/pages/Venda.js'
-import Historico from '../components/pages/Estoque.js'
+import Historico from '../components/pages/Historico.js'
 import Transacoes from '../components/pages/Transacoes.js'
 import Menu from '../components/pages/Menu.js'
 

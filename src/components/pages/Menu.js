@@ -1,15 +1,8 @@
 //Componentes
 import Header from '../header/Header.js'
-import myStockLogo from '../../assets/icons/logoMyStock.svg'
-import Notification from '../buttons/buttonNotification.js'
-import Footer from '../footer/Footer.js'
 import PageLayout from './PageLayout.js'
 
 //Paginas
-import Estoque from './Estoque.js'
-import Historico from './Historico.js'
-import Transacoes from './Transacoes.js'
-import Venda from './Venda.js'
 import { useNavigate } from 'react-router-dom';
 
 
