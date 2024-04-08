@@ -39,8 +39,7 @@ function Login(){
                         icon={lockIcon}
                         placeholder="*******"
                     ></Input>
-                </div>
-                <button onClick={() => navigate("/menu")} >SIMMMM</button>
+                </div>  
                 <ButtonEnter onClick={() => navigate("/menu")}>Entrar</ButtonEnter>
                 <div class=" mb-[2.69rem] mt-[0.6rem]">
                     <a class="text-[1.56rem]" href="">Esqueci a senha</a>
