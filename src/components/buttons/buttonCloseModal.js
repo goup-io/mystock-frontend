@@ -1,9 +1,11 @@
+import imgCloseModal from '../../assets/closeModal.png'
+
 function ButtonCloseModal() {
 
     return (
 
-    <button className="w-8 h-8 bg-red-600 font-semibold rounded-lg text-white"> 
-    <img className="w-8 h-8"  src="./assets/closeModal.png"></img>
+    <button className="w-6 h-6 mr-4 bg-red-600 font-semibold rounded text-white flex justify-center items-center"> 
+    <img className="w-3/5 h-3/5"  src={`${imgCloseModal}`}></img>
      </button>
 
     );
