@@ -14,7 +14,7 @@ function PageLayout(props){
     }
 
     var corBranco = {
-        backgroundColor : "#fff",
+        backgroundColor : "#F5F3F4",
     }
 
     var [corAtual, setCorAtual] = useState(corMenu)
@@ -30,7 +30,7 @@ function PageLayout(props){
     }, [props.telaAtual])
 
     return(
-        <section class="flex flex-col items-center h-[100vh] w-full justify-center">
+        <section class="flex flex-col items-center h-[100vh] bg-[#F5F3F4] w-full justify-center">
             <div class="flex flex-row w-full justify-between px-8 pl-[5%]">
                 <img src={myStockLogo}></img>
                 <Notification></Notification>

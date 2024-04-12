@@ -46,7 +46,7 @@ function Login(){
                 </div>
                 <div class="mb-[1.69rem]">
                     <p class="text-[1.56rem]">Não tem acesso ao nosso sistema?</p>
-                    <a class="text-[1.56rem]" href="">Entre em contato conosco!</a>   
+                    <a class="text-[1.56rem] underline" href="">Entre em contato conosco!</a>   
                 </div>
             </div>
             <img class="absolute bottom-0 left-0" src={`${dots02}`}></img>
