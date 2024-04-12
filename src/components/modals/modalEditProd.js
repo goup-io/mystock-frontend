@@ -4,7 +4,7 @@ import ButtonModal from "../buttons/buttonsModal";
 import InputAndLabelModal from "../inputs/inputAndLabelModal";
 import HeaderModal from "./headerModal";
 
-function ModalCadastreProd() {
+function ModalEditProd() {
     return (
         <>
             <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[34rem] h-[20.5rem] flex flex-col items-center justify-around  bg-white p-2 rounded-lg border border-black">
@@ -46,4 +46,4 @@ function ModalCadastreProd() {
     );
 }
 
-export default ModalCadastreProd;
+export default ModalEditProd;
