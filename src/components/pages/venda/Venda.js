@@ -3,6 +3,10 @@ import Header from '../../header/Header.js'
 import PageLayout from '../PageLayout.js'
 import Input from '../../inputs/inputAndLabelModal.js'
 import Button from '../../buttons/buttonsModal.js'
+import ButtonEdit from '../../buttons/buttonEdit.js'
+import ButtonCancel from '../../buttons/buttonCancel.js'
+import ModalCadastroProduto from '../../modals/modalCadastreProd.js'
+
 
     var divPai = {
         backgroundColor:"#F5F3F4",
@@ -85,6 +89,41 @@ function ResumoVenda(props){
     );
 }
 
+function ItemCarrinho(props){
+    return(
+        <tr class="bg-red-700 flex flex-row justify-between gap-16 pl-12">
+            <td>
+                <p class="font-normal text-[1.1rem]">{props.codigoProduto}</p>
+            </td>
+            <td>
+                <p class="font-normal text-[1.1rem]">{props.descricaoProduto}</p>
+            </td>
+            <td>
+                <p class="font-normal text-[1.1rem]">{props.precoUnitario}</p>
+            </td>
+            <td>
+                <p class="font-normal text-[1.1rem]">{props.quantidade}</p>
+            </td>
+            <td>
+                <p class="font-normal text-[1.1rem]">{props.descontoUnitario}</p>
+            </td>
+            <td>
+                <p class="font-normal text-[1.1rem]">{props.precoLiquido}</p>
+            </td>
+            <td>
+                {<ButtonEdit/>}
+                {<ButtonCancel/>}
+            </td>
+        </tr>
+    )
+}
+
+function cadastrarProduto(){
+    return(
+        <ModalCadastroProduto/>
+    )
+}
+
 function Venda() {
     return(
         <>
@@ -95,13 +134,47 @@ function Venda() {
                         <div class="flex justify-between w-full text-2xl">
                             <p class="font-semibold text-2xl">CARRINHO</p>
                             <div class="flex flex-row-reverse w-2/3 gap-4 items-center">
-                                <Button><p class="flex justify-between w-full text-2xl">Adicionar Produto</p></Button>
+                                <Button funcao={cadastrarProduto}><p class="flex justify-between w-full text-2xl">Adicionar Produto</p></Button>
                                 <Button><p class="flex justify-between w-full text-2xl">Adicionar Kit</p></Button>
                             </div>
                         </div>
 
                         <div class="bg-[#F5F3F4] w-full h-full rounded-[5px] my-2 overflow-y-scroll">
-
+                            <table class="w-full mt-3" id='tabelaCarrinho'>
+                                <thead>
+                                    <tr class="flex flex-row gap-16 pl-6">
+                                        <th>
+                                            <p class="font-medium text-[1.1rem]">Código Prod.</p>
+                                        </th>
+                                        <th>
+                                            <p class="font-medium text-[1.1rem]">Descrição Prod.</p>
+                                        </th>
+                                        <th>
+                                            <p class="font-medium text-[1.1rem]">Preço Un.</p>
+                                        </th>
+                                        <th>
+                                            <p class="font-medium text-[1.1rem]">Quanti.</p>
+                                        </th>
+                                        <th>
+                                            <p class="font-medium text-[1.1rem]">Desconto Un.</p>
+                                        </th>
+                                        <th>
+                                            <p class="font-medium text-[1.1rem]">Preço Líquido</p>
+                                        </th>
+                                        <th>sim</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ItemCarrinho
+                                        codigoProduto={2}
+                                        descricaoProduto={"Produto"}
+                                        precoUnitario={12}
+                                        quantidade={2}
+                                        descontoUnitario={30}
+                                        precoLiquido={11}
+                                    />
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <div style={div2} class="shadow flex flex-col items-start px-8 justify-evenly">
