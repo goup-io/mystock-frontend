@@ -1,5 +1,5 @@
-import Header from '../header/Header.js'
-import PageLayout from './PageLayout.js'
+import Header from '../../header/Header.js'
+import PageLayout from '../PageLayout.js'
 
 function Estoque() {
     return(

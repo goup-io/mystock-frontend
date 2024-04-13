@@ -1,8 +1,8 @@
 import { borderRadius, height, margin } from '@mui/system';
-import Header from '../header/Header.js'
-import PageLayout from './PageLayout.js'
-import Input from '../inputs/inputAndLabelModal.js'
-import Button from '../buttons/buttonsModal.js'
+import Header from '../../header/Header.js'
+import PageLayout from '../PageLayout.js'
+import Input from '../../inputs/inputAndLabelModal.js'
+import Button from '../../buttons/buttonsModal.js'
 
     var divPai = {
         backgroundColor:"#F5F3F4",

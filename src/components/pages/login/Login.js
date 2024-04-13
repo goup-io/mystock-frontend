@@ -1,12 +1,12 @@
-import Input from '../inputs/Inputs.js';
-import ButtonEnter from '../buttons/buttonEnter.js';
-import myStockLogo from '../../assets/loginPage/Group 88.svg';
-import dots01 from '../../assets/loginPage/dots01.svg';
-import dots02 from '../../assets/loginPage/dots02.svg';
-import goUpLogo from '../../assets/loginPage/Group 89.svg';
+import Input from '../../inputs/Inputs.js';
+import ButtonEnter from '../../buttons/buttonEnter.js';
+import myStockLogo from '../../../assets/loginPage/Group 88.svg';
+import dots01 from '../../../assets/loginPage/dots01.svg';
+import dots02 from '../../../assets/loginPage/dots02.svg';
+import goUpLogo from '../../../assets/loginPage/Group 89.svg';
 
-import userIcon from '../../assets/icons/userIcon.svg'
-import lockIcon from '../../assets/icons/lockIcon.svg'
+import userIcon from '../../../assets/icons/userIcon.svg'
+import lockIcon from '../../../assets/icons/lockIcon.svg'
 
 import { useNavigate } from 'react-router-dom';
 
