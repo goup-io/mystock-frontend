@@ -140,7 +140,7 @@ function Tabela({ colunas, dados, iptQuantidade }) {
 };
 
   return (
-    <div className='w-[32rem] h-[16rem] bg-slate-700 overflow-y-auto'>
+   
       <table className='  w-[32rem] h-[16rem]'>
         <thead className=' text-sm text-white font-light'>
           <tr>
@@ -166,7 +166,7 @@ function Tabela({ colunas, dados, iptQuantidade }) {
           ))}
         </tbody>
       </table>
-    </div>
+  
   );
 }
 
