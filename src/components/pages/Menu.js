@@ -11,7 +11,6 @@ import React, { Component, useEffect, useState } from "react";
 
 function Menu(){
 
-    var [paginaAtual, setProximaPagina] = useState('menu')
     const navigate = useNavigate();
 
     function MenuItems(){
@@ -24,6 +23,7 @@ function Menu(){
                     <ItemLista route={"/estoque"}>ESTOQUE</ItemLista>
                     <ItemLista route={"/historico"}>HISTÓRICO DE VENDAS</ItemLista>
                     <ItemLista route={"/transacao"}>ÁREA DE TRANSAÇÕES</ItemLista>
+                    <ItemLista route={"/"}>SAIR</ItemLista>
                 </ul>
             </>
         )

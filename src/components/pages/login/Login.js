@@ -1,12 +1,12 @@
-import Input from '../inputs/Inputs.js';
-import ButtonEnter from '../buttons/buttonEnter.js';
-import myStockLogo from '../../assets/loginPage/Group 88.svg';
-import dots01 from '../../assets/loginPage/dots01.svg';
-import dots02 from '../../assets/loginPage/dots02.svg';
-import goUpLogo from '../../assets/loginPage/Group 89.svg';
+import Input from '../../inputs/Inputs.js';
+import ButtonEnter from '../../buttons/buttonEnter.js';
+import myStockLogo from '../../../assets/loginPage/Group 88.svg';
+import dots01 from '../../../assets/loginPage/dots01.svg';
+import dots02 from '../../../assets/loginPage/dots02.svg';
+import goUpLogo from '../../../assets/loginPage/Group 89.svg';
 
-import userIcon from '../../assets/icons/userIcon.svg'
-import lockIcon from '../../assets/icons/lockIcon.svg'
+import userIcon from '../../../assets/icons/userIcon.svg'
+import lockIcon from '../../../assets/icons/lockIcon.svg'
 
 import { useNavigate } from 'react-router-dom';
 
@@ -46,7 +46,7 @@ function Login(){
                 </div>
                 <div class="mb-[1.69rem]">
                     <p class="text-[1.56rem]">Não tem acesso ao nosso sistema?</p>
-                    <a class="text-[1.56rem]" href="">Entre em contato conosco!</a>   
+                    <a class="text-[1.56rem] underline" href="">Entre em contato conosco!</a>   
                 </div>
             </div>
             <img class="absolute bottom-0 left-0" src={`${dots02}`}></img>
