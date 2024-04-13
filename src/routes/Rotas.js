@@ -1,10 +1,10 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import App from '../App.js'
-import Login from '../components/pages/Login.js'
-import Estoque from '../components/pages/Estoque.js'
-import Venda from '../components/pages/Venda.js'
-import Historico from '../components/pages/Historico.js'
-import Transacoes from '../components/pages/Transacoes.js'
+import Login from '../components/pages/login/Login.js'
+import Estoque from '../components/pages/estoque/Estoque.js'
+import Venda from '../components/pages/venda/Venda.js'
+import Historico from '../components/pages/historico/Historico.js'
+import Transacoes from '../components/pages/transacoes/Transacoes.js'
 import Menu from '../components/pages/Menu.js'
 
 const Rotas = () => {
