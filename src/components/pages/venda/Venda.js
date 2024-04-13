@@ -70,15 +70,15 @@ function Venda() {
                     </div>
                     <div style={div3} class="shadow flex flex-col items-center">
                         <p class="font-semibold text-2xl mt-4">RESUMO DA VENDA</p>
-                        <div class="bg-[#F5F3F4] w-11/12 h-full rounded-[8px] my-4 mb-6">
+                        <div class="bg-[#F5F3F4] w-11/12 h-full rounded-[8px] my-4 mb-3">
 
                         </div>
-                        <div>
+                        <div class="flex flex-col w-full gap-2 my-2 px-5">
                             <Button>
-                                <p class="">ADICIONAR DESCONTO À VENDA</p>
+                                <p class="text-[1.1rem] p-2">ADICIONAR DESCONTO À VENDA</p>
                             </Button>
                             <Button>
-                                <p class="text-2xl">FINALIZAR PRÉ-VENDA</p>
+                                <p class="text-2xl p-2">FINALIZAR PRÉ-VENDA</p>
                             </Button>
                         </div>
                     </div>
