@@ -1,10 +1,8 @@
 //Componentes
-import Header from '../header/Header.js'
 import myStockLogo from '../../assets/icons/logoMyStock.svg'
 import Notification from '../buttons/buttonNotification.js'
 import Footer from '../footer/Footer.js'
 import { useState, useEffect } from 'react'
-
 
 function PageLayout(props){
 
