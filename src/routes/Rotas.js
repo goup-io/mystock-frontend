@@ -6,6 +6,7 @@ import Venda from '../components/pages/venda/Venda.js'
 import Historico from '../components/pages/historico/Historico.js'
 import Transacoes from '../components/pages/transacoes/Transacoes.js'
 import Menu from '../components/pages/Menu.js'
+import DashboardGeral from '../components/pages/dashboards/DashboardGeral.js';
 
 const Rotas = () => {
     return(
@@ -37,6 +38,10 @@ const Rotas = () => {
                     <Route path="/transacao" element={<Transacoes />} />
                 </Route>
 
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
+                    <Route path="/dashboard-geral" element={<DashboardGeral />} />
+                </Route>
                 
                 
             </Routes>
