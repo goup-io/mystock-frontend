@@ -3,7 +3,7 @@ import InputSearcModal from '../inputs/inputSearchModal';
 import HeaderModal from '../modals/headerModal';
 import ButtonClear from '../buttons/buttonClear';
 import ButtonModal from '../buttons/buttonsModal';
-import Tabela from '../tables/tableList';
+import Tabela from '../tables/tableModal';
 import React, { useState, useEffect } from 'react';
 
 

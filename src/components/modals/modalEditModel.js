@@ -15,23 +15,22 @@ function ModalEditProd() {
                 <div className="w-[32rem] h-[12rem] flex flex-col rounded justify-around p-3 bg-[#F5F3F4] border-solid shadow-[5px_5px_10px_0_rgba(0,0,0,0.14)] border-gray-700">
             
                     <div className="flex justify-around mb-4">
-                    <ComboBoxModal
-                    dadosBanco="teste"
-                    >Modelo</ComboBoxModal>
+                    <InputAndLabelModal
+                        type="Text"
+                        placeholder="digite o código..."
+                        >Código</InputAndLabelModal>
                         <InputAndLabelModal
                         type="Text"
-                        placeholder="digite a cor..."
-                        >Cor</InputAndLabelModal>
+                        placeholder="digite o nome..."
+                        >Nome</InputAndLabelModal>
                     </div>
                     <div className="flex justify-around">
-                        <InputAndLabelModal
-                         type="Number"
-                        placeholder="digite o preço de custo..."
-                        >Preço Custo</InputAndLabelModal>
-                        <InputAndLabelModal
-                         type="Number"
-                        placeholder="digite o preço de revenda..."
-                        >Preço Revenda</InputAndLabelModal>
+                    <ComboBoxModal
+                    dadosBanco="teste"
+                    >Categoria</ComboBoxModal>
+                      <ComboBoxModal
+                    dadosBanco="teste"
+                    >Tipo</ComboBoxModal>
                     </div>
                 </div>
                 <div className="w-[32rem] flex justify-end  h-6 ">

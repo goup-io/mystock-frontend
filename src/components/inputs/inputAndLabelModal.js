@@ -8,7 +8,7 @@ function InputAndLabelModal(props) {
                 <div className="flex flex-col justify-start items-start">
                     <p class="form-floating text-sm text-black mb-2 font-normal">{props.children}</p>
                     <InputCadastre
-                        type="text"
+                        type={`${props.text}`}
                         placeholder={`${props.placeholder}`}
                     ></InputCadastre>
                 </div>

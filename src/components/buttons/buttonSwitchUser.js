@@ -3,7 +3,7 @@ import switchUserIcon from '../../assets/icons/switchUserIcon.svg'
 function buttonSwitchUser(){
     return(
         <a onClick={trocarUsuario} class="cursor-pointer">
-            <img src={switchUserIcon}></img>
+            <img className='w-[3rem]' src={switchUserIcon}></img>
         </a>
     )
 }

@@ -3,8 +3,9 @@ import InputSearcModal from '../inputs/inputSearchModal';
 import HeaderModal from '../modals/headerModal';
 import ButtonClear from '../buttons/buttonClear';
 import ButtonModal from '../buttons/buttonsModal';
-import Tabela from '../tables/tableList';
+import Tabela from '../tables/tableModal';
 import React, { useState, useEffect } from 'react';
+import TabelaModal from '../tables/tableModal';
 
 
 export default function ModalAddKitCart() {
@@ -48,7 +49,7 @@ export default function ModalAddKitCart() {
                 >Pesquisar</InputSearcModal>
             </div>
             <div className='w-[32rem] h-[16rem] bg-slate-700 overflow-y-auto'>
-                <Tabela colunas={colunas} dados={dados} iptQuantidade></Tabela>
+                <TabelaModal colunas={colunas} dados={dados} iptQuantidade></TabelaModal>
             </div>
             <div className="w-[32rem] flex justify-end items-end mt-1 h-7">
                 <ButtonClear>Limpar</ButtonClear>

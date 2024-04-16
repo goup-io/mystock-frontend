@@ -131,7 +131,7 @@
 
 import React from 'react';
 
-function Tabela({ colunas, dados, iptQuantidade }) {
+function TabelaModal({ colunas, dados, iptQuantidade }) {
 
  // Função para lidar com a adição de quantidade
  const handleAdicionar = (index) => {
@@ -170,5 +170,5 @@ function Tabela({ colunas, dados, iptQuantidade }) {
   );
 }
 
-export default Tabela;
+export default TabelaModal;
 
