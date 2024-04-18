@@ -7,12 +7,22 @@ import goUpLogo from '../../../assets/loginPage/Group 89.svg';
 
 import userIcon from '../../../assets/icons/userIcon.svg'
 import lockIcon from '../../../assets/icons/lockIcon.svg'
+import ApiRequest from '../../../connections/ApiRequest.js'
 
-import { useNavigate } from 'react-router-dom';
+import { json, useNavigate } from 'react-router-dom';
 
 function Login(){
 
     const navigate = useNavigate();
+
+    async function handleClick() {
+        
+        var userEmail = document.getElementById("inputEmail").value  
+        var userSenha = document.getElementById("inputSenha").value
+
+        ApiRequest.userLogin(userEmail, userSenha);
+        
+    }
 
     return(
         <section class="flex flex-col items-center justify-center h-[100vh]">
@@ -27,6 +37,7 @@ function Login(){
                 <div class="flex flex-col items-start mb-[0.5rem]">
                     <p class="form-floating text-[1.56rem] text-black">Usuário:</p>
                     <Input 
+                        id="inputEmail"
                         type="text"
                         icon={`${userIcon}`}
                         placeholder="seu@email.com"
@@ -35,12 +46,13 @@ function Login(){
                 <div class="flex flex-col items-start mb-[2.56rem]">
                     <p class="text-[1.56rem]">Senha:</p>
                     <Input
+                        id="inputSenha"
                         type="password"
                         icon={lockIcon}
                         placeholder="*******"
                     ></Input>
                 </div>  
-                <ButtonEnter onClick={() => navigate("/menu")}>Entrar</ButtonEnter>
+                <ButtonEnter funcao={handleClick}>Entrar</ButtonEnter>
                 <div class=" mb-[2.69rem] mt-[0.6rem]">
                     <a class="text-[1.56rem]" href="">Esqueci a senha</a>
                 </div>
