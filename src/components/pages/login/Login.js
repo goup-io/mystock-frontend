@@ -22,10 +22,15 @@ function Login(){
 
 
     async function handleClick() {
+        
+        const respostaHTTP = await ApiRequest.userLogin(email, senha);
+        
+        console.log(respostaHTTP);
 
-        //ApiRequest.userLogin(email, senha);
-
-        navigate("/menu")
+        if(respostaHTTP == 200){
+            alert("Deu certo")
+            navigate("/menu")
+        }
         
     }
 
