@@ -4,7 +4,7 @@ import Chart from 'react-apexcharts';
 function LineChart({ categories, series }) {
     const options = {
         chart: {
-            height: '10',
+            height: '100%',
             type: 'line',
             dropShadow: {
                 enabled: true,

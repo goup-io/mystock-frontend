@@ -4,6 +4,7 @@ import TitleBox from '../../header/TitleBox.js'
 import Kpis from '../../kpis/Kpis.js'
 import ChartBox from '../../chartsBoxes/ChartBox.js'
 import LineChart from '../../charts/LineChart.js'
+import PieChart from '../../charts/PieChart.js'
 
 function DashboardGeral() {
 
@@ -34,6 +35,9 @@ function DashboardGeral() {
             data: [34, 44, 145, 1448, 5417, 1553, 1553]
         }
     ]
+
+    const seriesModelosMaisVendidos = [25, 15, 44, 55, 41, 17];
+    const labelsModelosMaisVendidos = ["Air Max 100", "Air Max 200", "Air Max 300", "Air Max 400", "Air Max 500", "Air Max 600"];
     
 
     return(
@@ -46,7 +50,9 @@ function DashboardGeral() {
                 </ChartBox>
                 <div class="flex gap-3 w-full h-1/2">
                     <ChartBox title="Gráfico de Fluxo de Estoque" size="medium"></ChartBox>
-                    <ChartBox title="Modelos mais Vendidos" size="small"></ChartBox>
+                    <ChartBox title="Modelos mais Vendidos" size="small">
+                        <PieChart labels={labelsModelosMaisVendidos} series={seriesModelosMaisVendidos}></PieChart>
+                    </ChartBox>
                 </div>
             </PageLayout>
         </>
