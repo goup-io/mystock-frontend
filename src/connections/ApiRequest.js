@@ -6,11 +6,17 @@ export class ApiRequest{
     static async userLogin(email, senha){
 
         const usuario = {
-            email,
-            senha
+            "user" : email,
+            "senha" : senha,
         }
 
-        var resposta = await fetch(springEndPoint);
+        var resposta = await fetch(springEndPoint, {
+            method : "POST",
+            headers : {
+                "Content-Type": "application/json",
+            },
+            body : JSON.stringify(usuario),
+        });
 
         if(resposta.status == 200){
             document.cookie = `token=${resposta.text}`

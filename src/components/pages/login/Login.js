@@ -19,8 +19,6 @@ function Login(){
     const [email, setEmail] = useState(""); 
     const [senha, setSenha] = useState(""); 
 
-
-
     async function handleClick() {
         
         const respostaHTTP = await ApiRequest.userLogin(email, senha);
