@@ -1,6 +1,21 @@
 
 const springEndPoint = "https://6619af63125e9bb9f29a8f26.mockapi.io/produtos/users";
 
+function getCookie(name) {
+    let cookieArr = document.cookie.split(";");
+
+    for(let i = 0; i < cookieArr.length; i++) {
+        let cookiePair = cookieArr[i].split("=");
+
+        if(name == cookiePair[0].trim()) {
+            return decodeURIComponent(cookiePair[1]);
+        }
+    }
+
+    // Return null if the cookie by that name does not exist
+    return null;
+}
+
 export class ApiRequest{
 
     static async userLogin(email, senha){
@@ -10,7 +25,7 @@ export class ApiRequest{
             "senha" : senha,
         }
 
-        var resposta = await fetch(springEndPoint, {
+        const resposta = await fetch(springEndPoint, {
             method : "POST",
             headers : {
                 "Content-Type": "application/json",
@@ -19,7 +34,7 @@ export class ApiRequest{
         });
 
         if(resposta.status == 200){
-            document.cookie = `token=${resposta.text}`
+            document.cookie = `token=${resposta.json().token}; loja=${resposta.json().loja}`
             return resposta.status
         }
 
@@ -27,7 +42,13 @@ export class ApiRequest{
     }
 
     static async lojaEstoque(){
-        var resposta = await fetch(springEndPoint);
+        var resposta = await fetch(springEndPoint, {
+            method : "GET",
+            headers : {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${getCookie("token")}`
+            } 
+        });
         
     }
 }
