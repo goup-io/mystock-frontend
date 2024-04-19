@@ -10,18 +10,28 @@ import lockIcon from '../../../assets/icons/lockIcon.svg'
 import ApiRequest from '../../../connections/ApiRequest.js'
 
 import { json, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 function Login(){
 
     const navigate = useNavigate();
 
-    async function handleClick() {
-        
-        var userEmail = document.getElementById("inputEmail").value  
-        var userSenha = document.getElementById("inputSenha").value
+    const [email, setEmail] = useState(""); 
+    const [senha, setSenha] = useState(""); 
 
-        ApiRequest.userLogin(userEmail, userSenha);
+
+
+    async function handleClick() {
+
+        //ApiRequest.userLogin(email, senha);
+
+        navigate("/menu")
         
+    }
+
+    function handleInput(evento, stateFunction){
+
+        stateFunction(evento.target.value);
     }
 
     return(
@@ -38,8 +48,11 @@ function Login(){
                     <p class="form-floating text-[1.56rem] text-black">Usuário:</p>
                     <Input 
                         id="inputEmail"
+                        handleInput={handleInput}
                         type="text"
+                        handlerAtributeChanger={setEmail}
                         icon={`${userIcon}`}
+                        value={email}
                         placeholder="seu@email.com"
                     ></Input>
                 </div>
@@ -47,6 +60,9 @@ function Login(){
                     <p class="text-[1.56rem]">Senha:</p>
                     <Input
                         id="inputSenha"
+                        handleInput={handleInput}
+                        handlerAtributeChanger={setSenha}
+                        value={senha}
                         type="password"
                         icon={lockIcon}
                         placeholder="*******"

@@ -9,7 +9,12 @@ function Input(props) {
                 </div>
             )}
             <input 
-            id={props.id} type={`${props.type}`} placeholder={`${props.placeholder}`} class="w-[34.8rem] h-[3.75rem] rounded-[3.125rem] bg-[F5F3F4] pl-16 text-[1.5625rem] font-[400] text-[#555] form-control border border-slate-600"
+            value={props.value}
+            onChange={(e) => {props.handleInput(e, props.handlerAtributeChanger)}}
+            id={props.id} 
+            type={`${props.type}`} 
+            placeholder={props.placeholder == undefined ? "" : props.placeholder} 
+             class="w-[34.8rem] h-[3.75rem] rounded-[3.125rem] bg-[F5F3F4] pl-16 text-[1.5625rem] font-[400] text-[#555] form-control border border-slate-600"
             ></input>
             {/* <div class="relative">
             <input type="text" id="floating_outlined" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 appearance-none text-black border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer w-[32.8rem] h-[3.75rem] rounded-[3.125rem] bg-[F5F3F4] text-[1.5625rem] font-[400] text-[#555] form-control border border-slate-600" placeholder=" " />
