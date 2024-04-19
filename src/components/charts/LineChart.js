@@ -45,7 +45,22 @@ function LineChart({ categories, series }) {
             floating: true,
             offsetY: 0 ,
             offsetX: 0
-        }
+        }, 
+        responsive: [
+            {
+              breakpoint: 1000,
+              options: {
+                plotOptions: {
+                  bar: {
+                    vertical: true
+                  }
+                },
+                legend: {
+                  position: "bottom"
+                }
+              }
+            }
+        ]
     };
 
     return (

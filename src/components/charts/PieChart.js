@@ -8,6 +8,9 @@ function PieChart({ series, labels }) {
             width: '50%',
             // height: '100%',
             type: 'pie',
+            toolbar: {
+                show: true
+            }
         },
         labels: labels,
         theme: {
@@ -30,9 +33,8 @@ function PieChart({ series, labels }) {
         },
         legend: {
             show: true,
-            position: 'right', // Define a posição da legenda como "direita"
+            position: 'right',
            textAlign: 'right'
-
         }
     };
 

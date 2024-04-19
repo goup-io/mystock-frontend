@@ -5,6 +5,7 @@ import Kpis from '../../kpis/Kpis.js'
 import ChartBox from '../../chartsBoxes/ChartBox.js'
 import LineChart from '../../charts/LineChart.js'
 import PieChart from '../../charts/PieChart.js'
+import BarChart from '../../charts/BarChart.js'
 
 function DashboardGeral() {
 
@@ -40,6 +41,22 @@ function DashboardGeral() {
     const labelsModelosMaisVendidos = ["Air Max 100", "Air Max 200", "Air Max 300", "Air Max 400", "Air Max 500", "Air Max 600"];
     
 
+    const categoriesFluxoEstoque = ['Loja 1', 'Loja 2', 'Loja 3', 'Loja 4'];
+    const seriesFluxoEstoque = [
+        {
+            name: 'Net Profit',
+            data: [44, 55, 57, 56]
+        },
+        {
+            name: 'Revenue',
+            data: [76, 85, 101, 98]
+        },
+        {
+            name: 'Free Cash Flow',
+            data: [35, 41, 36, 26]
+        }
+    ];
+
     return(
         <>
             <PageLayout>
@@ -49,7 +66,9 @@ function DashboardGeral() {
                     <LineChart categories={labelsGraficoFaturamento} series={seriesGraficoFaturamento}></LineChart>
                 </ChartBox>
                 <div class="flex gap-3 w-full h-1/2">
-                    <ChartBox title="Gráfico de Fluxo de Estoque" size="medium"></ChartBox>
+                    <ChartBox title="Gráfico de Fluxo de Estoque" size="medium">
+                        <BarChart categories={categoriesFluxoEstoque} series={seriesFluxoEstoque }></BarChart>
+                    </ChartBox>
                     <ChartBox title="Modelos mais Vendidos" size="small">
                         <PieChart labels={labelsModelosMaisVendidos} series={seriesModelosMaisVendidos}></PieChart>
                     </ChartBox>
