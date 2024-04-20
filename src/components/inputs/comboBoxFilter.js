@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function ComboBoxModal(props) {
+function ComboBoxFilter(props) {
   const [opcoes, setOpcoes] = useState([]);
   const [selecionado, setSelecionado] = useState('');
 
@@ -16,9 +16,9 @@ function ComboBoxModal(props) {
   };
 
   return (
-    <div className="flex flex-col justify-start items-start">
-    <p class="form-floating text-sm text-black mb-2 font-normal">{props.children}:</p>
-      <select value={selecionado} onChange={handleChange} className="w-56 h-7 rounded bg-[F5F3F4] pl-2 text-[0.8rem] font-[300] text-[#555] form-control border border-1 border-slate-600">
+    <div className="w-full flex justify-evenly items-center text-center ">
+    <p class="form-floating text-[1.2rem] text-black font-normal">{props.children}:</p>
+      <select value={selecionado} onChange={handleChange} className="w-[8rem] h-6 rounded bg-[F5F3F4] pl-2 text-[1rem] font-[300] text-[#555] form-control border border-1 border-slate-600">
         <option value="">Selecione...</option>
         {opcoes.map((opcao, index) => (
           <option key={index} value={opcao}>{opcao}</option>
@@ -28,4 +28,4 @@ function ComboBoxModal(props) {
   );
 }
 
-export default ComboBoxModal;
+export default ComboBoxFilter;

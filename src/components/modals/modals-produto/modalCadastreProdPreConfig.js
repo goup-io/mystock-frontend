@@ -1,13 +1,13 @@
 
-import InputSearcModal from '../inputs/inputSearchModal';
-import HeaderModal from '../modals/headerModal';
-import ButtonClear from '../buttons/buttonClear';
-import ButtonModal from '../buttons/buttonsModal';
-import Tabela from '../tables/tableModal';
+import InputSearcModal from '../../inputs/inputSearchModal';
+import HeaderModal from '../headerModal';
+import ButtonClear from '../../buttons/buttonClear';
+import ButtonModal from '../../buttons/buttonsModal';
+import Tabela from '../../tables/tableModal';
 import React, { useState, useEffect } from 'react';
 
 
-export default function ModalAddProdCart() {
+export default function ModalCadastreProdPreConfig() {
 
   const [colunas, setColunas] = useState([]);
   const [dados, setDados] = useState([]);
@@ -37,20 +37,22 @@ export default function ModalAddProdCart() {
 
   return (
 
-    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[34rem] h-[24rem] flex flex-col justify-around items-center bg-white p-2 rounded-lg border border-black">
+    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[37rem] h-[26rem] flex flex-col justify-around items-center bg-white p-2 rounded-lg border border-black">
+      <div className='w-[35rem]'>
       <HeaderModal
-        props="Adicionar Produto no Carrinho"
+        props="Adicionar no Estoque Produto Pré-Cadastrado"
       >
       </HeaderModal>
-      <div className="w-[32rem] h-[2rem] flex justify-end ">
+      </div>
+      <div className="w-[35rem] h-[2rem] flex justify-end ">
         <InputSearcModal
           props="text"
         >Pesquisar</InputSearcModal>
       </div>
-      <div className='w-[32rem] h-[16rem] bg-slate-700 overflow-y-auto'>
-        <Tabela colunas={colunas} dados={dados} iptQuantidade></Tabela>
+      <div className='w-[35rem] h-[18rem] border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto'>
+        <Tabela colunas={colunas} dados={dados} edit remove iptQuantidade></Tabela>
       </div>
-      <div className="w-[32rem] flex justify-end items-end mt-1 h-7">
+      <div className="w-[35rem] flex justify-end items-end mt-1 h-7">
         <ButtonClear>Limpar</ButtonClear>
         <ButtonModal>Cadastrar</ButtonModal>
       </div>

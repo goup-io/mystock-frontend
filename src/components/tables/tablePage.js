@@ -1,5 +1,5 @@
 import React from 'react';
-import imgPencil from '../../assets/icons/pencil.png'
+import ButEdit from '../buttons/buttonEdit'
 
 function TabelaPage({ colunas, dados, edit, remove }) {
 
@@ -22,10 +22,8 @@ function TabelaPage({ colunas, dados, edit, remove }) {
             <td key={index}>{valor}</td>
           ))}
           {edit && (
-            <td>
-              <button className='text-lg font-medium rounded w-8 h-6 '>
-                <img src={`${imgPencil}`}></img>
-              </button>
+            <td className=' flex justify-center items-center'> 
+            <ButEdit></ButEdit>
             </td>
           )}
           {remove && (

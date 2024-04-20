@@ -5,7 +5,7 @@ import Input from '../../inputs/inputAndLabelModal.js'
 import Button from '../../buttons/buttonsModal.js'
 import ButtonEdit from '../../buttons/buttonEdit.js'
 import ButtonCancel from '../../buttons/buttonCancel.js'
-import ModalCadastroProduto from '../../modals/modalAddProdCart.js'
+import ModalCadastroProduto from '../../modals/modals-produto/modalAddProdCart.js'
 
 
     var divPai = {
