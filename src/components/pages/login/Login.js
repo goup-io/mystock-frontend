@@ -29,7 +29,6 @@ function Login(){
             alert("Deu certo")
             navigate("/menu")
         }
-        
     }
 
     function handleInput(evento, stateFunction){

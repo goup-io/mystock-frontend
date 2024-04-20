@@ -131,7 +131,7 @@ function cadastrarProduto() {
 function Venda() {
     return (
         <PageLayout>
-            <Header telaAtual="Área de Venda"></Header>
+            <Header telaAtual="Área de Venda"/>
             <div style={divPai}>
                 <div style={div1} class="shadow flex flex-col items-start py-4 px-8">
                     <div class="flex justify-between w-full text-2xl">
