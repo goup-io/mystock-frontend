@@ -4,7 +4,11 @@ import Input from '../../inputs/inputAndLabelModal.js'
 import Button from '../../buttons/buttonsModal.js'
 import ModalCadastroProduto from '../../modals/modalAddProdCart.js'
 import ItemSeparadoPorLinhaTracejada from '../../tables/ItemSeparadoPorLinhaTracejada.js'
-import Tabela from '../../tables/tableModal.js'
+import Tabela from '../../tables/TableRoundedBorderSpacing.js'
+
+import ButtonEdit from '../../buttons/buttonEdit.js'
+import ButtonCancel from '../../buttons/buttonCancel.js'
+
 import { useState } from 'react'
 import { useEffect } from 'react'
 
@@ -55,7 +59,7 @@ function ResumoVenda(props) {
             />
             <ItemSeparadoPorLinhaTracejada
                 infoEsquerda={"Subtotal 1"}
-                infoDireita={props.subtotal1}
+                infoDireita={"R$ "+props.subtotal1.toFixed(2)}
             />
             <ItemSeparadoPorLinhaTracejada
                 infoEsquerda={"Desconto em Produtos"}
@@ -63,7 +67,7 @@ function ResumoVenda(props) {
             />
             <ItemSeparadoPorLinhaTracejada
                 infoEsquerda={"Subtotal 2"}
-                infoDireita={props.subtotal2}
+                infoDireita={"R$ "+props.subtotal2.toFixed(2)}
             />
             <ItemSeparadoPorLinhaTracejada
                 infoEsquerda={"Desconto Venda"}
@@ -71,7 +75,7 @@ function ResumoVenda(props) {
             />
             <ItemSeparadoPorLinhaTracejada
                 infoEsquerda={"Valor Total"}
-                infoDireita={props.valorTotal}
+                infoDireita={"R$ "+props.valorTotal}
             />
         </ul>
     );
@@ -79,29 +83,36 @@ function ResumoVenda(props) {
 
 function ItemCarrinho(props) {
     return (
-        <tr class="bg-red-700 flex flex-row gap-16 pl-12">
-            <td>
-                <p class="font-normal text-[1.1rem]">{props.codigoProduto}</p>
+
+        <tr class="bg-[#DEE2FF] h-16 rounded ">
+            <td class="">
+                <p class="font-medium text-[1.4rem]">{props.codigoProduto}</p>
             </td>
             <td>
-                <p class="font-normal text-[1.1rem]">{props.descricaoProduto}</p>
+                <p class="font-medium text-[1.4rem]">{props.descricaoProduto}</p>
             </td>
             <td>
-                <p class="font-normal text-[1.1rem]">{props.precoUnitario}</p>
+                <p class="font-medium text-[1.4rem]">{props.precoUnitario}</p>
             </td>
             <td>
-                <p class="font-normal text-[1.1rem]">{props.quantidade}</p>
+                <p class="font-medium text-[1.4rem]">{props.quantidade}</p>
             </td>
             <td>
-                <p class="font-normal text-[1.1rem]">{props.descontoUnitario}</p>
+                <p class="font-medium text-[1.4rem]">{props.descontoUnitario}</p>
             </td>
             <td>
-                <p class="font-normal text-[1.1rem]">{props.precoLiquido}</p>
+                <p class="font-medium text-[1.4rem]">{props.precoLiquido}</p>
             </td>
-            {/* <td class="flex flex-row justify-around">
-                {<ButtonEdit />}
-                {<ButtonCancel />}
-            </td> */}
+            <td>
+                <div class="flex flex-row items-center gap-12 justify-center">
+                    <ButtonEdit
+                        width={40}
+                    />
+                    <ButtonCancel 
+                        width={30}
+                    />                    
+                </div>
+            </td>
         </tr>
     )
 }
@@ -114,30 +125,7 @@ function cadastrarProduto() {
 
 function Venda() {
 
-    const [colunas, setColunas] = useState([]);
-    const [dados, setDados] = useState([]);  
-
-    useEffect(() => {
-
-        const colunasDoBanco = ['Código Prod.', 'Descricao Prod', 'Preço Un.', 'Quant.', 'Desconto Un.', 'Preço Líquido'];
-    
-        const dadosDoBanco = [
-          { id: 1123, coluna1: 'papete', coluna2: 'papete', coluna3: '37', coluna4: 'vermelho', coluna5: '200,00'},
-          { id: 1123, coluna1: 'papete', coluna2: 'papete', coluna3: '37', coluna4: 'vermelho', coluna5: '200,00'},
-          { id: 1123, coluna1: 'papete', coluna2: 'papete', coluna3: '37', coluna4: 'vermelho', coluna5: '200,00'},
-          { id: 1123, coluna1: 'papete', coluna2: 'papete', coluna3: '37', coluna4: 'vermelho', coluna5: '200,00'},
-          { id: 1123, coluna1: 'papete', coluna2: 'papete', coluna3: '37', coluna4: 'vermelho', coluna5: '200,00'},
-          { id: 1123, coluna1: 'papete', coluna2: 'papete', coluna3: '37', coluna4: 'vermelho', coluna5: '200,00'},
-
-        ];
-    
-        setColunas(colunasDoBanco);
-    
-        setDados(dadosDoBanco);
-    
-      }, []);
-    
-
+    const [precoTotal, setPrecoTotal] = useState(0.00);
 
     const navigate = useNavigate();
 
@@ -154,44 +142,60 @@ function Venda() {
                         </div>
                     </div>
 
-                    <div class="bg-[#F5F3F4] w-full h-full rounded-[5px] my-2 overflow-y-scroll">
-                        {/* <table class="w-full mt-3" id='tabelaCarrinho'>
+                    <div class="bg-[#F5F3F4] w-full h-full rounded-[5px] my-2 overflow-y-scroll p-4">
+                        <Tabela>
                             <thead>
-                                <tr class="flex flex-row gap-16 pl-6">
+                                <tr class="flex-row gap-16 pl-6 table-row">
                                     <th>
-                                        <p class="font-medium text-[1.1rem]">Código Prod.</p>
+                                        <p class="font-medium text-[1.2rem]">Código Prod.</p>
                                     </th>
                                     <th>
-                                        <p class="font-medium text-[1.1rem]">Descrição Prod.</p>
+                                        <p class="font-medium text-[1.2rem]">Descrição Prod.</p>
                                     </th>
                                     <th>
-                                        <p class="font-medium text-[1.1rem]">Preço Un.</p>
+                                        <p class="font-medium text-[1.2rem]">Preço Un.</p>
                                     </th>
                                     <th>
-                                        <p class="font-medium text-[1.1rem]">Quanti.</p>
+                                        <p class="font-medium text-[1.2rem]">Quanti.</p>
                                     </th>
                                     <th>
-                                        <p class="font-medium text-[1.1rem]">Desconto Un.</p>
+                                        <p class="font-medium text-[1.2rem]">Desconto Un.</p>
                                     </th>
                                     <th>
-                                        <p class="font-medium text-[1.1rem]">Preço Líquido</p>
+                                        <p class="font-medium text-[1.2rem]">Preço Líquido</p>
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <ItemCarrinho
                                     codigoProduto={2}
-                                    descricaoProduto={"Produto"}
+                                    descricaoProduto={"Nike air Jordan com estufado de ouro batizado pelo papa"}
+                                    precoUnitario={12}
+                                    quantidade={2}
+                                    descontoUnitario={30}
+                                    precoLiquido={11}
+                                />
+                                <ItemCarrinho
+                                    codigoProduto={2}
+                                    descricaoProduto={"Bom dia são paulo"}
+                                    precoUnitario={12}
+                                    quantidade={2}
+                                    descontoUnitario={30}
+                                    precoLiquido={11}
+                                />
+                                <ItemCarrinho
+                                    codigoProduto={2}
+                                    descricaoProduto={"Concertezzza"}
                                     precoUnitario={12}
                                     quantidade={2}
                                     descontoUnitario={30}
                                     precoLiquido={11}
                                 />
                             </tbody>
-                        </table> */}
-
-
-                        <Tabela colunas={colunas} dados={dados} iptQuantidade></Tabela>
+                        </Tabela>
+                        <div class="bg-[#355070] flex flex-row mt-[-24px] w-full h-14 rounded-b-lg font-bold items-center justify-end">
+                            <p class="text-right pr-12 text-2xl text-white">Subtotal: R$ {precoTotal.toFixed(2)}</p>
+                        </div>
                     </div>
                 </div>
                 <div style={div2} class="shadow flex flex-col items-start px-8 justify-evenly">
@@ -217,7 +221,7 @@ function Venda() {
                             descontoProdutos={14}
                             subtotal2={9}
                             descontoVenda={8}
-                            valorTotal={49}
+                            valorTotal={precoTotal.toFixed(2)}
                         />
                     </div>
                     <div class="flex flex-col w-full gap-2 my-2 px-5">
