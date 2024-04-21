@@ -57,7 +57,7 @@ function Pagamento(){
                             <p class="text-left font-semibold text-[1.3rem]">RESUMO DA VENDA</p>
                             <Button><p class="text-left font-semibold text-[1.3rem]">Editar Itens</p></Button>
                         </div>
-                        <div class="p-8">
+                        <div class="p-8 flex flex-col gap-2">
                             <ItemSeparadoPorLinhaTracejada
                                 infoEsquerda={"Horario"}
                                 infoDireita={"12:12:12"}
