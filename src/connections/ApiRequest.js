@@ -19,12 +19,14 @@ export class ApiRequest{
             body : JSON.stringify(usuario),
         });
 
-        if(resposta.status == 200){
-            document.cookie = `token=${resposta.json().token}; loja=${resposta.json().loja}`
+
+        if(resposta.status === 200){
+            const data = await resposta.json();
+            document.cookie = `token=${data.token}; loja=${data.loja}`
             return resposta.status
         }
 
-        return resposta.status();
+        return resposta.status;
     }
 
 
