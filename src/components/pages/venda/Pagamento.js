@@ -85,15 +85,15 @@ function Pagamento(){
                             <p class="text-left font-semibold text-[1.8rem]">R$ --{}</p>   
                         </div>
                     </div>
-                    <div style={div2} class="flex flex-col text-3xl justify-center font-semibold bg-[#E7E7E7] rounded-[16px]">
+                    <div style={div2} class="flex flex-col text-3xl justify-center font-semibold cursor-pointer bg-[#E7E7E7] rounded-[16px]">
                         <p>DINHEIRO</p>
                         <p>F1</p>
                     </div>
-                    <div style={div3} class="flex flex-col text-3xl justify-center font-semibold bg-[#E7E7E7] rounded-[16px]">
+                    <div style={div3} class="flex flex-col text-3xl justify-center font-semibold cursor-pointer bg-[#E7E7E7] rounded-[16px]">
                         <p>CARTÃO</p>
                         <p>F2</p>
                     </div>
-                    <div style={div4} class="flex flex-col text-3xl justify-center font-semibold bg-[#E7E7E7] rounded-[16px]">
+                    <div style={div4} class="flex flex-col text-3xl justify-center font-semibold cursor-pointer bg-[#E7E7E7] rounded-[16px]">
                         <p>PIX</p>
                         <p>F3</p>
                     </div>

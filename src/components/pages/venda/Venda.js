@@ -1,13 +1,14 @@
-import { borderRadius, height, margin } from '@mui/system';
 import Header from '../../header/Header.js'
 import PageLayout from '../PageLayout.js'
 import Input from '../../inputs/inputAndLabelModal.js'
 import Button from '../../buttons/buttonsModal.js'
-import ButtonEdit from '../../buttons/buttonEdit.js'
-import ButtonCancel from '../../buttons/buttonCancel.js'
 import ModalCadastroProduto from '../../modals/modalAddProdCart.js'
-
 import ItemSeparadoPorLinhaTracejada from '../../tables/ItemSeparadoPorLinhaTracejada.js'
+import Tabela from '../../tables/tableModal.js'
+import { useState } from 'react'
+import { useEffect } from 'react'
+
+import { useNavigate } from 'react-router-dom';
 
 var divPai = {
     backgroundColor: "#F5F3F4",
@@ -33,15 +34,12 @@ var div1 = {
     gridArea: "3 / 1 / 10 / 6",
 };
 
-
 var div3 = {
     backgroundColor: "#fff",
     boxShadow: "rgba(0, 0, 0, 0.25) 1px 4px 4px 0px",
     borderRadius: "16px",
     gridArea: "1 / 6 / 10 / 8",
 };
-
-
 
 function ResumoVenda(props) {
 
@@ -115,6 +113,34 @@ function cadastrarProduto() {
 }
 
 function Venda() {
+
+    const [colunas, setColunas] = useState([]);
+    const [dados, setDados] = useState([]);  
+
+    useEffect(() => {
+
+        const colunasDoBanco = ['Código Prod.', 'Descricao Prod', 'Preço Un.', 'Quant.', 'Desconto Un.', 'Preço Líquido'];
+    
+        const dadosDoBanco = [
+          { id: 1123, coluna1: 'papete', coluna2: 'papete', coluna3: '37', coluna4: 'vermelho', coluna5: '200,00'},
+          { id: 1123, coluna1: 'papete', coluna2: 'papete', coluna3: '37', coluna4: 'vermelho', coluna5: '200,00'},
+          { id: 1123, coluna1: 'papete', coluna2: 'papete', coluna3: '37', coluna4: 'vermelho', coluna5: '200,00'},
+          { id: 1123, coluna1: 'papete', coluna2: 'papete', coluna3: '37', coluna4: 'vermelho', coluna5: '200,00'},
+          { id: 1123, coluna1: 'papete', coluna2: 'papete', coluna3: '37', coluna4: 'vermelho', coluna5: '200,00'},
+          { id: 1123, coluna1: 'papete', coluna2: 'papete', coluna3: '37', coluna4: 'vermelho', coluna5: '200,00'},
+
+        ];
+    
+        setColunas(colunasDoBanco);
+    
+        setDados(dadosDoBanco);
+    
+      }, []);
+    
+
+
+    const navigate = useNavigate();
+
     return (
         <PageLayout>
             <Header telaAtual="Área de Venda"/>
@@ -129,7 +155,7 @@ function Venda() {
                     </div>
 
                     <div class="bg-[#F5F3F4] w-full h-full rounded-[5px] my-2 overflow-y-scroll">
-                        <table class="w-full mt-3" id='tabelaCarrinho'>
+                        {/* <table class="w-full mt-3" id='tabelaCarrinho'>
                             <thead>
                                 <tr class="flex flex-row gap-16 pl-6">
                                     <th>
@@ -162,7 +188,10 @@ function Venda() {
                                     precoLiquido={11}
                                 />
                             </tbody>
-                        </table>
+                        </table> */}
+
+
+                        <Tabela colunas={colunas} dados={dados} iptQuantidade></Tabela>
                     </div>
                 </div>
                 <div style={div2} class="shadow flex flex-col items-start px-8 justify-evenly">
@@ -195,7 +224,9 @@ function Venda() {
                         <Button>
                             <p class="text-[1.1rem] p-2">ADICIONAR DESCONTO À VENDA</p>
                         </Button>
-                        <Button>
+                        <Button
+                            funcao={() => navigate("/venda/caixa")}
+                        >
                             <p class="text-2xl p-2">FINALIZAR PRÉ-VENDA</p>
                         </Button>
                     </div>
