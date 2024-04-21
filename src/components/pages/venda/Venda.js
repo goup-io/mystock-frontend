@@ -7,6 +7,8 @@ import ButtonEdit from '../../buttons/buttonEdit.js'
 import ButtonCancel from '../../buttons/buttonCancel.js'
 import ModalCadastroProduto from '../../modals/modalAddProdCart.js'
 
+import ItemSeparadoPorLinhaTracejada from '../../tables/ItemSeparadoPorLinhaTracejada.js'
+
 var divPai = {
     backgroundColor: "#F5F3F4",
     marginTop: "0.5rem",
@@ -40,22 +42,6 @@ var div3 = {
 };
 
 
-function DivisorTracejado() {
-
-    return <div class="border-[1px] border-dashed border-[#355070] rounded"></div>
-}
-
-function ItemSeparadoPorLinhaTracejada(props) {
-    return (
-        <>
-            <li class="flex flex-row justify-between">
-                <p>{props.infoEsquerda}</p>
-                <p>{props.infoDireita}</p>
-            </li>
-            <DivisorTracejado />
-        </>
-    )
-}
 
 function ResumoVenda(props) {
 
@@ -220,4 +206,4 @@ function Venda() {
 }
 
 
-export default Venda
+export default Venda    
