@@ -1,6 +1,6 @@
 import Cookie from './Cookie.js'
 
-const springEndPoint = "https://6619af63125e9bb9f29a8f26.mockapi.io/produtos/users";
+const springEndPoint = "https://mystock-spring-mystock-spring.azuremicroservices.io";
 
 export class ApiRequest{
 
@@ -10,11 +10,13 @@ export class ApiRequest{
             "user" : email,
             "senha" : senha,
         }
+        
+        console.log(usuario);
 
-        const resposta = await fetch(springEndPoint, {
+        const resposta = await fetch(springEndPoint + "/auth/login", {
             method : "POST",
-            headers : {
-                "Content-Type": "application/json",
+            headers : {     
+            "Content-Type": "application/json",
             },
             body : JSON.stringify(usuario),
         });
