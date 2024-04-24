@@ -27,10 +27,10 @@ export class ApiRequest{
         if(resposta.status === 200){
             const data = await resposta.json();
             document.cookie = `token=${data.token}; loja=${data.loja}`
-            return resposta.status
+            return resposta
         }
 
-        return resposta.status;
+        return resposta;
     }
 
     static async userLogout(){
@@ -41,7 +41,7 @@ export class ApiRequest{
             }
         });
 
-        return resposta.status
+        return resposta
     }
     
     // static async userLogout(){
@@ -75,7 +75,7 @@ export class ApiRequest{
             body : JSON.stringify(funcionario),
         });
 
-        return resposta.status;
+        return resposta;
     }
 
     static async userDelete(id){
@@ -88,7 +88,7 @@ export class ApiRequest{
             },
         });
 
-        return resposta.status;
+        return resposta;
     }
 
     static async userUpdate(id, nome, idCargo, email, telefone, idLoja){
@@ -108,7 +108,7 @@ export class ApiRequest{
             },
         });
 
-        return resposta.status;
+        return resposta;
     }
 
 // ***************************************************************************
@@ -131,7 +131,7 @@ export class ApiRequest{
         body : JSON.stringify(cargo),
     });
 
-    return resposta.status;
+    return resposta;
     }
 
     static async cargoGetAll(){
@@ -167,7 +167,7 @@ export class ApiRequest{
             }
         });
 
-        return resposta.status;
+        return resposta;
     }
 
     static async cargoUpdate(id, nome){
@@ -186,7 +186,7 @@ export class ApiRequest{
             body : JSON.stringify(cargo),
         });
 
-        return resposta.status;
+        return resposta;
     }
 
     static async cargoUpdateDescricao(id, descricao){
@@ -204,7 +204,7 @@ export class ApiRequest{
             body : JSON.stringify(cargo),
         });
 
-        return resposta.status;
+        return resposta;
     }
 
 // ***************************************************************************
@@ -229,7 +229,7 @@ export class ApiRequest{
             body : JSON.stringify(produto),
         });
 
-        return resposta.status;
+        return resposta;
     }
 
     static async produtoGetAll(){
@@ -296,7 +296,7 @@ export class ApiRequest{
             body : JSON.stringify(cor),
         });
 
-        return resposta.status;
+        return resposta;
     }
     
     static async corGetAll(){
@@ -332,7 +332,7 @@ export class ApiRequest{
             }
         });
 
-        return resposta.status;
+        return resposta;
     }
 
     static async corUpdate(id, nome){
@@ -350,7 +350,7 @@ export class ApiRequest{
             body : JSON.stringify(cor),
         });
 
-        return resposta.status;
+        return resposta;
     }
 
 // ***************************************************************************
@@ -372,7 +372,7 @@ export class ApiRequest{
         body : JSON.stringify(categoria),
     });
 
-    return resposta.status;
+    return resposta;
     }
 
     static async categoriaGetAll(){
@@ -408,7 +408,7 @@ export class ApiRequest{
         }
     });
 
-    return resposta.status;
+    return resposta;
     }
 
     static async categoriaUpdate(id, nome){
@@ -426,7 +426,7 @@ export class ApiRequest{
         body : JSON.stringify(categoria),
     });
 
-    return resposta.status;
+    return resposta;
     }
 
 // ***************************************************************************
@@ -451,7 +451,7 @@ export class ApiRequest{
             body : JSON.stringify(modelo),
         });
 
-        return resposta.status;
+        return resposta;
     }
 
     static async modeloGetAll(){
@@ -499,7 +499,7 @@ export class ApiRequest{
             }
         });
 
-        return resposta.status;
+        return resposta;
     }
 
     static async modeloDeleteByCodigo(codigo){
@@ -511,7 +511,7 @@ export class ApiRequest{
             }
         });
 
-        return resposta.status;
+        return resposta;
     }
 
     static async modeloUpdate(id, codigo, nome, idCategoria, idTipo){
@@ -532,7 +532,7 @@ export class ApiRequest{
             body : JSON.stringify(modelo),
         });
 
-        return resposta.status;
+        return resposta;
     }
 
     static async modeloUpdateByCodigo(codigo, nome, idCategoria, idTipo){
@@ -553,7 +553,7 @@ export class ApiRequest{
             body : JSON.stringify(modelo),
         });
 
-        return resposta.status;
+        return resposta;
     }
 
 
@@ -576,7 +576,7 @@ export class ApiRequest{
         body : JSON.stringify(tamanho),
     });
 
-    return resposta.status;
+    return resposta;
     }
 
     static async tamanhoGetAll(){
@@ -612,7 +612,7 @@ export class ApiRequest{
         }
     });
 
-    return resposta.status;
+    return resposta;
     }
 
     static async tamanhoUpdate(id, numero){
@@ -630,7 +630,7 @@ export class ApiRequest{
         body : JSON.stringify(tamanho),
     });
 
-    return resposta.status;
+    return resposta;
     }
 
 // ***************************************************************************
@@ -652,7 +652,7 @@ export class ApiRequest{
         body : JSON.stringify(tipo),
     });
 
-    return resposta.status;
+    return resposta;
     }
 
     static async tipoGetAll(){
@@ -688,7 +688,7 @@ export class ApiRequest{
         }
     });
 
-    return resposta.status;
+    return resposta;
     }
 
     static async tipoUpdate(id, nome){
@@ -706,7 +706,7 @@ export class ApiRequest{
         body : JSON.stringify(tipo),
     });
 
-    return resposta.status;
+    return resposta;
     }
 
 
