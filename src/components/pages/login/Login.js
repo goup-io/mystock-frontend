@@ -7,18 +7,40 @@ import goUpLogo from '../../../assets/loginPage/Group 89.svg';
 
 import userIcon from '../../../assets/icons/userIcon.svg'
 import lockIcon from '../../../assets/icons/lockIcon.svg'
+import ApiRequest from '../../../connections/ApiRequest.js'
 
-import { useNavigate } from 'react-router-dom';
+import { json, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 function Login(){
 
     const navigate = useNavigate();
 
+    const [email, setEmail] = useState(""); 
+    const [senha, setSenha] = useState(""); 
+
+    async function handleClick() {
+        
+        const respostaHTTP = await ApiRequest.userLogin(email, senha);
+        
+        console.log(respostaHTTP);
+
+        if(respostaHTTP == 200){
+            alert("Deu certo")
+            navigate("/menu")
+        }
+    }
+
+    function handleInput(evento, stateFunction){
+
+        stateFunction(evento.target.value);
+    }
+
     return(
         <section class="flex flex-col items-center justify-center h-[100vh]">
             <img class="absolute top-4 left-0" src={`${myStockLogo}`}></img>
             <img class="absolute right-8 top-5" src={`${dots01}`}></img>
-            <div class="bg-indigo-100 rounded-[0.3125rem] w-[42rem] h-[44rem] flex flex-col items-center shadow-lg z-10">
+            <div class="bg-indigo-100 rounded-[0.3125rem] w-[42rem] h-[44rem] flex flex-col justify-evenly items-center shadow-lg z-10">
                 <div class="mt-[3.25rem] flex flex-col items-center">
                     <h1 class="text-[2.5rem] font-medium">Bem-Vindo de Volta!</h1>
                     <p class="text-[1.56rem] w-3/4">Faça o login para ter acesso ao seu sistema de vendas e estoque!</p>
@@ -27,20 +49,28 @@ function Login(){
                 <div class="flex flex-col items-start mb-[0.5rem]">
                     <p class="form-floating text-[1.56rem] text-black">Usuário:</p>
                     <Input 
+                        id="inputEmail"
+                        handleInput={handleInput}
                         type="text"
+                        handlerAtributeChanger={setEmail}
                         icon={`${userIcon}`}
+                        value={email}
                         placeholder="seu@email.com"
                     ></Input>
                 </div>
                 <div class="flex flex-col items-start mb-[2.56rem]">
                     <p class="text-[1.56rem]">Senha:</p>
                     <Input
+                        id="inputSenha"
+                        handleInput={handleInput}
+                        handlerAtributeChanger={setSenha}
+                        value={senha}
                         type="password"
                         icon={lockIcon}
                         placeholder="*******"
                     ></Input>
                 </div>  
-                <ButtonEnter onClick={() => navigate("/menu")}>Entrar</ButtonEnter>
+                <ButtonEnter funcao={handleClick}>Entrar</ButtonEnter>
                 <div class=" mb-[2.69rem] mt-[0.6rem]">
                     <a class="text-[1.56rem]" href="">Esqueci a senha</a>
                 </div>

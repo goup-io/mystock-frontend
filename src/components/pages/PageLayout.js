@@ -34,7 +34,7 @@ function PageLayout(props){
                 <Notification></Notification>
             </div>
 
-            <div id="mainDiv" class="w-[89%] h-[48rem] overflow-auto rounded-[8px]" style={corAtual}>
+            <div id="mainDiv" class="w-[89%] h-[88%] overflow-auto rounded-[8px]" style={corAtual}>
                 {props.children}
             </div>
             
