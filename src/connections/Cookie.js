@@ -16,6 +16,23 @@ export class Cookie{
         return null;
     }
 
+    static async setCookie(name, newValue){
+        let cookieArr = document.cookie.split(";");
+
+        for(let i = 0; i < cookieArr.length; i++) {
+            let cookiePair = cookieArr[i].split("=");
+
+            if(name == cookiePair[0].trim()) {
+                // Update the cookie value
+                document.cookie = `${cookiePair[0]}=${encodeURIComponent(newValue)}`;
+                return;
+            }
+        }
+
+        // If the cookie does not exist, create a new one
+        document.cookie = `${name}=${encodeURIComponent(newValue)}`;
+    }
+
 }
 
 export default Cookie;

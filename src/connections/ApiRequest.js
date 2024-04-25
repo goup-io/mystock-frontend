@@ -4,7 +4,6 @@ const springEndPoint = "https://mystock-spring-mystock-spring.azuremicroservices
 
 export class ApiRequest{
 
-
 // ***************************************************************************
 // *  LOGIN
 // ***************************************************************************
@@ -40,17 +39,52 @@ export class ApiRequest{
             "Content-Type": "application/json",
             }
         });
+        
+        if(resposta.status ==  200){
+            Cookie.setCookie("token", "")
+        }
 
         return resposta
     }
     
-    // static async userLogout(){
-
-    // }
-
-    // static async userLogout(){
+    static async userCreate(user, senha, userId){
         
-    // }
+        const usuario = {
+            "user": user,
+            "senha" : senha,
+            "userId" : userId
+        }
+
+        const resposta = await fetch(springEndPoint + "/auth/register/user", {
+            method : "POST",
+            headers : {     
+            "Content-Type": "application/json",
+            },
+            body : JSON.stringify(usuario),
+        });
+
+        return resposta;
+    }
+
+    static async lojaCreate(user, senha, idAcessoLoja, idLoja){
+        
+        const loja = {
+            "user" : user,
+            "senha" : senha,
+            "idAcessoLoja" : idAcessoLoja,
+            "idLoja" : idLoja
+        }
+
+        const resposta = await fetch(springEndPoint + "/auth/register/loja", {
+            method : "POST",
+            headers : {     
+            "Content-Type": "application/json",
+            },
+            body : JSON.stringify(loja),
+        });
+
+        return resposta;
+    }
 
 // ***************************************************************************
 // *  USUARIO
