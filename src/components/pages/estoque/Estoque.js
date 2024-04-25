@@ -1,10 +1,14 @@
+import { Button } from '@mui/material'
 import ButtonClear from '../../buttons/buttonClear.js'
 import ButtonModal from '../../buttons/buttonsModal.js'
 import Header from '../../header/Header.js'
 import ComboBoxFilter from '../../inputs/comboBoxFilter.js'
 import InputFilterDate from '../../inputs/inputFilterDate.js'
 import InputSearcModal from '../../inputs/inputSearchModal.js'
-import ComboBoxModal from '../../modals/smallComboBoxModal.js'
+import AbrirModalCadastreKit from '../../modals/modals-kit/modalCadastreKit.js'
+import AbrirModalCadastreModel from '../../modals/modals-model/modalCadastreModel.js'
+import AbrirModalCadastreProd from '../../modals/modals-produto/modalCadastreProd.js'
+import AbrirModalCadastreUser from '../../modals/modals-user/modalCadastreUser.js'
 import TabelaPage from '../../tables/tablePage.js'
 import PageLayout from '../PageLayout.js'
 
@@ -89,7 +93,14 @@ function Estoque() {
 
                 <div className='bg-white mt-4 h-[30rem] flex flex-col justify-start pl-10 pr-10 items-center shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)]'>
                     <div className='w-full h-[3rem] flex justify-between items-center'>
-                        <p className=' font-medium text-2xl'>PRODUTOS</p>
+
+                        <div className='w-[14rem] flex justify-between items-center'>
+                            <p className=' font-medium text-2xl'>PRODUTOS</p>
+                            <div className=' mt-1'>
+                                <Button >Modelos</Button>
+                            </div>
+                        </div>
+
                         <InputSearcModal
                             props="text"
                         >Pesquisar</InputSearcModal>
@@ -101,9 +112,15 @@ function Estoque() {
                     </div>
                     <div className='w-full h-[1.8rem] mt-7 flex justify-end '>
                         <div className='w-4/12 flex justify-between'>
-                            <ButtonModal>NOVO KIT</ButtonModal>
-                            <ButtonModal>NOVO MODELO</ButtonModal>
-                            <ButtonModal>NOVO PRODUTO</ButtonModal>
+                            <ButtonModal
+                                funcao={AbrirModalCadastreKit}
+                            >NOVO KIT</ButtonModal>
+                            <ButtonModal
+                                funcao={AbrirModalCadastreModel}
+                            >NOVO MODELO</ButtonModal>
+                            <ButtonModal
+                                funcao={AbrirModalCadastreProd}
+                            >NOVO PRODUTO</ButtonModal>
                         </div>
                     </div>
                 </div>

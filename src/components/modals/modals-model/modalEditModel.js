@@ -4,6 +4,8 @@ import ButtonModal from "../../buttons/buttonsModal";
 import InputAndLabelModal from "../../inputs/inputAndLabelModal";
 import ComboBoxModal from "../smallComboBoxModal";
 import HeaderModal from "../headerModal";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 function ModalEditModel() {
     return (
@@ -44,4 +46,15 @@ function ModalEditModel() {
     );
 }
 
-export default ModalEditModel;
+function AbrirModalEditModel() {
+    const MySwal = withReactContent(Swal);
+    MySwal.fire({
+        html: <ModalEditModel />,
+        width: "auto",
+        heigth: "60rem",
+        showConfirmButton: false,
+        heightAuto: true,
+    });
+}
+
+export default AbrirModalEditModel;

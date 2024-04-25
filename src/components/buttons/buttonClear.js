@@ -1,7 +1,17 @@
+import { useState } from "react";
+
+function Clear(setters) {
+  setters.forEach(setter => setter(""));
+}
+
 function ButtonClear(props){
+    const handleClick = () => {
+        Clear(props.setters);
+    };
+
     return(
-         <button className="w-[7.725rem] h-[1.5rem] mr-3 bg-gray-500 font-medium rounded text-white ">
-             <span class="text-white text-base">{props.children}</span>
+         <button onClick={handleClick} className="w-[7.725rem] h-[1.5rem] mr-3 bg-gray-500 font-medium rounded text-white">
+             <span className="text-white text-base">{props.children}</span>
          </button>
     )
 }

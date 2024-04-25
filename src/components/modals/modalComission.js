@@ -4,6 +4,8 @@ import ButtonModal from "../buttons/buttonsModal";
 import InputAndLabelModal from "../inputs/inputAndLabelModal";
 import HeaderModal from "../modals/headerModal";
 import LargeComboBoxModal from "./largeComboBoxModal";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 function ModalComission() {
     return (
@@ -45,4 +47,15 @@ function ModalComission() {
     );
 }
 
-export default ModalComission;
+function AbrirModalComission() {
+    const MySwal = withReactContent(Swal);
+    MySwal.fire({
+        html: <ModalComission />,
+        width: "auto",
+        heigth: "60rem",
+        showConfirmButton: false,
+        heightAuto: true,
+    });
+}
+
+export default AbrirModalComission;

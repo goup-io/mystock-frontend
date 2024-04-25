@@ -3,8 +3,10 @@ import ButtonClear from "../../buttons/buttonClear";
 import ButtonModal from "../../buttons/buttonsModal"
 import InputAndLabelModal from "../../inputs/inputAndLabelModal";
 import HeaderModal from "../headerModal";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
-export default function ModalEditKit() {
+ function ModalEditKit() {
     return (
         <>
             <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[34rem] h-[20.5rem] flex flex-col items-center justify-around  bg-white p-2 rounded-lg border border-black">
@@ -47,3 +49,16 @@ export default function ModalEditKit() {
         </>
     );
 }
+
+function AbrirModalEditKit() {
+    const MySwal = withReactContent(Swal);
+    MySwal.fire({
+        html: <ModalEditKit />,
+        width: "auto",
+        heigth: "60rem",
+        showConfirmButton: false,
+        heightAuto: true,
+    });
+}
+
+export default AbrirModalEditKit;

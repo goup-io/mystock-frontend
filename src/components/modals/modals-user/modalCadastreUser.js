@@ -1,19 +1,34 @@
-import api from "../../../api";
+ import api from "../../../api";
 import { useState } from "react";
 import ButtonClear from "../../buttons/buttonClear";
 import ButtonModal from "../../buttons/buttonsModal"
 import InputAndLabelModal from "../../inputs/inputAndLabelModal";
 import HeaderModal from "../headerModal";
 import ComboBoxModal from "../smallComboBoxModal";
-import { useNavigate } from "react-router-dom";
-import abrirModalCadastreLogin from "./modalCadastreLogin";
+// import { useNavigate } from "react-router-dom";
+import AbrirModalCadastreLogin from "../../modals/modals-user/modalCadastreLogin";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 function ModalCadastreUser() {
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const dadosCargo = ['Gerente Geral', 'Gerente', 'Vendedor'];
     const dadosLoja = ['Universo', 'Pérola', 'Pérola Vip'];
+    const [cargo, setCargo] = useState("");
+    const [nome, setNome] = useState("");
+    const [email, setEmail] = useState("");
+    const [usuario, setUsuario] = useState("");
+    const [celular, setCelular] = useState("");
+    const [loja, setLoja] = useState("");
+
+    
+    const setters = [setNome, setEmail, setUsuario, setCelular, setCargo, setLoja];
+
+    const handleInputChange = (event, setStateFunction) => {
+        setStateFunction(event.target.value);
+    }
 
     const handleSave = () => {
         const objetoAdicionado = {
@@ -24,29 +39,14 @@ function ModalCadastreUser() {
             cargo,
             loja
         };
-        
+
         if (cargo === 'Vendedor') {
-            api.post(``, objetoAdicionado);
+            // api.post(``, objetoAdicionado);
         } else {
-           
-            navigate("/cadastro-login");
+            // Abra o modal de cadastro de login para gerentes e gerentes gerais
+             AbrirModalCadastreLogin(objetoAdicionado);
         }
     }
-
-    const [nome, setNome] = useState("");
-    const [email, setEmail] = useState("");
-    const [usuario, setUsuario] = useState("");
-    const [celular, setCelular] = useState("");
-    const [cargo, setCargo] = useState("");
-    const [loja, setLoja] = useState("");
-
-    const handleInputChange = (event, setStateFunction) => {
-        setStateFunction(event.target.value);
-    }
-
-    const handleBack = () => {
-        navigate("/???");
-    };
 
     return (
         <>
@@ -96,10 +96,10 @@ function ModalCadastreUser() {
                 </div>
                 <div className="w-[32rem] flex justify-end  h-6 ">
                     <ButtonClear
-                    
+                    setters={setters}
                     >Limpar</ButtonClear>
                    <ButtonModal
-                    onClick={handleSave}
+                  onClick={handleSave}
                    >Cadastrar</ButtonModal>
                 </div>
             </div>
@@ -107,4 +107,16 @@ function ModalCadastreUser() {
     );
 }
 
-export default ModalCadastreUser;
+function AbrirModalCadastreUser() {
+    const MySwal = withReactContent(Swal);
+    MySwal.fire({
+        html: <ModalCadastreUser  />,
+        width: "auto",
+        heigth: "60rem",
+        showConfirmButton: false,
+        heightAuto: true,
+    });
+}
+
+export default AbrirModalCadastreUser;
+

@@ -3,6 +3,8 @@ import ButtonClear from "../buttons/buttonClear";
 import ButtonModal from "../buttons/buttonsModal";
 import InputAndLabelModal from "../inputs/inputAndLabelModal";
 import HeaderModal from "../modals/headerModal";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 function ModalDiscount() {
     return (
@@ -49,4 +51,15 @@ function ModalDiscount() {
     );
 }
 
-export default ModalDiscount;
+function AbrirModalAddDiscount() {
+    const MySwal = withReactContent(Swal);
+    MySwal.fire({
+        html: <ModalDiscount />,
+        width: "auto",
+        heigth: "60rem",
+        showConfirmButton: false,
+        heightAuto: true,
+    });
+}
+
+export default AbrirModalAddDiscount;

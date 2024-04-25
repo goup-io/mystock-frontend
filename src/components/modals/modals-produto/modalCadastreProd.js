@@ -4,6 +4,8 @@ import ButtonModal from "../../buttons/buttonsModal";
 import InputAndLabelModal from "../../inputs/inputAndLabelModal";
 import ComboBoxModal from "../smallComboBoxModal";
 import HeaderModal from "../headerModal";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 function ModalCadastreProd() {
     return (
@@ -45,4 +47,16 @@ function ModalCadastreProd() {
     );
 }
 
-export default ModalCadastreProd;
+function AbrirModalCadastreProd() {
+    const MySwal = withReactContent(Swal);
+    MySwal.fire({
+        html: <ModalCadastreProd />,
+        width: "auto",
+        heigth: "60rem",
+        showConfirmButton: false,
+        heightAuto: true,
+    });
+}
+
+export default AbrirModalCadastreProd;
+

@@ -31,18 +31,20 @@ function TabelaModal({ colunas, dados, edit, remove, iptQuantidade }) {
             ))}
             {edit && (
               <td className=' flex justify-center items-center'>
-                <ButEdit></ButEdit>
+                {/* <div > */}
+                  <ButEdit></ButEdit>
+                {/* </div> */}
               </td>
             )}
             {remove && (
               <td>
-                <button className='text-lg font-medium w-8 rounded text-white bg-red-500'>X</button>
+                <button className=' text-base font-medium h-6 w-6 rounded text-white bg-red-500'>X</button>
               </td>
             )}
             {iptQuantidade && (
               <td className='flex items-center justify-center'>
-                <input type="number" className=' w-4 h-4 border border-slate-700 rounded' />
-                <button className=' text-base mb-1 font-medium items-center' onClick={() => handleAdicionar(index)}>+</button>
+                <input type="number" className=' w-6 h-6 mb-2 border border-slate-700 rounded' />
+                <button className=' text-xl mb-3 font-medium items-center' onClick={() => handleAdicionar(index)}>+</button>
               </td>
             )}
           </tr>

@@ -1,16 +1,13 @@
 import EditIcon from '../../assets/icons/editIcon.svg'
 
-function ButtonEdit(){
+function ButtonEdit(props){
     return(
-        <a onClick={edita} class="cursor-pointer">
+        <a onClick={props.funcao} class="cursor-pointer">
             <img src={EditIcon}></img>
         </a>
     )
 }
 
-function edita(){
-    alert("editou")
-}
 
 export default ButtonEdit;
 

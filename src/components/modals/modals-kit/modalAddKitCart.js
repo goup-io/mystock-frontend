@@ -5,9 +5,11 @@ import ButtonClear from '../../buttons/buttonClear';
 import ButtonModal from '../../buttons/buttonsModal';
 import React, { useState, useEffect } from 'react';
 import TabelaModal from '../../tables/tableModal';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 
-export default function ModalAddKitCart() {
+ function ModalAddKitCart() {
 
     const [colunas, setColunas] = useState([]);
     const [dados, setDados] = useState([]);
@@ -63,3 +65,16 @@ export default function ModalAddKitCart() {
 
     );
 }
+
+function AbrirModalAddKitCart() {
+    const MySwal = withReactContent(Swal);
+    MySwal.fire({
+        html: <ModalAddKitCart />,
+        width: "auto",
+        heigth: "60rem",
+        showConfirmButton: false,
+        heightAuto: true,
+    });
+}
+
+export default AbrirModalAddKitCart;
