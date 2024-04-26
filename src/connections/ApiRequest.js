@@ -26,7 +26,6 @@ export class ApiRequest{
         
         const resposta = await axios.post(springEndPoint + "/auth/login", usuario);
 
-
         if(resposta.status === 200){
             const data = JSON.stringify(resposta);
             localStorage.setItem("token", data.token)
@@ -37,15 +36,10 @@ export class ApiRequest{
     }
 
     static async userLogout(){
-        const resposta = await fetch(springEndPoint + "/auth/logout", {
-            method : "POST",
-            headers : {     
-            "Content-Type": "application/json",
-            }
-        });
+        const resposta = await axios.post(springEndPoint + "/auth/logout");
         
         if(resposta.status ==  200){
-            Cookie.setCookie("token", "")
+            localStorage.setItem("token", "")
         }
 
         return resposta
@@ -59,13 +53,7 @@ export class ApiRequest{
             "userId" : userId
         }
 
-        const resposta = await fetch(springEndPoint + "/auth/register/user", {
-            method : "POST",
-            headers : {     
-            "Content-Type": "application/json",
-            },
-            body : JSON.stringify(usuario),
-        });
+        const resposta = await axios.post(springEndPoint + "/auth/register/user", usuario);
 
         return resposta;
     }
@@ -79,13 +67,7 @@ export class ApiRequest{
             "idLoja" : idLoja
         }
 
-        const resposta = await fetch(springEndPoint + "/auth/register/loja", {
-            method : "POST",
-            headers : {     
-            "Content-Type": "application/json",
-            },
-            body : JSON.stringify(loja),
-        });
+        const resposta = await axios.post(springEndPoint + "/auth/register/loja", loja);
 
         return resposta;
     }
@@ -104,10 +86,8 @@ export class ApiRequest{
             "idLoja": idLoja,
         }
 
-        const resposta = await fetch(springEndPoint + "/usuarios", {
-            method : "POST",
+        const resposta = await axios.post(springEndPoint + "/usuarios", funcionario, {
             headers : header,
-            body : JSON.stringify(funcionario),
         });
 
         return resposta;
@@ -115,8 +95,7 @@ export class ApiRequest{
 
     static async userDelete(id){
 
-        const resposta = await fetch(springEndPoint + `/usuarios/${id}`, {
-            method : "DELETE",
+        const resposta = await axios.delete(springEndPoint + `/usuarios/${id}`, {
             headers : header,
         });
 
@@ -132,8 +111,7 @@ export class ApiRequest{
             "idLoja": idLoja
         }
 
-        const resposta = await fetch(springEndPoint + `/usuarios/${id}`, {
-            method : "PUT",
+        const resposta = await axios.put(springEndPoint + `/usuarios/${id}`, funcionario, {
             headers : header,
         });
 
@@ -146,48 +124,38 @@ export class ApiRequest{
 
     static async cargoCreate(nome, descricao){
         
-    const cargo = {
-        "nome" : nome,
-        "descricao" : descricao,
-    }
+        const cargo = {
+            "nome" : nome,
+            "descricao" : descricao,
+        }
 
-    const resposta = await fetch(springEndPoint + "/cargos", {
-        method : "POST",
-        headers : header,
-        body : JSON.stringify(cargo),
-    });
+        const resposta = await axios.post(springEndPoint + "/cargos", cargo, {
+            headers : header,
+        });
 
-    return resposta;
+        return resposta;
     }
 
     static async cargoGetAll(){
-    const resposta = await fetch(springEndPoint + "/cargos", {
-        method : "GET",
-        headers : header
-    });
 
-    return resposta;
+        const resposta = await axios.get(springEndPoint + "/cargos", {
+            headers : header
+        });
+
+        return resposta;
     }
 
     static async cargoGetById(id){
-        const resposta = await fetch(springEndPoint + `/cargos/${id}`, {
-            method : "GET",
-            headers : {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${Cookie.getCookie("token")}`
-            }
+        const resposta = await axios.get(springEndPoint + `/cargos/${id}`, {
+            headers : header
         });
 
         return resposta;
     }
 
     static async cargoDelete(id){
-        const resposta = await fetch(springEndPoint + `/cargos/${id}`, {
-            method : "DELETE",
-            headers : {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${Cookie.getCookie("token")}`
-            }
+        const resposta = await axios.delete(springEndPoint + `/cargos/${id}`, {
+            headers : header
         });
 
         return resposta;
@@ -200,13 +168,8 @@ export class ApiRequest{
             "descricao" : descricao,
         }
 
-        const resposta = await fetch(springEndPoint + `/cargos/${id}`, {
-            method : "PUT",
-            headers : {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${Cookie.getCookie("token")}`
-            },
-            body : JSON.stringify(cargo),
+        const resposta = await axios.put(springEndPoint + `/cargos/${id}`, cargo, {
+            headers : header,
         });
 
         return resposta;
@@ -218,13 +181,8 @@ export class ApiRequest{
             "descricao" : descricao,
         }
 
-        const resposta = await fetch(springEndPoint + `/cargos/descricao/${id}`, {
-            method : "PUT",
-            headers : {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${Cookie.getCookie("token")}`
-            },
-            body : JSON.stringify(cargo),
+        const resposta = await axios.put(springEndPoint + `/cargos/descricao/${id}`, cargo, {
+            headers : header
         });
 
         return resposta;
@@ -243,25 +201,16 @@ export class ApiRequest{
             "valorRevenda": valorRevenda
         }
 
-        const resposta = await fetch(springEndPoint + "/produtos", {
-            method : "POST",
-            headers : {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${Cookie.getCookie("token")}`
-            },
-            body : JSON.stringify(produto),
+        const resposta = await  axios.post(springEndPoint + "/produtos", produto, {
+            headers : header,
         });
 
         return resposta;
     }
 
     static async produtoGetAll(){
-        const resposta = await fetch(springEndPoint + "/produtos", {
-            method : "POST",
-            headers : {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${Cookie.getCookie("token")}`
-            }
+        const resposta = await axios.post(springEndPoint + "/produtos", {
+            headers : header
         });
 
         return resposta;
@@ -289,12 +238,8 @@ export class ApiRequest{
             query += `idModelo=${id}`;
         }
 
-        var resposta = await fetch(springEndPoint + `/produtos/especifico?${query}`, {
-            method : "GET",
-            headers : {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${Cookie.getCookie("token")}`
-            }
+        var resposta = await axios.get(springEndPoint + `/produtos/especifico?${query}`, {
+            headers : header
         });
 
         return resposta;
@@ -310,49 +255,33 @@ export class ApiRequest{
             "nome" : nome,
         }
 
-        const resposta = await fetch(springEndPoint + "/cores", {
-            method : "POST",
-            headers : {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${Cookie.getCookie("token")}`
-            },
-            body : JSON.stringify(cor),
+        const resposta = await axios.post(springEndPoint + "/cores", cor, {
+            headers : header,
         });
 
         return resposta;
     }
     
     static async corGetAll(){
-        const resposta = await fetch(springEndPoint + "/cores", {
-            method : "GET",
-            headers : {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${Cookie.getCookie("token")}`
-            }
+        const resposta = await axios.get(springEndPoint + "/cores", {
+            headers : header
         });
 
         return resposta;
     }
 
     static async corGetById(id){
-        const resposta = await fetch(springEndPoint + `/cores/${id}`, {
+        const resposta = await axios.get(springEndPoint + `/cores/${id}`, {
             method : "GET",
-            headers : {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${Cookie.getCookie("token")}`
-            }
+            headers : header
         });
 
         return resposta;
     }
     
     static async corDelete(id){
-        const resposta = await fetch(springEndPoint + `/cores/${id}`, {
-            method : "DELETE",
-            headers : {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${Cookie.getCookie("token")}`
-            }
+        const resposta = await axios.delete(springEndPoint + `/cores/${id}`, {
+            headers : header
         });
 
         return resposta;
@@ -364,13 +293,8 @@ export class ApiRequest{
             "nome" : nome
         }
 
-        const resposta = await fetch(springEndPoint + `/cores/${id}`, {
-            method : "PUT",
-            headers : {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${Cookie.getCookie("token")}`
-            },
-            body : JSON.stringify(cor),
+        const resposta = await axios.put(springEndPoint + `/cores/${id}`, cor, {
+            headers : header,
         });
 
         return resposta;
@@ -382,57 +306,50 @@ export class ApiRequest{
 
     static async categoriaCreate(nome){
         
-    const categoria = {
-        "nome" : nome,
-    }
+        const categoria = {
+            "nome" : nome,
+        }
 
-    const resposta = await fetch(springEndPoint + "/categorias", {
-        method : "POST",
-        headers : header,
-        body : JSON.stringify(categoria),
-    });
+        const resposta = await axios.post(springEndPoint + "/categorias", categoria, {
+            headers : header,
+        });
 
     return resposta;
     }
 
     static async categoriaGetAll(){
-    const resposta = await fetch(springEndPoint + "/categorias", {
-        method : "GET",
-        headers : header
-    });
+        const resposta = await axios.get(springEndPoint + "/categorias", {
+            headers : header
+        });
 
     return resposta;
     }
 
     static async categoriaGetById(id){
-    const resposta = await fetch(springEndPoint + `/categorias/${id}`, {
-        method : "GET",
-        headers : header
-    });
+        const resposta = await axios.get(springEndPoint + `/categorias/${id}`, {
+            headers : header
+        });
 
     return resposta;
     }
 
     static async categoriaDelete(id){
-    const resposta = await fetch(springEndPoint + `/categorias/${id}`, {
-        method : "DELETE",
-        headers : header
-    });
+        const resposta = await axios.delete(springEndPoint + `/categorias/${id}`, {
+            headers : header
+        });
 
     return resposta;
     }
 
     static async categoriaUpdate(id, nome){
 
-    const categoria = {
-        "nome" : nome
-    }
+        const categoria = {
+            "nome" : nome
+        }
 
-    const resposta = await fetch(springEndPoint + `/categorias/${id}`, {
-        method : "PUT",
-        headers : header,
-        body : JSON.stringify(categoria),
-    });
+        const resposta = await axios.put(springEndPoint + `/categorias/${id}`, categoria, {
+            headers : header,
+        });
 
     return resposta;
     }
@@ -450,73 +367,48 @@ export class ApiRequest{
             "idTipo" : idTipo
         }
 
-        const resposta = await fetch(springEndPoint + "/modelos", {
-            method : "POST",
-            headers : {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${Cookie.getCookie("token")}`
-            },
-            body : JSON.stringify(modelo),
+        const resposta = await axios.post(springEndPoint + "/modelos", modelo, {
+            headers : header,
         });
 
         return resposta;
     }
 
     static async modeloGetAll(){
-        const resposta = await fetch(springEndPoint + "/modelos", {
-            method : "GET",
-            headers : {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${Cookie.getCookie("token")}`
-            }
+        const resposta = await axios.get(springEndPoint + "/modelos", {
+            headers : header
         });
 
         return resposta;
     }
 
     static async modeloGetById(id){
-        const resposta = await fetch(springEndPoint + `/modelos/${id}`, {
-            method : "GET",
-            headers : {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${Cookie.getCookie("token")}`
-            }
+        const resposta = await axios.get(springEndPoint + `/modelos/${id}`, {
+            headers : header
         });
 
         return resposta;
     }
 
     static async modeloGetByCodigo(codigo){
-        const resposta = await fetch(springEndPoint + `/modelos/codigo/${codigo}`, {
-            method : "GET",
-            headers : {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${Cookie.getCookie("token")}`
-            }
+        const resposta = await axios.get(springEndPoint + `/modelos/codigo/${codigo}`, {
+            headers : header
         });
 
         return resposta;
     }
 
     static async modeloDelete(id){
-        const resposta = await fetch(springEndPoint + `/modelos/${id}`, {
-            method : "DELETE",
-            headers : {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${Cookie.getCookie("token")}`
-            }
+        const resposta = await axios.delete(springEndPoint + `/modelos/${id}`, {
+            headers : header
         });
 
         return resposta;
     }
 
     static async modeloDeleteByCodigo(codigo){
-        const resposta = await fetch(springEndPoint + `/modelos/codigo/${codigo}`, {
-            method : "DELETE",
-            headers : {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${Cookie.getCookie("token")}`
-            }
+        const resposta = await axios.delete(springEndPoint + `/modelos/codigo/${codigo}`, {
+            headers : header
         });
 
         return resposta;
@@ -531,13 +423,8 @@ export class ApiRequest{
             "idTipo" : idTipo
         }
 
-        const resposta = await fetch(springEndPoint + `/modelos/${id}`, {
-            method : "PUT",
-            headers : {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${Cookie.getCookie("token")}`
-            },
-            body : JSON.stringify(modelo),
+        const resposta = await axios.put(springEndPoint + `/modelos/${id}`, modelo, {
+            headers : header,
         });
 
         return resposta;
@@ -552,13 +439,8 @@ export class ApiRequest{
             "idTipo" : idTipo
         }
 
-        const resposta = await fetch(springEndPoint + `/modelos/codigo/${codigo}`, {
-            method : "PUT",
-            headers : {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${Cookie.getCookie("token")}`
-            },
-            body : JSON.stringify(modelo),
+        const resposta = await axios.put(springEndPoint + `/modelos/codigo/${codigo}`, modelo, {
+            headers : header,
         });
 
         return resposta;
@@ -571,59 +453,52 @@ export class ApiRequest{
 
     static async tamanhoCreate(numero){
         
-    const tamanho = {
-        "numero" : numero,
-    }
+        const tamanho = {
+            "numero" : numero,
+        }
 
-    const resposta = await fetch(springEndPoint + "/tamanhos", {
-        method : "POST",
-        headers : header,
-        body : JSON.stringify(tamanho),
-    });
+        const resposta = await axios.put(springEndPoint + "/tamanhos", tamanho, {
+            headers : header,
+        });
 
-    return resposta;
+        return resposta;
     }
 
     static async tamanhoGetAll(){
-    const resposta = await fetch(springEndPoint + "/tamanhos", {
-        method : "GET",
-        headers : header
-    });
+        const resposta = await axios.get(springEndPoint + "/tamanhos", {
+            headers : header
+        });
 
-    return resposta;
+        return resposta;
     }
 
     static async tamanhoGetById(id){
-    const resposta = await fetch(springEndPoint + `/tamanhos/${id}`, {
-        method : "GET",
-        headers : header
-    });
+        const resposta = await axios.get(springEndPoint + `/tamanhos/${id}`, {
+            headers : header
+        });
 
-    return resposta;
+        return resposta;
     }
 
     static async tamanhoDelete(id){
-    const resposta = await fetch(springEndPoint + `/tamanhos/${id}`, {
-        method : "DELETE",
-        headers : header
-    });
+        const resposta = await axios.delete(springEndPoint + `/tamanhos/${id}`, {
+            headers : header
+        });
 
-    return resposta;
+        return resposta;
     }
 
     static async tamanhoUpdate(id, numero){
 
-    const tamanho = {
-        "numero" : numero
-    }
+        const tamanho = {
+            "numero" : numero
+        }
 
-    const resposta = await fetch(springEndPoint + `/tamanhos/${id}`, {
-        method : "PUT",
-        headers : header,
-        body : JSON.stringify(tamanho),
-    });
+        const resposta = await axios.put(springEndPoint + `/tamanhos/${id}`, tamanho, {
+            headers : header,
+        });
 
-    return resposta;
+        return resposta;
     }
 
 // ***************************************************************************
@@ -632,59 +507,52 @@ export class ApiRequest{
 
     static async tipoCreate(nome){
         
-    const tipo = {
-        "nome" : nome,
-    }
+        const tipo = {
+            "nome" : nome,
+        }
 
-    const resposta = await fetch(springEndPoint + "/tipos", {
-        method : "POST",
-        headers : header,
-        body : JSON.stringify(tipo),
-    });
+        const resposta = await axios.post(springEndPoint + "/tipos", tipo, {
+            headers : header,
+        });
 
-    return resposta;
+        return resposta;
     }
 
     static async tipoGetAll(){
-    const resposta = await fetch(springEndPoint + "/tipos", {
-        method : "GET",
-        headers : header
-    });
+        const resposta = await axios.get(springEndPoint + "/tipos", {
+            headers : header
+        });
 
-    return resposta;
+        return resposta;
     }
 
     static async tipoGetById(id){
-    const resposta = await fetch(springEndPoint + `/tipos/${id}`, {
-        method : "GET",
-        headers : header
-    });
+        const resposta = await axios.get(springEndPoint + `/tipos/${id}`, {
+            headers : header
+        });
 
     return resposta;
     }
 
     static async tipoDelete(id){
-    const resposta = await fetch(springEndPoint + `/tipos/${id}`, {
-        method : "DELETE",
-        headers : header
-    });
+        const resposta = await axios.delete(springEndPoint + `/tipos/${id}`, {
+            headers : header
+        });
 
-    return resposta;
+        return resposta;
     }
 
     static async tipoUpdate(id, nome){
 
-    const tipo = {
-        "nome" : nome
-    }
+        const tipo = {
+            "nome" : nome
+        }
 
-    const resposta = await fetch(springEndPoint + `/tipos/${id}`, {
-        method : "PUT",
-        headers : header,
-        body : JSON.stringify(tipo),
-    });
+        const resposta = await axios.put(springEndPoint + `/tipos/${id}`, tipo, {
+            headers : header,
+        });
 
-    return resposta;
+        return resposta;
     }
 
 
