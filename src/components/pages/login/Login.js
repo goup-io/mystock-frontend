@@ -24,8 +24,7 @@ function Login(){
         const respostaHTTP = await ApiRequest.userLogin(email, senha);
         
         console.log(respostaHTTP);
-
-        if(respostaHTTP == 200){
+        if(respostaHTTP.status == 200){
             alert("Deu certo")
             navigate("/menu")
         }
