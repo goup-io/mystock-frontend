@@ -1,14 +1,13 @@
 import Header from '../../header/Header.js'
 import PageLayout from '../PageLayout.js'
 import Input from '../../inputs/inputAndLabelModal.js'
-import ModalCadastroProduto from '../../modals/modalAddProdCart.js'
+import ModalCadastroProduto from '../../modals/modals-produto/modalCadastreProd.js'
 import ItemSeparadoPorLinhaTracejada from '../../tables/ItemSeparadoPorLinhaTracejada.js'
 import Tabela from '../../tables/TableRoundedBorderSpacing.js'
 
 //Botões
 import ButtonEdit from '../../buttons/buttonEdit.js'
 import ButtonCancel from '../../buttons/buttonCancel.js'
-import ModalCadastroProduto from '../../modals/modals-produto/modalAddProdCart.js'
 import Button from '../../buttons/buttonsModal.js'
 
 import { useState } from 'react'
