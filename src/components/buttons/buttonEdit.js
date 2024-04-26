@@ -13,9 +13,6 @@ function ButtonEdit(props){
     )
 }
 
-function edita(){
-    alert("editou")
-}
 
 export default ButtonEdit;
 
