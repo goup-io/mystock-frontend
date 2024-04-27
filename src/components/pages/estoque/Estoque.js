@@ -53,29 +53,29 @@ function Estoque() {
             <PageLayout>
                 <Header telaAtual="Estoque"></Header>
 
-                <div className=" w-full h-[4rem] flex flex-col rounded-md mt-4 p-2 shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] justify-around items-center text-sm bg-white">
-                    <div className="w-[95%] h-[2.5rem] flex justify-center ">
-                        <div className="w-[53%] mr-2 h-2/2 flex justify-between items-center ">
+                <div className=" w-full h-[6rem] flex flex-col rounded-md mt-4 p-2 shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] justify-around items-center text-sm bg-white">
+                    <div className="w-full h-[2.5rem] p-4 flex justify-center items-center ">
+                        <div className="w-[52%]  h-2/2 flex justify-start items-center">
 
-                            <div className='w-[14rem] '>
+                            <div className='w-[32%]'>
                                 <ComboBoxFilter
                                     dadosBanco="teste"
                                 >Modelo</ComboBoxFilter>
                             </div>
-                            <div className='w-[14rem] '>
+                            <div className='w-[28%] ml-4 '>
                                 <ComboBoxFilter
                                     dadosBanco="teste"
                                 >Cor</ComboBoxFilter>
                             </div>
 
-                            <div className='w-[15rem] '>
+                            <div className='w-[34%] ml-4 '>
                                 <ComboBoxFilter
                                     dadosBanco="teste"
                                 >Tamanho</ComboBoxFilter>
                             </div>
 
                         </div>
-                        <div className=" w-[27%] h-2/2 flex justify-center ">
+                        <div className=" w-[28%] h-2/2 flex justify-center">
                             <InputFilterDate
                                 type="text"
                                 placeholder="HH:MM"
@@ -83,7 +83,7 @@ function Estoque() {
                                 fim="á"
                             ></InputFilterDate>
                         </div>
-                        <div className='w-[20%] flex items-center ml-2 justify-evenly '>
+                        <div className='w-[16%] h-[4rem] ml-2 flex items-center justify-around '>
                             <ButtonClear>Limpar</ButtonClear>
                             <ButtonModal>Filtrar</ButtonModal>
                         </div>
@@ -91,11 +91,11 @@ function Estoque() {
                     </div>
                 </div>
 
-                <div className='bg-white mt-4 h-[30rem] flex flex-col justify-start pl-10 pr-10 items-center shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)]'>
+                <div className='bg-white mt-4 h-[37rem] flex flex-col justify-around pl-10 pr-10 items-center shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)]'>
                     <div className='w-full h-[3rem] flex justify-between items-center'>
 
-                        <div className='w-[14rem] flex justify-between items-center'>
-                            <p className=' font-medium text-2xl'>PRODUTOS</p>
+                        <div className='w-[16rem] flex justify-between items-center'>
+                            <p className=' font-medium text-3xl'>PRODUTOS</p>
                             <div className=' mt-1'>
                                 <Button >Modelos</Button>
                             </div>
@@ -105,12 +105,12 @@ function Estoque() {
                             props="text"
                         >Pesquisar</InputSearcModal>
                     </div>
-                    <div className='w-full h-[22rem] mt-3 flex justify-center items-center '>
-                        <div className=' w-full h-[23.5rem] border-solid border-[1px] border-slate-700  bg-slate-700 overflow-y-auto'>
+                    <div className='w-full h-[28rem] mb-2  flex justify-center items-center'>
+                        <div className=' w-full h-[28rem] border-solid border-[1px] border-slate-700  bg-slate-700 overflow-y-auto'>
                             <TabelaPage colunas={colunas} dados={dados} edit remove></TabelaPage>
                         </div>
                     </div>
-                    <div className='w-full h-[1.8rem] mt-7 flex justify-end '>
+                    <div className='w-full h-[2.2rem] mb-3 flex justify-end '>
                         <div className='w-4/12 flex justify-between'>
                             <ButtonModal
                                 funcao={AbrirModalCadastreKit}
@@ -119,7 +119,7 @@ function Estoque() {
                                 funcao={AbrirModalCadastreModel}
                             >NOVO MODELO</ButtonModal>
                             <ButtonModal
-                                funcao={AbrirModalCadastreProd}
+                                funcao={AbrirModalCadastreUser}
                             >NOVO PRODUTO</ButtonModal>
                         </div>
                     </div>

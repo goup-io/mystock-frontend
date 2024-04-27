@@ -7,14 +7,13 @@ import withReactContent from 'sweetalert2-react-content';
 
 function ModalCadastreLogin({ dadosAdicionais }) {
 
+    const [usuario, setUsuario] = useState("");
+    const [senha, setSenha] = useState("");
+
+    const setters = [setUsuario, setSenha];
 
     const handleSave = () => {
-        // Combine os dados do cadastro de usuário com os dados do cadastro de login
-        const dadosCompletos = {
-            ...dadosAdicionais,
-            // Adicione aqui os campos específicos do cadastro de login, se houver
-        };
-        // api.post(``, dadosCompletos);
+      
     }
 
     return (
@@ -28,15 +27,23 @@ function ModalCadastreLogin({ dadosAdicionais }) {
                         <InputAndLabelModal
                             type="Text"
                             placeholder="digite o usuário..."
+                            value={usuario}
+                            handleInput={handleInputChange}
+                            handlerAtributeChanger={setUsuario}
                         >Usuário:</InputAndLabelModal>
                         <InputAndLabelModal
                             type="Text"
                             placeholder="digite a senha..."
+                            value={senha}
+                            handleInput={handleInputChange}
+                            handlerAtributeChanger={setSenha}
                         >Senha:</InputAndLabelModal>
                     </div>
                 </div>
                 <div className="w-[32rem] flex justify-end  h-6 ">
-                    <ButtonClear>Limpar</ButtonClear>
+                    <ButtonClear
+                          setters={setters}
+                    >Limpar</ButtonClear>
                     <ButtonModal
                     onClick={handleSave}
                     >Cadastrar</ButtonModal>

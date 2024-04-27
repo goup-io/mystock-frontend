@@ -1,11 +1,11 @@
 import Cookie from './Cookie.js'
 import axios from 'axios'
 
-const springEndPoint = "https://mystock-spring-mystock-spring.azuremicroservices.io";
+const springEndPoint = "http://localhost:8080";
 
 var header = {     
     "Content-Type": "application/json",
-    "Authorization": `Bearer ${localStorage.getItem("token")}`
+    "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoZW50aWNhdGlvbiIsInN1YiI6InRlc3RlIiwiaWQiOjEsImV4cCI6MTcxNDMyMjExOH0.TjQ8MWgc3ZUSiougLOXSxNRHIaZFqn7aOu4kVlTUK3g`
 }
 
 export class ApiRequest{
@@ -45,7 +45,7 @@ export class ApiRequest{
         return resposta
     }
     
-    static async userCreate(user, senha, userId){
+    static async loginCreate(user, senha, userId){
         
         const usuario = {
             "user": user,
@@ -58,6 +58,10 @@ export class ApiRequest{
         return resposta;
     }
 
+    // ***************************************************************************
+// *  LOJA
+// ***************************************************************************   
+
     static async lojaCreate(user, senha, idAcessoLoja, idLoja){
         
         const loja = {
@@ -68,6 +72,15 @@ export class ApiRequest{
         }
 
         const resposta = await axios.post(springEndPoint + "/auth/register/loja", loja);
+
+        return resposta;
+    }
+
+    static async lojaGetAll(){
+
+        const resposta = await axios.get(springEndPoint + "/lojas", {
+            headers : header
+        });
 
         return resposta;
     }
