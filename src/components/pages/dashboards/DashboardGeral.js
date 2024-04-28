@@ -7,6 +7,7 @@ import LineChart from '../../charts/LineChart.js'
 import PieChart from '../../charts/PieChart.js'
 import BarChart from '../../charts/BarChart.js'
 import ButtonInfo from '../../buttons/ButtonInfo.js'
+import ButtonTwoOption from '../../buttons/ButtonTwoOption.js'
 
 function DashboardGeral() {
 
@@ -58,12 +59,28 @@ function DashboardGeral() {
         }
     ];
 
+    const handleSelectOpcao1 = () => {
+        alert("Função da opção 1 executada!");
+    };
+
+    const handleSelectOpcao2 = () => {
+        alert("Função da opção 2 executada!");
+    };
+
     return(
         <>
             <PageLayout>
                 <TitleBox title="Dashboard Geral"></TitleBox>
                 <Kpis kpis={kpis}></Kpis>
                 <ChartBox title="Gráfico de Faturamento por Loja" size="long">
+                    <div className="absolute top-2 right-3">
+                        <ButtonTwoOption 
+                            opcao1="Último 12 Meses" 
+                            opcao2="Mês Atual" 
+                            onSelectOpcao1={handleSelectOpcao1} 
+                            onSelectOpcao2={handleSelectOpcao2}
+                        />
+                    </div>
                     <LineChart categories={labelsGraficoFaturamento} series={seriesGraficoFaturamento}></LineChart>
                     <ButtonInfo mensagem={"O gráfico mostra o faturamento por loja no determinado mês, ou seja, o quanto cada loja vendeu (R$) em cada um dos meses exibidos."}></ButtonInfo>
                 </ChartBox>
