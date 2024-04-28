@@ -1,6 +1,6 @@
 import faqIcon02 from '../../assets/icons/faqIcon.svg'
 
-function buttonFaq(){
+function buttonFaq(props){
     return(
         <a onClick={direcionarFaq} class="cursor-pointer">
             <img src={faqIcon02}></img>

@@ -6,6 +6,7 @@ import ChartBox from '../../chartsBoxes/ChartBox.js'
 import LineChart from '../../charts/LineChart.js'
 import PieChart from '../../charts/PieChart.js'
 import BarChart from '../../charts/BarChart.js'
+import ButtonInfo from '../../buttons/ButtonInfo.js'
 
 function DashboardGeral() {
 
@@ -44,15 +45,15 @@ function DashboardGeral() {
     const categoriesFluxoEstoque = ['Loja 1', 'Loja 2', 'Loja 3', 'Loja 4'];
     const seriesFluxoEstoque = [
         {
-            name: 'Net Profit',
+            name: 'Estoque',
             data: [44, 55, 57, 56]
         },
         {
-            name: 'Revenue',
+            name: 'Vendidos',
             data: [76, 85, 101, 98]
         },
         {
-            name: 'Free Cash Flow',
+            name: 'Transferidos',
             data: [35, 41, 36, 26]
         }
     ];
@@ -64,13 +65,16 @@ function DashboardGeral() {
                 <Kpis kpis={kpis}></Kpis>
                 <ChartBox title="Gráfico de Faturamento por Loja" size="long">
                     <LineChart categories={labelsGraficoFaturamento} series={seriesGraficoFaturamento}></LineChart>
+                    <ButtonInfo mensagem={"O gráfico mostra o faturamento por loja no determinado mês, ou seja, o quanto cada loja vendeu (R$) em cada um dos meses exibidos."}></ButtonInfo>
                 </ChartBox>
                 <div class="flex gap-3 w-full h-1/2">
                     <ChartBox title="Gráfico de Fluxo de Estoque" size="medium">
                         <BarChart categories={categoriesFluxoEstoque} series={seriesFluxoEstoque }></BarChart>
+                        <ButtonInfo mensagem={"O gráfico mostra o fluxo de estoque por loja no determinado mês, ou seja, o quanto foi vendido, transferido ou ainda possuem em estoque."}></ButtonInfo>
                     </ChartBox>
                     <ChartBox title="Modelos mais Vendidos" size="small">
                         <PieChart labels={labelsModelosMaisVendidos} series={seriesModelosMaisVendidos}></PieChart>
+                        <ButtonInfo mensagem={"O gráfico mostra os modelos mais vendidos no determinado mês."}></ButtonInfo>
                     </ChartBox>
                 </div>
             </PageLayout>
