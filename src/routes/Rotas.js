@@ -46,7 +46,7 @@ const Rotas = () => {
 
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
-                    <Route path="/dashboard-loja" element={<DashboardLoja />} />
+                    <Route path="/dashboard-geral/" element={<DashboardLoja />} />
                 </Route>
                 
                 

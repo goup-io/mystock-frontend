@@ -4,6 +4,7 @@ import Kpis from '../../kpis/Kpis.js'
 import ChartBox from '../../chartsBoxes/ChartBox.js'
 import LineChart from '../../charts/LineChart.js'
 import PieChart from '../../charts/PieChart.js'
+import TableRanking from '../../charts/TableRankingFunc.js'
 import BarChart from '../../charts/BarChart.js'
 import ButtonInfo from '../../buttons/ButtonInfo.js'
 import ButtonTwoOption from '../../buttons/ButtonTwoOption.js'
@@ -54,6 +55,30 @@ function DashboardGeral() {
         alert("Função da opção 2 executada!");
     };
 
+    const headerRanking = ['#', 'Funcionário', 'Faturamento']
+    const serieRanking = [
+        {
+            funcionario: 'Paulo',
+            faturamento: 5000.0
+        },
+        {
+            funcionario: 'Paula',
+            faturamento: 4500.0
+        },
+        {
+            funcionario: 'Ana',
+            faturamento: 4000.0
+        },
+        {
+            funcionario: 'José',
+            faturamento: 400.0
+        },
+        {
+            funcionario: 'José',
+            faturamento: 400.0
+        },
+    ]
+
     return(
         <>
             <PageLayout>
@@ -73,6 +98,7 @@ function DashboardGeral() {
                         <ButtonInfo mensagem={"O gráfico mostra o faturamento no determinado mês, ou seja, o quanto cada loja vendeu (R$) em cada um dos meses exibidos."}></ButtonInfo>
                     </ChartBox>
                     <ChartBox title="Ranking de Funcionários - Mês Vigente" size="small">
+                        <TableRanking header={headerRanking} series={serieRanking}></TableRanking>
                         <ButtonInfo mensagem={"Listagem dos funcionários ordenados dos que estão com o maior faturamento nas vendas ao menor (dados obtidos do mês vigente)."}></ButtonInfo>
                     </ChartBox>
                 </div>
