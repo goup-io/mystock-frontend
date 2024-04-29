@@ -8,6 +8,7 @@ import PieChart from '../../charts/PieChart.js'
 import BarChart from '../../charts/BarChart.js'
 import ButtonInfo from '../../buttons/ButtonInfo.js'
 import ButtonTwoOption from '../../buttons/ButtonTwoOption.js'
+import ButtonSelectMeses from '../../buttons/ButtonSelectMeses.js'
 
 function DashboardGeral() {
 
@@ -88,10 +89,12 @@ function DashboardGeral() {
                     <ChartBox title="Gráfico de Fluxo de Estoque" size="medium">
                         <BarChart categories={categoriesFluxoEstoque} series={seriesFluxoEstoque }></BarChart>
                         <ButtonInfo mensagem={"O gráfico mostra o fluxo de estoque por loja no determinado mês, ou seja, o quanto foi vendido, transferido ou ainda possuem em estoque."}></ButtonInfo>
+                        <ButtonSelectMeses></ButtonSelectMeses>
                     </ChartBox>
                     <ChartBox title="Modelos mais Vendidos" size="small">
                         <PieChart labels={labelsModelosMaisVendidos} series={seriesModelosMaisVendidos}></PieChart>
                         <ButtonInfo mensagem={"O gráfico mostra os modelos mais vendidos no determinado mês."}></ButtonInfo>
+                        <ButtonSelectMeses></ButtonSelectMeses>
                     </ChartBox>
                 </div>
             </PageLayout>
