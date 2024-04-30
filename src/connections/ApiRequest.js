@@ -1,11 +1,11 @@
 import Cookie from './Cookie.js'
 import axios from 'axios'
 
-const springEndPoint = "https://mystock-spring-mystock-spring.azuremicroservices.io";
+const springEndPoint = "localhost:8080";
 
 var header = {     
     "Content-Type": "application/json",
-    "Authorization": `Bearer ${localStorage.getItem("token")}`
+    "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoZW50aWNhdGlvbiIsInN1YiI6InRlc3RlIiwiaWQiOjEsImV4cCI6MTcxNDI2ODc1OX0.qCYTBZiTRySbSaiaejhjusNaPyKRfVPJbGUX-LadXXc`
 }
 
 export class ApiRequest{
@@ -566,6 +566,20 @@ export class ApiRequest{
     //     });
         
     // }
+
+
+// ***************************************************************************
+// *  CSV
+// ***************************************************************************
+
+static async getCsvUsuario(options = {}) {
+    const resposta = await axios.get("http://" + springEndPoint + "/csv/todosUsuarios", {
+        headers : header,
+        responseType: 'arraybuffer', // Add this line
+    });
+
+    return resposta;
+}
 }
 
 export default ApiRequest;

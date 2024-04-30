@@ -13,6 +13,8 @@ import Historico from '../components/pages/historico/Historico.js'
 //Transacoes
 import Transacoes from '../components/pages/transacoes/Transacoes.js'
 
+import Usuario from '../components/pages/usuario/Usuario.js'
+
 //Pagamentos
 import Caixa from '../components/pages/venda/Caixa.js'
 import Pagamento from '../components/pages/venda/Pagamento.js'
@@ -44,6 +46,11 @@ const Rotas = () => {
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
                     <Route path="/menu" element={<Menu />} />
+                </Route>
+
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
+                    <Route path="/usuario" element={<Usuario />} />
                 </Route>
 
                 <Route path="/" element={<App />}>
