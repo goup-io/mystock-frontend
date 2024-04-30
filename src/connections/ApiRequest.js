@@ -1,11 +1,11 @@
 import Cookie from './Cookie.js'
 import axios from 'axios'
 
-const springEndPoint = "http://localhost:8080";
+const springEndPoint = "https://mystock-mystock-backend.azuremicroservices.io";
 
 var header = {     
     "Content-Type": "application/json",
-    "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoZW50aWNhdGlvbiIsInN1YiI6InRlc3RlIiwiaWQiOjEsImV4cCI6MTcxNDMyMjExOH0.TjQ8MWgc3ZUSiougLOXSxNRHIaZFqn7aOu4kVlTUK3g`
+    "Authorization": `Bearer ${localStorage.getItem("token")}`
 }
 
 export class ApiRequest{
@@ -27,8 +27,6 @@ export class ApiRequest{
         const resposta = await axios.post(springEndPoint + "/auth/login", usuario);
 
         if(resposta.status === 200){
-            const data = JSON.stringify(resposta);
-            localStorage.setItem("token", data.token)
             return resposta
         }
 
@@ -89,16 +87,16 @@ export class ApiRequest{
 // *  USUARIO
 // ***************************************************************************    
 
-    static async userCreate(nome, idCargo, email, telefone, idLoja){
+    static async userCreate(objetoAdicionado){
 
         const funcionario = {
-            "nome": nome,
-            "idCargo": idCargo,
-            "email": email,
-            "telefone": telefone,
-            "idLoja": idLoja,
+            "nome": objetoAdicionado.nome,
+            "idCargo": objetoAdicionado.idCargo,
+            "email": objetoAdicionado.email,
+            "telefone": objetoAdicionado.celular,
+            "idLoja": objetoAdicionado.idLoja
         }
-
+console.log(funcionario);
         const resposta = await axios.post(springEndPoint + "/usuarios", funcionario, {
             headers : header,
         });

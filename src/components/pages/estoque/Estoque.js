@@ -119,7 +119,7 @@ function Estoque() {
                                 funcao={AbrirModalCadastreModel}
                             >NOVO MODELO</ButtonModal>
                             <ButtonModal
-                                funcao={AbrirModalCadastreUser}
+                                funcao={AbrirModalCadastreProd}
                             >NOVO PRODUTO</ButtonModal>
                         </div>
                     </div>

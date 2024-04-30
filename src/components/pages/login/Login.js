@@ -26,6 +26,7 @@ function Login(){
         console.log(respostaHTTP);
         if(respostaHTTP.status == 200){
             alert("Deu certo")
+            localStorage.setItem("token", respostaHTTP.data.token)
             navigate("/menu")
         }
     }
