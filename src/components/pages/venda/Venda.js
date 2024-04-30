@@ -1,7 +1,6 @@
 import Header from '../../header/Header.js'
 import PageLayout from '../PageLayout.js'
 import Input from '../../inputs/inputAndLabelModal.js'
-import ModalCadastroProduto from '../../modals/modalAddProdCart.js'
 import ItemSeparadoPorLinhaTracejada from '../../tables/ItemSeparadoPorLinhaTracejada.js'
 import Tabela from '../../tables/TableRoundedBorderSpacing.js'
 
