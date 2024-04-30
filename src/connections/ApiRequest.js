@@ -1,11 +1,11 @@
 import Cookie from './Cookie.js'
 import axios from 'axios'
 
-const springEndPoint = "localhost:8080";
+const springEndPoint = "https://mystock-mystock-backend.azuremicroservices.io";
 
 var header = {     
     "Content-Type": "application/json",
-    "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoZW50aWNhdGlvbiIsInN1YiI6InRlc3RlIiwiaWQiOjEsImV4cCI6MTcxNDI2ODc1OX0.qCYTBZiTRySbSaiaejhjusNaPyKRfVPJbGUX-LadXXc`
+    "Authorization": `Bearer ${localStorage.getItem("token")}`
 }
 
 export class ApiRequest{
