@@ -1,10 +1,8 @@
 //Componentes
-import Header from '../header/Header.js'
 import myStockLogo from '../../assets/icons/logoMyStock.svg'
 import Notification from '../buttons/buttonNotification.js'
 import Footer from '../footer/Footer.js'
 import { useState, useEffect } from 'react'
-
 
 function PageLayout(props){
 
@@ -30,13 +28,13 @@ function PageLayout(props){
     }, [props.telaAtual])
 
     return(
-        <section class="flex flex-col items-center h-[100vh] bg-[#F5F3F4] w-full justify-center">
-            <div class="flex flex-row w-full justify-between px-8 pl-[5%]">
-                <img src={myStockLogo}></img>
+        <section class="flex flex-col items-center h-[100vh] bg-[#F5F3F4] w-full justify-between ">
+            <div class="flex flex-row w-full justify-between px-8 pl-[5%] h-[3.2rem] ">
+                <img className='w-[12rem]' src={myStockLogo}></img>
                 <Notification></Notification>
             </div>
 
-            <div id="mainDiv" class="w-[89%] h-4/5 overflow-auto rounded-[8px]" style={corAtual}>
+            <div id="mainDiv" class="w-[89%] h-[88%] overflow-auto rounded-[8px]" style={corAtual}>
                 {props.children}
             </div>
             

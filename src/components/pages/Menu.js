@@ -19,10 +19,10 @@ function Menu(){
             <>
                 <Header telaAtual="Menu" icon="crossed"></Header>
                 <ul class="flex flex-col items-center gap-7 mt-20 px-12">
-                    <ItemLista route={"/venda"}>ÁREA DE PRÉ-VENDA</ItemLista>
+                    <ItemLista route={"/venda"}>ÁREA DE VENDA</ItemLista>
                     <ItemLista route={"/estoque"}>ESTOQUE</ItemLista>
                     <ItemLista route={"/historico"}>HISTÓRICO DE VENDAS</ItemLista>
-                    <ItemLista route={"/transacao"}>ÁREA DE TRANSAÇÕES</ItemLista>
+                    <ItemLista route={"/transacao"}>ÁREA DE TRANSFERÊNCIAS</ItemLista>
                     <ItemLista route={"/"}>SAIR</ItemLista>
                 </ul>
             </>
