@@ -55,28 +55,18 @@ function DashboardGeral() {
         alert("Função da opção 2 executada!");
     };
 
-    const headerRanking = ['#', 'Funcionário', 'Faturamento']
+    const headerRanking = ['#', 'Funcionário', 'Faturamento', '']
     const serieRanking = [
-        {
-            funcionario: 'Paulo',
-            faturamento: 5000.0
-        },
-        {
-            funcionario: 'Paula',
-            faturamento: 4500.0
-        },
-        {
-            funcionario: 'Ana',
-            faturamento: 4000.0
-        },
-        {
-            funcionario: 'José',
-            faturamento: 400.0
-        },
-        {
-            funcionario: 'José',
-            faturamento: 400.0
-        },
+        { posicao: 1, funcionario: 'Paulo', faturamento: 5000.0},
+        { posicao: 2, funcionario: 'Paula', faturamento: 4500.0},
+        { posicao: 3, funcionario: 'Ana', faturamento: 4000.0},
+        { posicao: 4, funcionario: 'José', faturamento: 400.0},
+        { posicao: 5, funcionario: 'José', faturamento: 400.0},
+        { posicao: 4, funcionario: 'José', faturamento: 400.0},
+        { posicao: 4, funcionario: 'José', faturamento: 400.0},
+        { posicao: 5, funcionario: 'José', faturamento: 400.0},
+        { posicao: 4, funcionario: 'José', faturamento: 400.0},
+        { posicao: 4, funcionario: 'José', faturamento: 400.0},
     ]
 
     return(
@@ -98,11 +88,13 @@ function DashboardGeral() {
                         <ButtonInfo mensagem={"O gráfico mostra o faturamento no determinado mês, ou seja, o quanto cada loja vendeu (R$) em cada um dos meses exibidos."}></ButtonInfo>
                     </ChartBox>
                     <ChartBox title="Ranking de Funcionários - Mês Vigente" size="small">
-                        <TableRanking header={headerRanking} series={serieRanking}></TableRanking>
+                        <div className='w-full h-[170px] bg-[#355070] rounded-md overflow-y-auto mb-3'>
+                            <TableRanking header={headerRanking} series={serieRanking}></TableRanking>
+                        </div>
                         <ButtonInfo mensagem={"Listagem dos funcionários ordenados dos que estão com o maior faturamento nas vendas ao menor (dados obtidos do mês vigente)."}></ButtonInfo>
                     </ChartBox>
                 </div>
-                <div class="flex gap-3 w-full h-1/2">
+                <div class="flex gap-3 w-full h-[200px]">
                     <ChartBox title="Gráfico de Fluxo de Estoque" size="medium">
                         <BarChart categories={categoriesFluxoEstoque} series={seriesFluxoEstoque }></BarChart>
                         <ButtonInfo mensagem={"O gráfico mostra o fluxo de estoque no determinado mês, ou seja, o quanto foi vendido, transferido ou ainda possuem em estoque."}></ButtonInfo>

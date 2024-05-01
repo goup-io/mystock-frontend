@@ -72,8 +72,17 @@ const Rotas = () => {
 
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
-                    <Route path="/dashboard-geral" element={<DashboardGeral />} />
                     <Route path="/adicionar-produto-carrinho" element={<ModalAddProdCart />} />
+                </Route>
+
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
+                    <Route path="/dashboard-geral" element={<DashboardGeral />} />
+                </Route>
+
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
+                    <Route path="/dashboard-loja" element={<DashboardLoja />} />
                 </Route>
 
                 <Route path="/" element={<App />}>
