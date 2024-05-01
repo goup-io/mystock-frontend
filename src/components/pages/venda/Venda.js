@@ -1,18 +1,17 @@
 import Header from '../../header/Header.js'
 import PageLayout from '../PageLayout.js'
 import Input from '../../inputs/inputAndLabelModal.js'
-import ModalCadastroProduto from '../../modals/modalAddProdCart.js'
+import AbrirModalAddProdCart from "../../modals/modals-produto/modalAddProdCart.js"
 import ItemSeparadoPorLinhaTracejada from '../../tables/ItemSeparadoPorLinhaTracejada.js'
 import Tabela from '../../tables/TableRoundedBorderSpacing.js'
 
 //Botões
 import ButtonEdit from '../../buttons/buttonEdit.js'
 import ButtonCancel from '../../buttons/buttonCancel.js'
-import ModalCadastroProduto from '../../modals/modals-produto/modalAddProdCart.js'
 import Button from '../../buttons/buttonsModal.js'
 
+//Hooks
 import { useState } from 'react'
-
 import { useNavigate } from 'react-router-dom';
 
 var divPai = {
@@ -118,11 +117,6 @@ function ItemCarrinho(props) {
     )
 }
 
-function cadastrarProduto() {
-    return (
-        <ModalCadastroProduto />
-    )
-}
 
 function Venda() {
 
@@ -138,7 +132,7 @@ function Venda() {
                     <div class="flex justify-between w-full text-2xl">
                         <p class="font-semibold text-2xl">CARRINHO</p>
                         <div class="flex flex-row-reverse w-2/3 gap-4 items-center">
-                            <Button funcao={cadastrarProduto}><p class="flex justify-between w-full text-2xl">Adicionar Produto</p></Button>
+                            <Button funcao={AbrirModalAddProdCart}><p class="flex justify-between w-full text-2xl">Adicionar Produto</p></Button>
                             <Button><p class="flex justify-between w-full text-2xl">Adicionar Kit</p></Button>
                         </div>
                     </div>
