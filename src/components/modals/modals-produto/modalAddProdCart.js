@@ -9,7 +9,15 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
 
-function ModalAddProdCart() {
+var itemTeste = {
+  "codigoProduto" : 20,
+  "descricaoProduto" : "Air Jodan VI",
+  "precoUnitario" : 499.99,
+  "quantidade" : 1,
+  "descontoUnitario" : 20.00,
+}
+
+function ModalAddProdCart(props) {
 
   const [colunas, setColunas] = useState([]);
   const [dados, setDados] = useState([]);
@@ -56,7 +64,7 @@ function ModalAddProdCart() {
       </div>
       <div className="w-[35rem] flex justify-end items-end mt-1 h-7">
         <ButtonClear>Limpar</ButtonClear>
-        <ButtonModal>Cadastrar</ButtonModal>
+        <ButtonModal funcao={() => props.funcao(itemTeste)} >Cadastrar</ButtonModal>
       </div>
 
     </div >
@@ -64,10 +72,10 @@ function ModalAddProdCart() {
   );
 }
 
-function AbrirModalAddProdCart() {
+function AbrirModalAddProdCart(funcao) {
   const MySwal = withReactContent(Swal);
   MySwal.fire({
-      html: <ModalAddProdCart />,
+      html: <ModalAddProdCart funcao={funcao}/>,
       width: "auto",
       heigth: "60rem",
       showConfirmButton: false,
