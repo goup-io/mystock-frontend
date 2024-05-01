@@ -1,9 +1,13 @@
 import Header from '../../header/Header.js'
 import PageLayout from '../PageLayout.js'
-import Input from '../../inputs/inputAndLabelModal.js'
-import AbrirModalAddProdCart from "../../modals/modals-produto/modalAddProdCart.js"
-import ItemSeparadoPorLinhaTracejada from '../../tables/ItemSeparadoPorLinhaTracejada.js'
+import Input from '../../inputs/InputsCadastre.js'
 import Tabela from '../../tables/TableRoundedBorderSpacing.js'
+import ItemSeparadoPorLinhaTracejada from '../../tables/ItemSeparadoPorLinhaTracejada.js'
+
+//Modais
+import AbrirModalAddProdCart from "../../modals/modals-produto/modalAddProdCart.js"
+import AbrirModalEditProd from "../../modals/modals-produto/modalEditProd.js"
+import AbrirModalAddKitCart from '../../modals/modals-kit/modalAddKitCart.js'
 
 //Botões
 import ButtonEdit from '../../buttons/buttonEdit.js'
@@ -85,7 +89,6 @@ function ResumoVenda(props) {
     );
 }
 
-
 function Venda() {
 
     const [subTotal1, setSubTotal1] = useState(0.00);
@@ -95,6 +98,10 @@ function Venda() {
     const [descontoProdutos, setDescontoProdutos] = useState(0.00);
     const [valorTotal, setValorTotal] = useState(0.00);
 
+    const [codigoVendedor, setCodigoVendedor] = useState("")
+    const [tipoVenda, setTipoVenda] = useState("");
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         console.log(itemsCarrinho)
@@ -119,10 +126,6 @@ function Venda() {
     }, [itemsCarrinho]);
 
     function adicionarItemCarrinho(item) {
-        // setSubTotal1(prevSubTotal1 => prevSubTotal1 + item.precoUnitario);
-        // setSubTotal2(prevSubTotal2 => prevSubTotal2 + (item.precoUnitario - item.descontoUnitario));
-        // setDescontoProdutos(prevDescontoProdutos => prevDescontoProdutos + item.descontoUnitario);
-        // setValorTotal(prevValorTotal => prevValorTotal + ((item.precoUnitario - item.descontoUnitario)* item.quantidade));
 
         setItemsCarrinho(prevItemsCarrinho => {
 
@@ -149,10 +152,7 @@ function Venda() {
         });
 
         contadorId++;
-
     }
-
-    const navigate = useNavigate();
 
     function removerItemCarrinho(id){
         
@@ -164,7 +164,7 @@ function Venda() {
             prevItemsCarrinho.forEach(element => {
                 if(element.props.id !== id){
                     ItemsCarrinhoAux.push(element)
-                    
+
                 }else{
                     item = element.props
                     console.log(element.props)
@@ -175,11 +175,6 @@ function Venda() {
         });
 
     }
-
-    function editarItemCarrinho(){
-
-    }
-    
     
     function ItemCarrinho(props) {
         return (
@@ -207,7 +202,7 @@ function Venda() {
                     <div class="flex flex-row items-center gap-12 justify-center">
                         <ButtonEdit
                             width={40}
-                            funcao={() => editarItemCarrinho(props.id)}
+                            funcao={() => AbrirModalEditProd()}
                         />
                         <ButtonCancel
                             posicao={props.id}
@@ -220,6 +215,21 @@ function Venda() {
         )
     }
 
+    function finalizarVenda(){
+        if(codigoVendedor === "" && codigoVendedor === null){
+            
+        }
+
+        if(tipoVenda === "" && tipoVenda === null){
+
+        }
+    }
+
+    function handleInput(evento, stateFunction){
+        
+        stateFunction(evento.target.value);
+    }
+
     return (
         <PageLayout>
             <Header telaAtual="Área de Venda"/>
@@ -229,7 +239,9 @@ function Venda() {
                         <p class="font-semibold text-2xl">CARRINHO</p>
                         <div class="flex flex-row-reverse w-2/3 gap-4 items-center">
                             <Button funcao={() => AbrirModalAddProdCart(adicionarItemCarrinho)}><p class="flex justify-between w-full text-2xl">Adicionar Produto</p></Button>
-                            <Button><p class="flex justify-between w-full text-2xl">Adicionar Kit</p></Button>
+                            <Button funcao={() => AbrirModalAddKitCart()}>
+                                <p class="flex justify-between w-full text-2xl">Adicionar Kit</p>
+                            </Button>
                         </div>
                     </div>
 
@@ -263,7 +275,7 @@ function Venda() {
                         </Tabela>
                         {itemsCarrinho.length == 0 ? null : 
                             <div class="bg-[#355070] flex flex-row mt-[-24px] w-full h-14 rounded-b-lg font-bold items-center justify-end">
-                                <p class="text-right pr-12 text-2xl text-white">Subtotal: R$ {subTotal2}</p>
+                                <p class="text-right pr-12 text-2xl text-white">Subtotal: R$ {subTotal2.toFixed(2)}</p>
                             </div>
                         }  
                         
@@ -274,11 +286,17 @@ function Venda() {
                     <div class="flex flex-row items-center align-middle gap-6">
                         <div class="flex flex-row items-center text-[1.45rem] gap-3">
                             <p>Cód. vendedor:</p>
-                            <Input />
+                            <Input
+                                handleInput={handleInput}
+                                handlerAtributeChanger={setCodigoVendedor}
+                            />
                         </div>
                         <div class="flex flex-row items-center text-[1.45rem] gap-3">
                             <p>Tipo Venda:</p>
-                            <Input />
+                            <Input 
+                                handleInput={handleInput}
+                                handlerAtributeChanger={setTipoVenda}
+                            />
                         </div>
                     </div>
                 </div>

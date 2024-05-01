@@ -64,7 +64,7 @@ function ModalAddProdCart(props) {
       </div>
       <div className="w-[35rem] flex justify-end items-end mt-1 h-7">
         <ButtonClear>Limpar</ButtonClear>
-        <ButtonModal funcao={() => props.funcao(itemTeste)} >Cadastrar</ButtonModal>
+        <ButtonModal funcao={() => props.funcao(itemTeste)} >Adicionar</ButtonModal>
       </div>
 
     </div >
