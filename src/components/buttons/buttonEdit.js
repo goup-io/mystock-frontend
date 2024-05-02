@@ -6,9 +6,11 @@ function ButtonEdit(props){
         width: props.width+"px",
     }
 
+    function edita(){
+    }
 
     return(
-        <a onClick={props.funcao == undefined ? alert("passar função no botão") : props.funcao} class="cursor-pointer">
+        <a onClick={props.funcao} class="cursor-pointer">
             <img style={props != undefined ? style : ""} src={EditIcon}></img>
         </a>
     )

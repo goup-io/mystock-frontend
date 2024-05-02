@@ -3,6 +3,8 @@ import App from '../App.js'
 
 //Login
 import Login from '../components/pages/login/Login.js'
+import Forgot from '../components/pages/login/Forgot.js'
+import Reset from '../components/pages/login/Reset.js'
 
 //Estoque
 import Estoque from '../components/pages/estoque/Estoque.js'
@@ -12,6 +14,8 @@ import Historico from '../components/pages/historico/Historico.js'
 
 //Transacoes
 import Transacoes from '../components/pages/transacoes/Transacoes.js'
+
+import Usuario from '../components/pages/usuario/Usuario.js'
 
 //Pagamentos
 import Caixa from '../components/pages/venda/Caixa.js'
@@ -33,11 +37,13 @@ import ModalEditModel from '../components/modals/modals-model/modalEditModel.js'
 import ModalEditUser from '../components/modals/modals-user/modalEditUser.js';
 import ModalCadastreKit from '../components/modals/modals-kit/modalCadastreKit.js';
 import ModalCadastreProdPreConfig from '../components/modals/modals-produto/modalCadastreProdPreConfig.js';
-import ModalCadastreLogin from '../components/modals/modals-user/modalCadastreLogin.js';
 import ModalComission from '../components/modals/modalComission.js';
 import ModalDiscount from '../components/modals/modalAddDiscount.js';
 import ModalEditKit from '../components/modals/modals-kit/modalEditKit.js';
 import AbrirModalCadastreLogin from '../components/modals/modals-user/modalCadastreLogin.js';
+import AbrirModalAddDiscount from '../components/modals/modalAddDiscount.js';
+import AbrirModalComission from '../components/modals/modalComission.js';
+import AbrirModalSalesHistory from '../components/modals/modalSalesHistory.js';
 
 const Rotas = () => {
     return(
@@ -47,6 +53,11 @@ const Rotas = () => {
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
                     <Route path="/menu" element={<Menu />} />
+                </Route>
+
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
+                    <Route path="/usuario" element={<Usuario />} />
                 </Route>
 
                 <Route path="/" element={<App />}>
@@ -128,12 +139,17 @@ const Rotas = () => {
 
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
-                    <Route path="/calcular-comissao" element={<ModalComission />} />
+                    <Route path="/calcular-comissao" element={<AbrirModalComission />} />
                 </Route>
 
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
-                    <Route path="/adicionar-desconto" element={<ModalDiscount />} />
+                    <Route path="/adicionar-desconto" element={<AbrirModalAddDiscount />} />
+                </Route>
+
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
+                    <Route path="/historico-vendas" element={<AbrirModalSalesHistory />} />
                 </Route>
 
                 <Route path="/" element={<App />}>
@@ -154,6 +170,15 @@ const Rotas = () => {
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
                     <Route path="/editar-kit" element={<ModalEditKit />} />
+                </Route>
+
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
+                    <Route path="/forgot" element={<Forgot />} />
+                </Route>
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
+                    <Route path="/Reset" element={<Reset />} />
                 </Route>
 
             </Routes>

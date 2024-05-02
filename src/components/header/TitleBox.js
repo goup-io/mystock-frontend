@@ -9,7 +9,7 @@ function TitleBox(props) {
                 {props.buttons && props.buttons.length > 0 && (
                     <div className="flex gap-2">
                         {props.buttons.map((button, index) => (
-                            <Button key={index} onClick={button.onClick} className="ml-3">{button.label}</Button>
+                            <Button key={index} funcao={button.event} className="ml-3">{button.label}</Button>
                         ))}
                     </div>
                 )}

@@ -1,4 +1,3 @@
- import api from "../../../api";
 import { useState } from "react";
 import ButtonClear from "../../buttons/buttonClear";
 import ButtonModal from "../../buttons/buttonsModal"
@@ -9,114 +8,179 @@ import ComboBoxModal from "../smallComboBoxModal";
 import AbrirModalCadastreLogin from "../../modals/modals-user/modalCadastreLogin";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import ApiRequest from "../../../connections/ApiRequest";
+import { useEffect } from "react";
 
 function ModalCadastreUser() {
 
     // const navigate = useNavigate();
 
-    const dadosCargo = ['Gerente Geral', 'Gerente', 'Vendedor'];
-    const dadosLoja = ['Universo', 'Pérola', 'Pérola Vip'];
-    const [cargo, setCargo] = useState("");
+    const [dadosCargo, setDadosCargo] = useState([]);
+    const [nomesCargos, setNomeCargos] = useState([]);
+    const [dadosLoja, setDadosLoja] = useState([]);
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
-    const [usuario, setUsuario] = useState("");
     const [celular, setCelular] = useState("");
+    const [cargo, setCargo] = useState("");
     const [loja, setLoja] = useState("");
+    const [loading, setLoading] = useState(true);
 
-    
-    const setters = [setNome, setEmail, setUsuario, setCelular, setCargo, setLoja];
+    const setters = [setNome, setEmail, setCelular, setDadosCargo, setLoja];
 
-    const handleInputChange = (event, setStateFunction) => {
+    function handleInputChange(event, setStateFunction) {
         setStateFunction(event.target.value);
+
     }
 
+    const handleChangeCargo = (event) => {
+        setCargo(event.target.value);
+    };
+
+    const handleChangeLoja = (event) => {
+        setLoja(event.target.value);
+    };
+
+
+    async function fetchDadosCargoLoja() {
+        setLoading(true);
+        await ApiRequest.cargoGetAll().then((response) => {
+            if (response.status === 200) {
+                setDadosCargo(response.data);
+                console.log(dadosCargo);
+            }
+        }).catch((error) => {
+            console.log("Erro ao buscar os dados", error)
+        })
+
+        await ApiRequest.lojaGetAll().then((response) => {
+            if (response.status === 200) {
+                setDadosLoja(response.data)
+                setLoading(false);
+            }
+        }).catch((error) => {
+            console.log("caiu aqui", error)
+        })
+        setLoading(false);
+    }
+
+    useEffect(() => {
+        fetchDadosCargoLoja();
+    },[])
+
+
     const handleSave = () => {
+        // usando a function find do javascript para percorrer uma lista de objetos baseado na verificação de uma key
+        const cargoObj = dadosCargo.find(objCargo => objCargo.nome === cargo);
+        const idCargo = cargoObj ? cargoObj.id : null;
+        
+        const lojaObj = dadosLoja.find(objLoja => objLoja.nome === loja);
+        const idLoja = lojaObj ? lojaObj.id : null;
+    
+        if(!idCargo || !idLoja || !nome || !email || !celular){
+            //todo: acionar modal de cadastro incorreto
+            alert("Preencha todos os campos corretamente")
+            return;
+        }
+        
         const objetoAdicionado = {
             nome,
             email,
-            usuario,
             celular,
-            cargo,
-            loja
+            idCargo,
+            idLoja
         };
 
-        if (cargo === 'Vendedor') {
-            // api.post(``, objetoAdicionado);
+        if (cargo.toLowerCase() === 'Vendedor'.toLowerCase()) {
+            ApiRequest.userCreate(objetoAdicionado).then((response) => {
+                if (response.status === 201) {
+                    alert("Usuário Cadastrado!!")
+                    //todo: mostrar modal de sucesso ao cadastrar
+                }
+            }).catch((error) => {
+                console.log("Erro ao cadastrar um usuário: ", error)
+                //todo: mostrar modal de erro ao cadastrar
+            });
         } else {
-            // Abra o modal de cadastro de login para gerentes e gerentes gerais
-             AbrirModalCadastreLogin(objetoAdicionado);
+            AbrirModalCadastreLogin(objetoAdicionado);
         }
     }
 
     return (
-        <>
-            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[34rem] h-[20.5rem] flex flex-col items-center justify-around  bg-white p-2 rounded-lg border border-black">
-            <div className="w-[32rem]">
-            <HeaderModal
-             props="Cadastrar Novo Usuário"
-             ></HeaderModal>
-            </div>
-                <div className="w-[32rem] h-[14rem] flex flex-col rounded justify-around p-3 bg-slate-200 border-solid  shadow-[5px_5px_10px_0_rgba(0,0,0,0.14)] border-gray-700">
-                    <div className="flex justify-around">
-                       <InputAndLabelModal
-                       placeholder="digite o nome..."
-                       value={nome}
-                       onChange={(e) => handleInputChange(e, setNome)}
-                       >Nome</InputAndLabelModal>
-                        <InputAndLabelModal
-                        placeholder="digite o email..."
-                        value={email}
-                        onChange={(e) => handleInputChange(e, setEmail)}
-                        >Email</InputAndLabelModal>
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[45rem] h-[25rem] flex flex-col items-center justify-around  bg-white p-2 rounded-lg border border-black">
+            {loading ? (
+                <p></p>
+            ) : (
+                <>
+                    <div className="w-[43rem]">
+                        <HeaderModal
+                            props="Cadastrar Novo Usuário"
+                        ></HeaderModal>
                     </div>
-                    <div className="flex justify-around">
-                        <InputAndLabelModal
+                    <div className="w-[43rem] h-[18rem] flex flex-col rounded justify-around p-3 bg-slate-200 border-solid  shadow-[5px_5px_10px_0_rgba(0,0,0,0.14)] border-gray-700">
+                        <div className="flex justify-around">
+                            <InputAndLabelModal
+                                placeholder="digite o nome..."
+                                text="text"
+                                value={nome}
+                                handleInput={handleInputChange}
+                                handlerAtributeChanger={setNome}
+                            >Nome</InputAndLabelModal>
+                            <InputAndLabelModal
+                                placeholder="digite o email..."
+                                value={email}
+                                handleInput={handleInputChange}
+                                handlerAtributeChanger={setEmail}
+                            >Email</InputAndLabelModal>
+                        </div>
+                        <div className="flex justify-around">
+                            {/* <InputAndLabelModal
                         placeholder="digite o usuário..."
                         value={usuario}
                         onChange={(e) => handleInputChange(e, setUsuario)}
-                        >Usuário</InputAndLabelModal>
-                        <InputAndLabelModal
-                        placeholder="digite o celular..."
-                        value={celular}
-                        onChange={(e) => handleInputChange(e, setCelular)}
-                        >Celular</InputAndLabelModal>
+                        >Usuário</InputAndLabelModal> */}
+                            <InputAndLabelModal
+                                placeholder="digite o celular..."
+                                value={celular}
+                                handleInput={handleInputChange}
+                                handlerAtributeChanger={setCelular}
+                            >Celular</InputAndLabelModal>
+                            <ComboBoxModal
+                                dadosBanco={dadosCargo.map(value => value.nome)}
+                                handleChange={handleChangeCargo}
+                                // id={dadosCargo.map(value => value.id)}
+                            >Cargo</ComboBoxModal>
+                        </div>
+                        <div className="flex justify-start ml-[2.4rem]">
+                            <ComboBoxModal
+                                dadosBanco={dadosLoja.map(value => value.nome)}
+                                value={loja}
+                                handleChange={handleChangeLoja}
+                            >Loja</ComboBoxModal>
+                        </div>
                     </div>
-                    <div className="flex justify-around">
-                    <ComboBoxModal
-                    dadosBanco={dadosCargo}
-                    value={cargo}
-                    onChange={(e) => handleInputChange(e, setCargo)}
-                    >Cargo</ComboBoxModal>
-                       <ComboBoxModal
-                    dadosBanco={dadosLoja}
-                    value={loja}
-                    onChange={(e) => handleInputChange(e, setLoja)}
-                    >Loja</ComboBoxModal>
+                    <div className="w-[43rem] flex justify-end  h-6 ">
+                        <ButtonClear
+                            setters={setters}
+                        >Limpar</ButtonClear>
+                        <ButtonModal
+                            funcao={handleSave}
+                        >Cadastrar</ButtonModal>
                     </div>
-                </div>
-                <div className="w-[32rem] flex justify-end  h-6 ">
-                    <ButtonClear
-                    setters={setters}
-                    >Limpar</ButtonClear>
-                   <ButtonModal
-                  onClick={handleSave}
-                   >Cadastrar</ButtonModal>
-                </div>
-            </div>
-        </>
+                </>
+            )}
+        </div>
     );
 }
 
 function AbrirModalCadastreUser() {
     const MySwal = withReactContent(Swal);
     MySwal.fire({
-        html: <ModalCadastreUser  />,
-        width: "auto",
-        heigth: "60rem",
+        html: <ModalCadastreUser />,
+        // width: "60rem",
+        // heigth: "170rem",
         showConfirmButton: false,
         heightAuto: true,
     });
 }
 
 export default AbrirModalCadastreUser;
-

@@ -52,7 +52,7 @@ function Transacoes() {
             <PageLayout>
                 <Header telaAtual="Área de Transações"></Header>
 
-                <div className=" w-full h-[4rem] flex flex-col rounded-md mt-4 p-2 shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] justify-around items-center text-sm bg-white">
+                <div className=" w-full h-[6rem] flex flex-col rounded-md mt-4 p-2 shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] justify-around items-center text-sm bg-white">
                     <div className="w-full h-[2.5rem] flex justify-center">
                         <div className="w-[60%] mr-2 h-2/2 flex justify-between items-center">
 
@@ -96,8 +96,8 @@ function Transacoes() {
                     </div>
                 </div>
 
-                <div className='bg-white mt-4 h-[30rem] flex flex-col justify-start pl-10 pr-10 items-center shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)]'>
-                    <div className='w-full h-[3rem] flex justify-between items-center'>
+                <div className='bg-white mt-4 h-[37rem] flex flex-col justify-evenly pl-10 pr-10 items-center shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)]'>
+                    <div className='w-full h-[2rem] flex justify-between items-center '>
 
                         <div className='w-[22rem] flex justify-between items-center'>
                             <p className=' font-medium text-2xl'>HISTÓRICO</p>
@@ -110,8 +110,8 @@ function Transacoes() {
                             props="text"
                         >Pesquisar</InputSearcModal>
                     </div>
-                    <div className='w-full h-[22rem] mt-3 flex justify-center items-center '>
-                        <div className=' w-full h-[23.5rem] border-solid border-[1px] border-slate-700  bg-slate-700 overflow-y-auto'>
+                    <div className='w-full h-[30.5rem] flex justify-center items-center '>
+                        <div className=' w-full h-[30.5rem] border-solid border-[1px] border-slate-700  bg-slate-700 overflow-y-auto'>
                             <TabelaPage colunas={colunas} dados={dados} ></TabelaPage>
                         </div>
                     </div>

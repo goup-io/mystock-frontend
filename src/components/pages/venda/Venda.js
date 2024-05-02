@@ -1,8 +1,8 @@
 import Header from '../../header/Header.js'
 import PageLayout from '../PageLayout.js'
-import Input from '../../inputs/InputsCadastre.js'
-import Tabela from '../../tables/TableRoundedBorderSpacing.js'
+import Input from '../../inputs/inputAndLabelModal.js'
 import ItemSeparadoPorLinhaTracejada from '../../tables/ItemSeparadoPorLinhaTracejada.js'
+import Tabela from '../../tables/TableRoundedBorderSpacing.js'
 
 //Modais
 import AbrirModalAddProdCart from "../../modals/modals-produto/modalAddProdCart.js"
@@ -17,8 +17,7 @@ import Button from '../../buttons/buttonsModal.js'
 //Hooks
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { logDOM } from '@testing-library/react'
-import { isElementOfType } from 'react-dom/test-utils'
+import AbrirModalCadastreProd from '../../modals/modals-produto/modalCadastreProd.js'
 
 var divPai = {
     backgroundColor: "#F5F3F4",
@@ -87,6 +86,48 @@ function ResumoVenda(props) {
             />
         </ul>
     );
+}
+
+function ItemCarrinho(props) {
+    return (
+
+        <tr class="bg-[#DEE2FF] h-16 rounded ">
+            <td class="">
+                <p class="font-medium text-[1.4rem]">{props.codigoProduto}</p>
+            </td>
+            <td>
+                <p class="font-medium text-[1.4rem]">{props.descricaoProduto}</p>
+            </td>
+            <td>
+                <p class="font-medium text-[1.4rem]">{props.precoUnitario}</p>
+            </td>
+            <td>
+                <p class="font-medium text-[1.4rem]">{props.quantidade}</p>
+            </td>
+            <td>
+                <p class="font-medium text-[1.4rem]">{props.descontoUnitario}</p>
+            </td>
+            <td>
+                <p class="font-medium text-[1.4rem]">{props.precoLiquido}</p>
+            </td>
+            <td>
+                <div class="flex flex-row items-center gap-12 justify-center">
+                    <ButtonEdit
+                        width={40}
+                    />
+                    <ButtonCancel 
+                        width={30}
+                    />                    
+                </div>
+            </td>
+        </tr>
+    )
+}
+
+function cadastrarProduto() {
+    return (
+        <AbrirModalCadastreProd />
+    )
 }
 
 function Venda() {

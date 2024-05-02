@@ -55,7 +55,7 @@ export class ApiRequest{
 
     }
     
-    static async userCreate(user, senha, userId){
+    static async loginCreate(user, senha, userId){
         
         const usuario = {
             "user": user,
@@ -73,6 +73,10 @@ export class ApiRequest{
         }
 
     }
+
+    // ***************************************************************************
+// *  LOJA
+// ***************************************************************************   
 
     static async lojaCreate(user, senha, idAcessoLoja, idLoja){
         
@@ -95,31 +99,32 @@ export class ApiRequest{
 
     }
 
+    static async lojaGetAll(){
+
+        const resposta = await axios.get(springEndPoint + "/lojas", {
+            headers : header
+        });
+
+        return resposta;
+    }
+
 // ***************************************************************************
 // *  USUARIO
 // ***************************************************************************    
 
-    static async userCreate(nome, idCargo, email, telefone, idLoja){
+    static async userCreate(objetoAdicionado){
 
-        try{
-            const funcionario = {
-                "nome": nome,
-                "idCargo": idCargo,
-                "email": email,
-                "telefone": telefone,
-                "idLoja": idLoja,
-            }
-    
-            const resposta = await axios.post(springEndPoint + "/usuarios", funcionario, {
-                headers : header,
-            });
-    
-            return resposta;
-
-        }catch(erro){
-            return erro
+        const funcionario = {
+            "nome": objetoAdicionado.nome,
+            "idCargo": objetoAdicionado.idCargo,
+            "email": objetoAdicionado.email,
+            "telefone": objetoAdicionado.celular,
+            "idLoja": objetoAdicionado.idLoja
         }
-
+console.log(funcionario);
+        const resposta = await axios.post(springEndPoint + "/usuarios", funcionario, {
+            headers : header,
+        });
 
     }
 
@@ -842,6 +847,20 @@ export class ApiRequest{
     //     });
         
     // }
+
+
+// ***************************************************************************
+// *  CSV
+// ***************************************************************************
+
+static async getCsvUsuario(options = {}) {
+    const resposta = await axios.get("http://" + springEndPoint + "/csv/todosUsuarios", {
+        headers : header,
+        responseType: 'arraybuffer', // Add this line
+    });
+
+    return resposta;
+}
 }
 
 export default ApiRequest;
