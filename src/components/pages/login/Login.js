@@ -19,11 +19,16 @@ function Login(){
     const [email, setEmail] = useState(""); 
     const [senha, setSenha] = useState(""); 
 
-    async function handleClick() {
+    async function handleClick(event) {
+        event.preventDefault()
+        console.log("Passei na handle")
         
-        const respostaHTTP = await ApiRequest.userLogin(email, senha);
-        
+        const respostaHTTP = ApiRequest.userLogin(email, senha);
+
+        console.log(email);
+        console.log(senha);
         console.log(respostaHTTP);
+        
         if(respostaHTTP.status == 200){
             alert("Deu certo")
             localStorage.setItem("token", respostaHTTP.data.token)
@@ -70,7 +75,7 @@ function Login(){
                         placeholder="*******"
                     ></Input>
                 </div>  
-                <ButtonEnter funcao={handleClick}>Entrar</ButtonEnter>
+                <ButtonEnter funcao={(event) => handleClick(event)}>Entrar</ButtonEnter>
                 <div class=" mb-[2.69rem] mt-[0.6rem]">
                     <a class="text-[1.56rem]" href="">Esqueci a senha</a>
                 </div>
