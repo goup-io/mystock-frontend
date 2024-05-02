@@ -12,7 +12,7 @@ function TabelaModal({ colunas, dados, edit, remove, iptQuantidade }) {
 
   return (
 
-    <table className='  w-[34rem] h-[18rem]'>
+    <table className='  w-full h-full'>
       <thead className=' text-xs text-white font-light'>
         <tr className='sticky top-0 bg-slate-600 '>
           {colunas.map((coluna, index) => (
