@@ -6,22 +6,60 @@ import InputAndLabelModal from "../../inputs/inputAndLabelModal";
 import HeaderModal from "../headerModal";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import ApiRequest from "../../../connections/ApiRequest";
 
-function ModalCadastreLogin({ dadosAdicionais }) {
 
+function ModalCadastreLogin({dadosAdicionais}) {
+
+    const [dadosUsuario, setDadosUsuario] = useState(dadosAdicionais);
     const [usuario, setUsuario] = useState("");
     const [senha, setSenha] = useState("");
 
     const setters = [setUsuario, setSenha];
 
     function handleInputChange(event, setStateFunction) {
-        console.log(event.target.value);
         setStateFunction(event.target.value);
-
     }
 
     const handleSave = () => {
-      
+
+        console.log(dadosUsuario)
+        
+        // primeiramente é necessário validar os campos da criação de login(usuario, senha)
+        if (!usuario || !senha) {
+            //todo: mostrar modal de campos de login vazios
+            console.log("campos de login não estão preenchidos")
+            return;
+        } 
+        const limiteTextoUsuario = 20;
+        const limiteTextoSenha = 20;
+        console.log(usuario)
+        console.log(senha)
+        if (usuario.length >= limiteTextoUsuario || senha >= limiteTextoSenha){
+            console.log("que isso amigo? mucho texto")
+        }
+
+        console.log(dadosAdicionais)
+
+        ApiRequest.userCreate(dadosAdicionais).then((response) => {
+            if (response.status === 201) {
+                alert("Usuário Cadastrado!!")
+                //todo: mostrar modal de sucesso ao cadastrar
+        
+                // pegando o ID que foi inserido, baseado no nosso DTO do backend.  
+                const idUsuario = response.data.id;
+                console.log("ID do usuário inserido:", idUsuario);
+                // momento da criação do login
+                ApiRequest.loginCreate(usuario, senha, idUsuario).then((response) =>{
+                    console.log("Login cadastrado: " + response)
+                }).catch((error) => {
+                    console.log("Erro ao cadastrar o login: ", error)
+                })
+            }
+        }).catch((error) => {
+            console.log("Erro ao cadastrar um usuário: ", error)
+            //todo: mostrar modal de erro ao cadastrar
+        });
     }
 
     return (
@@ -50,10 +88,10 @@ function ModalCadastreLogin({ dadosAdicionais }) {
                 </div>
                 <div className="w-[43rem] flex justify-end  h-6 ">
                     <ButtonClear
-                          setters={setters}
+                        setters={setters}
                     >Limpar</ButtonClear>
                     <ButtonModal
-                    onClick={handleSave}
+                        funcao={handleSave}
                     >Cadastrar</ButtonModal>
                 </div>
             </div>
@@ -62,11 +100,11 @@ function ModalCadastreLogin({ dadosAdicionais }) {
     );
 }
 
-function AbrirModalCadastreLogin() {
+function AbrirModalCadastreLogin(dadosUsuario) {
     const MySwal = withReactContent(Swal);
     MySwal.fire({
-        html: <ModalCadastreLogin />,
-         // width: "60rem",
+        html: <ModalCadastreLogin dadosAdicionais={dadosUsuario}/>,
+        // width: "60rem",
         // heigth: "170rem",
         showConfirmButton: false,
         heightAuto: true,
