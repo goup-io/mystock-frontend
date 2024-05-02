@@ -1,15 +1,17 @@
 import switchUserIcon from '../../assets/icons/switchUserIcon.svg'
+import { useNavigate } from 'react-router-dom';
 
-function buttonSwitchUser(){
+
+function ButtonSwitchUser(){
+
+    const navigate = useNavigate();
+
     return(
-        <a onClick={trocarUsuario} class="cursor-pointer">
+        <a onClick={() => navigate("/")} class="cursor-pointer">
             <img className='w-[3rem]' src={switchUserIcon}></img>
         </a>
     )
 }
 
-function trocarUsuario(){
-    alert("TrocarUsuario")
-}
 
-export default buttonSwitchUser
+export default ButtonSwitchUser;

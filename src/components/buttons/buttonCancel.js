@@ -7,14 +7,14 @@ function ButtonCancel(props){
     }
 
     return(
-        <a onClick={cancela} class="cursor-pointer">
+        <a onClick={props.funcao} class="cursor-pointer">
             <img style={props != undefined ? style : ""} src={CancelIcon}></img>
         </a>
     )
 }
 
 function cancela(){
-    alert("cancelou")
+    alert("Removendo o item na posição")
 }
 
 export default ButtonCancel
