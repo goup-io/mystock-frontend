@@ -28,7 +28,15 @@ function Login(){
     async function handleClick(event) {
 
         event.preventDefault()
-        console.log("Passei na handle")
+        if(email === "" || email === null || email === undefined){
+            Alert.alert(ErrorImage, "Informe o seu e-mail")
+            return
+        }
+
+        if(senha === "" || senha === null || senha === undefined){
+            Alert.alert(ErrorImage, "Informe a sua senha")
+            return
+        }
         
         const respostaHTTP = await ApiRequest.userLogin(email, senha);
 
