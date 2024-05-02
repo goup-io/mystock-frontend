@@ -7,7 +7,6 @@ function ButtonEdit(props){
     }
 
     function edita(){
-        alert("aaaaaaaaaa");
     }
 
     return(

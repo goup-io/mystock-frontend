@@ -7,12 +7,12 @@ import Tabela from '../../tables/TableRoundedBorderSpacing.js'
 //Botões
 import ButtonEdit from '../../buttons/buttonEdit.js'
 import ButtonCancel from '../../buttons/buttonCancel.js'
-import ModalCadastroProduto from '../../modals/modals-produto/modalAddProdCart.js'
 import Button from '../../buttons/buttonsModal.js'
 
 import { useState } from 'react'
 
 import { useNavigate } from 'react-router-dom';
+import AbrirModalCadastreProd from '../../modals/modals-produto/modalCadastreProd.js'
 
 var divPai = {
     backgroundColor: "#F5F3F4",
@@ -119,7 +119,7 @@ function ItemCarrinho(props) {
 
 function cadastrarProduto() {
     return (
-        <ModalCadastroProduto />
+        <AbrirModalCadastreProd />
     )
 }
 

@@ -577,6 +577,20 @@ console.log(funcionario);
     //     });
         
     // }
+
+
+// ***************************************************************************
+// *  CSV
+// ***************************************************************************
+
+static async getCsvUsuario(options = {}) {
+    const resposta = await axios.get("http://" + springEndPoint + "/csv/todosUsuarios", {
+        headers : header,
+        responseType: 'arraybuffer', // Add this line
+    });
+
+    return resposta;
+}
 }
 
 export default ApiRequest;
