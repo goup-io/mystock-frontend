@@ -2,7 +2,7 @@
 import ButtonClear from "../../buttons/buttonClear";
 import ButtonModal from "../../buttons/buttonsModal";
 import InputAndLabelModal from "../../inputs/inputAndLabelModal";
-import ComboBoxModal from "../comboBoxModal";
+import ComboBoxModal from "../smallComboBoxModal";
 import HeaderModal from "../headerModal";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -40,7 +40,7 @@ function ModalEditProd() {
                 </div>
                 <div className="w-[32rem] flex justify-end  h-6 ">
                     <ButtonClear>Limpar</ButtonClear>
-                   <ButtonModal>Cadastrar</ButtonModal>
+                    <ButtonModal>Editar</ButtonModal>
                 </div>
             </div>
         </>
@@ -50,7 +50,7 @@ function ModalEditProd() {
 function AbrirModalEditProd() {
     const MySwal = withReactContent(Swal);
     MySwal.fire({
-        html: <AbrirModalEditProd />,
+        html: <ModalEditProd />,
         width: "auto",
         heigth: "60rem",
         showConfirmButton: false,
