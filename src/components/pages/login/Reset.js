@@ -39,14 +39,14 @@ function Reset(){
         <section class="flex flex-col items-center justify-center h-[100vh]">
             <img class="absolute top-4 left-0" src={`${myStockLogo}`}></img>
             <img class="absolute right-8 top-5" src={`${dots01}`}></img>
-            <div class="bg-indigo-100 rounded-[0.3125rem] w-[42rem] h-[44rem] flex flex-col justify-evenly items-center shadow-lg z-10">
+            <div class="bg-indigo-100 rounded-[0.3125rem] w-[35vw] h-[70vh] flex flex-col justify-evenly items-center shadow-lg z-10">
                 <div class="mt-[3.25rem] flex flex-col items-center">
-                    <h1 class="text-[2.5rem] font-medium">Alterar Senha</h1>
-                    <p class="text-[1.56rem] w-3/4">Digite sua nova senha.</p>
+                    <h1 class="text-[2rem] font-medium">Alterar Senha</h1>
+                    <p class="text-[1.2rem] ">Digite sua nova senha.</p>
                 </div>
                 
                 <div class="flex flex-col items-start mb-[0.5rem]">
-                <p class="text-[1.56rem]">Nova Senha:</p>
+                <p class="text-[1.06rem] mb-[0.5rem]">Nova Senha:</p>
                     <Input
                         id="inputSenha"
                         handleInput={handleInput}
@@ -57,8 +57,8 @@ function Reset(){
                         placeholder="*******"
                     ></Input>
                 </div>
-                <div class="flex flex-col items-start mb-[2.56rem]">
-                    <p class="text-[1.56rem]">Confirmar Senha:</p>
+                <div class="flex flex-col items-start mb-[2rem]">
+                    <p class="text-[1.06rem] mb-[0.5rem]">Confirmar Senha:</p>
                     <Input
                         id="inputSenha"
                         handleInput={handleInput}
@@ -71,7 +71,7 @@ function Reset(){
                 </div>  
                 <ButtonEnter funcao={handleClick}>Confirmar</ButtonEnter>
                 <div class=" mb-[2.69rem] mt-[0.6rem]">
-                    <a class="text-[1.56rem]" href="">Entrar</a>
+                    <a class="text-[1.1rem]" href="">Entrar</a>
                 </div>
             </div>
             <img class="absolute bottom-0 left-0" src={`${dots02}`}></img>

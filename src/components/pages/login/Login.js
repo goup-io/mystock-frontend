@@ -69,7 +69,7 @@ function Login(){
                 </div>
                 
                 <div class="flex flex-col items-start mb-[0.5rem]">
-                    <p class="form-floating text-[1.06rem] text-black">Usuário:</p>
+                    <p class="form-floating text-[1.06rem] text-black mb-[0.5rem]">Usuário:</p>
                     <Input 
                         id="inputEmail"
                         handleInput={handleInput}
@@ -80,8 +80,8 @@ function Login(){
                         placeholder="seu@email.com"
                     ></Input>
                 </div>
-                <div class="flex flex-col items-start mb-[2.3rem]">
-                    <p class="text-[1.06rem]">Senha:</p>
+                <div class="flex flex-col items-start mb-[2.1rem]">
+                    <p class="text-[1.06rem] mb-[0.5rem]">Senha:</p>
                     <Input
                         id="inputSenha"
                         handleInput={handleInput}
