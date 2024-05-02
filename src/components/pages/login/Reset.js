@@ -39,7 +39,7 @@ function Reset(){
         <section class="flex flex-col items-center justify-center h-[100vh]">
             <img class="absolute top-4 left-0" src={`${myStockLogo}`}></img>
             <img class="absolute right-8 top-5" src={`${dots01}`}></img>
-            <div class="bg-indigo-100 rounded-[0.3125rem] w-[35vw] h-[70vh] flex flex-col justify-evenly items-center shadow-lg z-10">
+            <div class="bg-indigo-100 rounded-[0.3125rem] w-[35vw] h-min-[70vh] flex flex-col justify-evenly items-center shadow-lg z-10">
                 <div class="mt-[3.25rem] flex flex-col items-center">
                     <h1 class="text-[2rem] font-medium">Alterar Senha</h1>
                     <p class="text-[1.2rem] ">Digite sua nova senha.</p>

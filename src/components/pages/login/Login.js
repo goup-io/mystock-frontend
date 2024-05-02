@@ -62,7 +62,7 @@ function Login(){
         <section class="flex flex-col items-center justify-center h-[100vh]">
             <img class="absolute top-4 left-0" src={`${myStockLogo}`}></img>
             <img class="absolute right-8 top-5" src={`${dots01}`}></img>
-            <div class="bg-indigo-100 rounded-[0.3125rem] w-[35vw] h-[75vh] flex flex-col justify-evenly items-center shadow-lg z-10">
+            <div class="bg-indigo-100 rounded-[0.3125rem] w-[35vw] h-min-[75vh] flex flex-col justify-evenly items-center shadow-lg z-10">
                 <div class="mt-[3.25rem] flex flex-col items-center">
                     <h1 class="text-[2rem] font-medium">Bem-Vindo de Volta!</h1>
                     <p class="text-[1.2rem] w-3/4">Faça o login para ter acesso ao seu sistema de vendas e estoque!</p>
