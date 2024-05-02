@@ -22,6 +22,7 @@ import Venda from '../components/pages/venda/Venda.js'
 import Menu from '../components/pages/Menu.js'
 import DashboardGeral from '../components/pages/dashboards/DashboardGeral.js';
 import DashboardLoja from '../components/pages/dashboards/DashboardLoja.js';
+import DashboardFuncionario from '../components/pages/dashboards/DashboardFuncionario.js';
 import ModalAddProdCart from '../components/modals/modals-produto/modalAddProdCart.js';
 import ModalAddKitCart from '../components/modals/modals-kit/modalAddKitCart.js';
 import ModalCadastreProd from '../components/modals/modals-produto/modalCadastreProd.js';
@@ -83,6 +84,11 @@ const Rotas = () => {
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
                     <Route path="/dashboard-loja" element={<DashboardLoja />} />
+                </Route>
+
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
+                    <Route path="/dashboard-funcionario" element={<DashboardFuncionario />} />
                 </Route>
 
                 <Route path="/" element={<App />}>
