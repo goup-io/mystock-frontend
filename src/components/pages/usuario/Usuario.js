@@ -70,45 +70,7 @@ function Usuario() {
     return (
         <>
             <PageLayout>
-                <Header telaAtual="Usuarios">
-                    
-                </Header>
-
-
-                <div className='bg-white mt-4 h-[30rem] flex flex-col justify-start pl-10 pr-10 items-center shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)]'>
-                    <div className='w-full h-[3rem] flex justify-between items-center'>
-                        
-                        <div className='w-[25rem] flex justify-between items-center'>
-                            <p className=' font-medium text-2xl'>Usuarios Cadastrados :</p>
-                           
-                        </div>
-
-                        <InputSearcModal
-                            props="text"
-                        >Pesquisar</InputSearcModal>
-                    </div>
-                    <div className='w-full h-[22rem] mt-3 flex justify-center items-center '>
-                        <div className=' w-full h-[23.5rem] border-solid border-[1px] border-slate-700  bg-slate-700 overflow-y-auto'>
-                            <TabelaPage colunas={colunas} dados={dados} edit remove></TabelaPage>
-                        </div>
-                    </div>
-                    <div className='w-full h-[1.8rem] mt-7 flex justify-end '>
-                        <div className='w-4/12 flex justify-between'>
-                            <ButtonModal
-                                funcao={AbrirModalCadastreKit}
-                            >NOVO KIT</ButtonModal>
-                            <ButtonModal
-                                funcao={AbrirModalCadastreModel}
-                            >NOVO MODELO</ButtonModal>
-                            <ButtonModal
-                                funcao={AbrirModalCadastreProd}
-                            >NOVO PRODUTO</ButtonModal>
-                            <button className='bg-slate-800 text-white' onClick={()=>csvTodosUsuarios()}>
-                                CSV
-                            </button>
-                        </div>
-                    </div>
-                </div>
+             
             </PageLayout>
         </>
     )

@@ -1,13 +1,8 @@
 import Header from '../../header/Header.js'
 import PageLayout from '../PageLayout.js'
-<<<<<<< HEAD
 import Input from '../../inputs/inputAndLabelModal.js'
 import ItemSeparadoPorLinhaTracejada from '../../tables/ItemSeparadoPorLinhaTracejada.js'
-=======
-import Input from '../../inputs/InputsCadastre.js'
->>>>>>> 8e3abde364d5c0bfc0cc0126b2dd6c5a07371b9e
 import Tabela from '../../tables/TableRoundedBorderSpacing.js'
-import ItemSeparadoPorLinhaTracejada from '../../tables/ItemSeparadoPorLinhaTracejada.js'
 
 //Modais
 import AbrirModalAddProdCart from "../../modals/modals-produto/modalAddProdCart.js"
@@ -22,12 +17,7 @@ import Button from '../../buttons/buttonsModal.js'
 //Hooks
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-<<<<<<< HEAD
 import AbrirModalCadastreProd from '../../modals/modals-produto/modalCadastreProd.js'
-=======
-import { logDOM } from '@testing-library/react'
-import { isElementOfType } from 'react-dom/test-utils'
->>>>>>> 8e3abde364d5c0bfc0cc0126b2dd6c5a07371b9e
 
 var divPai = {
     backgroundColor: "#F5F3F4",
