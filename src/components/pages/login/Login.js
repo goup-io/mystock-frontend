@@ -62,14 +62,14 @@ function Login(){
         <section class="flex flex-col items-center justify-center h-[100vh]">
             <img class="absolute top-4 left-0" src={`${myStockLogo}`}></img>
             <img class="absolute right-8 top-5" src={`${dots01}`}></img>
-            <div class="bg-indigo-100 rounded-[0.3125rem] w-[42rem] h-[44rem] flex flex-col justify-evenly items-center shadow-lg z-10">
+            <div class="bg-indigo-100 rounded-[0.3125rem] w-[35vw] h-[75vh] flex flex-col justify-evenly items-center shadow-lg z-10">
                 <div class="mt-[3.25rem] flex flex-col items-center">
-                    <h1 class="text-[2.5rem] font-medium">Bem-Vindo de Volta!</h1>
-                    <p class="text-[1.56rem] w-3/4">Faça o login para ter acesso ao seu sistema de vendas e estoque!</p>
+                    <h1 class="text-[2rem] font-medium">Bem-Vindo de Volta!</h1>
+                    <p class="text-[1.2rem] w-3/4">Faça o login para ter acesso ao seu sistema de vendas e estoque!</p>
                 </div>
                 
                 <div class="flex flex-col items-start mb-[0.5rem]">
-                    <p class="form-floating text-[1.56rem] text-black">Usuário:</p>
+                    <p class="form-floating text-[1.06rem] text-black">Usuário:</p>
                     <Input 
                         id="inputEmail"
                         handleInput={handleInput}
@@ -80,8 +80,8 @@ function Login(){
                         placeholder="seu@email.com"
                     ></Input>
                 </div>
-                <div class="flex flex-col items-start mb-[2.56rem]">
-                    <p class="text-[1.56rem]">Senha:</p>
+                <div class="flex flex-col items-start mb-[2.3rem]">
+                    <p class="text-[1.06rem]">Senha:</p>
                     <Input
                         id="inputSenha"
                         handleInput={handleInput}
@@ -93,12 +93,12 @@ function Login(){
                     ></Input>
                 </div>  
                 <ButtonEnter funcao={(event) => handleClick(event)}>Entrar</ButtonEnter>
-                <div class=" mb-[2.69rem] mt-[0.6rem]">
-                    <a class="text-[1.56rem]" href="">Esqueci a senha</a>
+                <div class=" mb-[1rem] mt-[0.6rem]">
+                    <a class="text-[1.2rem]" href="">Esqueci a senha</a>
                 </div>
-                <div class="mb-[1.69rem]">
-                    <p class="text-[1.56rem]">Não tem acesso ao nosso sistema?</p>
-                    <a class="text-[1.56rem] underline" href="">Entre em contato conosco!</a>   
+                <div class="mb-[1rem]">
+                    <p class="text-[1.2rem]">Não tem acesso ao nosso sistema?</p>
+                    <a class="text-[1.2rem] underline" href="">Entre em contato conosco!</a>   
                 </div>
             </div>
             <img class="absolute bottom-0 left-0" src={`${dots02}`}></img>

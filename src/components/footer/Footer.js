@@ -1,5 +1,5 @@
 import ButtonFaq from '../buttons/buttonFaq.js'
-import ButtonSwitchUser from '../buttons/ButtonSwitchUser.js'
+import ButtonSwitchUser from '../buttons/buttonSwitchUser.js'
 
 function Footer(){
     return(
