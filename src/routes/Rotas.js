@@ -3,6 +3,8 @@ import App from '../App.js'
 
 //Login
 import Login from '../components/pages/login/Login.js'
+import Forgot from '../components/pages/login/Forgot.js'
+import Reset from '../components/pages/login/Reset.js'
 
 //Estoque
 import Estoque from '../components/pages/estoque/Estoque.js'
@@ -30,7 +32,6 @@ import ModalEditModel from '../components/modals/modals-model/modalEditModel.js'
 import ModalEditUser from '../components/modals/modals-user/modalEditUser.js';
 import ModalCadastreKit from '../components/modals/modals-kit/modalCadastreKit.js';
 import ModalCadastreProdPreConfig from '../components/modals/modals-produto/modalCadastreProdPreConfig.js';
-import ModalCadastreLogin from '../components/modals/modals-user/modalCadastreLogin.js';
 import ModalComission from '../components/modals/modalComission.js';
 import ModalDiscount from '../components/modals/modalAddDiscount.js';
 import ModalEditKit from '../components/modals/modals-kit/modalEditKit.js';
@@ -136,6 +137,15 @@ const Rotas = () => {
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
                     <Route path="/editar-kit" element={<ModalEditKit />} />
+                </Route>
+
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
+                    <Route path="/forgot" element={<Forgot />} />
+                </Route>
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
+                    <Route path="/Reset" element={<Reset />} />
                 </Route>
 
             </Routes>

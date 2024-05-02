@@ -1,4 +1,3 @@
-import api from "../../../api";
 import { useState } from "react";
 import ButtonClear from "../../buttons/buttonClear";
 import ButtonModal from "../../buttons/buttonsModal"
@@ -22,9 +21,9 @@ function ModalCadastreUser() {
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
     const [celular, setCelular] = useState("");
-    const [idCargo, setCargo] = useState("");
-    const [idLoja, setLoja] = useState("");
-    const [loading, setLoading] = useState(true); 
+    const [cargo, setCargo] = useState("");
+    const [loja, setLoja] = useState("");
+    const [loading, setLoading] = useState(true);
 
     const setters = [setNome, setEmail, setCelular, setDadosCargo, setLoja];
 
@@ -35,15 +34,15 @@ function ModalCadastreUser() {
 
     const handleChangeCargo = (event) => {
         setCargo(event.target.value);
-      };
+    };
 
-      const handleChangeLoja = (event) => {
+    const handleChangeLoja = (event) => {
         setLoja(event.target.value);
-      };
+    };
 
 
-    async function teste() {
-        setLoading(true); 
+    async function fetchDadosCargoLoja() {
+        setLoading(true);
         await ApiRequest.cargoGetAll().then((response) => {
             if (response.status === 200) {
                 setDadosCargo(response.data);
@@ -55,21 +54,34 @@ function ModalCadastreUser() {
 
         await ApiRequest.lojaGetAll().then((response) => {
             if (response.status === 200) {
-               setDadosLoja(response.data)
-               setLoading(false);                 
+                setDadosLoja(response.data)
+                setLoading(false);
             }
         }).catch((error) => {
             console.log("caiu aqui", error)
         })
-        setLoading(false);                 
+        setLoading(false);
     }
 
     useEffect(() => {
-        teste();
-    }, [])
+        fetchDadosCargoLoja();
+    },[])
 
 
     const handleSave = () => {
+        // usando a function find do javascript para percorrer uma lista de objetos baseado na verificação de uma key
+        const cargoObj = dadosCargo.find(objCargo => objCargo.nome === cargo);
+        const idCargo = cargoObj ? cargoObj.id : null;
+        
+        const lojaObj = dadosLoja.find(objLoja => objLoja.nome === loja);
+        const idLoja = lojaObj ? lojaObj.id : null;
+    
+        if(!idCargo || !idLoja || !nome || !email || !celular){
+            //todo: acionar modal de cadastro incorreto
+            alert("Preencha todos os campos corretamente")
+            return;
+        }
+        
         const objetoAdicionado = {
             nome,
             email,
@@ -78,10 +90,16 @@ function ModalCadastreUser() {
             idLoja
         };
 
-        console.log(objetoAdicionado);
-
-        if (idCargo === 'Vendedor') {
-            ApiRequest.userCreate(objetoAdicionado);
+        if (cargo.toLowerCase() === 'Vendedor'.toLowerCase()) {
+            ApiRequest.userCreate(objetoAdicionado).then((response) => {
+                if (response.status === 201) {
+                    alert("Usuário Cadastrado!!")
+                    //todo: mostrar modal de sucesso ao cadastrar
+                }
+            }).catch((error) => {
+                console.log("Erro ao cadastrar um usuário: ", error)
+                //todo: mostrar modal de erro ao cadastrar
+            });
         } else {
             AbrirModalCadastreLogin(objetoAdicionado);
         }
@@ -89,68 +107,68 @@ function ModalCadastreUser() {
 
     return (
         <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[45rem] h-[25rem] flex flex-col items-center justify-around  bg-white p-2 rounded-lg border border-black">
-            { loading ? ( 
-                    <p>aaaaaaaaaaaaaaaaa</p>
-                    ) : (
-                        <>
-                        <div className="w-[43rem]">
-                    <HeaderModal
-                        props="Cadastrar Novo Usuário"
-                    ></HeaderModal>
-                </div>
-                <div className="w-[43rem] h-[18rem] flex flex-col rounded justify-around p-3 bg-slate-200 border-solid  shadow-[5px_5px_10px_0_rgba(0,0,0,0.14)] border-gray-700">
-                    <div className="flex justify-around">
-                        <InputAndLabelModal
-                            placeholder="digite o nome..."
-                            text="text"
-                            value={nome}
-                            handleInput={handleInputChange}
-                            handlerAtributeChanger={setNome}
-                        >Nome</InputAndLabelModal>
-                        <InputAndLabelModal
-                            placeholder="digite o email..."
-                            value={email}
-                            handleInput={handleInputChange}
-                            handlerAtributeChanger={setEmail}
-                        >Email</InputAndLabelModal>
+            {loading ? (
+                <p></p>
+            ) : (
+                <>
+                    <div className="w-[43rem]">
+                        <HeaderModal
+                            props="Cadastrar Novo Usuário"
+                        ></HeaderModal>
                     </div>
-                    <div className="flex justify-around">
-                        {/* <InputAndLabelModal
+                    <div className="w-[43rem] h-[18rem] flex flex-col rounded justify-around p-3 bg-slate-200 border-solid  shadow-[5px_5px_10px_0_rgba(0,0,0,0.14)] border-gray-700">
+                        <div className="flex justify-around">
+                            <InputAndLabelModal
+                                placeholder="digite o nome..."
+                                text="text"
+                                value={nome}
+                                handleInput={handleInputChange}
+                                handlerAtributeChanger={setNome}
+                            >Nome</InputAndLabelModal>
+                            <InputAndLabelModal
+                                placeholder="digite o email..."
+                                value={email}
+                                handleInput={handleInputChange}
+                                handlerAtributeChanger={setEmail}
+                            >Email</InputAndLabelModal>
+                        </div>
+                        <div className="flex justify-around">
+                            {/* <InputAndLabelModal
                         placeholder="digite o usuário..."
                         value={usuario}
                         onChange={(e) => handleInputChange(e, setUsuario)}
                         >Usuário</InputAndLabelModal> */}
-                        <InputAndLabelModal
-                            placeholder="digite o celular..."
-                            value={celular}
-                            handleInput={handleInputChange}
-                            handlerAtributeChanger={setCelular}
-                        >Celular</InputAndLabelModal>
-                        <ComboBoxModal
-                            dadosBanco={dadosCargo.map(value => value.nome)}
-                            value={idCargo}
-                            handleChange={handleChangeCargo}
-                        >Cargo</ComboBoxModal>
+                            <InputAndLabelModal
+                                placeholder="digite o celular..."
+                                value={celular}
+                                handleInput={handleInputChange}
+                                handlerAtributeChanger={setCelular}
+                            >Celular</InputAndLabelModal>
+                            <ComboBoxModal
+                                dadosBanco={dadosCargo.map(value => value.nome)}
+                                handleChange={handleChangeCargo}
+                                // id={dadosCargo.map(value => value.id)}
+                            >Cargo</ComboBoxModal>
+                        </div>
+                        <div className="flex justify-start ml-[2.4rem]">
+                            <ComboBoxModal
+                                dadosBanco={dadosLoja.map(value => value.nome)}
+                                value={loja}
+                                handleChange={handleChangeLoja}
+                            >Loja</ComboBoxModal>
+                        </div>
                     </div>
-                    <div className="flex justify-start ml-[2.4rem]">
-                        <ComboBoxModal
-                            dadosBanco={dadosLoja.map(value => value.nome)}
-                            value={idLoja}
-                            handleChange={handleChangeLoja}
-                        >Loja</ComboBoxModal>
+                    <div className="w-[43rem] flex justify-end  h-6 ">
+                        <ButtonClear
+                            setters={setters}
+                        >Limpar</ButtonClear>
+                        <ButtonModal
+                            funcao={handleSave}
+                        >Cadastrar</ButtonModal>
                     </div>
-                </div>
-                <div className="w-[43rem] flex justify-end  h-6 ">
-                    <ButtonClear
-                        setters={setters}
-                    >Limpar</ButtonClear>
-                    <ButtonModal
-                        funcao={handleSave}
-                    >Cadastrar</ButtonModal>
-                </div>
-               </>
-                )}
-            </div>
+                </>
+            )}
+        </div>
     );
 }
 

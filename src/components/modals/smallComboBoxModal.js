@@ -13,7 +13,7 @@ function ComboBoxModal(props) {
   return (
     <div className="flex flex-col justify-start items-start">
       <p className="form-floating text-lg text-black mb-2 font-normal">{props.children}:</p>
-      <select value={props.value}   onChange={props.handleChange} className="w-[16rem] h-[2rem] rounded bg-[F5F3F4] pl-2 text-[1rem] font-[300] text-[#555] form-control border border-1 border-slate-600">
+      <select onChange={props.handleChange} className="w-[16rem] h-[2rem] rounded bg-[F5F3F4] pl-2 text-[1rem] font-[300] text-[#555] form-control border border-1 border-slate-600">
         <option value="">Selecione...</option>
         {opcoes.map((opcao, index) => (
           <option key={index} value={opcao}>{opcao}</option>
