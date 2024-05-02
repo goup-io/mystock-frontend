@@ -9,6 +9,12 @@ import userIcon from '../../../assets/icons/userIcon.svg'
 import lockIcon from '../../../assets/icons/lockIcon.svg'
 import ApiRequest from '../../../connections/ApiRequest.js'
 
+import Alert from '../../alerts/Alert.js';
+import ErrorImage from '../../../assets/icons/error.svg'
+import SucessImage from '../../../assets/icons/sucess.svg'
+
+
+//Hooks
 import { json, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
@@ -20,19 +26,23 @@ function Login(){
     const [senha, setSenha] = useState(""); 
 
     async function handleClick(event) {
+
         event.preventDefault()
         console.log("Passei na handle")
         
-        const respostaHTTP = ApiRequest.userLogin(email, senha);
+        const respostaHTTP = await ApiRequest.userLogin(email, senha);
 
-        console.log(email);
-        console.log(senha);
         console.log(respostaHTTP);
         
-        if(respostaHTTP.status == 200){
-            alert("Deu certo")
+        if(respostaHTTP.status === 200){
+            Alert.alertTimer(SucessImage, "Seja bem-vindo!");
             navigate("/menu")
         }
+        
+        if(await respostaHTTP.response.status === 403){
+            Alert.alert(ErrorImage, "Credenciais inválidas");
+        }
+
     }
 
     function handleInput(evento, stateFunction){
