@@ -31,7 +31,7 @@ function Menu(){
     
     function ItemLista(props){
         return(
-            <li onClick={() => navigate(props.route)} class="bg-[#D0D4F0] cursor-pointer w-full h-[5rem] text-[1.5rem] items-center flex align-center justify-center font-[500] rounded-[0.3125rem] shadow-lg">
+            <li onClick={() => navigate(props.route)} class="bg-[#D0D4F0] cursor-pointer w-full h-[3.5rem] text-[1.5rem] items-center flex align-center justify-center font-[500] rounded-[0.3125rem] shadow-lg duration-150 ease-in-out hover:scale-[1.01] hover:bg-[#C5CAF2]">
                 {props.children}
             </li>
         )

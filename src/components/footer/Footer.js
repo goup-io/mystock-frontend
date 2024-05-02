@@ -3,7 +3,7 @@ import ButtonSwitchUser from '../buttons/buttonSwitchUser.js'
 
 function Footer(){
     return(
-        <footer class="flex flex-row justify-between w-full  px-8 ">
+        <footer class="flex flex-row justify-between w-full px-8 pb-3">
             <ButtonFaq></ButtonFaq>
             <ButtonSwitchUser></ButtonSwitchUser>
         </footer>
