@@ -12,30 +12,30 @@ import ApiRequest from '../../../connections/ApiRequest.js'
 import { json, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
-function Reset(){
+function Reset() {
 
     const navigate = useNavigate();
 
-    const [email, setEmail] = useState(""); 
-    const [senha, setSenha] = useState(""); 
+    const [senha, setSenha] = useState("");
+    const [confirmarSenha, setConfirmarSenha] = useState("");
 
     async function handleClick() {
-        
-        const respostaHTTP = await ApiRequest.userLogin(email, senha);
-        
-        console.log(respostaHTTP);
-        if(respostaHTTP.status == 200){
-            alert("Deu certo")
-            navigate("/menu")
-        }
+
+        // const respostaHTTP = await ApiRequest.userLogin(email, senha);
+
+        // console.log(respostaHTTP);
+        // if (respostaHTTP.status == 200) {
+        //     alert("Deu certo")
+        //     navigate("/menu")
+        // }
     }
 
-    function handleInput(evento, stateFunction){
+    function handleInput(evento, stateFunction) {
 
         stateFunction(evento.target.value);
     }
 
-    return(
+    return (
         <section class="flex flex-col items-center justify-center h-[100vh]">
             <img class="absolute top-4 left-0" src={`${myStockLogo}`}></img>
             <img class="absolute right-8 top-5" src={`${dots01}`}></img>
@@ -44,32 +44,35 @@ function Reset(){
                     <h1 class="text-[2rem] font-medium">Alterar Senha</h1>
                     <p class="text-[1.2rem] ">Digite sua nova senha.</p>
                 </div>
-                
-                <div class="flex flex-col items-start mb-[0.5rem]">
-                <p class="text-[1.06rem] mb-[0.5rem]">Nova Senha:</p>
-                    <Input
-                        id="inputSenha"
-                        handleInput={handleInput}
-                        handlerAtributeChanger={setSenha}
-                        value={senha}
-                        type="password"
-                        icon={lockIcon}
-                        placeholder="*******"
-                    ></Input>
-                </div>
-                <div class="flex flex-col items-start mb-[2rem]">
-                    <p class="text-[1.06rem] mb-[0.5rem]">Confirmar Senha:</p>
-                    <Input
-                        id="inputSenha"
-                        handleInput={handleInput}
-                        handlerAtributeChanger={setSenha}
-                        value={senha}
-                        type="password"
-                        icon={lockIcon}
-                        placeholder="*******"
-                    ></Input>
-                </div>  
-                <ButtonEnter funcao={handleClick}>Confirmar</ButtonEnter>
+
+                <form>
+                    <div class="flex flex-col items-start mb-[0.5rem]">
+                        <p class="text-[1.06rem] mb-[0.5rem]">Nova Senha:</p>
+                        <Input
+                            id="inputSenha"
+                            handleInput={handleInput}
+                            handlerAtributeChanger={setSenha}
+                            value={senha}
+                            type="password"
+                            icon={lockIcon}
+                            placeholder="*******"
+                        ></Input>
+                    </div>
+                    <div class="flex flex-col items-start mb-[2rem]">
+                        <p class="text-[1.06rem] mb-[0.5rem]">Confirmar Senha:</p>
+                        <Input
+                            id="inputSenha"
+                            handleInput={handleInput}
+                            handlerAtributeChanger={setConfirmarSenha}
+                            value={confirmarSenha}
+                            type="password"
+                            icon={lockIcon}
+                            placeholder="*******"
+                        ></Input>
+                    </div>
+                    <ButtonEnter funcao={handleClick}>Confirmar</ButtonEnter>
+                </form>
+
                 <div class=" mb-[2.69rem] mt-[0.6rem]">
                     <a class="text-[1.1rem]" href="">Entrar</a>
                 </div>

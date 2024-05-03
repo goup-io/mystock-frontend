@@ -46,19 +46,22 @@ function Forgot() {
                         Você receberá um email com o link para a recuperação da senha.</p>
                 </div>
 
-                <div class="flex flex-col items-start mb-[1.5rem]">
-                    <p class="form-floating text-[1.06rem] mb-[0.5rem] text-black">Email:</p>
-                    <Input
-                        id="inputEmail"
-                        handleInput={handleInput}
-                        type="text"
-                        handlerAtributeChanger={setEmail}
-                        icon={`${userIcon}`}
-                        value={email}
-                        placeholder="seu@email.com"
-                    ></Input>
-                </div>
-                <ButtonEnter funcao={handleClick}>Recuperar Senha</ButtonEnter>
+                <form>
+                    <div class="flex flex-col items-start mb-[1.5rem]">
+                        <p class="form-floating text-[1.06rem] mb-[0.5rem] text-black">Email:</p>
+                        <Input
+                            id="inputEmail"
+                            handleInput={handleInput}
+                            type="text"
+                            handlerAtributeChanger={setEmail}
+                            icon={`${userIcon}`}
+                            value={email}
+                            placeholder="seu@email.com"
+                        ></Input>
+                    </div>
+                    <ButtonEnter funcao={handleClick}>Recuperar Senha</ButtonEnter>
+                </form>
+
                 <div class=" mb-[2rem] mt-[0.6rem]">
                     <a class="text-[1.2rem]" href="">Entrar</a>
                 </div>
