@@ -43,11 +43,13 @@ function Login(){
         console.log(respostaHTTP);
         
         if(respostaHTTP.status === 200){
+            const data = respostaHTTP.data.token;
+            localStorage.setItem("token", data)
             Alert.alertTimer(SucessImage, "Seja bem-vindo!");
             navigate("/menu")
         }
         
-        if(await respostaHTTP.response.status === 403){
+        if(respostaHTTP.status === 403){
             Alert.alert(ErrorImage, "Credenciais inválidas");
         }
 
