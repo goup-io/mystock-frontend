@@ -14,7 +14,6 @@ import Historico from '../components/pages/historico/Historico.js'
 
 //Transacoes
 import Transacoes from '../components/pages/transacoes/Transacoes.js'
-
 import Usuario from '../components/pages/usuario/Usuario.js'
 
 //Pagamentos
