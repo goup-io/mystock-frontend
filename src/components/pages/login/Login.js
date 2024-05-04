@@ -29,7 +29,7 @@ function Login(){
 
         event.preventDefault()
         if(email === "" || email === null || email === undefined){
-            Alert.alert(ErrorImage, "Informe o seu e-mail")
+            Alert.alert(ErrorImage, "Informe o seu usuário")
             return
         }
 

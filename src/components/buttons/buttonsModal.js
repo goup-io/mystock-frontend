@@ -1,7 +1,13 @@
 function ButtonModal(props){
+
+    var style = {
+        backgroundColor: props.cor === undefined ? "#355070" : props.cor,
+    }
+    console.log(props.cor)
+
     return(
-         <button onClick={props.funcao} class="px-4 font-medium bg-[#355070] rounded text-white ">
-             <span class="text-white text-base">{props.children}</span>
+         <button style={style} onClick={props.funcao} className="px-4 font-medium rounded text-white ">
+             <span className="text-white text-base">{props.children}</span>
          </button>
     )
 }

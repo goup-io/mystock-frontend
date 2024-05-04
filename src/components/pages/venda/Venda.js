@@ -220,7 +220,7 @@ function Venda() {
     function ItemCarrinho(props) {
         return (
     
-            <tr class="bg-[#DEE2FF] h-16 rounded" >
+            <tr class="bg-[#DEE2FF] h-24 rounded" >
                 <td class="">
                     <p class="font-medium text-[1.4rem]">{props.codigoProduto}</p>
                 </td>
@@ -315,8 +315,8 @@ function Venda() {
                             </tbody>
                         </Tabela>
                         {itemsCarrinho.length == 0 ? null : 
-                            <div class="bg-[#355070] flex flex-row mt-[-24px] w-full h-14 rounded-b-lg font-bold items-center justify-end">
-                                <p class="text-right pr-12 text-2xl text-white">Subtotal: R$ {subTotal2.toFixed(2)}</p>
+                            <div class="bg-[#355070] flex flex-row mt-[-24px] w-full h-11 rounded-b-lg font-bold items-center justify-end">
+                                <p class="text-right pr-12 text-[1.2rem] text-white">Subtotal: R$ {subTotal2.toFixed(2)}</p>
                             </div>
                         }  
                         
