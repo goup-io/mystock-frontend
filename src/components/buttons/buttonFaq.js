@@ -32,7 +32,7 @@ function ButtonFaq(props) {
     return (
         <>
             <a onClick={toggleModal} className="cursor-pointer">
-                <img className='w-[2.3rem]' src={faqIcon02} alt="FAQ"></img>
+                <img className='w-[2.3rem] duration-150 ease-in-out hover:scale-[1.03]' src={faqIcon02} alt="FAQ"></img>
             </a>
             {modalFaqAberto && (
                 <div onClose={toggleModal} className={`w-72 absolute  ${props.position === "right" ? " bottom-[2.7rem] right-[-140px]" : "bottom-[3.5rem] left-[178px]"} transform -translate-x-1/2 bg-[#355070] shadow-md p-4 rounded z-10`}>

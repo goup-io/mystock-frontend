@@ -18,6 +18,11 @@ function CaixaTexto(props) {
 }
 
 function ItemCarrinho(props) {
+
+    var style = {
+        backgroundColor: props.par === undefined ? "#E7E7E7" : "#D0D4F0",
+    }
+    
     return (
         <tr className="bg-[#E7E7E7] h-20 rounded-md shadow p-5 pl-5 text-left">
             <td className='pl-5'>

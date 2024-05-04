@@ -2,7 +2,11 @@ import Header from '../../header/Header.js'
 import PageLayout from '../PageLayout.js'
 import Input from '../../inputs/inputAndLabelModal.js'
 import ItemSeparadoPorLinhaTracejada from '../../tables/ItemSeparadoPorLinhaTracejada.js'
+
+//Tabela
 import Tabela from '../../tables/TableRoundedBorderSpacing.js'
+import tabelaEstilos from '../../tables/TableRoundedBorderSpacing.module.css'
+
 
 //Modais
 import AbrirModalAddProdCart from "../../modals/modals-produto/modalAddProdCart.js"
@@ -92,25 +96,25 @@ function ItemCarrinho(props) {
     return (
 
         <tr class="bg-[#DEE2FF] h-16 rounded ">
-            <td class="">
+            <td className={tabelaEstilos.tabelaLinhaRounded} class="">
                 <p class="font-medium text-[1.4rem]">{props.codigoProduto}</p>
             </td>
-            <td>
+            <td className={tabelaEstilos.tabelaLinhaRounded}>
                 <p class="font-medium text-[1.4rem]">{props.descricaoProduto}</p>
             </td>
-            <td>
+            <td className={tabelaEstilos.tabelaLinhaRounded}>
                 <p class="font-medium text-[1.4rem]">{props.precoUnitario}</p>
             </td>
-            <td>
+            <td className={tabelaEstilos.tabelaLinhaRounded}>
                 <p class="font-medium text-[1.4rem]">{props.quantidade}</p>
             </td>
-            <td>
+            <td className={tabelaEstilos.tabelaLinhaRounded}>
                 <p class="font-medium text-[1.4rem]">{props.descontoUnitario}</p>
             </td>
-            <td>
+            <td className={tabelaEstilos.tabelaLinhaRounded}>
                 <p class="font-medium text-[1.4rem]">{props.precoLiquido}</p>
             </td>
-            <td>
+            <td className={tabelaEstilos.tabelaLinhaRounded}>
                 <div class="flex flex-row items-center gap-12 justify-center">
                     <ButtonEdit
                         width={40}
@@ -124,11 +128,6 @@ function ItemCarrinho(props) {
     )
 }
 
-function cadastrarProduto() {
-    return (
-        <AbrirModalCadastreProd />
-    )
-}
 
 function Venda() {
 
@@ -145,7 +144,6 @@ function Venda() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log(itemsCarrinho)
 
         let subTotal1 = 0;
         let subTotal2 = 0;
@@ -153,9 +151,10 @@ function Venda() {
         let valorTotal = 0;
 
         itemsCarrinho.forEach(element => {
-            subTotal1 += element.props.precoUnitario;
-            subTotal2 += element.props.precoUnitario - element.props.descontoUnitario;
-            descontoProdutos += element.props.descontoUnitario;
+
+            subTotal1 += element.props.precoUnitario * element.props.quantidade;
+            subTotal2 += (element.props.precoUnitario - element.props.descontoUnitario) * element.props.quantidade;
+            descontoProdutos += element.props.descontoUnitario * element.props.quantidade;
             valorTotal += (element.props.precoUnitario - element.props.descontoUnitario) * element.props.quantidade;
         });
 
@@ -171,13 +170,35 @@ function Venda() {
         setItemsCarrinho(prevItemsCarrinho => {
 
             var ItemsCarrinhoAux = []
+            var encontrouRepetido = false;
 
             prevItemsCarrinho.forEach(element => {
-                ItemsCarrinhoAux.push(element)
-            });
+        
+                if(element.props.codigoProduto === item.codigoProduto){
 
+                    var quantidade = element.props.quantidade + 1
+
+                    ItemsCarrinhoAux.push(
+                        <ItemCarrinho
+                            id={contadorId}
+                            key={contadorId}
+                            codigoProduto={element.props.codigoProduto}
+                            descricaoProduto={element.props.descricaoProduto}
+                            precoUnitario={element.props.precoUnitario}
+                            quantidade={quantidade}
+                            descontoUnitario={element.props.descontoUnitario}
+                            precoLiquido={element.props.precoUnitario - element.props.descontoUnitario}
+                        />)
+                    encontrouRepetido = true;
+
+                }else{
+                    ItemsCarrinhoAux.push(element)
+                }
+            });
+            
+            if(!encontrouRepetido){
             ItemsCarrinhoAux.push(            
-                    <ItemCarrinho
+                <ItemCarrinho
                     id={contadorId}
                     key={contadorId}
                     codigoProduto={item.codigoProduto}
@@ -185,10 +206,10 @@ function Venda() {
                     precoUnitario={item.precoUnitario}
                     quantidade={item.quantidade}
                     descontoUnitario={item.descontoUnitario}
-                    precoLiquido={(item.precoUnitario - item.descontoUnitario) * item.quantidade}
+                    precoLiquido={item.precoUnitario - item.descontoUnitario}
                     />
                 )
-
+            }
             return ItemsCarrinhoAux;
         });
 
@@ -207,8 +228,21 @@ function Venda() {
                     ItemsCarrinhoAux.push(element)
 
                 }else{
-                    item = element.props
-                    console.log(element.props)
+                    if(element.props.quantidade > 1){
+
+                        var quantidade = element.props.quantidade - 1; 
+
+                        ItemsCarrinhoAux.push( <ItemCarrinho
+                            id={element.props.contadorId}
+                            key={element.props.contadorId}
+                            codigoProduto={element.props.codigoProduto}
+                            descricaoProduto={element.props.descricaoProduto}
+                            precoUnitario={element.props.precoUnitario}
+                            quantidade={quantidade}
+                            descontoUnitario={element.props.descontoUnitario}
+                            precoLiquido={element.props.precoUnitario - element.props.descontoUnitario}
+                        />)
+                    }
                 }
             });
 
@@ -219,8 +253,7 @@ function Venda() {
     
     function ItemCarrinho(props) {
         return (
-    
-            <tr class="bg-[#DEE2FF] h-16 rounded" >
+            <tr class="bg-[#DEE2FF] h-24 rounded" >
                 <td class="">
                     <p class="font-medium text-[1.4rem]">{props.codigoProduto}</p>
                 </td>
@@ -253,6 +286,7 @@ function Venda() {
                     </div>
                 </td>
             </tr>
+        
         )
     }
 
@@ -313,12 +347,15 @@ function Venda() {
                             <tbody>
                                 {itemsCarrinho.length == 0 ? null : itemsCarrinho}
                             </tbody>
+ 
                         </Tabela>
-                        {itemsCarrinho.length == 0 ? null : 
-                            <div class="bg-[#355070] flex flex-row mt-[-24px] w-full h-14 rounded-b-lg font-bold items-center justify-end">
-                                <p class="text-right pr-12 text-2xl text-white">Subtotal: R$ {subTotal2.toFixed(2)}</p>
-                            </div>
-                        }  
+                                {itemsCarrinho.length == 0 ? null : 
+                                    <div class="bg-[#DEE2FF] flex flex-row mt-[-24px] w-full h-11 rounded-b-lg ">
+                                        <div class="bg-[#354f7014] flex flex-row w-full h-11 rounded-b-lg items-center justify-end">
+                                            <p class="text-right pr-12 text-[1.3rem] font-bold text-black">Subtotal: R$ {subTotal2.toFixed(2)}</p>
+                                        </div>
+                                    </div>
+                                } 
                         
                     </div>
                 </div>
@@ -355,8 +392,10 @@ function Venda() {
                         />
                     </div>
                     <div class="flex flex-col w-full gap-2 my-2 px-5">
-                        <Button>
-                            <p class="text-[1.1rem] p-2">ADICIONAR DESCONTO À VENDA</p>
+                        <Button
+                        cor={"#DEE2FF"}
+                        >
+                            <p class="text-[1.1rem] font-semibold p-2 text-black">ADICIONAR DESCONTO À VENDA</p>
                         </Button>
                         <Button
                             funcao={() => navigate("/venda/caixa")}
