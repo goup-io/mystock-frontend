@@ -39,17 +39,31 @@ function Login() {
         }
 
         const respostaHTTP = await ApiRequest.userLogin(usuario, senha);
-        console.log(respostaHTTP.status);
+        console.log(respostaHTTP);
 
         if (respostaHTTP.status === 403) {
             Alert.alert(ErrorImage, "Credenciais inválidas");
         }
 
         if (respostaHTTP.status === 200) {
-            const data = respostaHTTP.data.token;
+            var data = respostaHTTP.data.token;
             localStorage.setItem("token", data);
-            Alert.alertTimer(SucessImage, "Seja bem-vindo!");
-            navigate("/menu");
+
+            if (respostaHTTP.data.contexto === "usuario") {
+                localStorage.setItem("user_id", respostaHTTP.data.idUser);
+                Alert.alertTimer(SucessImage, "Seja bem-vindo!");
+                navigate("/dashboard-geral");
+            } 
+            if (respostaHTTP.data.contexto === "loja"){
+                localStorage.setItem("loja_id", respostaHTTP.data.idLoja);
+                if(respostaHTTP.data.tipoLogin === "AREA_VENDA"){
+                    Alert.alertTimer(SucessImage, "Seja bem-vindo!");
+                    navigate("/menu");
+                } else {
+                    Alert.alertTimer(SucessImage, "Seja bem-vindo!");
+                    navigate("/venda/caixa");
+                }
+            }
         }
     }
 

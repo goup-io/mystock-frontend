@@ -2,81 +2,83 @@ import axios from 'axios'
 
 const springEndPoint = "http://localhost:8080";
 
-var header = {     
+var header = {
     "Content-Type": "application/json",
     "Authorization": `Bearer ${localStorage.getItem("token")}`
 }
 
-export class ApiRequest{
-    
-// ***************************************************************************
-// *  LOGIN
-// ***************************************************************************
+export class ApiRequest {
 
-    static async userLogin(email, senha){
+    // ***************************************************************************
+    // *  LOGIN
+    // ***************************************************************************
+
+    static async userLogin(email, senha) {
 
         const usuario = {
-            "user" : email,
-            "senha" : senha,
+            "user": email,
+            "senha": senha,
         }
 
         console.log("entrou aqui na login")
 
-        try{
+        try {
             const resposta = await axios.post(springEndPoint + "/auth/login", usuario);
-                return resposta
-        }catch(erro){
+            var data = resposta.data.token;
+            localStorage.setItem("token", data);
+            return resposta;
+        } catch (erro) {
             return {
                 status: erro.response.status,
                 data: erro.response.data
             };
         }
-        
+
     }
 
-    static async userLogout(){
+    static async userLogout() {
 
-        try{
+        try {
             const resposta = await axios.post(springEndPoint + "/auth/logout");
-        
-            if(resposta.status ==  200){
+
+            if (resposta.status == 200) {
                 localStorage.setItem("token", "")
             }
-    
+
             return resposta
 
-        }catch(erro){
+        } catch (erro) {
             return erro;
         }
 
     }
-    
-    static async loginCreate(user, senha, userId){
-        
+
+    static async loginCreate(user, senha, userId) {
+
         const usuario = {
             "user": user,
-            "senha" : senha,
-            "userId" : userId
+            "senha": senha,
+            "userId": userId
         }
 
-        try{
+        try {
             const resposta = await axios.post(springEndPoint + "/auth/register/user", usuario);
 
             return resposta;
 
-        }catch(error){
+        } catch (error) {
             return error
         }
 
     }
 
-    static async recuperarSenha(email){
-        try{
+    static async recuperarSenha(email) {
+        try {
             const resposta = await axios.post(springEndPoint + `/auth/redefinir-senha/enviar-email/${email}`);
 
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return {
                 status: erro.response.status,
                 data: erro.response.data
@@ -85,16 +87,16 @@ export class ApiRequest{
     }
 
 
-    static async resetSenha(senha, token){
+    static async resetSenha(senha, token) {
         const senhaObj = {
             "senha": senha
         }
-        try{
+        try {
             const resposta = await axios.post(springEndPoint + `/auth/redefinir-senha/alterar-senha?token=${token}`, senhaObj);
 
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return {
                 status: erro.response.status,
                 data: erro.response.data
@@ -103,44 +105,44 @@ export class ApiRequest{
     }
 
     // ***************************************************************************
-// *  LOJA
-// ***************************************************************************   
+    // *  LOJA
+    // ***************************************************************************   
 
-    static async lojaCreate(user, senha, idAcessoLoja, idLoja){
-        
-        try{
+    static async lojaCreate(user, senha, idAcessoLoja, idLoja) {
+
+        try {
             const loja = {
-                "user" : user,
-                "senha" : senha,
-                "idAcessoLoja" : idAcessoLoja,
-                "idLoja" : idLoja
+                "user": user,
+                "senha": senha,
+                "idAcessoLoja": idAcessoLoja,
+                "idLoja": idLoja
             }
-    
+
             const resposta = await axios.post(springEndPoint + "/auth/register/loja", loja);
-    
+
             return resposta;
 
-        }catch(error){
+        } catch (error) {
             return error
         }
 
 
     }
 
-    static async lojaGetAll(){
+    static async lojaGetAll() {
 
         const resposta = await axios.get(springEndPoint + "/lojas", {
-            headers : header
+            headers: header
         });
 
         return resposta;
     }
 
-// ***************************************************************************
-// *  USUARIO
-// ***************************************************************************    
+    // ***************************************************************************
+    // *  USUARIO
+    // ***************************************************************************    
 
-    static async userCreate(objetoAdicionado){
+    static async userCreate(objetoAdicionado) {
 
         const funcionario = {
             "nome": objetoAdicionado.nome,
@@ -149,32 +151,32 @@ export class ApiRequest{
             "telefone": objetoAdicionado.celular,
             "idLoja": objetoAdicionado.idLoja
         }
-console.log(funcionario);
+        console.log(funcionario);
         const resposta = await axios.post(springEndPoint + "/usuarios", funcionario, {
-            headers : header,
+            headers: header,
         });
 
     }
 
-    static async userDelete(id){
+    static async userDelete(id) {
 
-        try{
+        try {
             const resposta = await axios.delete(springEndPoint + `/usuarios/${id}`, {
-                headers : header,
+                headers: header,
             });
-    
+
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro
         }
 
 
     }
 
-    static async userUpdate(id, nome, idCargo, email, telefone, idLoja){
+    static async userUpdate(id, nome, idCargo, email, telefone, idLoja) {
 
-        try{
+        try {
             const funcionario = {
                 "nome": nome,
                 "email": email,
@@ -182,684 +184,684 @@ console.log(funcionario);
                 "idCargo": idCargo,
                 "idLoja": idLoja
             }
-    
+
             const resposta = await axios.put(springEndPoint + `/usuarios/${id}`, funcionario, {
-                headers : header,
+                headers: header,
             });
-    
+
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro
         }
 
     }
 
-// ***************************************************************************
-// *  CARGO
-// ***************************************************************************
+    // ***************************************************************************
+    // *  CARGO
+    // ***************************************************************************
 
-    static async cargoCreate(nome, descricao){
-        
+    static async cargoCreate(nome, descricao) {
+
         const cargo = {
-            "nome" : nome,
-            "descricao" : descricao,
+            "nome": nome,
+            "descricao": descricao,
         }
 
-        try{
+        try {
             const resposta = await axios.post(springEndPoint + "/cargos", cargo, {
-                headers : header,
+                headers: header,
             });
-    
+
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro
         }
 
     }
 
-    static async cargoGetAll(){
+    static async cargoGetAll() {
 
-        try{
+        try {
             const resposta = await axios.get(springEndPoint + "/cargos", {
-                headers : header
+                headers: header
             });
-    
+
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro
         }
     }
 
-    static async cargoGetById(id){
+    static async cargoGetById(id) {
 
-        try{
+        try {
             const resposta = await axios.get(springEndPoint + `/cargos/${id}`, {
-                headers : header
+                headers: header
             });
-    
+
             return resposta;
-        }catch(erro){
+        } catch (erro) {
             return erro
         }
     }
 
-    static async cargoDelete(id){
+    static async cargoDelete(id) {
 
-        try{
+        try {
             const resposta = await axios.delete(springEndPoint + `/cargos/${id}`, {
-                headers : header
+                headers: header
             });
-    
+
             return resposta;
-        }catch(erro){
+        } catch (erro) {
             return erro
         }
     }
 
-    static async cargoUpdate(id, nome, descricao){
+    static async cargoUpdate(id, nome, descricao) {
 
         const cargo = {
-            "nome" : nome,
-            "descricao" : descricao,
+            "nome": nome,
+            "descricao": descricao,
         }
 
-        try{
+        try {
             const resposta = await axios.put(springEndPoint + `/cargos/${id}`, cargo, {
-                headers : header,
+                headers: header,
             });
-    
+
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro
         }
     }
 
-    static async cargoUpdateDescricao(id, descricao){
+    static async cargoUpdateDescricao(id, descricao) {
 
         const cargo = {
-            "descricao" : descricao,
+            "descricao": descricao,
         }
 
-        try{
+        try {
             const resposta = await axios.put(springEndPoint + `/cargos/descricao/${id}`, cargo, {
-                headers : header
+                headers: header
             });
-    
+
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro
         }
     }
 
-// ***************************************************************************
-// *  PRODUTO
-// ***************************************************************************
-    
-    static async produtoCreate(idCor, idModelo, valorCusto, valorRevenda){
+    // ***************************************************************************
+    // *  PRODUTO
+    // ***************************************************************************
 
-        try{
+    static async produtoCreate(idCor, idModelo, valorCusto, valorRevenda) {
+
+        try {
             const produto = {
                 "idCor": idCor,
                 "idModelo": idModelo,
                 "valorCusto": valorCusto,
                 "valorRevenda": valorRevenda
             }
-    
-            const resposta = await  axios.post(springEndPoint + "/produtos", produto, {
-                headers : header,
+
+            const resposta = await axios.post(springEndPoint + "/produtos", produto, {
+                headers: header,
             });
-    
+
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro
         }
 
     }
 
-    static async produtoGetAll(){
+    static async produtoGetAll() {
 
-        try{
+        try {
             const resposta = await axios.post(springEndPoint + "/produtos", {
-                headers : header
+                headers: header
             });
-    
+
             return resposta;
-        }catch(erro){
+        } catch (erro) {
             return erro
         }
     }
 
-    static async produtoGetById(id, idCor, idModelo){
+    static async produtoGetById(id, idCor, idModelo) {
 
         var query = "";
 
-        if(id != undefined){
+        if (id != undefined) {
             query += `id=${id}`;
         }
 
-        if(idCor != undefined){
-            if(query != ""){
+        if (idCor != undefined) {
+            if (query != "") {
                 query += "&"
             }
             query += `idCor=${id}`;
         }
 
-        if(idModelo != undefined){
-            if(query != ""){
+        if (idModelo != undefined) {
+            if (query != "") {
                 query += "&"
             }
             query += `idModelo=${id}`;
         }
 
-        try{
+        try {
             var resposta = await axios.get(springEndPoint + `/produtos/especifico?${query}`, {
-                headers : header
+                headers: header
             });
 
             return resposta;
 
-        }catch(erro){
-            return erro;   
+        } catch (erro) {
+            return erro;
         }
 
     }
 
-// ***************************************************************************
-// *  COR
-// ***************************************************************************
+    // ***************************************************************************
+    // *  COR
+    // ***************************************************************************
 
-    static async corCreate(nome){
-        
-        try{
+    static async corCreate(nome) {
+
+        try {
             const cor = {
-                "nome" : nome,
+                "nome": nome,
             }
-    
+
             const resposta = await axios.post(springEndPoint + "/cores", cor, {
-                headers : header,
+                headers: header,
             });
-    
+
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro;
         }
     }
-    
-    static async corGetAll(){
-        
-        try{
+
+    static async corGetAll() {
+
+        try {
             const resposta = await axios.get(springEndPoint + "/cores", {
-                headers : header
+                headers: header
             });
-    
+
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro;
         }
     }
 
-    static async corGetById(id){
-        
-        try{
+    static async corGetById(id) {
+
+        try {
             const resposta = await axios.get(springEndPoint + `/cores/${id}`, {
-                method : "GET",
-                headers : header
+                method: "GET",
+                headers: header
             });
-    
+
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro;
         }
     }
-    
-    static async corDelete(id){
-        
-        try{
+
+    static async corDelete(id) {
+
+        try {
             const resposta = await axios.delete(springEndPoint + `/cores/${id}`, {
-                headers : header
+                headers: header
             });
-    
+
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro;
         }
     }
 
-    static async corUpdate(id, nome){
-        
-        try{
+    static async corUpdate(id, nome) {
+
+        try {
             const cor = {
-                "nome" : nome
+                "nome": nome
             }
-    
+
             const resposta = await axios.put(springEndPoint + `/cores/${id}`, cor, {
-                headers : header,
+                headers: header,
             });
-    
+
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro;
         }
     }
 
-// ***************************************************************************
-// *  CATEGORIA
-// ***************************************************************************
+    // ***************************************************************************
+    // *  CATEGORIA
+    // ***************************************************************************
 
-    static async categoriaCreate(nome){
-        
-        try{
+    static async categoriaCreate(nome) {
+
+        try {
             const categoria = {
-                "nome" : nome,
+                "nome": nome,
             }
-    
+
             const resposta = await axios.post(springEndPoint + "/categorias", categoria, {
-                headers : header,
+                headers: header,
             });
-    
+
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro;
         }
     }
 
-    static async categoriaGetAll(){
-        
-        try{
+    static async categoriaGetAll() {
+
+        try {
             const resposta = await axios.get(springEndPoint + "/categorias", {
-                headers : header
+                headers: header
             });
-    
+
             return resposta;
-        }catch(erro){
+        } catch (erro) {
             return erro;
         }
-    
+
     }
 
-    static async categoriaGetById(id){
-        
-        try{
+    static async categoriaGetById(id) {
+
+        try {
             const resposta = await axios.get(springEndPoint + `/categorias/${id}`, {
-                headers : header
+                headers: header
             });
-    
-        return resposta;
-        }catch(erro){
+
+            return resposta;
+        } catch (erro) {
             return erro;
         }
     }
 
-    static async categoriaDelete(id){
-        
-        try{
+    static async categoriaDelete(id) {
+
+        try {
             const resposta = await axios.delete(springEndPoint + `/categorias/${id}`, {
-                headers : header
+                headers: header
             });
-    
+
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro;
         }
     }
 
-    static async categoriaUpdate(id, nome){
-        
-        try{
+    static async categoriaUpdate(id, nome) {
+
+        try {
             const categoria = {
-                "nome" : nome
+                "nome": nome
             }
-    
+
             const resposta = await axios.put(springEndPoint + `/categorias/${id}`, categoria, {
-                headers : header,
+                headers: header,
             });
-    
+
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro;
         }
 
     }
 
-// ***************************************************************************
-// *  MODELO
-// ***************************************************************************  
+    // ***************************************************************************
+    // *  MODELO
+    // ***************************************************************************  
 
-    static async modeloCreate(codigo, nome, idCategoria, idTipo){
-           
-        try{
+    static async modeloCreate(codigo, nome, idCategoria, idTipo) {
+
+        try {
             const modelo = {
-                "codigo" : codigo,
-                "nome" : nome,
+                "codigo": codigo,
+                "nome": nome,
                 "idCategoria": idCategoria,
-                "idTipo" : idTipo
+                "idTipo": idTipo
             }
-    
+
             const resposta = await axios.post(springEndPoint + "/modelos", modelo, {
-                headers : header,
+                headers: header,
             });
-    
+
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro
         }
 
     }
 
-    static async modeloGetAll(){
-                   
-        try{
+    static async modeloGetAll() {
+
+        try {
             const resposta = await axios.get(springEndPoint + "/modelos", {
-                headers : header
+                headers: header
             });
-    
+
             return resposta;
-        }catch(erro){
+        } catch (erro) {
             return erro
         }
 
     }
 
-    static async modeloGetById(id){
-                   
-        try{
-            
+    static async modeloGetById(id) {
+
+        try {
+
             const resposta = await axios.get(springEndPoint + `/modelos/${id}`, {
-                headers : header
+                headers: header
             });
 
             return resposta;
-            
-        }catch(erro){
+
+        } catch (erro) {
             return erro
         }
 
     }
 
-    static async modeloGetByCodigo(codigo){
-                   
-        try{
+    static async modeloGetByCodigo(codigo) {
+
+        try {
             const resposta = await axios.get(springEndPoint + `/modelos/codigo/${codigo}`, {
-                headers : header
+                headers: header
             });
-    
+
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro
         }
 
     }
 
-    static async modeloDelete(id){
-                   
-        try{
-            
+    static async modeloDelete(id) {
+
+        try {
+
             const resposta = await axios.delete(springEndPoint + `/modelos/${id}`, {
-                headers : header
+                headers: header
             });
 
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro
         }
 
     }
 
-    static async modeloDeleteByCodigo(codigo){
-                   
-        try{
-            
+    static async modeloDeleteByCodigo(codigo) {
+
+        try {
+
             const resposta = await axios.delete(springEndPoint + `/modelos/codigo/${codigo}`, {
-                headers : header
+                headers: header
             });
 
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro
         }
 
     }
 
-    static async modeloUpdate(id, codigo, nome, idCategoria, idTipo){
-                   
-        try{
+    static async modeloUpdate(id, codigo, nome, idCategoria, idTipo) {
+
+        try {
             const modelo = {
-                "codigo" : codigo,
-                "nome" : nome,
+                "codigo": codigo,
+                "nome": nome,
                 "idCategoria": idCategoria,
-                "idTipo" : idTipo
+                "idTipo": idTipo
             }
-    
+
             const resposta = await axios.put(springEndPoint + `/modelos/${id}`, modelo, {
-                headers : header,
+                headers: header,
             });
-    
+
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro
         }
- 
+
     }
 
-    static async modeloUpdateByCodigo(codigo, nome, idCategoria, idTipo){
-                   
-        try{
-            
+    static async modeloUpdateByCodigo(codigo, nome, idCategoria, idTipo) {
+
+        try {
+
             const modelo = {
-                "codigo" : codigo,
-                "nome" : nome,
+                "codigo": codigo,
+                "nome": nome,
                 "idCategoria": idCategoria,
-                "idTipo" : idTipo
+                "idTipo": idTipo
             }
 
             const resposta = await axios.put(springEndPoint + `/modelos/codigo/${codigo}`, modelo, {
-                headers : header,
+                headers: header,
             });
 
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro
         }
 
     }
 
 
-// ***************************************************************************
-// *  TAMANHO
-// ***************************************************************************
+    // ***************************************************************************
+    // *  TAMANHO
+    // ***************************************************************************
 
-    static async tamanhoCreate(numero){
-                   
-        try{
+    static async tamanhoCreate(numero) {
+
+        try {
             const tamanho = {
-                "numero" : numero,
+                "numero": numero,
             }
-    
+
             const resposta = await axios.put(springEndPoint + "/tamanhos", tamanho, {
-                headers : header,
+                headers: header,
             });
-    
+
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro
         }
-        
+
     }
 
-    static async tamanhoGetAll(){
-                   
-        try{
+    static async tamanhoGetAll() {
+
+        try {
             const resposta = await axios.get(springEndPoint + "/tamanhos", {
-                headers : header
+                headers: header
             });
-    
+
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro
         }
 
     }
 
-    static async tamanhoGetById(id){
-                   
-        try{
-            
+    static async tamanhoGetById(id) {
+
+        try {
+
             const resposta = await axios.get(springEndPoint + `/tamanhos/${id}`, {
-                headers : header
+                headers: header
             });
 
             return resposta;
-            
-        }catch(erro){
+
+        } catch (erro) {
             return erro
         }
 
     }
 
-    static async tamanhoDelete(id){
-                   
-        try{
-            
+    static async tamanhoDelete(id) {
+
+        try {
+
             const resposta = await axios.delete(springEndPoint + `/tamanhos/${id}`, {
-                headers : header
+                headers: header
             });
 
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro
         }
 
     }
 
-    static async tamanhoUpdate(id, numero){
-                   
-        try{
-            
+    static async tamanhoUpdate(id, numero) {
+
+        try {
+
             const tamanho = {
-                "numero" : numero
+                "numero": numero
             }
 
             const resposta = await axios.put(springEndPoint + `/tamanhos/${id}`, tamanho, {
-                headers : header,
+                headers: header,
             });
 
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro
         }
 
     }
 
-// ***************************************************************************
-// *  TIPO
-// ***************************************************************************
+    // ***************************************************************************
+    // *  TIPO
+    // ***************************************************************************
 
-    static async tipoCreate(nome){
-                   
-        try{
-            
+    static async tipoCreate(nome) {
+
+        try {
+
             const tipo = {
-                "nome" : nome,
+                "nome": nome,
             }
 
             const resposta = await axios.post(springEndPoint + "/tipos", tipo, {
-                headers : header,
+                headers: header,
             });
 
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro
         }
 
     }
 
-    static async tipoGetAll(){
-                   
-        try{
-            
+    static async tipoGetAll() {
+
+        try {
+
             const resposta = await axios.get(springEndPoint + "/tipos", {
-                headers : header
+                headers: header
             });
 
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro
         }
 
     }
 
-    static async tipoGetById(id){
-                   
-        try{
-            
+    static async tipoGetById(id) {
+
+        try {
+
             const resposta = await axios.get(springEndPoint + `/tipos/${id}`, {
-                headers : header
+                headers: header
             });
 
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro
         }
 
     }
 
-    static async tipoDelete(id){
-                   
-        try{
-            
+    static async tipoDelete(id) {
+
+        try {
+
             const resposta = await axios.delete(springEndPoint + `/tipos/${id}`, {
-                headers : header
+                headers: header
             });
 
             return resposta;
-            
-        }catch(erro){
+
+        } catch (erro) {
             return erro
         }
 
     }
 
-    static async tipoUpdate(id, nome){
-                   
-        try{
+    static async tipoUpdate(id, nome) {
+
+        try {
             const tipo = {
-                "nome" : nome
+                "nome": nome
             }
-    
+
             const resposta = await axios.put(springEndPoint + `/tipos/${id}`, tipo, {
-                headers : header,
+                headers: header,
             });
-    
+
             return resposta;
 
-        }catch(erro){
+        } catch (erro) {
             return erro
         }
     }
@@ -873,22 +875,22 @@ console.log(funcionario);
     //             "Authorization": `Bearer ${Cookie.getCookie("token")}`
     //         } 
     //     });
-        
+
     // }
 
 
-// ***************************************************************************
-// *  CSV
-// ***************************************************************************
+    // ***************************************************************************
+    // *  CSV
+    // ***************************************************************************
 
-static async getCsvUsuario(options = {}) {
-    const resposta = await axios.get("http://" + springEndPoint + "/csv/todosUsuarios", {
-        headers : header,
-        responseType: 'arraybuffer', // Add this line
-    });
+    static async getCsvUsuario(options = {}) {
+        const resposta = await axios.get("http://" + springEndPoint + "/csv/todosUsuarios", {
+            headers: header,
+            responseType: 'arraybuffer', // Add this line
+        });
 
-    return resposta;
-}
+        return resposta;
+    }
 }
 
 export default ApiRequest;
