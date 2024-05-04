@@ -47,7 +47,7 @@ function Caixa(){
 
     return(
         <PageLayout>
-            <Header telaAtual="Área de Venda - Caixa"/>
+            <Header telaAtual="Área de Venda - Caixa" tipo="caixa"/>
             <div class="bg-[#fff] w-full h-[75vh] shadow-sm rounded-[10px] px-12 py-6">
                 <CaixaTexto titulo="PRÉ-VENDA">
                     <div class="px-12">
