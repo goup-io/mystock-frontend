@@ -36,21 +36,21 @@ var divPai = {
 var div2 = {
     backgroundColor: "#fff",
     boxShadow: "rgba(0, 0, 0, 0.25) 1px 4px 4px 0px",
-    borderRadius: "16px",
+    borderRadius: "6px",
     gridArea: "1 / 1 / 3 / 6",
 };
 
 var div1 = {
     backgroundColor: "#fff",
     boxShadow: "rgba(0, 0, 0, 0.25) 1px 4px 4px 0px",
-    borderRadius: "16px",
+    borderRadius: "6px",
     gridArea: "3 / 1 / 10 / 6",
 };
 
 var div3 = {
     backgroundColor: "#fff",
     boxShadow: "rgba(0, 0, 0, 0.25) 1px 4px 4px 0px",
-    borderRadius: "16px",
+    borderRadius: "6px",
     gridArea: "1 / 6 / 10 / 8",
 };
 
