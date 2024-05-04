@@ -11,6 +11,9 @@ import ApiRequest from '../../../connections/ApiRequest.js'
 
 import { json, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import Alert from '../../alerts/Alert.js';
+import ErrorImage from '../../../assets/icons/error.svg';
+import SucessImage from '../../../assets/icons/sucess.svg';
 
 function Reset() {
 
@@ -19,15 +22,43 @@ function Reset() {
     const [senha, setSenha] = useState("");
     const [confirmarSenha, setConfirmarSenha] = useState("");
 
-    async function handleClick() {
+    async function handleClick(event) {
 
-        // const respostaHTTP = await ApiRequest.userLogin(email, senha);
+        event.preventDefault()
 
-        // console.log(respostaHTTP);
-        // if (respostaHTTP.status == 200) {
-        //     alert("Deu certo")
-        //     navigate("/menu")
-        // }
+        if (!senha || senha === " ") {
+            Alert.alert(ErrorImage, "Digite a sua nova senha");
+            return
+        }
+        if (!confirmarSenha || confirmarSenha === " ") {
+            Alert.alert(ErrorImage, "Confirme sua senha");
+            return
+        }
+
+        if (senha !== confirmarSenha) {
+            Alert.alert(ErrorImage, "As senhas digitadas não coincidem. Por favor, tente novamente.");
+            return
+        }
+
+        const url = window.location.href;
+        const params = new URLSearchParams(new URL(url).search);
+        const token = params.get('token');
+
+        const respostaHTTP = await ApiRequest.resetSenha(senha, token);
+
+        console.log(respostaHTTP);
+        if (respostaHTTP.status === 404) {
+            Alert.alert(ErrorImage, "Não foi possível realizar a redefinição, tente novamente.");
+            return
+        }
+        if (respostaHTTP.status === 401) {
+            Alert.alert(ErrorImage, "Este link já foi utilizado anteriormente, tente novamente com um novo.");
+            return
+        }
+        if (respostaHTTP.status === 200) {
+            Alert.alert(SucessImage, "Senha redefinida!");
+            navigate("/");
+        }
     }
 
     function handleInput(evento, stateFunction) {
@@ -61,7 +92,7 @@ function Reset() {
                     <div class="flex flex-col items-start mb-[2rem]">
                         <p class="text-[1.06rem] mb-[0.5rem]">Confirmar Senha:</p>
                         <Input
-                            id="inputSenha"
+                            id="inputConfirmarSenha"
                             handleInput={handleInput}
                             handlerAtributeChanger={setConfirmarSenha}
                             value={confirmarSenha}
@@ -70,11 +101,11 @@ function Reset() {
                             placeholder="*******"
                         ></Input>
                     </div>
-                    <ButtonEnter funcao={handleClick}>Confirmar</ButtonEnter>
+                    <ButtonEnter funcao={(event) => handleClick(event)}>Confirmar</ButtonEnter>
                 </form>
 
                 <div class=" mb-[2.69rem] mt-[0.6rem]">
-                    <a class="text-[1.1rem]" href="">Entrar</a>
+                    <a class="text-[1.1rem]" href="/">Entrar</a>
                 </div>
             </div>
             <img class="absolute bottom-0 left-0" src={`${dots02}`}></img>

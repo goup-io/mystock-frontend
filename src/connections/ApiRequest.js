@@ -1,7 +1,6 @@
-import Cookie from './Cookie.js'
 import axios from 'axios'
 
-const springEndPoint = "https://mystock-mystock-backend.azuremicroservices.io";
+const springEndPoint = "http://localhost:8080";
 
 var header = {     
     "Content-Type": "application/json",
@@ -25,15 +24,12 @@ export class ApiRequest{
 
         try{
             const resposta = await axios.post(springEndPoint + "/auth/login", usuario);
-
-            if(resposta.status === 200){
-                const data = JSON.stringify(resposta);
-                localStorage.setItem("token", data.token)
                 return resposta
-            }
-
         }catch(erro){
-            return erro
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
         }
         
     }
@@ -72,6 +68,38 @@ export class ApiRequest{
             return error
         }
 
+    }
+
+    static async recuperarSenha(email){
+        try{
+            const resposta = await axios.post(springEndPoint + `/auth/redefinir-senha/enviar-email/${email}`);
+
+            return resposta;
+
+        }catch(erro){
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
+        }
+    }
+
+
+    static async resetSenha(senha, token){
+        const senhaObj = {
+            "senha": senha
+        }
+        try{
+            const resposta = await axios.post(springEndPoint + `/auth/redefinir-senha/alterar-senha?token=${token}`, senhaObj);
+
+            return resposta;
+
+        }catch(erro){
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
+        }
     }
 
     // ***************************************************************************
