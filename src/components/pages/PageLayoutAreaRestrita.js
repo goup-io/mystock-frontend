@@ -1,9 +1,7 @@
-import iconFaq from '../../assets/icons/faqIcon.svg'
-
 //Componentes
 import Menu from '../../components/menu/MenuLateral.js'
 import Header from '../../components/header/HeaderAR.js'
-
+import ButtonFaq from '../buttons/buttonFaq.js'
 
 import { useState, useEffect } from 'react'
 
@@ -22,7 +20,9 @@ function PageLayoutAreaRestrita(props){
                         {props.children}
                     </div>
 
-                    <img src={iconFaq} class="absolute bottom-3 right-3 w-8 cursor-pointer"/>
+                    <div className='absolute bottom-3 right-3'>
+                        <ButtonFaq position="right"></ButtonFaq>
+                    </div>
                 </div>
             </section>
         </>   
