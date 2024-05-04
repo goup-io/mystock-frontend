@@ -1,4 +1,5 @@
 import './TableRoundedBorderSpacing.css';
+import BorderTable from './TableRoundedBorderSpacing.css'
 
 function TableRoundedBorderSpacing(props){
 
@@ -7,7 +8,7 @@ function TableRoundedBorderSpacing(props){
     }
 
     return(
-        <table class="w-full rounded-lg table-fixed border-solid border-separate border-spacing-y-4" style={props != undefined ? style : ""}>
+        <table className={BorderTable} class="w-full rounded-lg table-fixed border-solid border-separate border-spacing-y-4" style={props != undefined ? style : ""}>
             {props.children}
         </table>
     )

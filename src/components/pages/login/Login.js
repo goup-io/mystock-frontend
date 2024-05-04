@@ -28,8 +28,8 @@ function Login() {
     async function handleClick(event) {
 
         event.preventDefault()
-        if (email === "" || email === null || email === undefined) {
-            Alert.alert(ErrorImage, "Informe o seu e-mail")
+        if(email === "" || email === null || email === undefined){
+            Alert.alert(ErrorImage, "Informe o seu usuário")
             return
         }
 
