@@ -42,7 +42,7 @@ function ItemCarrinho(props) {
             </td>
             <td>
                 <div className="flex flex-row items-center gap-4 justify-center">
-                    <Button cor="bg-[#919191]"><p className="text-[1rem] p-1 px-5">CANCELAR</p></Button>
+                    <Button cor={"#919191"}><p className="text-[1rem] p-1 px-5">CANCELAR</p></Button>
                     <Button><p className="text-[1rem] p-1 px-5">FINALIZAR VENDA</p></Button>
                 </div>
             </td>
