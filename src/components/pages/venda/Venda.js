@@ -392,8 +392,10 @@ function Venda() {
                         />
                     </div>
                     <div class="flex flex-col w-full gap-2 my-2 px-5">
-                        <Button>
-                            <p class="text-[1.1rem] p-2">ADICIONAR DESCONTO À VENDA</p>
+                        <Button
+                        cor={"#DEE2FF"}
+                        >
+                            <p class="text-[1.1rem] font-semibold p-2 text-black">ADICIONAR DESCONTO À VENDA</p>
                         </Button>
                         <Button
                             funcao={() => navigate("/venda/caixa")}
