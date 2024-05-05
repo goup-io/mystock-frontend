@@ -22,14 +22,14 @@ function Login() {
 
     const navigate = useNavigate();
 
-    const [email, setEmail] = useState("");
+    const [usuario, setUsuario] = useState("");
     const [senha, setSenha] = useState("");
 
     async function handleClick(event) {
 
         event.preventDefault()
-        if(email === "" || email === null || email === undefined){
-            Alert.alert(ErrorImage, "Informe o seu usuário")
+        if (usuario === "" || usuario === null || usuario === undefined) {
+            Alert.alert(ErrorImage, "Informe o seu usuario")
             return
         }
 
@@ -38,21 +38,33 @@ function Login() {
             return
         }
 
-        const respostaHTTP = await ApiRequest.userLogin(email, senha);
-
+        const respostaHTTP = await ApiRequest.userLogin(usuario, senha);
         console.log(respostaHTTP);
-        
-        if(respostaHTTP.status === 200){
-            const data = respostaHTTP.data.token;
-            localStorage.setItem("token", data)
-            Alert.alertTimer(SucessImage, "Seja bem-vindo!");
-            navigate("/menu")
-        }
-        
-        if(respostaHTTP.status === 403){
+
+        if (respostaHTTP.status === 403) {
             Alert.alert(ErrorImage, "Credenciais inválidas");
         }
 
+        if (respostaHTTP.status === 200) {
+            var data = respostaHTTP.data.token;
+            localStorage.setItem("token", data);
+
+            if (respostaHTTP.data.contexto === "usuario") {
+                localStorage.setItem("user_id", respostaHTTP.data.idUser);
+                Alert.alertTimer(SucessImage, "Seja bem-vindo!");
+                navigate("/dashboard-geral");
+            } 
+            if (respostaHTTP.data.contexto === "loja"){
+                localStorage.setItem("loja_id", respostaHTTP.data.idLoja);
+                if(respostaHTTP.data.tipoLogin === "AREA_VENDA"){
+                    Alert.alertTimer(SucessImage, "Seja bem-vindo!");
+                    navigate("/menu");
+                } else {
+                    Alert.alertTimer(SucessImage, "Seja bem-vindo!");
+                    navigate("/venda/caixa");
+                }
+            }
+        }
     }
 
     function handleInput(evento, stateFunction) {
@@ -77,10 +89,10 @@ function Login() {
                             id="inputEmail"
                             handleInput={handleInput}
                             type="text"
-                            handlerAtributeChanger={setEmail}
+                            handlerAtributeChanger={setUsuario}
                             icon={`${userIcon}`}
-                            value={email}
-                            placeholder="seu@email.com"
+                            value={usuario}
+                            placeholder="usuario"
                         ></Input>
                     </div>
                     <div class="flex flex-col items-start mb-[2.1rem]">
@@ -98,11 +110,11 @@ function Login() {
                     <ButtonEnter funcao={(event) => handleClick(event)}>Entrar</ButtonEnter>
                 </form>
                 <div class=" mb-[1rem] mt-[0.6rem]">
-                    <a class="text-[1.2rem]" href="">Esqueci a senha</a>
+                    <a class="text-[1.2rem]" href="/forgot">Esqueci a senha</a>
                 </div>
                 <div class="mb-[1rem]">
                     <p class="text-[1.2rem]">Não tem acesso ao nosso sistema?</p>
-                    <a class="text-[1.2rem] underline" href="">Entre em contato conosco!</a>
+                    <a class="text-[1.2rem] underline" href="mailto:goup.contactus@gmail.com">Entre em contato conosco!</a>
                 </div>
             </div>
             <img class="absolute bottom-0 left-0" src={`${dots02}`}></img>

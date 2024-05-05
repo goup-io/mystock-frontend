@@ -7,16 +7,26 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { useNavigate } from 'react-router-dom';
 
-function ButtonMenu(props){
+function ButtonMenu(props) {
 
     const navigate = useNavigate();
 
     var icon = props.icon == "crossed" ? menuIconCrossed : menuIcon
 
-    return(
-        <a onClick={() => navigate("/menu")} class="cursor-pointer">
-            <img src={icon}></img>
-        </a>
+    return (
+
+        props.tipo === "caixa" ?
+            <>
+                <a onClick={() => navigate("/menuCaixa")} class="cursor-pointer">
+                    <img src={icon}></img>
+                </a>
+            </>
+            :
+            <>
+                <a onClick={() => navigate("/menu")} class="cursor-pointer">
+                    <img src={icon}></img>
+                </a>
+            </>
     )
 }
 
