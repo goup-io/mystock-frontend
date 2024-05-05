@@ -33,7 +33,7 @@ export class Alert{
             imageUrl: icone,
             timerProgressBar: true,
             timerProgressBarColor: "#355070",
-            timer: 1000,
+            timer: 1500,
             title: mensagem,
             confirmButtonColor: "#355070"
             // heightAuto: true,

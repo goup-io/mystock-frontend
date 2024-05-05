@@ -11,22 +11,32 @@ import ApiRequest from '../../../connections/ApiRequest.js'
 
 import { json, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import Alert from '../../alerts/Alert.js';
+import ErrorImage from '../../../assets/icons/error.svg';
+import SucessImage from '../../../assets/icons/sucess.svg';
 
 function Forgot() {
 
     const navigate = useNavigate();
 
     const [email, setEmail] = useState("");
-    const [senha, setSenha] = useState("");
 
-    async function handleClick() {
+    async function handleClick(event) {
+        event.preventDefault();     
+        if (!email) {
+            Alert.alert(ErrorImage, "Informe o seu e-mail")
+            return;
+        }
 
-        const respostaHTTP = await ApiRequest.userLogin(email, senha);
+        const respostaHTTP = await ApiRequest.recuperarSenha(email);
 
         console.log(respostaHTTP);
-        if (respostaHTTP.status == 200) {
-            alert("Deu certo")
-            navigate("/menu")
+        if (respostaHTTP.status === 201) {
+            Alert.alert(SucessImage, "Email enviado com sucesso!")
+            setEmail("");
+        }
+        if (respostaHTTP.status === 404) {
+            Alert.alert(ErrorImage, "Email não encontrado")
         }
     }
 
@@ -59,11 +69,11 @@ function Forgot() {
                             placeholder="seu@email.com"
                         ></Input>
                     </div>
-                    <ButtonEnter funcao={handleClick}>Recuperar Senha</ButtonEnter>
+                    <ButtonEnter funcao={(event) => handleClick(event)}>Recuperar Senha</ButtonEnter>
                 </form>
 
                 <div class=" mb-[2rem] mt-[0.6rem]">
-                    <a class="text-[1.2rem]" href="">Entrar</a>
+                    <a class="text-[1.2rem]" href="/">Entrar</a>
                 </div>
                 <div class="mb-[1.69rem]">
                     <p class="text-[1.06rem]">Não tem acesso ao nosso sistema?</p>

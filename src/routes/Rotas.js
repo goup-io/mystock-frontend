@@ -23,6 +23,7 @@ import Venda from '../components/pages/venda/Venda.js'
 
 //Menu
 import Menu from '../components/pages/Menu.js'
+import MenuCaixa from '../components/pages/MenuCaixa.js';
 import DashboardGeral from '../components/pages/dashboards/DashboardGeral.js';
 import DashboardLoja from '../components/pages/dashboards/DashboardLoja.js';
 import DashboardFuncionario from '../components/pages/dashboards/DashboardFuncionario.js';
@@ -45,13 +46,17 @@ import AbrirModalComission from '../components/modals/modalComission.js';
 import AbrirModalSalesHistory from '../components/modals/modalSalesHistory.js';
 
 const Rotas = () => {
-    return(
+    return (
         <Router>
             <Routes>
 
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
                     <Route path="/menu" element={<Menu />} />
+                </Route>
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
+                    <Route path="/menuCaixa" element={<MenuCaixa />} />
                 </Route>
 
                 <Route path="/" element={<App />}>
@@ -110,7 +115,7 @@ const Rotas = () => {
                     <Route index element={<Login />} />
                     <Route path="/cadastro-produto" element={<ModalCadastreProd />} />
                 </Route>
-                
+
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
                     <Route path="/cadastro-modelo" element={<ModalCadastreModel />} />
@@ -155,7 +160,7 @@ const Rotas = () => {
                     <Route index element={<Login />} />
                     <Route path="/editar-produto" element={<ModalEditProd />} />
                 </Route>
-                
+
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
                     <Route path="/editar-modelo" element={<ModalEditModel />} />
