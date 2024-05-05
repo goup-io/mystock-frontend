@@ -75,10 +75,13 @@ function Pagamento() {
                                     infoDireita={"4"}
                                 />
                                 <ItemSeparadoPorLinhaTracejada
+                                    infoEsquerda={"Valor Total"}
+                                    infoDireita={"R$ 400,00"}
+                                />
+                                <ItemSeparadoPorLinhaTracejada
                                     infoEsquerda={"Valor Pago"}
                                     infoDireita={"R$ 395,00"}
                                 />
-
                             </div>
                             <div className='text-left'>
                                 <p className='text-[1rem] font-medium'>Fluxo de pagamento</p>
