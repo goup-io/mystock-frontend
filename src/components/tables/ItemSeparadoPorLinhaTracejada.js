@@ -8,8 +8,8 @@ function ItemSeparadoPorLinhaTracejada(props) {
     return (
         <>
             <li class="flex flex-row justify-between">
-                <p class="text-[1.3rem]">{props.infoEsquerda}</p>
-                <p class="text-[1.3rem]">{props.infoDireita}</p>
+                <p class="text-sm">{props.infoEsquerda}</p>
+                <p class="text-sm">{props.infoDireita}</p>
             </li>
             <DivisorTracejado />
         </>
