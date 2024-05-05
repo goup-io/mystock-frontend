@@ -27,6 +27,7 @@ import MenuCaixa from '../components/pages/MenuCaixa.js';
 import DashboardGeral from '../components/pages/dashboards/DashboardGeral.js';
 import DashboardLoja from '../components/pages/dashboards/DashboardLoja.js';
 import DashboardFuncionario from '../components/pages/dashboards/DashboardFuncionario.js';
+import Relatorio from '../components/pages/relatorio/Relatorio.js';
 import ModalAddProdCart from '../components/modals/modals-produto/modalAddProdCart.js';
 import ModalAddKitCart from '../components/modals/modals-kit/modalAddKitCart.js';
 import ModalCadastreProd from '../components/modals/modals-produto/modalCadastreProd.js';
@@ -104,6 +105,11 @@ const Rotas = () => {
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
                     <Route path="/dashboard-funcionario" element={<DashboardFuncionario />} />
+                </Route>
+
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
+                    <Route path="/relatorios" element={<Relatorio />} />
                 </Route>
 
                 <Route path="/" element={<App />}>
