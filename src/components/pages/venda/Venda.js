@@ -311,11 +311,11 @@ function Venda() {
             <div style={divPai}>
                 <div style={div1} class="shadow flex flex-col items-start py-4 px-8">
                     <div class="flex justify-between w-full text-2xl">
-                        <p class="font-semibold text-2xl">CARRINHO</p>
+                        <p class="font-semibold text-xl">CARRINHO</p>
                         <div class="flex flex-row-reverse w-2/3 gap-4 items-center">
-                            <Button funcao={() => AbrirModalAddProdCart(adicionarItemCarrinho)}><p class="flex justify-between w-full text-2xl">Adicionar Produto</p></Button>
+                            <Button funcao={() => AbrirModalAddProdCart(adicionarItemCarrinho)}><p class="flex justify-between w-full text-xl">Adicionar Produto</p></Button>
                             <Button funcao={() => AbrirModalAddKitCart()}>
-                                <p class="flex justify-between w-full text-2xl">Adicionar Kit</p>
+                                <p class="flex justify-between w-full text-xl">Adicionar Kit</p>
                             </Button>
                         </div>
                     </div>
@@ -360,16 +360,16 @@ function Venda() {
                     </div>
                 </div>
                 <div style={div2} class="shadow flex flex-col items-start px-8 justify-evenly">
-                    <p class="font-semibold text-2xl">DADOS BÁSICOS DA VENDA:</p>
+                    <p class="font-semibold text-xl">DADOS BÁSICOS DA VENDA:</p>
                     <div class="flex flex-row items-center align-middle gap-6">
-                        <div class="flex flex-row items-center text-[1.45rem] gap-3">
+                        <div class="flex flex-row items-center text-[1.1rem] gap-3">
                             <p>Cód. vendedor:</p>
                             <Input
                                 handleInput={handleInput}
                                 handlerAtributeChanger={setCodigoVendedor}
                             />
                         </div>
-                        <div class="flex flex-row items-center text-[1.45rem] gap-3">
+                        <div class="flex flex-row items-center text-[1.1rem] gap-3">
                             <p>Tipo Venda:</p>
                             <Input 
                                 handleInput={handleInput}
@@ -379,8 +379,8 @@ function Venda() {
                     </div>
                 </div>
                 <div style={div3} class="shadow flex flex-col items-center">
-                    <p class="font-semibold text-2xl mt-4">RESUMO DA VENDA</p>
-                    <div class="bg-[#F5F3F4] w-11/12 h-full rounded-[8px] my-4 mb-3">
+                    <p class="font-semibold text-xl mt-4">RESUMO DA VENDA</p>
+                    <div class="bg-[#F5F3F4] w-11/12 h-full rounded-[8px] my-3 mb-3">
                         <ResumoVenda
                             codigoVenda={1}
                             totalItens={itemsCarrinho.length}
@@ -395,12 +395,12 @@ function Venda() {
                         <Button
                         cor={"#DEE2FF"}
                         >
-                            <p class="text-[1.1rem] font-semibold p-2 text-black">ADICIONAR DESCONTO À VENDA</p>
+                            <p class="text-[1rem] font-semibold p-2 text-black">ADICIONAR DESCONTO À VENDA</p>
                         </Button>
                         <Button
                             funcao={() => navigate("/venda/caixa")}
                         >
-                            <p class="text-2xl p-2">FINALIZAR PRÉ-VENDA</p>
+                            <p class="text-xl p-2">FINALIZAR PRÉ-VENDA</p>
                         </Button>
                     </div>
                 </div>
