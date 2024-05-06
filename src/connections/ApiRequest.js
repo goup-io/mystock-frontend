@@ -302,14 +302,18 @@ export class ApiRequest {
     // *  PRODUTO
     // ***************************************************************************
 
-    static async produtoCreate(idCor, idModelo, valorCusto, valorRevenda) {
-
+    static async produtoCreate(produtoObj) {
+        console.log("Olha o que veio pro back ", produtoObj);
+        console.log(produtoObj.precoC)
+        console.log(produtoObj.precoR)
         try {
             const produto = {
-                "idCor": idCor,
-                "idModelo": idModelo,
-                "valorCusto": valorCusto,
-                "valorRevenda": valorRevenda
+                "idCor": produtoObj.idCor,
+                "idModelo": produtoObj.idModelo,
+                "idTamanho": produtoObj.idTamanho,
+                "nome": produtoObj.nome,
+                "valorCusto": produtoObj.precoC,
+                "valorRevenda": produtoObj.precoR
             }
 
             const resposta = await axios.post(springEndPoint + "/produtos", produto, {
