@@ -21,12 +21,20 @@ import Caixa from '../components/pages/venda/Caixa.js'
 import Pagamento from '../components/pages/venda/Pagamento.js'
 import Venda from '../components/pages/venda/Venda.js'
 
-//Menu
-import Menu from '../components/pages/Menu.js'
-import MenuCaixa from '../components/pages/MenuCaixa.js';
+//Dashboards
 import DashboardGeral from '../components/pages/dashboards/DashboardGeral.js';
 import DashboardLoja from '../components/pages/dashboards/DashboardLoja.js';
 import DashboardFuncionario from '../components/pages/dashboards/DashboardFuncionario.js';
+
+//Avisos
+import Aviso from '../components/pages/aviso/Aviso.js';
+
+//Relatorio
+import Relatorio from '../components/pages/relatorio/Relatorio.js';
+
+//Menu
+import Menu from '../components/pages/Menu.js'
+import MenuCaixa from '../components/pages/MenuCaixa.js';
 import AbrirModalCadastreLogin from '../components/modals/modals-user/modalCadastreLogin.js';
 import AbrirModalAddDiscount from '../components/modals/modalAddDiscount.js';
 import AbrirModalComission from '../components/modals/modalComission.js';
@@ -188,6 +196,16 @@ const Rotas = () => {
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
                     <Route path="/filtro" element={<Filter />} />
+                </Route>
+
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
+                    <Route path="/relatorios" element={<Relatorio />} />
+                </Route>
+
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
+                    <Route path="/avisos" element={<Aviso />} />
                 </Route>
 
             </Routes>
