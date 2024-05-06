@@ -18,9 +18,9 @@ function ModalCadastreProd() {
     const [nome, setNome] = useState("");
     const [precoCusto, setPrecoCusto] = useState("");
     const [precoRevenda, setPrecoRevenda] = useState("");
-    const [idModelo, setModelo] = useState("");
-    const [idTamanho, setTamanho] = useState("");
-    const [idCor, setCor] = useState("");
+    const [modelo, setModelo] = useState("");
+    const [tamanho, setTamanho] = useState("");
+    const [cor, setCor] = useState("");
     const [loading, setLoading] = useState(true);
 
 
@@ -90,7 +90,7 @@ useEffect(() => {
        const corObj = dadosCor.find(objCor => objCor.nome === cor);
        const idCor = corObj ? corObj.id : null;
 
-       const tamanhoObj = dadosTamanho.find(objTamanho => objTamanho.nome === tamanho);
+       const tamanhoObj = dadosTamanho.find(objTamanho => objTamanho.numero === tamanho);
        const idTamanho = tamanhoObj ? tamanhoObj.id : null;
    
        if(!idModelo || !idCor || !idTamanho || !nome || !precoCusto || !precoRevenda){
@@ -135,7 +135,7 @@ useEffect(() => {
                     <div className="flex justify-around ">
                         <ComboBoxModal
                             dadosBanco={dadosModelo.map(value => value.nome)}
-                            value={idModelo}
+                            value={modelo}
                             onChange={(e) => (e, setModelo)}
                             handleChange={handleChangeModelo}
                         >Modelo</ComboBoxModal>
@@ -149,15 +149,13 @@ useEffect(() => {
                     </div>
                     <div className="flex justify-around">
                         <ComboBoxModal
-                            dadosBanco={dadosTamanho.map(value => value.nome)}
-                            value={idTamanho}
-                            onChange={(e) => (e, setTamanho)}
+                            dadosBanco={dadosTamanho.map(value => value.numero)}
+                            value={tamanho}
                             handleChange={handleChangeTamanho}
                         >Tamanho</ComboBoxModal>
                         <ComboBoxModal
                             dadosBanco={dadosCor.map(value => value.nome)}
-                            value={idCor}
-                            onChange={(e) => (e, setCor)}
+                            value={cor}
                             handleChange={handleChangeCor}
                         >Cor</ComboBoxModal>
                     </div>
