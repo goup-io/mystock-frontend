@@ -7,8 +7,8 @@ function ButtonDownLoad(props){
     }
 
     return(
-      <button className="w-6 h-6 ">
-        <img  src={`${imgDownLoad}`}></img>
+      <button onClick={props.func} className="w-6 h-6 ">
+        <img src={`${imgDownLoad}`}></img>
       </button>
     )
 }
