@@ -29,8 +29,8 @@ function PageLayout(props){
 
     return(
         <section class="flex flex-col items-center h-[100vh] bg-[#F5F3F4] w-full justify-between ">
-            <div class="flex flex-row w-full justify-between px-8 pl-[5%] h-[3.2rem] ">
-                <img className='w-[12rem]' src={myStockLogo}></img>
+            <div class="flex flex-row w-full justify-between px-4 pl-[5%] h-[3.2rem] ">
+                <img className='w-[8rem]' src={myStockLogo}></img>
                 <Notification></Notification>
             </div>
 

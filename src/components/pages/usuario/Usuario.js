@@ -21,6 +21,7 @@ import React, { useState, useEffect } from 'react';
 import PageLayoutAreaRestrita from '../PageLayoutAreaRestrita.js'
 import AbrirModalComission from '../../modals/modalComission.js'
 import ButtonCancel from '../../buttons/buttonCancel.js'
+import ButtonDownLoad from '../../buttons/buttonDownLoad.js'
 
 async function csvTodosUsuarios() {
     const response = await ApiRequest.getCsvUsuario();
@@ -83,23 +84,23 @@ function Usuario() {
                 <TitleBox title="Usuários" buttons={buttons}></TitleBox>
                 <ChartBox >
 
-                    <div className='w-full h-[37rem]  flex justify-around flex-col items-center'>
+                    <div className='w-full h-[30rem] px-4 flex justify-start flex-col items-center'>
 
-                        <div className='w-11/12 flex justify-between'>
+                        <div className='w-full mt-2 flex justify-between'>
 
-                            <p className=' text-2xl'>USUÁRIOS CADASTRADOS:</p>
+                            <p className=' text-xl'>USUÁRIOS CADASTRADOS:</p>
 
-                            <div className='w-4/12 flex  justify-around'>
+                            <div className='w-[38%] flex justify-between items-center'>
                                 <InputSearcModal
                                     props="text"
                                 >Pesquisar</InputSearcModal>
 
-                                <ButtonCancel></ButtonCancel>
+                                <ButtonDownLoad></ButtonDownLoad>
                             </div>
 
                         </div>
 
-                        <div className=' w-[85rem] h-[32rem] bg-slate-700 border-solid border-[1px] border-slate-700  bg-slate-700 overflow-y-auto'>
+                        <div className=' w-full h-[22rem] mt-4 bg-slate-700 border-solid border-[1px] border-slate-700  bg-slate-700 overflow-y-auto'>
                             <TabelaPage colunas={colunas} dados={dados} edit remove />
                         </div>
                     </div>

@@ -1,7 +1,7 @@
 import Cookie from './Cookie.js'
 import axios from 'axios'
 
-const springEndPoint = "https://mystock-mystock-backend.azuremicroservices.io";
+const springEndPoint = "http://localhost:8080";
 
 var header = {     
     "Content-Type": "application/json",

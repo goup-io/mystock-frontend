@@ -27,23 +27,23 @@ import Menu from '../components/pages/Menu.js'
 import DashboardGeral from '../components/pages/dashboards/DashboardGeral.js';
 import DashboardLoja from '../components/pages/dashboards/DashboardLoja.js';
 import DashboardFuncionario from '../components/pages/dashboards/DashboardFuncionario.js';
-import ModalAddProdCart from '../components/modals/modals-produto/modalAddProdCart.js';
-import ModalAddKitCart from '../components/modals/modals-kit/modalAddKitCart.js';
-import ModalCadastreProd from '../components/modals/modals-produto/modalCadastreProd.js';
-import ModalCadastreModel from '../components/modals/modals-model/modalCadastreModel.js';
-import ModalCadastreUser from '../components/modals/modals-user/modalCadastreUser.js';
-import ModalEditProd from '../components/modals/modals-model/modalEditModel.js';
-import ModalEditModel from '../components/modals/modals-model/modalEditModel.js';
-import ModalEditUser from '../components/modals/modals-user/modalEditUser.js';
-import ModalCadastreKit from '../components/modals/modals-kit/modalCadastreKit.js';
-import ModalCadastreProdPreConfig from '../components/modals/modals-produto/modalCadastreProdPreConfig.js';
-import ModalComission from '../components/modals/modalComission.js';
-import ModalDiscount from '../components/modals/modalAddDiscount.js';
-import ModalEditKit from '../components/modals/modals-kit/modalEditKit.js';
 import AbrirModalCadastreLogin from '../components/modals/modals-user/modalCadastreLogin.js';
 import AbrirModalAddDiscount from '../components/modals/modalAddDiscount.js';
 import AbrirModalComission from '../components/modals/modalComission.js';
 import AbrirModalSalesHistory from '../components/modals/modalSalesHistory.js';
+import AbrirModalCadastreUser from '../components/modals/modals-user/modalCadastreUser.js';
+import AbrirModalEditProd from '../components/modals/modals-produto/modalEditProd.js';
+import AbrirModalEditModel from '../components/modals/modals-model/modalEditModel.js';
+import AbrirModalEditUser from '../components/modals/modals-user/modalEditUser.js';
+import AbrirModalEditKit from '../components/modals/modals-kit/modalEditKit.js';
+import AbrirModalCadastreProdPreConfig from '../components/modals/modals-produto/modalCadastreProdPreConfig.js';
+import AbrirModalCadastreKit from '../components/modals/modals-kit/modalCadastreKit.js';
+import AbrirModalCadastreModel from '../components/modals/modals-model/modalCadastreModel.js';
+import AbrirModalCadastreProd from '../components/modals/modals-produto/modalCadastreProd.js';
+import AbrirModalAddKitCart from '../components/modals/modals-kit/modalAddKitCart.js';
+import AbrirModalAddProdCart from '../components/modals/modals-produto/modalAddProdCart.js';
+import InputFilter from '../components/inputs/inputFilter.js';
+import Filter from '../components/inputs/filter.js';
 
 const Rotas = () => {
     return(
@@ -84,7 +84,7 @@ const Rotas = () => {
 
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
-                    <Route path="/adicionar-produto-carrinho" element={<ModalAddProdCart />} />
+                    <Route path="/adicionar-produto-carrinho" element={<AbrirModalAddProdCart />} />
                 </Route>
 
                 <Route path="/" element={<App />}>
@@ -104,32 +104,32 @@ const Rotas = () => {
 
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
-                    <Route path="/adicionar-kit-carrinho" element={<ModalAddKitCart />} />
+                    <Route path="/adicionar-kit-carrinho" element={<AbrirModalAddKitCart />} />
                 </Route>
 
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
-                    <Route path="/cadastro-produto" element={<ModalCadastreProd />} />
+                    <Route path="/cadastro-produto" element={<AbrirModalCadastreProd />} />
                 </Route>
                 
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
-                    <Route path="/cadastro-modelo" element={<ModalCadastreModel />} />
+                    <Route path="/cadastro-modelo" element={<AbrirModalCadastreModel />} />
                 </Route>
 
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
-                    <Route path="/cadastro-usuario" element={<ModalCadastreUser />} />
+                    <Route path="/cadastro-usuario" element={<AbrirModalCadastreUser />} />
                 </Route>
 
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
-                    <Route path="/cadastro-kit" element={<ModalCadastreKit />} />
+                    <Route path="/cadastro-kit" element={<AbrirModalCadastreKit />} />
                 </Route>
 
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
-                    <Route path="/cadastro-produto-pre-configurado" element={<ModalCadastreProdPreConfig />} />
+                    <Route path="/cadastro-produto-pre-configurado" element={<AbrirModalCadastreProdPreConfig />} />
                 </Route>
 
                 <Route path="/" element={<App />}>
@@ -154,22 +154,22 @@ const Rotas = () => {
 
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
-                    <Route path="/editar-produto" element={<ModalEditProd />} />
+                    <Route path="/editar-produto" element={<AbrirModalEditProd />} />
                 </Route>
                 
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
-                    <Route path="/editar-modelo" element={<ModalEditModel />} />
+                    <Route path="/editar-modelo" element={<AbrirModalEditModel />} />
                 </Route>
 
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
-                    <Route path="/editar-usuario" element={<ModalEditUser />} />
+                    <Route path="/editar-usuario" element={<AbrirModalEditUser />} />
                 </Route>
 
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
-                    <Route path="/editar-kit" element={<ModalEditKit />} />
+                    <Route path="/editar-kit" element={<AbrirModalEditKit />} />
                 </Route>
 
                 <Route path="/" element={<App />}>
@@ -179,6 +179,11 @@ const Rotas = () => {
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
                     <Route path="/Reset" element={<Reset />} />
+                </Route>
+
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
+                    <Route path="/filtro" element={<Filter />} />
                 </Route>
 
             </Routes>

@@ -21,6 +21,7 @@ function ModalCadastreProd() {
     const [idModelo, setModelo] = useState("");
     const [idTamanho, setTamanho] = useState("");
     const [idCor, setCor] = useState("");
+    const [loading, setLoading] = useState(true);
 
 
     const setters = [setNome, setPrecoCusto, setPrecoRevenda, setModelo, setTamanho, setCor];
@@ -45,63 +46,93 @@ function ModalCadastreProd() {
 console.log(dadosModelo);
 console.log(dadosTamanho);
 
-    async function teste() {
-        await ApiRequest.modeloGetAll().then((response) => {
-            if (response.status === 200) {
-                console.log(response.data);
-                setDadosModelo(response.data)
-            }
-        }).catch((error) => {
-            console.log("caiu aqui", error)
-        })
+async function fetchDadosModeloCorTamanho() {
+    setLoading(true);
+    await ApiRequest.modeloGetAll().then((response) => {
+        if (response.status === 200) {
+            setDadosModelo(response.data);
+            console.log(dadosModelo);
+        }
+    }).catch((error) => {
+        console.log("Erro ao buscar os dados", error)
+    })
 
-        await ApiRequest.tamanhoGetAll().then((response) => {
-            if (response.status === 200) {
-                setDadosTamanho(response.data)
-            }
-        }).catch((error) => {
-            console.log("caiu aqui", error)
-        })
+    await ApiRequest.corGetAll().then((response) => {
+        if (response.status === 200) {
+            setDadosCor(response.data);
+            console.log(dadosCor);
+        }
+    }).catch((error) => {
+        console.log("Erro ao buscar os dados", error)
+    })
 
-        await ApiRequest.corGetAll().then((response) => {
-            if (response.status === 200) {
-                setDadosCor(response.data)
-            }
-        }).catch((error) => {
-            console.log("caiu aqui", error)
-        })
-    }
+    await ApiRequest.tamanhoGetAll().then((response) => {
+        if (response.status === 200) {
+            setDadosTamanho(response.data)
+            setLoading(false);
+        }
+    }).catch((error) => {
+        console.log("caiu aqui", error)
+    })
+    setLoading(false);
+}
 
-    useEffect(() => {
-        teste();
-    }, [])
+useEffect(() => {
+    fetchDadosModeloCorTamanho();
+},[])
 
 
     const handleSave = () => {
-        // const objetoAdicionado = {
-        //     codigo,
-        //     nome,
-        //     idCategoria,
-        //     idTipo
-        // };
+       // usando a function find do javascript para percorrer uma lista de objetos baseado na verificação de uma key
+       const modeloObj = dadosModelo.find(objModelo => objModelo.nome === modelo);
+       const idModelo = modeloObj ? modeloObj.id : null;
+       
+       const corObj = dadosCor.find(objCor => objCor.nome === cor);
+       const idCor = corObj ? corObj.id : null;
 
-        // console.log(objetoAdicionado);
+       const tamanhoObj = dadosTamanho.find(objTamanho => objTamanho.nome === tamanho);
+       const idTamanho = tamanhoObj ? tamanhoObj.id : null;
+   
+       if(!idModelo || !idCor || !idTamanho || !nome || !precoCusto || !precoRevenda){
+           //todo: acionar modal de cadastro incorreto
+           alert("Preencha todos os campos corretamente")
+           return;
+       }
+       
+       const objetoAdicionado = {
+           nome,
+           precoCusto,
+           precoRevenda,
+           idModelo,
+           idCor,
+           idTamanho
+       };
 
-        // ApiRequest.modeloCreate(objetoAdicionado);
+     
+           ApiRequest.produtoCreate(objetoAdicionado).then((response) => {
+               if (response.status === 201) {
+                   alert("Produto Cadastrado!!")
+                   //todo: mostrar modal de sucesso ao cadastrar
+               }
+           }).catch((error) => {
+               console.log("Erro ao cadastrar um produto: ", error)
+               //todo: mostrar modal de erro ao cadastrar
+           });
+      
 
     }
 
     return (
         <>
-            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[45rem] h-[25rem] flex flex-col items-center justify-around  bg-white p-2 rounded-lg border border-black">
-                <div className="w-[43rem]">
+            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[42rem] h-[24rem] flex flex-col items-center justify-around  bg-white p-2 rounded-lg border border-black">
+                <div className="w-[40rem]">
                     <HeaderModal
                         props="Cadastrar Novo Produto"
                     ></HeaderModal>
                 </div>
-                <div className="w-[43rem] h-[18rem] flex flex-col rounded justify-around p-3 bg-[#F5F3F4] border-solid shadow-[5px_5px_10px_0_rgba(0,0,0,0.14)] border-gray-700">
+                <div className="w-[40rem] h-[16rem] flex flex-col rounded justify-around p-3 bg-[#F5F3F4] border-solid shadow-[5px_5px_10px_0_rgba(0,0,0,0.14)] border-gray-700">
 
-                    <div className="flex justify-around mb-4">
+                    <div className="flex justify-around ">
                         <ComboBoxModal
                             dadosBanco={dadosModelo.map(value => value.nome)}
                             value={idModelo}
@@ -147,7 +178,7 @@ console.log(dadosTamanho);
                         >Preço Revenda</InputAndLabelModal>
                     </div>
                 </div>
-                <div className="w-[43rem] flex justify-end  h-6 ">
+                <div className="w-[40rem] flex justify-end  h-6 ">
                     <ButtonClear>Limpar</ButtonClear>
                     <ButtonModal>Cadastrar</ButtonModal>
                 </div>

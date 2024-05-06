@@ -1,18 +1,17 @@
 import EditIcon from '../../assets/icons/editIcon.svg'
 
-function ButtonEdit(props){
+function ButtonEdit(props) {
 
     var style = {
-        width: props.width+"px",
+        width: props.width + "px",
     }
 
-    function edita(){
-    }
+    return (
 
-    return(
-        <a onClick={props.funcao} class="cursor-pointer">
+        <button onClick={props.funcao} className='w-5 h-5'>
             <img style={props != undefined ? style : ""} src={EditIcon}></img>
-        </a>
+        </button>
+
     )
 }
 

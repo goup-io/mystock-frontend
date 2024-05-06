@@ -14,6 +14,7 @@ import PageLayout from '../PageLayout.js'
 
 
 import React, { useState, useEffect } from 'react';
+import Filter from '../../inputs/filter.js'
 
 function Estoque() {
 
@@ -54,7 +55,7 @@ return (
         <PageLayout>
             <Header telaAtual="Estoque"></Header>
 
-            <div className=" w-full h-[6rem] flex flex-col rounded-md mt-4 p-2 shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] justify-around items-center text-sm bg-white">
+            {/* <div className=" w-full h-[6rem] flex flex-col rounded-md mt-4 p-2 shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] justify-around items-center text-sm bg-white">
                 <div className="w-full h-[2.5rem] p-4 flex justify-center items-center ">
                     <div className="w-[52%]  h-2/2 flex justify-start items-center">
 
@@ -90,18 +91,24 @@ return (
                     </div>
 
                 </div>
+            </div> */}
+
+            <div className='w-full flex md:flex-row md:justify-between rounded-md mt-4 p-2  pr-10 pl-10  shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] items-center text-sm bg-white'>
+            <Filter modelo cor tamanho preço></Filter>
             </div>
 
-            <div className='bg-white mt-4 h-[37rem] flex flex-col justify-around pl-10 pr-10 items-center shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)]'>
-                <div className='w-full h-[3rem] flex justify-between items-center'>
+    
 
-                    <div className='w-[18rem] flex justify-between items-center'>
+            <div className='bg-white mt-4 h-[74%] flex flex-col justify-start pl-10 pr-10 pt-2 pb-2 items-center shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)]'>
+                <div className='w-full h-[8%] flex justify-between items-center '>
+
+                    <div className='w-[12rem] flex justify-between items-center'>
 
                         <Button onClick={handleProdutoButtonClick}>
-                            <span className={isProdutoSelected ? "text-black text-2xl font-medium" : "text-slate-500 text-xl font-medium"}>PRODUTOS</span>
+                            <span className={isProdutoSelected ? "text-black text-lg font-medium" : "text-slate-500 text-sm font-medium"}>PRODUTOS</span>
                         </Button>
                         <Button onClick={handleModeloButtonClick}>
-                            <span className={!isProdutoSelected ? "text-black text-2xl font-medium" : "text-slate-500 text-xl font-medium"}>MODELOS</span>
+                            <span className={!isProdutoSelected ? "text-black text-lg font-medium" : "text-slate-500 text-sm font-medium"}>MODELOS</span>
                         </Button>
 
                     </div>
@@ -110,8 +117,8 @@ return (
                         props="text"
                     >Pesquisar</InputSearcModal>
                 </div>
-                <div className='w-full h-[28rem] mb-2  flex justify-center items-center'>
-                    <div className=' w-full h-[28rem] border-solid border-[1px] border-slate-700  bg-slate-700 overflow-y-auto'>
+                <div className='w-full h-[80%] mt-2 flex justify-center items-center '>
+                    <div className=' w-full h-[100%] border-solid border-[1px] border-slate-700  bg-slate-700 overflow-y-auto'>
                         {isProdutoSelected ? (
                             <TabelaPage colunas={colunas} dados={dados} edit remove />
                         ) : (
@@ -119,17 +126,17 @@ return (
                         )}
                     </div>
                 </div>
-                <div className='w-full h-[2.2rem] mb-3 flex justify-end '>
-                    <div className='w-4/12 flex justify-between'>
+                <div className='w-full h-[8%] mt-2 flex justify-end '>
+                    <div className='w-5/12 flex justify-between'>
                         <ButtonModal
                             funcao={AbrirModalCadastreKit}
-                        >NOVO KIT</ButtonModal>
+                        >Novo Kit</ButtonModal>
                         <ButtonModal
                             funcao={AbrirModalCadastreModel}
-                        >NOVO MODELO</ButtonModal>
+                        >Novo Modelo</ButtonModal>
                         <ButtonModal
                             funcao={AbrirModalCadastreProd}
-                        >NOVO PRODUTO</ButtonModal>
+                        >Novo Produto</ButtonModal>
                     </div>
                 </div>
             </div>

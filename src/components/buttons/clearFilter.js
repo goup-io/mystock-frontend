@@ -10,7 +10,7 @@ function ButtonClearFilter(props){
     };
 
     return(
-         <button onClick={handleClick} className="w-[4rem] mr-3 bg-gray-500 font-medium rounded text-white">
+         <button onClick={handleClick} className="w-[5rem] h-[1.5rem] mr-3 bg-gray-500 font-medium rounded text-white">
              <span className="text-white text-base">{props.children}</span>
          </button>
     )

@@ -76,15 +76,15 @@ function ModalCadastreModel() {
 
     return (
         <>
-            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[45rem] h-[23rem] flex flex-col items-center justify-around  bg-white p-2 rounded-lg border border-black">
-                <div className="w-[43rem]">
+            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[42rem] h-[24rem] flex flex-col items-center justify-around  bg-white p-2 rounded-lg border border-black">
+                <div className="w-[40rem]">
                     <HeaderModal
                         props="Cadastrar Novo Modelo"
                     ></HeaderModal>
                 </div>
-                <div className="w-[43rem] h-[16rem] flex flex-col rounded justify-around p-3 bg-[#F5F3F4] border-solid shadow-[5px_5px_10px_0_rgba(0,0,0,0.14)] border-gray-700">
+                <div className="w-[40rem] h-[16rem] flex flex-col rounded justify-around p-3 bg-[#F5F3F4] border-solid shadow-[5px_5px_10px_0_rgba(0,0,0,0.14)] border-gray-700">
 
-                    <div className="flex justify-around mb-4">
+                    <div className="flex justify-around ">
                         <InputAndLabelModal
                             type="Text"
                             placeholder="digite o código..."
@@ -115,7 +115,7 @@ function ModalCadastreModel() {
                         >Tipo</ComboBoxModal>
                     </div>
                 </div>
-                <div className="w-[43rem] flex justify-end  h-6 ">
+                <div className="w-[40rem] flex justify-end  h-6 ">
                     <ButtonClear
                         setters={setters}
                     >Limpar</ButtonClear>
