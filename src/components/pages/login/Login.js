@@ -18,87 +18,103 @@ import SucessImage from '../../../assets/icons/sucess.svg'
 import { json, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
-function Login(){
+function Login() {
 
     const navigate = useNavigate();
 
-    const [email, setEmail] = useState(""); 
-    const [senha, setSenha] = useState(""); 
+    const [usuario, setUsuario] = useState("");
+    const [senha, setSenha] = useState("");
 
     async function handleClick(event) {
 
         event.preventDefault()
-        if(email === "" || email === null || email === undefined){
-            Alert.alert(ErrorImage, "Informe o seu e-mail")
+        if (usuario === "" || usuario === null || usuario === undefined) {
+            Alert.alert(ErrorImage, "Informe o seu usuario")
             return
         }
 
-        if(senha === "" || senha === null || senha === undefined){
+        if (senha === "" || senha === null || senha === undefined) {
             Alert.alert(ErrorImage, "Informe a sua senha")
             return
         }
-        
-        const respostaHTTP = await ApiRequest.userLogin(email, senha);
 
+        const respostaHTTP = await ApiRequest.userLogin(usuario, senha);
         console.log(respostaHTTP);
-        
-        if(respostaHTTP.status === 200){
-            Alert.alertTimer(SucessImage, "Seja bem-vindo!");
-            navigate("/menu")
-        }
-        
-        if(await respostaHTTP.response.status === 403){
+
+        if (respostaHTTP.status === 403) {
             Alert.alert(ErrorImage, "Credenciais inválidas");
         }
 
+        if (respostaHTTP.status === 200) {
+            var data = respostaHTTP.data.token;
+            localStorage.setItem("token", data);
+
+            if (respostaHTTP.data.contexto === "usuario") {
+                localStorage.setItem("user_id", respostaHTTP.data.idUser);
+                Alert.alertTimer(SucessImage, "Seja bem-vindo!");
+                navigate("/dashboard-geral");
+            } 
+            if (respostaHTTP.data.contexto === "loja"){
+                localStorage.setItem("loja_id", respostaHTTP.data.idLoja);
+                if(respostaHTTP.data.tipoLogin === "AREA_VENDA"){
+                    Alert.alertTimer(SucessImage, "Seja bem-vindo!");
+                    navigate("/menu");
+                } else {
+                    Alert.alertTimer(SucessImage, "Seja bem-vindo!");
+                    navigate("/venda/caixa");
+                }
+            }
+        }
     }
 
-    function handleInput(evento, stateFunction){
+    function handleInput(evento, stateFunction) {
 
         stateFunction(evento.target.value);
     }
 
-    return(
+    return (
         <section class="flex flex-col items-center justify-center h-[100vh]">
             <img class="absolute top-4 left-0" src={`${myStockLogo}`}></img>
             <img class="absolute right-8 top-5" src={`${dots01}`}></img>
-            <div class="bg-indigo-100 rounded-[0.3125rem] w-[42rem] h-[44rem] flex flex-col justify-evenly items-center shadow-lg z-10">
+            <div class="bg-indigo-100 rounded-[0.3125rem] w-[35vw] h-min-[75vh] flex flex-col justify-evenly items-center shadow-lg z-10">
                 <div class="mt-[3.25rem] flex flex-col items-center">
-                    <h1 class="text-[2.5rem] font-medium">Bem-Vindo de Volta!</h1>
-                    <p class="text-[1.56rem] w-3/4">Faça o login para ter acesso ao seu sistema de vendas e estoque!</p>
+                    <h1 class="text-[2rem] font-medium">Bem-Vindo de Volta!</h1>
+                    <p class="text-[1.2rem] w-3/4">Faça o login para ter acesso ao seu sistema de vendas e estoque!</p>
                 </div>
-                
-                <div class="flex flex-col items-start mb-[0.5rem]">
-                    <p class="form-floating text-[1.56rem] text-black">Usuário:</p>
-                    <Input 
-                        id="inputEmail"
-                        handleInput={handleInput}
-                        type="text"
-                        handlerAtributeChanger={setEmail}
-                        icon={`${userIcon}`}
-                        value={email}
-                        placeholder="seu@email.com"
-                    ></Input>
+
+                <form>
+                    <div class="flex flex-col items-start mb-[0.5rem]">
+                        <p class="form-floating text-[1.06rem] text-black mb-[0.5rem]">Usuário:</p>
+                        <Input
+                            id="inputEmail"
+                            handleInput={handleInput}
+                            type="text"
+                            handlerAtributeChanger={setUsuario}
+                            icon={`${userIcon}`}
+                            value={usuario}
+                            placeholder="usuario"
+                        ></Input>
+                    </div>
+                    <div class="flex flex-col items-start mb-[2.1rem]">
+                        <p class="text-[1.06rem] mb-[0.5rem]">Senha:</p>
+                        <Input
+                            id="inputSenha"
+                            handleInput={handleInput}
+                            handlerAtributeChanger={setSenha}
+                            value={senha}
+                            type="password"
+                            icon={lockIcon}
+                            placeholder="*******"
+                        ></Input>
+                    </div>
+                    <ButtonEnter funcao={(event) => handleClick(event)}>Entrar</ButtonEnter>
+                </form>
+                <div class=" mb-[1rem] mt-[0.6rem]">
+                    <a class="text-[1.2rem]" href="/forgot">Esqueci a senha</a>
                 </div>
-                <div class="flex flex-col items-start mb-[2.56rem]">
-                    <p class="text-[1.56rem]">Senha:</p>
-                    <Input
-                        id="inputSenha"
-                        handleInput={handleInput}
-                        handlerAtributeChanger={setSenha}
-                        value={senha}
-                        type="password"
-                        icon={lockIcon}
-                        placeholder="*******"
-                    ></Input>
-                </div>  
-                <ButtonEnter funcao={(event) => handleClick(event)}>Entrar</ButtonEnter>
-                <div class=" mb-[2.69rem] mt-[0.6rem]">
-                    <a class="text-[1.56rem]" href="">Esqueci a senha</a>
-                </div>
-                <div class="mb-[1.69rem]">
-                    <p class="text-[1.56rem]">Não tem acesso ao nosso sistema?</p>
-                    <a class="text-[1.56rem] underline" href="">Entre em contato conosco!</a>   
+                <div class="mb-[1rem]">
+                    <p class="text-[1.2rem]">Não tem acesso ao nosso sistema?</p>
+                    <a class="text-[1.2rem] underline" href="mailto:goup.contactus@gmail.com">Entre em contato conosco!</a>
                 </div>
             </div>
             <img class="absolute bottom-0 left-0" src={`${dots02}`}></img>

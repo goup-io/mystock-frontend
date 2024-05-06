@@ -8,7 +8,7 @@ function ButtonSwitchUser(){
 
     return(
         <a onClick={() => navigate("/")} class="cursor-pointer">
-            <img className='w-[2.5rem]' src={switchUserIcon}></img>
+            <img className='w-[2.3rem]' src={switchUserIcon}></img>
         </a>
     )
 }

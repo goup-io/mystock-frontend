@@ -5,34 +5,25 @@ import PageLayout from './PageLayout.js'
 //Paginas
 import { useNavigate } from 'react-router-dom';
 import ApiRequest from '../../connections/ApiRequest.js';
+import Alert from '../alerts/Alert.js';
 
-function Menu() {
+function MenuCaixa() {
 
     const navigate = useNavigate();
 
     async function handleOnClick(path) {
-        if (path === "sair") {
-            const respostaHTTP = await ApiRequest.userLogout();
-            console.log(respostaHTTP)
-            if (respostaHTTP.status === 200) {
-                localStorage.clear();
-                navigate("/")
-            }
-
-        } else {
-            navigate(path)
+        const respostaHTTP = await ApiRequest.userLogout();
+        if (respostaHTTP.status === 200) {
+            localStorage.clear();
+            navigate("/")
         }
     }
 
     function MenuItems() {
         return (
             <>
-                <Header telaAtual="Menu" icon="crossed"></Header>
+                <Header telaAtual="Menu" icon="crossed" tipo="caixa"></Header>
                 <ul class="flex flex-col items-center gap-7 mt-20 px-12">
-                    <ItemLista handleClick={() => handleOnClick("/venda")}>ÁREA DE VENDA</ItemLista>
-                    <ItemLista handleClick={() => handleOnClick("/estoque")}>ESTOQUE</ItemLista>
-                    <ItemLista handleClick={() => handleOnClick("/historico")}>HISTÓRICO DE VENDAS</ItemLista>
-                    <ItemLista handleClick={() => handleOnClick("/transacao")}>ÁREA DE TRANSFERÊNCIAS</ItemLista>
                     <ItemLista handleClick={() => handleOnClick("sair")}>SAIR</ItemLista>
                 </ul>
             </>
@@ -56,4 +47,4 @@ function Menu() {
     )
 }
 
-export default Menu;
+export default MenuCaixa;

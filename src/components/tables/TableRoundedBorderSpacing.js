@@ -1,16 +1,17 @@
-// import './TableRoundedBorderSpacing.css';
+import './TableRoundedBorderSpacing.module.css';
 
-// function TableRoundedBorderSpacing(props){
 
-//     var style = {
-//         tableLayout: props.layout,
-//     }
+function TableRoundedBorderSpacing(props){
 
-//     return(
-//         <table class="w-full rounded-lg table-fixed border-solid border-separate border-spacing-y-4" style={props != undefined ? style : ""}>
-//             {props.children}
-//         </table>
-//     )
-// }
+    var style = {
+        tableLayout: props.layout,
+    }
 
-// export default TableRoundedBorderSpacing;
+    return(
+        <table  class="w-full rounded-lg table-fixed border-solid border-separate border-spacing-y-4" style={props != undefined ? style : ""}>
+            {props.children}
+        </table>
+    )
+}
+
+export default TableRoundedBorderSpacing;

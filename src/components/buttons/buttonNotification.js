@@ -4,7 +4,7 @@ function buttonNotification(){
     return(
 
     <a onClick={ativarNotificacao}class="cursor-pointer">
-        <img className='w-[3rem]' src={notificationIcon}></img>
+        <img className='w-[2.5rem]' src={notificationIcon}></img>
     </a>)
 
 }

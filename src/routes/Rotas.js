@@ -14,7 +14,6 @@ import Historico from '../components/pages/historico/Historico.js'
 
 //Transacoes
 import Transacoes from '../components/pages/transacoes/Transacoes.js'
-
 import Usuario from '../components/pages/usuario/Usuario.js'
 
 //Pagamentos
@@ -24,6 +23,7 @@ import Venda from '../components/pages/venda/Venda.js'
 
 //Menu
 import Menu from '../components/pages/Menu.js'
+import MenuCaixa from '../components/pages/MenuCaixa.js';
 import DashboardGeral from '../components/pages/dashboards/DashboardGeral.js';
 import DashboardLoja from '../components/pages/dashboards/DashboardLoja.js';
 import DashboardFuncionario from '../components/pages/dashboards/DashboardFuncionario.js';
@@ -46,13 +46,17 @@ import InputFilter from '../components/inputs/inputFilter.js';
 import Filter from '../components/inputs/filter.js';
 
 const Rotas = () => {
-    return(
+    return (
         <Router>
             <Routes>
 
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
                     <Route path="/menu" element={<Menu />} />
+                </Route>
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
+                    <Route path="/menuCaixa" element={<MenuCaixa />} />
                 </Route>
 
                 <Route path="/" element={<App />}>
@@ -111,7 +115,7 @@ const Rotas = () => {
                     <Route index element={<Login />} />
                     <Route path="/cadastro-produto" element={<AbrirModalCadastreProd />} />
                 </Route>
-                
+
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
                     <Route path="/cadastro-modelo" element={<AbrirModalCadastreModel />} />
@@ -156,7 +160,7 @@ const Rotas = () => {
                     <Route index element={<Login />} />
                     <Route path="/editar-produto" element={<AbrirModalEditProd />} />
                 </Route>
-                
+
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
                     <Route path="/editar-modelo" element={<AbrirModalEditModel />} />
