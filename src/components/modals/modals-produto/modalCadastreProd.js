@@ -9,6 +9,7 @@ import HeaderModal from "../headerModal";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import ApiRequest from "../../../connections/ApiRequest";
+import { isNumber } from "@mui/x-data-grid/internals";
 
 function ModalCadastreProd() {
 
@@ -43,82 +44,88 @@ function ModalCadastreProd() {
         setCor(event.target.value);
     };
 
-console.log(dadosModelo);
-console.log(dadosTamanho);
+    console.log(dadosModelo);
+    console.log(dadosTamanho);
 
-async function fetchDadosModeloCorTamanho() {
-    setLoading(true);
-    await ApiRequest.modeloGetAll().then((response) => {
-        if (response.status === 200) {
-            setDadosModelo(response.data);
-            console.log(dadosModelo);
-        }
-    }).catch((error) => {
-        console.log("Erro ao buscar os dados", error)
-    })
+    async function fetchDadosModeloCorTamanho() {
+        setLoading(true);
+        await ApiRequest.modeloGetAll().then((response) => {
+            if (response.status === 200) {
+                setDadosModelo(response.data);
+                console.log(dadosModelo);
+            }
+        }).catch((error) => {
+            console.log("Erro ao buscar os dados", error)
+        })
 
-    await ApiRequest.corGetAll().then((response) => {
-        if (response.status === 200) {
-            setDadosCor(response.data);
-            console.log(dadosCor);
-        }
-    }).catch((error) => {
-        console.log("Erro ao buscar os dados", error)
-    })
+        await ApiRequest.corGetAll().then((response) => {
+            if (response.status === 200) {
+                setDadosCor(response.data);
+                console.log(dadosCor);
+            }
+        }).catch((error) => {
+            console.log("Erro ao buscar os dados", error)
+        })
 
-    await ApiRequest.tamanhoGetAll().then((response) => {
-        if (response.status === 200) {
-            setDadosTamanho(response.data)
-            setLoading(false);
-        }
-    }).catch((error) => {
-        console.log("caiu aqui", error)
-    })
-    setLoading(false);
-}
+        await ApiRequest.tamanhoGetAll().then((response) => {
+            if (response.status === 200) {
+                setDadosTamanho(response.data)
+                setLoading(false);
+            }
+        }).catch((error) => {
+            console.log("caiu aqui", error)
+        })
+        setLoading(false);
+    }
 
-useEffect(() => {
-    fetchDadosModeloCorTamanho();
-},[])
+    useEffect(() => {
+        fetchDadosModeloCorTamanho();
+    }, [])
 
 
     const handleSave = () => {
-       // usando a function find do javascript para percorrer uma lista de objetos baseado na verificação de uma key
-       const modeloObj = dadosModelo.find(objModelo => objModelo.nome === modelo);
-       const idModelo = modeloObj ? modeloObj.id : null;
-       
-       const corObj = dadosCor.find(objCor => objCor.nome === cor);
-       const idCor = corObj ? corObj.id : null;
 
-       const tamanhoObj = dadosTamanho.find(objTamanho => objTamanho.numero === tamanho);
-       const idTamanho = tamanhoObj ? tamanhoObj.id : null;
-   
-       if(!idModelo || !idCor || !idTamanho || !nome || !precoCusto || !precoRevenda){
-           //todo: acionar modal de cadastro incorreto
-           alert("Preencha todos os campos corretamente")
-           return;
-       }
-       
-       const objetoAdicionado = {
-           nome,
-           precoCusto,
-           precoRevenda,
-           idModelo,
-           idCor,
-           idTamanho
-       };
+        if (!modelo || !cor || !tamanho || !nome || !precoCusto || !precoRevenda) {
+            //todo: acionar modal de cadastro incorreto
+            alert("Preencha todos os campos corretamente")
+            return;
+        }
 
-     
-           ApiRequest.produtoCreate(objetoAdicionado).then((response) => {
-               if (response.status === 201) {
-                   alert("Produto Cadastrado!!")
-                   //todo: mostrar modal de sucesso ao cadastrar
-               }
-           }).catch((error) => {
-               console.log("Erro ao cadastrar um produto: ", error)
-               //todo: mostrar modal de erro ao cadastrar
-           });
-      
+        var precoC = parseFloat(precoCusto)
+        var precoR = parseFloat(precoRevenda)
+
+        // usando a function find do javascript para percorrer uma lista de objetos baseado na verificação de uma key
+        const modeloObj = dadosModelo.find(objModelo => objModelo.nome === modelo);
+        const idModelo = modeloObj ? modeloObj.id : null;
+
+        const corObj = dadosCor.find(objCor => objCor.nome === cor);
+        const idCor = corObj ? corObj.id : null;
+
+        const tamanhoObj = dadosTamanho.find(objTamanho => objTamanho.numero.toString() === tamanho.toString());
+        const idTamanho = tamanhoObj ? tamanhoObj.id : null;
+
+        const objetoAdicionado = {
+            nome,
+            precoC,
+            precoR,
+            idModelo,
+            idCor,
+            idTamanho
+        };
+
+        console.log(objetoAdicionado);
+
+
+        ApiRequest.produtoCreate(objetoAdicionado).then((response) => {
+            if (response.status === 201) {
+                alert("Produto Cadastrado!!")
+                //todo: mostrar modal de sucesso ao cadastrar
+            }
+        }).catch((error) => {
+            console.log("Erro ao cadastrar um produto: ", error)
+            //todo: mostrar modal de erro ao cadastrar
+        });
+
 
     }
 
@@ -161,14 +168,14 @@ useEffect(() => {
                     </div>
                     <div className="flex justify-around">
                         <InputAndLabelModal
-                            type="Number"
+                            type="number"
                             placeholder="digite o preço de custo..."
                             value={precoCusto}
                             handleInput={handleInputChange}
                             handlerAtributeChanger={setPrecoCusto}
                         >Preço Custo</InputAndLabelModal>
                         <InputAndLabelModal
-                            type="Number"
+                            type="number"
                             placeholder="digite o preço de revenda..."
                             value={precoRevenda}
                             handleInput={handleInputChange}
@@ -178,7 +185,7 @@ useEffect(() => {
                 </div>
                 <div className="w-[40rem] flex justify-end  h-6 ">
                     <ButtonClear>Limpar</ButtonClear>
-                    <ButtonModal>Cadastrar</ButtonModal>
+                    <ButtonModal funcao={handleSave}>Cadastrar</ButtonModal>
                 </div>
             </div>
         </>
