@@ -18,9 +18,9 @@ function ModalCadastreProd() {
     const [nome, setNome] = useState("");
     const [precoCusto, setPrecoCusto] = useState("");
     const [precoRevenda, setPrecoRevenda] = useState("");
-    const [idModelo, setModelo] = useState("");
-    const [idTamanho, setTamanho] = useState("");
-    const [idCor, setCor] = useState("");
+    const [modelo, setModelo] = useState("");
+    const [tamanho, setTamanho] = useState("");
+    const [cor, setCor] = useState("");
     const [loading, setLoading] = useState(true);
 
 
@@ -85,15 +85,15 @@ useEffect(() => {
     const handleSave = () => {
        // usando a function find do javascript para percorrer uma lista de objetos baseado na verificação de uma key
        const modeloObj = dadosModelo.find(objModelo => objModelo.nome === modelo);
-       const idModelo = modeloObj ? modeloObj.id : null;
+       const modelo = modeloObj ? modeloObj.id : null;
        
        const corObj = dadosCor.find(objCor => objCor.nome === cor);
-       const idCor = corObj ? corObj.id : null;
+       const cor = corObj ? corObj.id : null;
 
        const tamanhoObj = dadosTamanho.find(objTamanho => objTamanho.nome === tamanho);
-       const idTamanho = tamanhoObj ? tamanhoObj.id : null;
+       const tamanho = tamanhoObj ? tamanhoObj.id : null;
    
-       if(!idModelo || !idCor || !idTamanho || !nome || !precoCusto || !precoRevenda){
+       if(!modelo || !cor|| !tamanho || !nome || !precoCusto || !precoRevenda){
            //todo: acionar modal de cadastro incorreto
            alert("Preencha todos os campos corretamente")
            return;
@@ -103,9 +103,9 @@ useEffect(() => {
            nome,
            precoCusto,
            precoRevenda,
-           idModelo,
-           idCor,
-           idTamanho
+           modelo,
+           cor,
+           tamanho
        };
 
      
@@ -135,7 +135,7 @@ useEffect(() => {
                     <div className="flex justify-around ">
                         <ComboBoxModal
                             dadosBanco={dadosModelo.map(value => value.nome)}
-                            value={idModelo}
+                            value={modelo}
                             onChange={(e) => (e, setModelo)}
                             handleChange={handleChangeModelo}
                         >Modelo</ComboBoxModal>
@@ -150,13 +150,13 @@ useEffect(() => {
                     <div className="flex justify-around">
                         <ComboBoxModal
                             dadosBanco={dadosTamanho.map(value => value.nome)}
-                            value={idTamanho}
+                            value={tamanho}
                             onChange={(e) => (e, setTamanho)}
                             handleChange={handleChangeTamanho}
                         >Tamanho</ComboBoxModal>
                         <ComboBoxModal
                             dadosBanco={dadosCor.map(value => value.nome)}
-                            value={idCor}
+                            value={cor}
                             onChange={(e) => (e, setCor)}
                             handleChange={handleChangeCor}
                         >Cor</ComboBoxModal>

@@ -9,6 +9,7 @@ import withReactContent from 'sweetalert2-react-content';
 import { useEffect } from "react";
 import { useState } from "react";
 import ApiRequest from "../../../connections/ApiRequest";
+import AbrirModalCadastreLogin from "../../modals/modals-user/modalCadastreLogin";
 
 function ModalEditUser() {
 

@@ -95,7 +95,7 @@ function Usuario() {
                                     props="text"
                                 >Pesquisar</InputSearcModal>
 
-                                <ButtonDownLoad></ButtonDownLoad>
+                                <ButtonDownLoad  Onclick={csvTodosUsuarios()}></ButtonDownLoad> 
                             </div>
 
                         </div>
