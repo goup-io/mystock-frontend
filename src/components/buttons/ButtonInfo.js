@@ -10,7 +10,7 @@ const ButtonInfo = ({ mensagem }) => {
 
     return (
         <>
-            <a onClick={toggleModal} className="cursor-pointer absolute bottom-0 right-2">
+            <a onClick={toggleModal} className="cursor-pointer absolute bottom-0 right-2  duration-150 ease-in-out hover:scale-[1.03]">
                 <img src={iconInfo} alt="Info" className="w-5" />
             </a>
             {modalAberto && (     
