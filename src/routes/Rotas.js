@@ -69,7 +69,7 @@ const Rotas = () => {
 
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
-                    <Route path="/usuario" element={<Usuario />} />
+                    <Route path="/usuarios" element={<Usuario />} />
                 </Route>
 
                 <Route path="/" element={<App />}>

@@ -12,7 +12,7 @@ function ModalAviso(props) {
                     </div>
                     <p className="text-sm">{props.descricao}</p>
                     <div className="text-right">
-                        <a className="text-xs cursor-pointer">Ver estoque --></a>
+                        <a href="#" className="text-xs cursor-pointer underline duration-150 ease-in-out hover:text-[#A6CEE3]">Ver estoque --></a>
                     </div>
                 </div>
             </div>
