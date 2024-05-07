@@ -6,6 +6,7 @@ import HeaderModal from "../headerModal";
 import ComboBoxModal from "../smallComboBoxModal";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import AbrirModalCadastreLogin from "../../modals/modals-user/modalCadastreLogin";
 import { useEffect } from "react";
 import { useState } from "react";
 import ApiRequest from "../../../connections/ApiRequest";

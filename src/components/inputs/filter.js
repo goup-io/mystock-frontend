@@ -6,7 +6,7 @@ import ButtonClearFilter from "../buttons/buttonClearFilter";
 
 function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVenda, horario }) {
     return (
-        <div className="w-full flex justify-between items-center text-center ">
+        <div className="w-full flex flex-wrap justify-between items-center text-center ">
             {/* Seção dos filtros */}
             <div className="md:flex md:space-x-4 md:w-auto md:mb-0 ">
                 {cor && <ComboBoxFilter>Cor</ComboBoxFilter>}
@@ -36,7 +36,7 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
             </div>
 
             {/* Botões de limpar e filtrar */}
-            <div className="flex  h-6 " >
+            <div className="flex  h-6 ml-4" >
                 <ButtonClearFilter>Limpar</ButtonClearFilter>
                 <ButtonModal>Filtrar</ButtonModal>
             </div>

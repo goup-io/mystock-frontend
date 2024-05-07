@@ -327,7 +327,7 @@ export class ApiRequest {
     static async produtoGetAll() {
 
         try {
-            const resposta = await axios.post(springEndPoint + "/produtos", {
+            const resposta = await axios.get(springEndPoint + "/produtos", {
                 headers: header
             });
 
@@ -372,6 +372,22 @@ export class ApiRequest {
 
     }
 
+     // ***************************************************************************
+    // *  ETPs
+    // ***************************************************************************
+
+    static async etpsGetAll() {
+
+        try {
+            const resposta = await axios.get(springEndPoint + "/etps", {
+                headers: header
+            });
+
+            return resposta;
+        } catch (erro) {
+            return erro
+        }
+    }
     // ***************************************************************************
     // *  COR
     // ***************************************************************************
