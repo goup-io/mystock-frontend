@@ -97,7 +97,7 @@ function Usuario() {
 
                         </div>
 
-                        <div className=' w-full h-[22rem] mt-4 bg-slate-700 border-solid border-[1px] border-slate-700  bg-slate-700 overflow-y-auto'>
+                        <div className='w-full mt-4 bg-slate-700 border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto rounded'>
                             <TabelaPage colunas={colunas} dados={dados} edit remove />
                         </div>
                     </div>
