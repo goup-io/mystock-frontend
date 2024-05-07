@@ -118,14 +118,18 @@ return (
             <div className='bg-white mt-4 h-[74%] flex flex-col justify-start pl-10 pr-10 pt-2 pb-2 items-center shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)]'>
                 <div className='w-full h-[8%] flex justify-between items-center '>
 
-                    <div className='w-[12rem] flex justify-between items-center'>
+                    <div className='flex justify-between items-center gap-4'>
 
-                        <Button onClick={handleProdutoButtonClick}>
-                            <span className={isProdutoSelected ? "text-black text-lg font-medium" : "text-slate-500 text-sm font-medium"}>PRODUTOS</span>
-                        </Button>
-                        <Button onClick={handleModeloButtonClick}>
-                            <span className={!isProdutoSelected ? "text-black text-lg font-medium" : "text-slate-500 text-sm font-medium"}>MODELOS</span>
-                        </Button>
+                        <button 
+                            className={`bg-inherit px-1 ${isProdutoSelected ? 'font-medium text-lg border-b-2 border-[#355070]' : 'font-light text-sm'}`} 
+                            onClick={handleProdutoButtonClick}>
+                            PRODUTOS
+                        </button>
+                        <button 
+                            className={`bg-inherit px-1 ${!isProdutoSelected ? 'font-medium text-lg border-b-2 border-[#355070] ' : 'font-light text-sm'}`} 
+                            onClick={handleModeloButtonClick}>
+                            MODELOS
+                        </button>
 
                     </div>
 
@@ -143,7 +147,7 @@ return (
                     </div>
                 </div>
                 <div className='w-full h-[8%] mt-2 flex justify-end '>
-                    <div className='w-5/12 flex justify-between'>
+                    <div className='flex gap-4'>
                         <ButtonModal
                             funcao={AbrirModalCadastreKit}
                         >Novo Kit</ButtonModal>
