@@ -57,47 +57,49 @@ function Pagamento() {
                                 <p className="text-left font-semibold text-[1.1rem]">RESUMO DA VENDA</p>
                                 <Button><p className="text-left font-semibold text-[1.1rem]">Editar Itens</p></Button>
                             </div>
-                            <div className="flex flex-col gap-2">
-                                <ItemSeparadoPorLinhaTracejada
-                                    infoEsquerda={"Horario"}
-                                    infoDireita={"12:12:12"}
-                                />
-                                <ItemSeparadoPorLinhaTracejada
-                                    infoEsquerda={"Vendedor"}
-                                    infoDireita={"Fabio O."}
-                                />
-                                <ItemSeparadoPorLinhaTracejada
-                                    infoEsquerda={"Tp. de Venda"}
-                                    infoDireita={"Varejo"}
-                                />
-                                <ItemSeparadoPorLinhaTracejada
-                                    infoEsquerda={"Quant. Itens"}
-                                    infoDireita={"4"}
-                                />
-                                <ItemSeparadoPorLinhaTracejada
-                                    infoEsquerda={"Valor Total"}
-                                    infoDireita={"R$ 400,00"}
-                                />
-                                <ItemSeparadoPorLinhaTracejada
-                                    infoEsquerda={"Valor Pago"}
-                                    infoDireita={"R$ 395,00"}
-                                />
-                            </div>
-                            <div className='text-left'>
-                                <p className='text-[1rem] font-medium'>Fluxo de pagamento</p>
-                                <div className='bg-[#CFD0D9] h-[20vh] flex flex-col gap-2 p-3 rounded-md overflow-y-auto'>
+                            <div className="flex flex-col justify-between gap-4 overflow-auto pr-2">
+                                <div className="flex flex-col gap-2">
                                     <ItemSeparadoPorLinhaTracejada
-                                        infoEsquerda={"1. Dinheiro"}
-                                        infoDireita={"R$ 35,00  1x"}
+                                        infoEsquerda={"Horario"}
+                                        infoDireita={"12:12:12"}
                                     />
                                     <ItemSeparadoPorLinhaTracejada
-                                        infoEsquerda={"2. Crédito"}
-                                        infoDireita={"R$ 350,00  4x"}
+                                        infoEsquerda={"Vendedor"}
+                                        infoDireita={"Fabio O."}
                                     />
                                     <ItemSeparadoPorLinhaTracejada
-                                        infoEsquerda={"3. Débito"}
-                                        infoDireita={"R$ 10,00  1x"}
+                                        infoEsquerda={"Tp. de Venda"}
+                                        infoDireita={"Varejo"}
                                     />
+                                    <ItemSeparadoPorLinhaTracejada
+                                        infoEsquerda={"Quant. Itens"}
+                                        infoDireita={"4"}
+                                    />
+                                    <ItemSeparadoPorLinhaTracejada
+                                        infoEsquerda={"Valor Total"}
+                                        infoDireita={"R$ 400,00"}
+                                    />
+                                    <ItemSeparadoPorLinhaTracejada
+                                        infoEsquerda={"Valor Pago"}
+                                        infoDireita={"R$ 395,00"}
+                                    />
+                                </div>
+                                <div className='text-left'>
+                                    <p className='text-[1rem] font-medium'>Fluxo de pagamento</p>
+                                    <div className='bg-[#CFD0D9] h-[20vh] flex flex-col gap-2 p-3 rounded-md overflow-y-auto'>
+                                        <ItemSeparadoPorLinhaTracejada
+                                            infoEsquerda={"1. Dinheiro"}
+                                            infoDireita={"R$ 35,00  1x"}
+                                        />
+                                        <ItemSeparadoPorLinhaTracejada
+                                            infoEsquerda={"2. Crédito"}
+                                            infoDireita={"R$ 350,00  4x"}
+                                        />
+                                        <ItemSeparadoPorLinhaTracejada
+                                            infoEsquerda={"3. Débito"}
+                                            infoDireita={"R$ 10,00  1x"}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                             <div>
