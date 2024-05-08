@@ -253,24 +253,24 @@ function Venda() {
     
     function ItemCarrinho(props) {
         return (
-            <tr class="bg-[#DEE2FF] h-24 rounded" >
+            <tr class="bg-[#DEE2FF] h-20 rounded" >
                 <td class="">
-                    <p class="font-medium text-[1.4rem]">{props.codigoProduto}</p>
+                    <p class="font-medium text-[1rem]">{props.codigoProduto}</p>
                 </td>
                 <td>
-                    <p class="font-medium text-[1.4rem]">{props.descricaoProduto}</p>
+                    <p class="font-medium text-[1rem]">{props.descricaoProduto}</p>
                 </td>
                 <td>
-                    <p class="font-medium text-[1.4rem]">R$ {props.precoUnitario}</p>
+                    <p class="font-medium text-[1rem]">R$ {props.precoUnitario}</p>
                 </td>
                 <td>
-                    <p class="font-medium text-[1.4rem]">{props.quantidade}</p>
+                    <p class="font-medium text-[1rem]">{props.quantidade}</p>
                 </td>
                 <td>
-                    <p class="font-medium text-[1.4rem]">R$ {props.descontoUnitario}</p>
+                    <p class="font-medium text-[1rem]">R$ {props.descontoUnitario}</p>
                 </td>
                 <td>
-                    <p class="font-medium text-[1.4rem]">R$ {props.precoLiquido}</p>
+                    <p class="font-medium text-[1rem]">R$ {props.precoLiquido}</p>
                 </td>
                 <td>
                     <div class="flex flex-row items-center gap-12 justify-center">
@@ -281,7 +281,7 @@ function Venda() {
                         <ButtonCancel
                             posicao={props.id}
                             funcao={() => removerItemCarrinho(props.id)} 
-                            width={30}
+                            width={17}
                         />                    
                     </div>
                 </td>
@@ -325,22 +325,22 @@ function Venda() {
                             <thead>
                                 <tr class="flex-row gap-16 pl-6 table-row">
                                     <th>
-                                        <p class="font-medium text-[1.2rem]">Código Prod.</p>
+                                        <p class="font-medium text-[1rem]">Código Prod.</p>
                                     </th>
                                     <th>
-                                        <p class="font-medium text-[1.2rem]">Descrição Prod.</p>
+                                        <p class="font-medium text-[1rem]">Descrição Prod.</p>
                                     </th>
                                     <th>
-                                        <p class="font-medium text-[1.2rem]">Preço Un.</p>
+                                        <p class="font-medium text-[1rem]">Preço Un.</p>
                                     </th>
                                     <th>
-                                        <p class="font-medium text-[1.2rem]">Quanti.</p>
+                                        <p class="font-medium text-[1rem]">Quanti.</p>
                                     </th>
                                     <th>
-                                        <p class="font-medium text-[1.2rem]">Desconto Un.</p>
+                                        <p class="font-medium text-[1rem]">Desconto Un.</p>
                                     </th>
                                     <th>
-                                        <p class="font-medium text-[1.2rem]">Preço Líquido</p>
+                                        <p class="font-medium text-[1rem]">Preço Líquido</p>
                                     </th>
                                 </tr>
                             </thead>
@@ -350,9 +350,9 @@ function Venda() {
  
                         </Tabela>
                                 {itemsCarrinho.length == 0 ? null : 
-                                    <div class="bg-[#DEE2FF] flex flex-row mt-[-24px] w-full h-11 rounded-b-lg ">
-                                        <div class="bg-[#354f7014] flex flex-row w-full h-11 rounded-b-lg items-center justify-end">
-                                            <p class="text-right pr-12 text-[1.3rem] font-bold text-black">Subtotal: R$ {subTotal2.toFixed(2)}</p>
+                                    <div class="bg-[#DEE2FF] flex flex-row mt-[-24px] w-full h-9 rounded-b-md">
+                                        <div class="bg-[#354f7014] flex flex-row w-full h-9 rounded-b-lg items-center justify-end">
+                                            <p class="text-right pr-12 text-[1rem] font-bold text-black">Subtotal: R$ {subTotal2.toFixed(2)}</p>
                                         </div>
                                     </div>
                                 } 

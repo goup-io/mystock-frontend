@@ -14,7 +14,7 @@ function Relatorio() {
                 <ChartBox>
                     <div className='w-full flex p-2'>
                         <div className='w-[50%] text-left '>
-                            <h2 className='font-medium mb-5'>CONFIGURAÇÃO PARA EMISSÃO</h2>
+                            <h2 className='font-medium text-lg mb-5'>CONFIGURAÇÃO PARA EMISSÃO</h2>
                             <form className='flex flex-col gap-8 w-[42%] h-[100%]'>
                                 <div>
                                     <label>Modelo:</label>

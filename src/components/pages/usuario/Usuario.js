@@ -88,13 +88,10 @@ function Usuario() {
 
                         <div className='w-full mt-2 flex justify-between'>
 
-                            <p className=' text-xl'>USUÁRIOS CADASTRADOS:</p>
+                            <p className='font-medium text-lg'>USUÁRIOS CADASTRADOS:</p>
 
-                            <div className='w-[38%] flex justify-between items-center'>
-                                <InputSearcModal
-                                    props="text"
-                                >Pesquisar</InputSearcModal>
-
+                            <div className='flex gap-4 items-center'>
+                                <InputSearcModal props="text">Pesquisar</InputSearcModal>
                                 <ButtonDownLoad></ButtonDownLoad>
                             </div>
 
