@@ -54,7 +54,7 @@ function Caixa() {
 
     return (
         <PageLayout>
-            <Header telaAtual="Área de Venda - Caixa" />
+            <Header telaAtual="Área de Venda - Caixa" tipo="caixa"/>
             <div className="bg-[#fff] w-full h-[75vh] shadow-sm rounded-md px-12 py-5">
                 <CaixaTexto titulo="PRÉ-VENDA" quantidadeItens="3" />
                 <div className="bg-[#F5F3F4] w-full h-[90%] px-5 rounded-md overflow-auto">

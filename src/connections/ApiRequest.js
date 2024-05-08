@@ -20,8 +20,6 @@ export class ApiRequest {
             "senha": senha,
         }
 
-        console.log("entrou aqui na login")
-
         try {
             const resposta = await axios.post(springEndPoint + "/auth/login", usuario);
             var data = resposta.data.token;
@@ -194,6 +192,10 @@ export class ApiRequest {
         } catch (erro) {
             return erro
         }
+
+    }
+
+    static async userGetAll(){
 
     }
 
