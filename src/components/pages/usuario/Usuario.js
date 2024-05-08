@@ -44,13 +44,14 @@ function Usuario() {
 
     const [colunas, setColunas] = useState([]);
     const [dados, setDados] = useState([]);
-   
+
 
     async function fetchData() {
         const colunasDoBanco = ['Código', 'Nome', 'Email', 'Celular', 'Cargo', 'Loja', 'Usuario'];
 
         try {
             const response = await ApiRequest.userGetAll();
+            console.log(response);
 
             if (response.status === 200) {
                 const dados = response.data;
@@ -59,8 +60,6 @@ function Usuario() {
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
         }
-       
-
         setColunas(colunasDoBanco);
     }
 
@@ -93,7 +92,7 @@ function Usuario() {
                         </div>
 
                         <div className=' w-full h-[22rem] mt-4 bg-slate-700 border-solid border-[1px] border-slate-700  bg-slate-700 overflow-y-auto'>
-                            <TabelaPage colunas={colunas} dados={dados} edit remove />
+                            <TabelaPage colunas={colunas} dados={dados.map(({ id, ...usuario}) => usuario)} edit remove />
                         </div>
                     </div>
 

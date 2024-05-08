@@ -195,7 +195,18 @@ export class ApiRequest {
 
     }
 
-    static async userGetAll(){
+    static async userGetAll() {
+        try {
+            const resposta = await axios.get(springEndPoint + "/usuarios", {
+                headers: header,
+            });
+            return resposta;
+        } catch (erro) {
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
+        }
 
     }
 
@@ -375,7 +386,7 @@ export class ApiRequest {
 
     }
 
-     // ***************************************************************************
+    // ***************************************************************************
     // *  ETPs
     // ***************************************************************************
 
