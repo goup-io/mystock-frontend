@@ -303,9 +303,6 @@ export class ApiRequest {
     // ***************************************************************************
 
     static async produtoCreate(produtoObj) {
-        console.log("Olha o que veio pro back ", produtoObj);
-        console.log(produtoObj.precoC)
-        console.log(produtoObj.precoR)
         try {
             const produto = {
                 "idCor": produtoObj.idCor,
