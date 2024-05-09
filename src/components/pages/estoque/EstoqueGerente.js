@@ -76,6 +76,14 @@ function EstoqueGerente() {
         setIsProdutoSelected(false);
     };
 
+    async function csvProdutos() {
+        alert("Implementar lógica csv produtos!")
+    }
+
+    async function csvModelos() {
+        alert("Implementar lógica csv modelos!")
+    }
+
     return (
         <>
             <PageLayoutAreaRestrita>
@@ -86,33 +94,38 @@ function EstoqueGerente() {
                 </div>
 
                 <div className='h-[80vh] pb-12' >
-                    <ChartBox >
-                        <div className='w-full flex justify-between items-center '>
+                    <ChartBox>
+                        <div className='px-4'>
+                            <div className='w-full flex justify-between items-center '>
 
-                            <div className='flex justify-between items-center gap-4'>
-                                <button
-                                    className={`bg-inherit px-1 ${isProdutoSelected ? 'font-medium text-lg border-b-2 border-[#355070]' : 'font-light text-sm'}`}
-                                    onClick={handleProdutoButtonClick}>
-                                    PRODUTOS
-                                </button>
-                                <button
-                                    className={`bg-inherit px-1 ${!isProdutoSelected ? 'font-medium text-lg border-b-2 border-[#355070] ' : 'font-light text-sm'}`}
-                                    onClick={handleModeloButtonClick}>
-                                    MODELOS
-                                </button>
+                                <div className='flex justify-between items-center gap-4'>
+                                    <button
+                                        className={`bg-inherit px-1 ${isProdutoSelected ? 'font-medium text-lg border-b-2 border-[#355070]' : 'font-light text-sm'}`}
+                                        onClick={handleProdutoButtonClick}>
+                                        PRODUTOS
+                                    </button>
+                                    <button
+                                        className={`bg-inherit px-1 ${!isProdutoSelected ? 'font-medium text-lg border-b-2 border-[#355070] ' : 'font-light text-sm'}`}
+                                        onClick={handleModeloButtonClick}>
+                                        MODELOS
+                                    </button>
+                                </div>
+
+                                <div className='flex gap-4 items-center'>
+                                    <InputSearcModal props="text">Pesquisar</InputSearcModal>
+                                    <ButtonDownLoad func={isProdutoSelected ? csvProdutos : csvModelos} ></ButtonDownLoad>
+                                </div>
                             </div>
-
-                            <InputSearcModal props="text">Pesquisar</InputSearcModal>
+                            {/* <div className='w-full h-[60vh] flex justify-center items-center'> */}
+                            <div className='w-full h-[58vh] mt-2 bg-slate-700 border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto rounded'>
+                                {isProdutoSelected ? (
+                                    <TabelaPage colunas={colunasETP} dados={[...dadosDoBancoETP]} edit remove />
+                                ) : (
+                                    <TabelaPage colunas={colunasModel} dados={dadosDoBancoModel.map(({id, ...dados}) => dados)} edit remove />
+                                )}
+                            </div>
+                            {/* </div> */}
                         </div>
-                        {/* <div className='w-full h-[60vh] flex justify-center items-center'> */}
-                        <div className='w-full h-[58vh] mt-2 bg-slate-700 border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto rounded'>
-                            {isProdutoSelected ? (
-                                <TabelaPage colunas={colunasETP} dados={[...dadosDoBancoETP]} edit remove />
-                            ) : (
-                                <TabelaPage colunas={colunasModel} dados={[...dadosDoBancoModel]} edit remove />
-                            )}
-                        </div>
-                        {/* </div> */}
                     </ChartBox>
                 </div>
             </PageLayoutAreaRestrita>
