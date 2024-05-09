@@ -44,7 +44,7 @@ function Header(props){
     return(
         <div class="flex flex-row justify-between px-8 h-[3rem] pt-1 items-center mb-4" style={divEmBranco}>
             <div class="flex flex-row w-2/4 items-center gap-4">
-                <MenuIcon icon={props.icon}></MenuIcon>
+                <MenuIcon icon={props.icon} tipo={props.tipo}></MenuIcon>
                 <p class="text-white text-[1.5rem] font-semibold" style={textBranco}>{props.telaAtual}</p>
             </div>
             <ul class="flex flex-row justify-between gap-6 font-semibold">

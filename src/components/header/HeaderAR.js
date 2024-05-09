@@ -12,7 +12,6 @@ function HeaderAR() {
     const [tempo, definirTempo] = useState(new Date())
 
     async function logout() {
-        console.log("oi");
         const respostaHTTP = await ApiRequest.userLogout();
         if (respostaHTTP.status === 200) {
             localStorage.clear();

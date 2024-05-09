@@ -169,14 +169,14 @@ function ModalCadastreProd() {
                     <div className="flex justify-around">
                         <InputAndLabelModal
                             type="number"
-                            placeholder="digite o preço de custo..."
+                            placeholder="Digite o preço de custo..."
                             value={precoCusto}
                             handleInput={handleInputChange}
                             handlerAtributeChanger={setPrecoCusto}
                         >Preço Custo</InputAndLabelModal>
                         <InputAndLabelModal
                             type="number"
-                            placeholder="digite o preço de revenda..."
+                            placeholder="Digite o preço de revenda..."
                             value={precoRevenda}
                             handleInput={handleInputChange}
                             handlerAtributeChanger={setPrecoRevenda}

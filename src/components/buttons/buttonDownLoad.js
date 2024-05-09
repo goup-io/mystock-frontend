@@ -7,7 +7,7 @@ function ButtonDownLoad(props){
     }
 
     return(
-      <button onClick={props.func} className="w-6 h-6 ">
+      <button onClick={props.func} className="w-6 h-6 duration-150 ease-in-out hover:scale-[1.03]">
         <img src={`${imgDownLoad}`}></img>
       </button>
     )
