@@ -9,12 +9,23 @@ import InputSearcModal from '../../inputs/inputSearchModal.js'
 import TabelaPage from '../../tables/tablePage.js'
 
 import React, { useState, useEffect } from 'react';
+import Filter from '../../inputs/filter.js'
 
 
 function Transacoes() {
 
     const [colunas, setColunas] = useState([]);
     const [dados, setDados] = useState([]);
+
+    const [isHistoricoSelected, setIsHistoricoSelected] = useState(true);
+
+    const handleHistoricoButtonClick = () => {
+        setIsHistoricoSelected(true);
+    };
+    
+    const handlePendentesButtonClick = () => {
+        setIsHistoricoSelected(false);
+    };
 
     useEffect(() => {
 
@@ -52,66 +63,30 @@ function Transacoes() {
             <PageLayout>
                 <Header telaAtual="Área de Transações"></Header>
 
-                <div className=" w-full h-[6rem] flex flex-col rounded-md mt-4 p-2 shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] justify-around items-center text-sm bg-white">
-                    <div className="w-full h-[2.5rem] flex justify-center">
-                        <div className="w-[60%] mr-2 h-2/2 flex justify-between items-center">
-
-                            <div className='w-[15rem]'>
-                                <ComboBoxFilter
-                                    dadosBanco="teste"
-                                >Modelo</ComboBoxFilter>
-                            </div>
-                            <div className='w-[13rem] '>
-                                <ComboBoxFilter
-                                    dadosBanco="teste"
-                                >Cor</ComboBoxFilter>
-                            </div>
-
-                            <div className='w-[15rem] '>
-                                <ComboBoxFilter
-                                    dadosBanco="teste"
-                                >Tamanho</ComboBoxFilter>
-                            </div>
-
-                            <div className='w-[14rem] '>
-                                <ComboBoxFilter
-                                    dadosBanco="teste"
-                                >Status</ComboBoxFilter>
-                            </div>
-
-                        </div>
-                        <div className=" w-[25%] h-2/2 flex justify-center ">
-                            <InputFilterDate
-                                type="text"
-                                placeholder="HH:MM"
-                                inicio="Data de"
-                                fim="á"
-                            ></InputFilterDate>
-                        </div>
-                        <div className='w-[15%] flex items-center ml-2 justify-evenly '>
-                            <ButtonClear>Limpar</ButtonClear>
-                            <ButtonModal>Filtrar</ButtonModal>
-                        </div>
-
-                    </div>
+                <div className='w-full flex md:flex-row md:justify-center rounded-md mt-4 py-4 px-10  shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] items-center text-sm bg-white'>
+                    <Filter modelo cor tamanho status data></Filter>
                 </div>
 
-                <div className='bg-white mt-4 h-[37rem] flex flex-col justify-evenly pl-10 pr-10 items-center shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)]'>
-                    <div className='w-full h-[2rem] flex justify-between items-center '>
+                <div className='bg-white mt-4 h-full flex flex-col gap-3 py-4 px-10 items-center shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] rounded-md'>
+                    <div className='w-full flex justify-between items-center '>
 
-                        <div className='w-[22rem] flex justify-between items-center'>
-                            <p className=' font-medium text-2xl'>HISTÓRICO</p>
-                            <div className=' mt-1'>
-                                <Button >Pendentes de aprovação</Button>
-                            </div>
+                        <div className='flex items-center gap-4'>
+                            <button 
+                                className={`bg-inherit px-1 ${isHistoricoSelected ? 'font-medium text-lg border-b-2 border-[#355070]' : 'font-light text-sm'}`} 
+                                onClick={handleHistoricoButtonClick}>
+                                HISTÓRICO
+                            </button>
+                            <button 
+                                className={`bg-inherit px-1 ${!isHistoricoSelected ? 'font-medium text-lg border-b-2 border-[#355070] ' : 'font-light text-sm'}`}
+                                onClick={handlePendentesButtonClick}>
+                                PENDENTES DE APROVAÇÃO
+                            </button>
                         </div>
 
-                        <InputSearcModal
-                            props="text"
-                        >Pesquisar</InputSearcModal>
+                        <InputSearcModal props="text">Pesquisar</InputSearcModal>
                     </div>
-                    <div className='w-full h-[30.5rem] flex justify-center items-center '>
-                        <div className=' w-full h-[30.5rem] border-solid border-[1px] border-slate-700  bg-slate-700 overflow-y-auto'>
+                    <div className='w-full h-[70%] flex justify-center items-center '>
+                        <div className=' w-full h-full border-solid border-[1px] border-slate-700  bg-slate-700 overflow-y-auto rounded'>
                             <TabelaPage colunas={colunas} dados={dados} ></TabelaPage>
                         </div>
                     </div>

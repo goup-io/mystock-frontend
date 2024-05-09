@@ -71,49 +71,9 @@ return (
         <PageLayout>
             <Header telaAtual="Estoque"></Header>
 
-            {/* <div className=" w-full h-[6rem] flex flex-col rounded-md mt-4 p-2 shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] justify-around items-center text-sm bg-white">
-                <div className="w-full h-[2.5rem] p-4 flex justify-center items-center ">
-                    <div className="w-[52%]  h-2/2 flex justify-start items-center">
-
-                        <div className='w-[32%]'>
-                            <ComboBoxFilter
-                                dadosBanco="teste"
-                            >Modelo</ComboBoxFilter>
-                        </div>
-                        <div className='w-[28%] ml-4 '>
-                            <ComboBoxFilter
-                                dadosBanco="teste"
-                            >Cor</ComboBoxFilter>
-                        </div>
-
-                        <div className='w-[34%] ml-4 '>
-                            <ComboBoxFilter
-                                dadosBanco="teste"
-                            >Tamanho</ComboBoxFilter>
-                        </div>
-
-                    </div>
-                    <div className=" w-[28%] h-2/2 flex justify-center">
-                        <InputFilterDate
-                            type="text"
-                            placeholder="HH:MM"
-                            inicio="Preço de"
-                            fim="á"
-                        ></InputFilterDate>
-                    </div>
-                    <div className='w-[16%] h-[4rem] ml-2 flex items-center justify-around '>
-                        <ButtonClear>Limpar</ButtonClear>
-                        <ButtonModal>Filtrar</ButtonModal>
-                    </div>
-
-                </div>
-            </div> */}
-
             <div className='w-full flex md:flex-row md:justify-center rounded-md mt-4 py-4 px-10  shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] items-center text-sm bg-white'>
                 <Filter modelo cor tamanho preço></Filter>
             </div>
-
-
 
             <div className='bg-white mt-4 h-[74%] flex flex-col justify-start pl-10 pr-10 pt-2 pb-2 items-center shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)]'>
                 <div className='w-full h-[8%] flex justify-between items-center '>
