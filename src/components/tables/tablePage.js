@@ -22,7 +22,7 @@ function TabelaPage({ colunas, dados, edit, remove }) {
             <td key={index}>{valor}</td>
           ))}
           {edit && (
-            <td > 
+            <td> 
             <ButEdit></ButEdit>
             </td>
           )}
