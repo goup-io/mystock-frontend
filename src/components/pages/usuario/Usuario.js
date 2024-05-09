@@ -31,7 +31,12 @@ async function csvTodosUsuarios() {
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', 'Funcionarios.csv');
+
+        // Get current date and format it as YY_mm_dd
+        const date = new Date();
+        const formattedDate = `${date.getFullYear()}_${date.getMonth() + 1}_${date.getDate()}`;
+
+        link.setAttribute('download', `Funcionarios_${formattedDate}.csv`);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -86,7 +91,7 @@ function Usuario() {
 
                             <div className='flex gap-4 items-center'>
                                 <InputSearcModal props="text">Pesquisar</InputSearcModal>
-                                <ButtonDownLoad></ButtonDownLoad>
+                                <ButtonDownLoad func={csvTodosUsuarios} ></ButtonDownLoad>                               
                             </div>
 
                         </div>
