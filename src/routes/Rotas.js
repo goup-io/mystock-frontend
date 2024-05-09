@@ -8,6 +8,7 @@ import Reset from '../components/pages/login/Reset.js'
 
 //Estoque
 import Estoque from '../components/pages/estoque/Estoque.js'
+import EstoqueGerente from '../components/pages/estoque/EstoqueGerente.js'
 
 //Historico
 import Historico from '../components/pages/historico/Historico.js'
@@ -206,6 +207,11 @@ const Rotas = () => {
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
                     <Route path="/avisos" element={<Aviso />} />
+                </Route>
+
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
+                    <Route path="/estoque-gerente" element={<EstoqueGerente />} />
                 </Route>
 
             </Routes>
