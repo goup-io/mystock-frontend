@@ -8,7 +8,8 @@ import InputSearcModal from '../../inputs/inputSearchModal.js'
 import AbrirModalCadastreKit from '../../modals/modals-kit/modalCadastreKit.js'
 import AbrirModalCadastreModel from '../../modals/modals-model/modalCadastreModel.js'
 import AbrirModalCadastreProd from '../../modals/modals-produto/modalCadastreProd.js'
-import AbrirModalCadastreUser from '../../modals/modals-user/modalCadastreUser.js'
+import AbrirModalEditProd from '../../modals/modals-produto/modalEditProd.js'
+
 import TabelaPage from '../../tables/tablePage.js'
 import PageLayout from '../PageLayout.js'
 import ApiRequest from "../../../connections/ApiRequest";
@@ -26,7 +27,7 @@ function Estoque() {
     const [isProdutoSelected, setIsProdutoSelected] = useState(true);
 
     async function fetchData() {
-        const colunasDoBancoETP = ['Código', 'Nome', 'Modelo', 'Cor', 'Preço', 'Loja', 'N.Itens'];
+        const colunasDoBancoETP = ['Código', 'Nome', 'Modelo', 'Tamanho', 'Cor', 'Preço', 'Loja', 'N.Itens'];
         const colunasDoBancoModel = ['Código', 'Nome', 'Categoria', 'Tipo'];
 
         try {
@@ -66,6 +67,11 @@ function Estoque() {
         setIsProdutoSelected(false);
     };
 
+    const handleEditarEtp = (etpId) => {
+        console.log("Editando o etp com ID:", etpId.id);
+        AbrirModalEditProd(etpId.id);
+    };
+
     return (
         <>
             <PageLayout>
@@ -100,7 +106,7 @@ function Estoque() {
                     <div className='w-full h-[78%] mt-2 flex justify-center items-center '>
                         <div className=' w-full h-[100%] border-solid border-[1px] border-slate-700  bg-slate-700 overflow-y-auto rounded'>
                             {isProdutoSelected ? (
-                                <TabelaPage colunas={colunasETP} dados={[...dadosDoBancoETP]} edit remove />
+                                <TabelaPage colunas={colunasETP} dados={dadosDoBancoETP.map(({ id, ...dadosDoBancoETP }) => dadosDoBancoETP)} edit={handleEditarEtp} remove id={dadosDoBancoETP.map(({ ...dadosDoBancoETP }) => dadosDoBancoETP)} />
                             ) : (
                                 <TabelaPage colunas={colunasModel} dados={[...dadosDoBancoModel]} edit remove />
                             )}

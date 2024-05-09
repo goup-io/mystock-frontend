@@ -90,7 +90,7 @@ function ModalCadastreProd() {
 
         if (!modelo || !cor || !tamanho || !nome || !precoCusto || !precoRevenda) {
             //todo: acionar modal de cadastro incorreto
-            alert("Preencha todos os campos corretamente")
+            Alert.alert(ErrorImage, "Preencha todos os campos!")
             return;
         }
 
@@ -119,17 +119,15 @@ function ModalCadastreProd() {
         ApiRequest.produtoCreate(objetoAdicionado).then((response) => {
             console.log(response);
             if (response.status === 201) {
-                alert("Produto Cadastrado!")
-                Alert.alert(SucessImage, "Produto já cadastrado no sistema!")
+                Alert.alert(SucessImage, "Produto cadastrado no sistema!")
             }
             if (response.status === 409) {
-                Alert.alert(ErrorImage, "Produto já cadastrado no sistema!")
+                Alert.alert(ErrorImage, "Produto já está cadastrado no sistema!")
             }
         }).catch((error) => {
             console.log("Erro ao cadastrar um produto: ", error)
             //todo: mostrar modal de erro ao cadastrar
         });
-
 
     }
 
