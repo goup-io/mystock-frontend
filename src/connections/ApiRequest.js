@@ -390,6 +390,33 @@ export class ApiRequest {
 
     }
 
+    static async editarProduto(id, produtoObj){
+        try {
+            const prod = {
+                "idCor": produtoObj.idCor,
+                "idModelo": produtoObj.idModelo,
+                "nome": produtoObj.nome,
+                "precoCusto": produtoObj.precoC,
+                "precoRevenda": produtoObj.precoR
+            }
+
+            console.log("bacnen", prod);
+
+            const resposta = await axios.put(springEndPoint + "/produtos/etp-id/" + id, prod, {
+                headers: header,
+            });
+
+            console.log("olha a res ", resposta);
+            return resposta;
+
+        } catch (erro) {
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
+        }
+    }
+
     // ***************************************************************************
     // *  ETPs
     // ***************************************************************************
@@ -403,9 +430,61 @@ export class ApiRequest {
 
             return resposta;
         } catch (erro) {
-            return erro
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
         }
     }
+
+    static async etpsGetByIdEditar(id) {
+
+        try {
+            const resposta = await axios.get(springEndPoint + "/etps/editar/" + id, {
+                headers: header
+            });
+
+            return resposta;
+        } catch (erro) {
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
+        }
+    }
+
+    static async etpEditar(produtoObj, id) {
+        try {
+            const etp = {
+                "idCor": produtoObj.idCor,
+                "idModelo": produtoObj.idModelo,
+                "idTamanho": produtoObj.idTamanho,
+                "idLoja": produtoObj.idLoja,
+                "nome": produtoObj.nome,
+                "valorCusto": produtoObj.precoC,
+                "valorRevenda": produtoObj.precoR
+            }
+
+            console.log("bacnen", etp);
+
+            const resposta = await axios.put(springEndPoint + "/etps/" + id, etp, {
+                headers: header,
+            });
+
+            console.log("olha a res ", resposta);
+            return resposta;
+
+        } catch (erro) {
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
+        }
+
+    }
+
+
+
     // ***************************************************************************
     // *  COR
     // ***************************************************************************
