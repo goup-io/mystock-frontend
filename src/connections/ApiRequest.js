@@ -20,8 +20,6 @@ export class ApiRequest {
             "senha": senha,
         }
 
-        console.log("entrou aqui na login")
-
         try {
             const resposta = await axios.post(springEndPoint + "/auth/login", usuario);
             var data = resposta.data.token;
@@ -197,6 +195,21 @@ export class ApiRequest {
 
     }
 
+    static async userGetAll() {
+        try {
+            const resposta = await axios.get(springEndPoint + "/usuarios", {
+                headers: header,
+            });
+            return resposta;
+        } catch (erro) {
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
+        }
+
+    }
+
     // ***************************************************************************
     // *  CARGO
     // ***************************************************************************
@@ -303,9 +316,6 @@ export class ApiRequest {
     // ***************************************************************************
 
     static async produtoCreate(produtoObj) {
-        console.log("Olha o que veio pro back ", produtoObj);
-        console.log(produtoObj.precoC)
-        console.log(produtoObj.precoR)
         try {
             const produto = {
                 "idCor": produtoObj.idCor,
@@ -376,7 +386,7 @@ export class ApiRequest {
 
     }
 
-     // ***************************************************************************
+    // ***************************************************************************
     // *  ETPs
     // ***************************************************************************
 

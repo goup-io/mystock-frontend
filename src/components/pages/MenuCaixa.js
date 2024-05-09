@@ -12,11 +12,16 @@ function MenuCaixa() {
     const navigate = useNavigate();
 
     async function handleOnClick(path) {
-        const respostaHTTP = await ApiRequest.userLogout();
-        if (respostaHTTP.status === 200) {
-            localStorage.clear();
-            navigate("/")
+        if (path === "sair") {
+            const respostaHTTP = await ApiRequest.userLogout();
+            if (respostaHTTP.status === 200) {
+                localStorage.clear();
+                navigate("/")
+            }
+        } else {
+            navigate(path)
         }
+
     }
 
     function MenuItems() {
@@ -24,6 +29,7 @@ function MenuCaixa() {
             <>
                 <Header telaAtual="Menu" icon="crossed" tipo="caixa"></Header>
                 <ul class="flex flex-col items-center gap-7 mt-20 px-12">
+                    <ItemLista handleClick={() => handleOnClick("/venda/caixa")}>VOLTAR</ItemLista>
                     <ItemLista handleClick={() => handleOnClick("sair")}>SAIR</ItemLista>
                 </ul>
             </>
