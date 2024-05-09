@@ -9,7 +9,10 @@ import HeaderModal from "../headerModal";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import ApiRequest from "../../../connections/ApiRequest";
-import { isNumber } from "@mui/x-data-grid/internals";
+
+import Alert from '../../alerts/Alert.js';
+import ErrorImage from '../../../assets/icons/error.svg'
+import SucessImage from '../../../assets/icons/sucess.svg'
 
 function ModalCadastreProd() {
 
@@ -113,13 +116,14 @@ function ModalCadastreProd() {
             idTamanho
         };
 
-        console.log(objetoAdicionado);
-
-
         ApiRequest.produtoCreate(objetoAdicionado).then((response) => {
+            console.log(response);
             if (response.status === 201) {
-                alert("Produto Cadastrado!!")
-                //todo: mostrar modal de sucesso ao cadastrar
+                alert("Produto Cadastrado!")
+                Alert.alert(SucessImage, "Produto já cadastrado no sistema!")
+            }
+            if (response.status === 409) {
+                Alert.alert(ErrorImage, "Produto já cadastrado no sistema!")
             }
         }).catch((error) => {
             console.log("Erro ao cadastrar um produto: ", error)

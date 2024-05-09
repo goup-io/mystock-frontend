@@ -330,10 +330,14 @@ export class ApiRequest {
                 headers: header,
             });
 
+            console.log("olha a res ", resposta);
             return resposta;
 
         } catch (erro) {
-            return erro
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
         }
 
     }
@@ -914,7 +918,7 @@ export class ApiRequest {
     // ***************************************************************************
 
     static async getCsvUsuario(options = {}) {
-        const resposta = await axios.get( springEndPoint + "/csv", {
+        const resposta = await axios.get(springEndPoint + "/csv", {
             headers: header,
             responseType: 'arraybuffer', // Add this line
         });
