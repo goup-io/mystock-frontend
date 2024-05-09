@@ -98,7 +98,7 @@ return (
                     >Pesquisar</InputSearcModal>
                 </div>
                 <div className='w-full h-[78%] mt-2 flex justify-center items-center '>
-                    <div className=' w-full h-[100%] border-solid border-[1px] border-slate-700  bg-slate-700 overflow-y-auto'>
+                    <div className=' w-full h-[100%] border-solid border-[1px] border-slate-700  bg-slate-700 overflow-y-auto rounded'>
                         {isProdutoSelected ? (
                             <TabelaPage colunas={colunasETP} dados={[...dadosDoBancoETP]} edit remove />
                         ) : (
