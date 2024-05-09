@@ -25,10 +25,10 @@ function MenuLateral(){
                 <ul class="flex flex-col gap-4 text-[#CFD0D9]">
                     <ItemLista route={"/dashboard-geral"} icon={iconDash} rotaAtual={location.pathname}>Dashboard</ItemLista>
                     <ItemLista route={"/usuarios"} icon={iconUsers} rotaAtual={location.pathname}>Usuários</ItemLista>
-                    <ItemLista route={"/estoque-ar"} icon={iconEstoque} rotaAtual={location.pathname}>Estoque</ItemLista>
-                    <ItemLista route={"/venda-ar"} icon={iconVenda} rotaAtual={location.pathname}>Vendas</ItemLista>
+                    <ItemLista route={"/estoque-gerente"} icon={iconEstoque} rotaAtual={location.pathname}>Estoque</ItemLista>
+                    <ItemLista route={"/venda-gerente"} icon={iconVenda} rotaAtual={location.pathname}>Vendas</ItemLista>
                     <ItemLista route={"/relatorios"} icon={iconRelatorio} rotaAtual={location.pathname}>Relatórios</ItemLista>
-                    <ItemLista route={"/transacao-ar"} icon={iconTransacoes} rotaAtual={location.pathname}>Transações</ItemLista>
+                    <ItemLista route={"/transacao-gerente"} icon={iconTransacoes} rotaAtual={location.pathname}>Transações</ItemLista>
                     <ItemLista route={"/avisos"} icon={iconAlerta} rotaAtual={location.pathname}>Avisos</ItemLista>
                 </ul>                    
             </>
