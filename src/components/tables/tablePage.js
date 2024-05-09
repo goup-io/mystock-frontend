@@ -1,7 +1,7 @@
 import React from 'react';
 import ButEdit from '../buttons/buttonEdit'
 
-function TabelaPage({ colunas, dados, edit, remove }) {
+function TabelaPage({ colunas, dados, edit, remove, id }) {
 
   return (
    
@@ -23,7 +23,7 @@ function TabelaPage({ colunas, dados, edit, remove }) {
           ))}
           {edit && (
             <td> 
-            <ButEdit></ButEdit>
+            <ButEdit id={id[index]} funcao={() => edit(id[index])}></ButEdit>
             </td>
           )}
           {remove && (
