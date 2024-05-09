@@ -50,6 +50,16 @@ function Estoque() {
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
         }
+        try {
+            const responseModel = await ApiRequest.modeloGetAll();
+
+            if (responseModel.status === 200) {
+                const dados = responseModel.data;
+                setDadosDoBancoModel(dados);
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
 
         setColunasETP(colunasDoBancoETP);
         setColunasModel(colunasDoBancoModel);
@@ -108,7 +118,7 @@ function Estoque() {
                             {isProdutoSelected ? (
                                 <TabelaPage colunas={colunasETP} dados={dadosDoBancoETP.map(({ id, ...dadosDoBancoETP }) => dadosDoBancoETP)} edit={handleEditarEtp} remove id={dadosDoBancoETP.map(({ ...dadosDoBancoETP }) => dadosDoBancoETP)} />
                             ) : (
-                                <TabelaPage colunas={colunasModel} dados={[...dadosDoBancoModel]} edit remove />
+                                <TabelaPage colunas={colunasModel} dados={dadosDoBancoModel.map(({ id, ...dadosDoBancoModel }) => dadosDoBancoModel)} edit remove  id={dadosDoBancoETP.map(({ ...dadosDoBancoETP }) => dadosDoBancoETP)}/>
                             )}
                         </div>
                     </div>

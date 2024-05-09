@@ -149,10 +149,19 @@ export class ApiRequest {
             "telefone": objetoAdicionado.celular,
             "idLoja": objetoAdicionado.idLoja
         }
-        console.log(funcionario);
-        const resposta = await axios.post(springEndPoint + "/usuarios", funcionario, {
-            headers: header,
-        });
+        try {
+            const resposta = await axios.post(springEndPoint + "/usuarios", funcionario, {
+                headers: header,
+            });
+    
+            return resposta;
+        } catch (error) {
+            return {
+                status: error.response.status,
+                data: error.response.data
+            };
+        }
+        
 
     }
 

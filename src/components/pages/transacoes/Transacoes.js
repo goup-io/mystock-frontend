@@ -87,7 +87,7 @@ function Transacoes() {
                     </div>
                     <div className='w-full h-[70%] flex justify-center items-center '>
                         <div className=' w-full h-full border-solid border-[1px] border-slate-700  bg-slate-700 overflow-y-auto rounded'>
-                            <TabelaPage colunas={colunas} dados={dados} ></TabelaPage>
+                            <TabelaPage colunas={colunas} dados={dados} id={0}></TabelaPage>
                         </div>
                     </div>
                 </div>

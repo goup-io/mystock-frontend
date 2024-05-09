@@ -36,7 +36,7 @@ function EstoqueGerente() {
     const [isProdutoSelected, setIsProdutoSelected] = useState(true);
 
     async function fetchData() {
-        const colunasDoBancoETP = ['Código', 'Nome', 'Modelo', 'Cor', 'Preço', 'Loja', 'N.Itens'];
+        const colunasDoBancoETP = ['Código', 'Nome', 'Modelo', 'Tamanho', 'Cor', 'Preço', 'Loja', 'N.Itens'];
         const colunasDoBancoModel = ['Código', 'Nome', 'Categoria', 'Tipo'];
 
         try {
@@ -119,9 +119,9 @@ function EstoqueGerente() {
                             {/* <div className='w-full h-[60vh] flex justify-center items-center'> */}
                             <div className='w-full h-[58vh] mt-2 bg-slate-700 border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto rounded'>
                                 {isProdutoSelected ? (
-                                    <TabelaPage colunas={colunasETP} dados={[...dadosDoBancoETP]} edit remove />
+                                    <TabelaPage colunas={colunasETP} dados={dadosDoBancoETP.map(({ id, ...dadosDoBancoETP }) => dadosDoBancoETP)} edit remove id={0} />
                                 ) : (
-                                    <TabelaPage colunas={colunasModel} dados={dadosDoBancoModel.map(({id, ...dados}) => dados)} edit remove />
+                                    <TabelaPage colunas={colunasModel} dados={dadosDoBancoModel.map(({id, ...dados}) => dados)} edit remove id={0}/>
                                 )}
                             </div>
                             {/* </div> */}
