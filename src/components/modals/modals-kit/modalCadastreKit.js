@@ -40,22 +40,22 @@ function ModalCadastreKit() {
 
     return (
 
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[38rem] h-[26rem] flex flex-col justify-around items-center bg-white p-2 rounded-lg border border-black">
-           <div className='w-[35.3rem]'>
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[42rem] h-[24rem] flex flex-col justify-around items-center bg-white p-2 rounded-lg border border-black">
+           <div className='w-[40rem]'>
            <HeaderModal
                 props="Adicionar no Estoque Kit Pré-Cadastrado"
             >
             </HeaderModal>
            </div>
-            <div className="w-[35.3rem] h-[2rem] flex justify-end ">
+            <div className="w-[40rem] h-[2rem] flex justify-end ">
                 <InputSearcModal
                     props="text"
                 >Pesquisar</InputSearcModal>
             </div>
-            <div className='w-[35.3rem] h-[16rem]  border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto'>
+            <div className='w-[40rem] h-[16rem]  border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto'>
                 <TabelaModal colunas={colunas} dados={dados} edit remove iptQuantidade></TabelaModal>
             </div>
-            <div className="w-[35.3rem] flex justify-end items-end mt-1 h-7">
+            <div className="w-[40rem] flex justify-end items-end mt-1 h-7">
                 <ButtonClear>Limpar</ButtonClear>
                 <ButtonModal>Cadastrar</ButtonModal>
             </div>
