@@ -68,6 +68,10 @@ function Usuario() {
         setColunas(colunasDoBanco);
     }
 
+    const handleEditarUsuario = (id) => {
+        console.log(id);
+    }
+
     useEffect(() => {
         fetchData();
     }, []);
@@ -91,13 +95,13 @@ function Usuario() {
 
                             <div className='flex gap-4 items-center'>
                                 <InputSearcModal props="text">Pesquisar</InputSearcModal>
-                                <ButtonDownLoad func={csvTodosUsuarios} ></ButtonDownLoad>                               
+                                <ButtonDownLoad func={csvTodosUsuarios} ></ButtonDownLoad>
                             </div>
 
                         </div>
 
                         <div className='w-full mt-4 bg-slate-700 border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto rounded'>
-                            <TabelaPage colunas={colunas} dados={dados.map(({id, ...dados}) => dados)} edit remove />
+                            <TabelaPage colunas={colunas} dados={dados.map(({ id, ...dados }) => dados)} edit={handleEditarUsuario} remove id={0}/>
                         </div>
                     </div>
 
