@@ -48,7 +48,7 @@ function Pagamento() {
 
     return (
         <PageLayout>
-            <Header telaAtual="Área de Venda - Pagamento" />
+            <Header telaAtual="Área de Venda - Pagamento" tipo="caixa"/>
             <div className="bg-[#fff] w-full h-[75vh] shadow-sm rounded-md px-12 py-6">
                 <CaixaTexto titulo="PAGAR COM :">
                     <div style={divPai} className="h-full ">

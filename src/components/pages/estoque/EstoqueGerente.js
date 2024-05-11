@@ -93,9 +93,9 @@ function EstoqueGerente() {
                     <Filter modelo cor tamanho preço></Filter>
                 </div>
 
-                <div className='h-[80vh] pb-12' >
+                {/* <div className='h-[80vh] pb-12' > */}
                     <ChartBox>
-                        <div className='px-4'>
+                        <div className='px-4 pt-1'>
                             <div className='w-full flex justify-between items-center '>
 
                                 <div className='flex justify-between items-center gap-4'>
@@ -117,7 +117,7 @@ function EstoqueGerente() {
                                 </div>
                             </div>
                             {/* <div className='w-full h-[60vh] flex justify-center items-center'> */}
-                            <div className='w-full h-[58vh] mt-2 bg-slate-700 border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto rounded'>
+                            <div className='w-full h-[50vh] mt-2 bg-slate-700 border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto rounded'>
                                 {isProdutoSelected ? (
                                     <TabelaPage colunas={colunasETP} dados={dadosDoBancoETP.map(({ id, ...dadosDoBancoETP }) => dadosDoBancoETP)} edit remove id={0} />
                                 ) : (
@@ -127,7 +127,7 @@ function EstoqueGerente() {
                             {/* </div> */}
                         </div>
                     </ChartBox>
-                </div>
+                {/* </div> */}
             </PageLayoutAreaRestrita>
         </>
     )
