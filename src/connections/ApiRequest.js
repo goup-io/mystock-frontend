@@ -43,7 +43,7 @@ export class ApiRequest{
         try{
             const resposta = await axios.post(springEndPoint + "/auth/logout");
         
-            if(resposta.status ==  200){
+            if(resposta.status === 200){
                 localStorage.setItem("token", "")
             }
     

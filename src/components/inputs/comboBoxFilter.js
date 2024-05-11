@@ -1,3 +1,4 @@
+import { Height } from '@mui/icons-material';
 import React, { useState, useEffect } from 'react';
 
 function ComboBoxFilter(props) {
@@ -15,10 +16,17 @@ function ComboBoxFilter(props) {
     setSelecionado(event.target.value);
   };
 
+  var style = {
+    width: props.width === undefined ? "10rem" : props.width,
+    height: props.height === undefined ? "1.5rem" : props.height,
+    fontWeight: props.bold === undefined ? "300" : props.bold,
+
+  }
+
   return (
     <div className="w-full flex justify-evenly items-center text-center ">
-    <p class="form-floating text-[1.2rem] text-black font-normal">{props.children}:</p>
-      <select value={selecionado} onChange={handleChange} className="w-[10rem] h-[1.5rem] rounded bg-[F5F3F4] pl-2 text-[1rem] font-[300] text-[#555] form-control border border-1 border-slate-600">
+    <p class="form-floating text-[1.2rem] text-black font-normal">{props.children}</p>
+      <select value={selecionado} onChange={handleChange} style={style} className="rounded bg-[F5F3F4] pl-2 text-[1rem] text-[#555] form-control border border-1 border-slate-600">
         <option value="">Selecione...</option>
         {opcoes.map((opcao, index) => (
           <option key={index} value={opcao}>{opcao}</option>

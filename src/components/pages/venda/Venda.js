@@ -1,12 +1,15 @@
 import Header from '../../header/Header.js'
 import PageLayout from '../PageLayout.js'
-import Input from '../../inputs/inputAndLabelModal.js'
+
+//Inputs
+// import Input from '../../inputs/inputAndLabelModal.js'
+import Input from '../../inputs/InputsCadastre.js'
 import ItemSeparadoPorLinhaTracejada from '../../tables/ItemSeparadoPorLinhaTracejada.js'
+import ComboBoxFilter from '../../inputs/comboBoxFilter.js'
 
 //Tabela
 import Tabela from '../../tables/TableRoundedBorderSpacing.js'
 import tabelaEstilos from '../../tables/TableRoundedBorderSpacing.module.css'
-
 
 //Modais
 import AbrirModalAddProdCart from "../../modals/modals-produto/modalAddProdCart.js"
@@ -27,7 +30,7 @@ var divPai = {
     backgroundColor: "#F5F3F4",
     marginTop: "0.5rem",
     display: "grid",
-    height: "72vh",
+    height: "89%",
     gap: "16px",
     gridTemplateColumns: "repeat(7, 1fr)",
     gridTemplateRows: "repeat(9, 1fr)",
@@ -253,8 +256,8 @@ function Venda() {
     
     function ItemCarrinho(props) {
         return (
-            <tr class="bg-[#DEE2FF] h-24 rounded text-[1.3rem]" >
-                <td class="">
+            <tr class="bg-[#DEE2FF] h-24 rounded text-[1.2rem]" >
+                <td>
                     <p class="font-medium">{props.codigoProduto}</p>
                 </td>
                 <td>
@@ -369,14 +372,21 @@ function Venda() {
                             <Input
                                 handleInput={handleInput}
                                 handlerAtributeChanger={setCodigoVendedor}
+                                width="7rem"
                             />
                         </div>
-                        <div class="flex flex-row items-center text-[1.45rem] gap-3">
+                        <div class="flex flex-row items-center text-[1.45rem] gap-3 text-nowrap">
                             <p>Tipo Venda:</p>
-                            <Input 
+                            <ComboBoxFilter
+                                width="8rem"
+                                height="2rem"
+                                bold="500"
+                            />
+                            {/* <Input 
                                 handleInput={handleInput}
                                 handlerAtributeChanger={setTipoVenda}
-                            />
+                                width="7rem"
+                            /> */}
                         </div>
                     </div>
                 </div>
@@ -393,16 +403,16 @@ function Venda() {
                             valorTotal={valorTotal.toFixed(2)}
                         />
                     </div>
-                    <div class="flex flex-col w-full gap-2 my-2 px-5">
+                    <div class="flex flex-col w-full gap-2 my-2 px-5 flex-wrap text-[1.1rem] font-semibold">
                         <Button
                         cor={"#DEE2FF"}
                         >
-                            <p class="text-[1.1rem] font-semibold p-2 text-black">ADICIONAR DESCONTO À VENDA</p>
+                            <p class="p-2 text-black">ADICIONAR DESCONTO À VENDA</p>
                         </Button>
                         <Button
                             funcao={() => navigate("/venda/caixa")}
                         >
-                            <p class="text-2xl p-2">FINALIZAR PRÉ-VENDA</p>
+                            <p class="p-2">FINALIZAR PRÉ-VENDA</p>
                         </Button>
                     </div>
                 </div>
