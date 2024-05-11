@@ -11,7 +11,7 @@ function ButtonMenu(props) {
 
     const navigate = useNavigate();
 
-    var icon = props.icon == "crossed" ? menuIconCrossed : menuIcon
+    var icon = props.icon === "crossed" ? menuIconCrossed : menuIcon
 
     return (
 

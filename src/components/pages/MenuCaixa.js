@@ -8,7 +8,6 @@ import ApiRequest from '../../connections/ApiRequest.js';
 import Alert from '../alerts/Alert.js';
 
 function MenuCaixa() {
-
     const navigate = useNavigate();
 
     async function handleOnClick(path) {
@@ -21,7 +20,10 @@ function MenuCaixa() {
         } else {
             navigate(path)
         }
+    }
 
+    const handleNavigateBack = () => {
+        navigate(-1) // Esta função retorna para a tela anterior
     }
 
     function MenuItems() {
@@ -29,7 +31,7 @@ function MenuCaixa() {
             <>
                 <Header telaAtual="Menu" icon="crossed" tipo="caixa"></Header>
                 <ul class="flex flex-col items-center gap-7 mt-20 px-12">
-                    <ItemLista handleClick={() => handleOnClick("/venda/caixa")}>VOLTAR</ItemLista>
+                    <ItemLista handleClick={handleNavigateBack}>VOLTAR</ItemLista>
                     <ItemLista handleClick={() => handleOnClick("sair")}>SAIR</ItemLista>
                 </ul>
             </>
