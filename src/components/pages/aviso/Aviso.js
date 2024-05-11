@@ -11,6 +11,11 @@ function Aviso() {
     const avisos = [
         {tipo: 'Vermelho', titulo: 'Baixo Estoque', descricao: 'O Air max 200 tamanho 45 possuem apenas 5 pares em estoque.', dataHora: '02/05/2024 17:57:12'},
         {tipo: 'Laranja', titulo: 'Baixo Estoque', descricao: 'O Air max 200 tamanho 45 possuem apenas 50 pares em estoque.', dataHora: '02/05/2024 16:57:12'},
+        {tipo: 'Vermelho', titulo: 'Baixo Estoque', descricao: 'O Air max 200 tamanho 45 possuem apenas 5 pares em estoque.', dataHora: '02/05/2024 17:57:12'},
+        {tipo: 'Laranja', titulo: 'Baixo Estoque', descricao: 'O Air max 200 tamanho 45 possuem apenas 50 pares em estoque.', dataHora: '02/05/2024 16:57:12'},
+        {tipo: 'Laranja', titulo: 'Baixo Estoque', descricao: 'O Air max 200 tamanho 45 possuem apenas 50 pares em estoque.', dataHora: '02/05/2024 16:57:12'},
+        {tipo: 'Laranja', titulo: 'Baixo Estoque', descricao: 'O Air max 200 tamanho 45 possuem apenas 50 pares em estoque.', dataHora: '02/05/2024 16:57:12'},
+        {tipo: 'Laranja', titulo: 'Baixo Estoque', descricao: 'O Air max 200 tamanho 45 possuem apenas 50 pares em estoque.', dataHora: '02/05/2024 16:57:12'},
     ]
 
     return (
@@ -25,7 +30,7 @@ function Aviso() {
                         <h2 className='font-medium text-lg'>AVISOS</h2>                        
                         <InputSearch>Pesquisar</InputSearch>
                     </div>
-                    <div className='flex flex-col gap-2 px-3 mt-3'>
+                    <div className='h-[50vh] flex flex-col gap-2 px-3 mt-2 mb-5 overflow-y-auto'>
                         {avisos.map((aviso, index) => (
                             <ModalAviso tipo={aviso.tipo} titulo={aviso.titulo} descricao={aviso.descricao} dataHora={aviso.dataHora} />
                         ))}
