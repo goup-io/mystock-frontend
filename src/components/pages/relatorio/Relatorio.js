@@ -21,7 +21,7 @@ function Relatorio() {
                                     <div className='flex gap-5 mt-2'>
                                         <div><input type="radio" name="webmaster" value="sim" /> Anual</div>
                                         <div><input type="radio" name="webmaster" value="nao" /> Mensal</div>
-                                        <div><input type="radio" name="webmaster" value="talvez" /> Diario</div>
+                                        <div><input type="radio" name="webmaster" value="talvez" checked /> Diario</div>
                                     </div>
                                 </div>
                                 <div>
@@ -44,7 +44,7 @@ function Relatorio() {
                                 <div className='flex flex-col'>
                                     <label>Tipo:</label>
                                     <select className='border rounded px-1'>
-                                        <option value={0}>Geral (todas as lojas)</option>
+                                        <option value={0} selected>Geral (todas as lojas)</option>
                                         <option value={1}>Loja 1</option>
                                         <option value={2}>Loja 2</option>
                                         <option value={3}>Loja 3</option>

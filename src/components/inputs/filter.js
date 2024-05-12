@@ -37,7 +37,7 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
                     <div className="flex items-center">
                         <label className="text-[1rem] text-black font-normal mr-3">Tipo:</label>
                         <div className='flex gap-5 mt-1'>
-                            <div className="flex items-center gap-1"><input type="radio" name="tpAlerta" value="todos" /> Todos</div>
+                            <div className="flex items-center gap-1"><input type="radio" name="tpAlerta" value="todos" checked /> Todos</div>
                             <div className="flex items-center gap-1"><input type="radio" name="tpAlerta" value="estoque" /> Estoque</div>
                             <div className="flex items-center gap-1"><input type="radio" name="tpAlerta" value="transferencias" /> Transferências</div>
                         </div>
