@@ -13,20 +13,20 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
                 {modelo && <ComboBoxFilter>Modelo</ComboBoxFilter>}
                 {tamanho && <ComboBoxFilter>Tamanho</ComboBoxFilter>}
                 {status && <ComboBoxFilter>Status</ComboBoxFilter>}
-                {vendedor && <ComboBoxFilter>Vendedor</ComboBoxFilter>}
-                {tipoVenda && <ComboBoxFilter>Tipo Venda</ComboBoxFilter>}
                 {data && <div><InputFilterDate
                    type="date"
                    placeholder="DD/MM/AAAA"
                    inicio="Data de"
                    fim="á"
-                 /></div>}
+                   /></div>}
                 {horario && <div><InputFilterDate
-                   type="date"
+                   type="time"
                    placeholder="HH:MM"
                    inicio="Hora de"
                    fim="á"
-                 /></div>}
+                   /></div>}
+                {vendedor && <ComboBoxFilter>Vendedor</ComboBoxFilter>}
+                {tipoVenda && <ComboBoxFilter>Tipo</ComboBoxFilter>}
                 {preço && <div><InputFilterDate
                     type="text"
                     placeholder="R$00,00"
