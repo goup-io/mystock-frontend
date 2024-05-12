@@ -4,15 +4,11 @@ import InputFilterDate from "../inputs/inputFilterDate";
 import ComboBoxFilter from "../inputs/comboBoxFilter";
 import ButtonClearFilter from "../buttons/buttonClearFilter";
 
-function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVenda, horario, tipoAlerta }) {
+function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVenda, horario, tipoAlerta, produto }) {
     return (
         <div className="w-full flex flex-wrap justify-between items-center text-center ">
             {/* Seção dos filtros */}
             <div className="md:flex md:space-x-4 md:w-auto md:mb-0 ">
-                {cor && <ComboBoxFilter>Cor</ComboBoxFilter>}
-                {modelo && <ComboBoxFilter>Modelo</ComboBoxFilter>}
-                {tamanho && <ComboBoxFilter>Tamanho</ComboBoxFilter>}
-                {status && <ComboBoxFilter>Status</ComboBoxFilter>}
                 {data && <div><InputFilterDate
                    type="date"
                    placeholder="DD/MM/AAAA"
@@ -27,6 +23,11 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
                    /></div>}
                 {vendedor && <ComboBoxFilter>Vendedor</ComboBoxFilter>}
                 {tipoVenda && <ComboBoxFilter>Tipo</ComboBoxFilter>}
+                {cor && <ComboBoxFilter>Cor</ComboBoxFilter>}
+                {modelo && <ComboBoxFilter>Modelo</ComboBoxFilter>}
+                {produto && <ComboBoxFilter>Produto</ComboBoxFilter>}
+                {tamanho && <ComboBoxFilter>Tamanho</ComboBoxFilter>}
+                {status && <ComboBoxFilter>Status</ComboBoxFilter>}
                 {preço && <div><InputFilterDate
                     type="text"
                     placeholder="R$00,00"
@@ -46,7 +47,7 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
             </div>
 
             {/* Botões de limpar e filtrar */}
-            <div className="flex  h-6 ml-4" >
+            <div className="flex h-6 ml-4" >
                 <ButtonClearFilter>Limpar</ButtonClearFilter>
                 <ButtonModal>Filtrar</ButtonModal>
             </div>

@@ -23,7 +23,7 @@ function HistoricoVendasGerente() {
                 <TitleBox title="Transferências" buttons={buttons}></TitleBox>
 
                 <div className='w-full flex md:flex-row md:justify-center rounded-md py-4 px-6  shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] items-center text-sm bg-white'>
-                    <Filter></Filter>
+                    <Filter data modelo produto tamanho status></Filter>
                 </div>
 
                 <ChartBox>
