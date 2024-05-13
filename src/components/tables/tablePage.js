@@ -1,7 +1,8 @@
 import React from 'react';
 import ButEdit from '../buttons/buttonEdit'
+import ButtonModal from '../buttons/buttonsModal';
 
-function TabelaPage({ colunas, dados, edit, remove, id }) {
+function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, id }) {
 
   return (
    
@@ -13,6 +14,9 @@ function TabelaPage({ colunas, dados, edit, remove, id }) {
         ))}
         {edit && <th>Editar</th>}
         {remove && <th>Remover</th>}
+        {verMais && <th>Ver Mais</th>}
+        {troca && <th>&nbsp;</th>}
+        {cancel && <th>&nbsp;</th>}
       </tr>
     </thead>
     <tbody className=' text-base'>
@@ -29,6 +33,21 @@ function TabelaPage({ colunas, dados, edit, remove, id }) {
           {remove && (
             <td >
               <button className='text-sm font-medium w-5 h-5 rounded text-white bg-red-500'>X</button>
+            </td>
+          )}
+          {verMais && (
+            <td className='flex justify-center items-center' >
+              <button className='text-lg font-bold w-5 h-5 rounded text-white bg-[#96BDCE] flex items-center justify-center duration-50 ease-in-out hover:scale-[1.1] hover:bg-[#86AEC0] mt-[1.6px]'>+</button>
+            </td>
+          )}
+          {troca && (
+            <td >
+              <ButtonModal>Trocar</ButtonModal>
+            </td>
+          )}
+          {cancel && (
+            <td >
+              <ButtonModal cor="#919191">Cancelar</ButtonModal>
             </td>
           )}
         </tr>
