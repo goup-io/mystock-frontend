@@ -53,6 +53,12 @@ import AbrirModalAddKitCart from '../components/modals/modals-kit/modalAddKitCar
 import AbrirModalAddProdCart from '../components/modals/modals-produto/modalAddProdCart.js';
 import InputFilter from '../components/inputs/inputFilter.js';
 import Filter from '../components/inputs/filter.js';
+import AbrirModalRequestProd from '../components/modals/modalRequestProd.js';
+import AbrirModalPaymentCash from '../components/modals/modals-pagamento/modalPaymentCash.js';
+import AbrirModalPaymentCard from '../components/modals/modals-pagamento/modalPaymentCard.js';
+import AbrirModalPaymentPix from '../components/modals/modals-pagamento/modalPaymentPix.js';
+import AbrirModalNotification from '../components/modals/modalNotification.js';
+import AbrirModalPaymentHistory from '../components/modals/modals-pagamento/modalPaymentHistory.js';
 
 const Rotas = () => {
     return (
@@ -147,6 +153,31 @@ const Rotas = () => {
 
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
+                    <Route path="/solicitar-produto" element={<AbrirModalRequestProd />} />
+                </Route>
+
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
+                    <Route path="/pagamento-dinheiro" element={<AbrirModalPaymentCash />} />
+                </Route>
+
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
+                    <Route path="/pagamento-cartao" element={<AbrirModalPaymentCard />} />
+                </Route>
+
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
+                    <Route path="/pagamento-pix" element={<AbrirModalPaymentPix />} />
+                </Route>
+
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
+                    <Route path="/modal-notificacao" element={<AbrirModalNotification />} />
+                </Route>
+
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
                     <Route path="/cadastro-login" element={<AbrirModalCadastreLogin />} />
                 </Route>
 
@@ -163,6 +194,11 @@ const Rotas = () => {
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
                     <Route path="/historico-vendas" element={<AbrirModalSalesHistory />} />
+                </Route>
+
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
+                    <Route path="/historico-pagamento" element={<AbrirModalPaymentHistory />} />
                 </Route>
 
                 <Route path="/" element={<App />}>

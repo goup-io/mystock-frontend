@@ -1,6 +1,7 @@
 //Componentes
 import myStockLogo from '../../assets/icons/logoMyStock.svg'
 import Notification from '../buttons/buttonNotification.js'
+import ButtonModal from '../buttons/buttonsModal.js'
 import Footer from '../footer/Footer.js'
 import { useState, useEffect } from 'react'
 
@@ -29,9 +30,13 @@ function PageLayout(props){
 
     return(
         <section class="flex flex-col items-center h-[100vh] bg-[#F5F3F4] w-full justify-between ">
-            <div class="flex flex-row w-full justify-between px-4 pl-[5%] h-[3.2rem] ">
+            <div class="flex flex-row w-full justify-between items-center px-4 pl-[5%] h-[3.2rem] ">
                 <img className='w-[8rem]' src={myStockLogo}></img>
+                <div className='flex h-10 w-[18rem] justify-between items-center'>
+                    <ButtonModal>Solicitar Produto na Rede</ButtonModal>
                 <Notification></Notification>
+                </div>
+              
             </div>
 
             <div id="mainDiv" class="w-[89%] h-[88%] overflow-hidden rounded-[8px]" style={corAtual}>

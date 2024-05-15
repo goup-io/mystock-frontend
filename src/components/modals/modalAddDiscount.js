@@ -21,22 +21,24 @@ function ModalDiscount() {
                     <div className="flex justify-between mb-4">
                         <InputAndLabelModal
                             type="Text"
-                            placeholder="Digite a porcentagem do desconto..."
+                            placeholder="00%"
                         >Porcentagem(%):</InputAndLabelModal>
                         <InputAndLabelModal
                             type="Text"
-                            placeholder="0,00"
+                            placeholder="R$ 0,00"
                         >Valor Calculado(R$):</InputAndLabelModal>
                     </div>
 
+                    <div class="border-[1px] border-dashed border-[#355070] rounded"></div>
+
                     <ItemSeparadoPorLinhaTracejada
-                            infoEsquerda={"Valor Atual:"}
-                            infoDireita={"R$ 300,00"}
-                        />
-                        <ItemSeparadoPorLinhaTracejada
-                            infoEsquerda={"Valor pós Desconto:"}
-                            infoDireita={"R$ 300,00"}
-                        />
+                        infoEsquerda={"Valor Atual:"}
+                        infoDireita={"R$ 300,00"}
+                    />
+                    <div className="flex flex-row justify-between text-sm">
+                        <p>Valor Após o Desconto</p>
+                        <p>R$ 300,00</p>
+                    </div>
                 </div>
                 <div className="w-[40rem] flex justify-end h-6 ">
                     <ButtonClear>Limpar</ButtonClear>

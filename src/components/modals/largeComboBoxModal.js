@@ -17,7 +17,7 @@ function LargeComboBoxModal(props) {
 
   return (
     <div className="flex flex-col justify-start items-start w-full">
-    <p class="form-floating text-sm text-black mb-2 font-normal">{props.children}:</p>
+    <p class="form-floating text-lg text-black mb-2 font-normal">{props.children}:</p>
       <select value={selecionado} onChange={handleChange} className="w-full h-7 rounded bg-[F5F3F4] pl-2 text-[0.8rem] font-[300] text-[#555] form-control border border-1 border-slate-600">
         <option value="">Selecione...</option>
         {opcoes.map((opcao, index) => (

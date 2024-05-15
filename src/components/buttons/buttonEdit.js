@@ -8,7 +8,7 @@ function ButtonEdit(props) {
 
     return (
 
-        <button onClick={props.funcao} className='w-5 h-5'>
+        <button onClick={props.funcao} className='w-5 h-5 mt-1'>
             <img style={props != undefined ? style : ""} src={EditIcon}></img>
         </button>
 

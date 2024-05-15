@@ -8,7 +8,7 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
     return (
         <div className="w-full flex flex-wrap justify-between items-center text-center ">
             {/* Seção dos filtros */}
-            <div className="md:flex md:space-x-4 md:w-auto md:mb-0 ">
+            <div className="md:flex md:space-x-2 md:w-auto md:mb-0 ">
                 {cor && <ComboBoxFilter>Cor</ComboBoxFilter>}
                 {modelo && <ComboBoxFilter>Modelo</ComboBoxFilter>}
                 {tamanho && <ComboBoxFilter>Tamanho</ComboBoxFilter>}
@@ -36,7 +36,7 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
             </div>
 
             {/* Botões de limpar e filtrar */}
-            <div className="flex  h-6 ml-4" >
+            <div className="flex  h-6 " >
                 <ButtonClearFilter>Limpar</ButtonClearFilter>
                 <ButtonModal>Filtrar</ButtonModal>
             </div>

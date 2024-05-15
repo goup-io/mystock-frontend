@@ -34,7 +34,7 @@ function ModalComission() {
                     </div>
                     <div className="w-full h-[0.1rem] bg-[#355070] mb-4"></div>
 
-                    <div className="w-full h-[2rem] bg-[#DFDFDF] flex items-center justify-end rounded ">
+                    <div className="w-full h-[2rem] bg-[#DFDFDF] border-[1px] border-[#355070] flex items-center justify-end rounded ">
                  <p className="mr-4 font-bold">R$ 20,00</p>
                     </div>
                     <p className=" text-sm ml-[22rem]">o funcionario não alcançou a comissão</p>

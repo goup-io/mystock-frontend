@@ -15,7 +15,7 @@ function ModalEditKit() {
                         props="Editar informações do Kit"
                     ></HeaderModal>
                 </div>
-                <div className="w-[43rem] h-[18rem] flex flex-col rounded justify-around p-3 bg-slate-200 border-solid  shadow-[5px_5px_10px_0_rgba(0,0,0,0.14)] border-gray-700">
+                <div className="w-[43rem] h-[18rem] flex flex-col rounded justify-around p-3 bg-[#F5F3F4] border-solid  shadow-[5px_5px_10px_0_rgba(0,0,0,0.14)] border-gray-700">
                     <div className="flex justify-around">
                         <InputAndLabelModal
                             placeholder="Digite o modelo..."

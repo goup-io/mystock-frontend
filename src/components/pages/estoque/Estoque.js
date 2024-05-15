@@ -8,6 +8,7 @@ import InputSearcModal from '../../inputs/inputSearchModal.js'
 import AbrirModalCadastreKit from '../../modals/modals-kit/modalCadastreKit.js'
 import AbrirModalCadastreModel from '../../modals/modals-model/modalCadastreModel.js'
 import AbrirModalCadastreProd from '../../modals/modals-produto/modalCadastreProd.js'
+import AbrirModalCadastreProdPreConfig from '../../modals/modals-produto/modalCadastreProdPreConfig.js'
 import AbrirModalEditProd from '../../modals/modals-produto/modalEditProd.js'
 
 import TabelaPage from '../../tables/tablePage.js'
@@ -114,7 +115,7 @@ function Estoque() {
                         >Pesquisar</InputSearcModal>
                     </div>
                     <div className='w-full h-[78%] mt-2 flex justify-center items-center '>
-                        <div className=' w-full h-[100%] border-solid border-[1px] border-slate-700  bg-slate-700 overflow-y-auto rounded'>
+                        <div className=' w-full h-[100%] border-solid border-[1px] border-slate-700  bg-slate-700 overflow-y-auto rounded-md'>
                             {isProdutoSelected ? (
                                 <TabelaPage colunas={colunasETP} dados={dadosDoBancoETP.map(({ id, ...dadosDoBancoETP }) => dadosDoBancoETP)} edit={handleEditarEtp} remove id={dadosDoBancoETP.map(({ ...dadosDoBancoETP }) => dadosDoBancoETP)} />
                             ) : (
@@ -133,6 +134,9 @@ function Estoque() {
                             <ButtonModal
                                 funcao={AbrirModalCadastreProd}
                             >Novo Produto</ButtonModal>
+                                 <ButtonModal
+                                funcao={AbrirModalCadastreProdPreConfig}
+                            >ADD Produto</ButtonModal>
                         </div>
                     </div>
                 </div>

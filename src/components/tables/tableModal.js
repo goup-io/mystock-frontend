@@ -31,9 +31,9 @@ function TabelaModal({ colunas, dados, edit, remove, iptQuantidade }) {
             ))}
             {edit && (
               <td className=' flex justify-center items-center'>
-              <div className=''>
+                <div className=''>
                   <ButEdit></ButEdit>
-                 </div> 
+                </div>
               </td>
             )}
             {remove && (
@@ -42,10 +42,11 @@ function TabelaModal({ colunas, dados, edit, remove, iptQuantidade }) {
               </td>
             )}
             {iptQuantidade && (
-              <td className='flex items-center justify-center'>
-                <div className='flex items-center justify-center'>
-                <input type="number" className=' w-5 h-5  border border-slate-700 rounded' />
-                <button className=' text-xl font-medium items-center' onClick={() => handleAdicionar(index)}>+</button>
+              <td>
+                <div className='flex items-center justify-around'>
+                  <button className=' text-xl font-medium ' onClick={() => handleAdicionar(index)}>-</button>
+                  <input type="text" className=' w-5 h-5  border border-slate-700 rounded' />
+                  <button className=' text-xl font-medium ' onClick={() => handleAdicionar(index)}>+</button>
                 </div>
               </td>
             )}

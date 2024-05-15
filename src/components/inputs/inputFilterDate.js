@@ -6,7 +6,7 @@ function InputFilterDate(props) {
 
     return (
        
-            <div className="w-full flex  items-center text-center">
+            <div className="w-full flex justify-between  items-center text-center ">
                 <p class=" w-[4.5rem] form-floating text-[1rem] text-black  font-normal">{props.inicio}:</p>
                 <input type={`${props.type}`} placeholder={`${props.placeholder}`} class="w-[5rem] h-[1.2rem] rounded bg-[F5F3F4] ml-2 text-center text-[0.7rem] font-[400] text-[#555] border border-gray-700"
                 ></input>
