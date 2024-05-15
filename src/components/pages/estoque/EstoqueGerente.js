@@ -3,27 +3,22 @@ import ApiRequest from '../../../connections/ApiRequest.js'
 import TitleBox from '../../header/TitleBox.js'
 import ChartBox from '../../chartsBoxes/ChartBox.js'
 import ButtonDownLoad from '../../buttons/buttonDownLoad.js'
-import ButtonModal from '../../buttons/buttonsModal.js'
 import InputSearcModal from '../../inputs/inputSearchModal.js'
 import TabelaPage from '../../tables/tablePage.js'
 
 import AbrirModalCadastreKit from '../../modals/modals-kit/modalCadastreKit.js'
 import AbrirModalCadastreModel from '../../modals/modals-model/modalCadastreModel.js'
 import AbrirModalCadastreProd from '../../modals/modals-produto/modalCadastreProd.js'
-import AbrirModalCadastreUser from '../../modals/modals-user/modalCadastreUser.js'
-import PageLayout from '../PageLayout.js'
+import ModalAddProdCart from '../../modals/modals-produto/modalAddProdCart.js'
 import Filter from '../../inputs/filter.js'
 
-
-
 import React, { useState, useEffect } from 'react';
-import AbrirModalComission from '../../modals/modalComission.js'
-import ButtonCancel from '../../buttons/buttonCancel.js'
 
 
 function EstoqueGerente() {
 
     const buttons = [
+        { label: "ADICIONAR PRODUTO", event: ModalAddProdCart },
         { label: "NOVO KIT", event: AbrirModalCadastreKit },
         { label: "NOVO MODELO", event: AbrirModalCadastreModel },
         { label: "NOVO PRODUTO", event: AbrirModalCadastreProd },
@@ -93,41 +88,37 @@ function EstoqueGerente() {
                     <Filter modelo cor tamanho preço></Filter>
                 </div>
 
-                <div className='h-[80vh] pb-12' >
-                    <ChartBox>
-                        <div className='px-4'>
-                            <div className='w-full flex justify-between items-center '>
+                <ChartBox>
+                    <div className='px-4 pt-1'>
+                        <div className='w-full flex justify-between items-center '>
 
-                                <div className='flex justify-between items-center gap-4'>
-                                    <button
-                                        className={`bg-inherit px-1 ${isProdutoSelected ? 'font-medium text-lg border-b-2 border-[#355070]' : 'font-light text-sm'}`}
-                                        onClick={handleProdutoButtonClick}>
-                                        PRODUTOS
-                                    </button>
-                                    <button
-                                        className={`bg-inherit px-1 ${!isProdutoSelected ? 'font-medium text-lg border-b-2 border-[#355070] ' : 'font-light text-sm'}`}
-                                        onClick={handleModeloButtonClick}>
-                                        MODELOS
-                                    </button>
-                                </div>
+                            <div className='flex justify-between items-center gap-4'>
+                                <button
+                                    className={`bg-inherit px-1 ${isProdutoSelected ? 'font-medium text-lg border-b-2 border-[#355070]' : 'font-light text-sm'}`}
+                                    onClick={handleProdutoButtonClick}>
+                                    PRODUTOS
+                                </button>
+                                <button
+                                    className={`bg-inherit px-1 ${!isProdutoSelected ? 'font-medium text-lg border-b-2 border-[#355070] ' : 'font-light text-sm'}`}
+                                    onClick={handleModeloButtonClick}>
+                                    MODELOS
+                                </button>
+                            </div>
 
-                                <div className='flex gap-4 items-center'>
-                                    <InputSearcModal props="text">Pesquisar</InputSearcModal>
-                                    <ButtonDownLoad func={isProdutoSelected ? csvProdutos : csvModelos} ></ButtonDownLoad>
-                                </div>
+                            <div className='flex gap-4 items-center'>
+                                <InputSearcModal props="text">Pesquisar</InputSearcModal>
+                                <ButtonDownLoad func={isProdutoSelected ? csvProdutos : csvModelos} ></ButtonDownLoad>
                             </div>
-                            {/* <div className='w-full h-[60vh] flex justify-center items-center'> */}
-                            <div className='w-full h-[58vh] mt-2 bg-slate-700 border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto rounded'>
-                                {isProdutoSelected ? (
-                                    <TabelaPage colunas={colunasETP} dados={dadosDoBancoETP.map(({ id, ...dadosDoBancoETP }) => dadosDoBancoETP)} edit remove id={0} />
-                                ) : (
-                                    <TabelaPage colunas={colunasModel} dados={dadosDoBancoModel.map(({id, ...dados}) => dados)} edit remove id={0}/>
-                                )}
-                            </div>
-                            {/* </div> */}
                         </div>
-                    </ChartBox>
-                </div>
+                        <div className='w-full h-[50vh] mt-2 bg-slate-700 border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto rounded'>
+                            {isProdutoSelected ? (
+                                <TabelaPage colunas={colunasETP} dados={dadosDoBancoETP.map(({ id, ...dadosDoBancoETP }) => dadosDoBancoETP)} edit remove id={0} />
+                            ) : (
+                                <TabelaPage colunas={colunasModel} dados={dadosDoBancoModel.map(({ id, ...dados }) => dados)} edit remove id={0} />
+                            )}
+                        </div>
+                    </div>
+                </ChartBox>
             </PageLayoutAreaRestrita>
         </>
     )

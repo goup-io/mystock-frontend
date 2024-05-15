@@ -1,3 +1,4 @@
+import iconSeta from '../../assets/icons/i_arrow-solid.png'
 
 function ModalAviso(props) {
     
@@ -11,8 +12,8 @@ function ModalAviso(props) {
                         <span className="text-xs">{props.dataHora}</span>
                     </div>
                     <p className="text-sm">{props.descricao}</p>
-                    <div className="text-right">
-                        <a href="#" className="text-xs cursor-pointer underline duration-150 ease-in-out hover:text-[#A6CEE3]">Ver estoque --></a>
+                    <div className="flex justify-end">
+                        <a href="#" className="text-xs cursor-pointer underline duration-150 ease-in-out hover:text-[#A6CEE3] flex items-center gap-1">Ver estoque <img src={iconSeta} className='h-3' /></a>
                     </div>
                 </div>
             </div>

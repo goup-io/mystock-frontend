@@ -1,18 +1,32 @@
 import React from 'react';
 import ButEdit from '../buttons/buttonEdit'
-
-function TabelaPage({ colunas, dados, edit, remove, status, id }) {
+import ButtonModal from '../buttons/buttonsModal';
+ 
+function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais,status, id }) {
 
   const getStatusColor = (status) => {
     switch (status) {
       case 'aceito':
-        return 'bg-green-500'; 
+        return 'bg-[#B2DF8A]'; 
       case 'pendente':
-        return 'bg-blue-500'; 
+        return 'bg-[#C1C1C1]'; 
       case 'negado':
-        return 'bg-red-500'; 
+        return 'bg-[#F47D8B]'; 
       default:
         return 'bg-slate-500'; 
+    }
+  };
+
+  const getStatusBorderColor = (status) => {
+    switch (status) {
+      case 'aceito':
+        return 'border-[#0B8F48]'; 
+      case 'pendente':
+        return 'border-[#5E6977]'; 
+      case 'negado':
+        return 'border-[#EF233C]'; 
+      default:
+        return 'border-slate-700'; 
     }
   };
 
@@ -27,6 +41,9 @@ function TabelaPage({ colunas, dados, edit, remove, status, id }) {
           {edit && <th>Editar</th>}
           {remove && <th>Remover</th>}
           {status && <th>Status</th>}
+          {verMais && <th>Ver Mais</th>}
+          {troca && <th>&nbsp;</th>}
+          {cancel && <th>&nbsp;</th>}
         </tr>
       </thead>
       <tbody className=' text-base'>
@@ -45,9 +62,24 @@ function TabelaPage({ colunas, dados, edit, remove, status, id }) {
                 <button className='text-sm font-medium w-5 h-5 rounded text-white bg-red-500'>X</button>
               </td>
             )}
+             {verMais && (
+            <td className='flex justify-center items-center' >
+              <button className='text-lg font-bold w-5 h-5 rounded text-white bg-[#96BDCE] flex items-center justify-center duration-50 ease-in-out hover:scale-[1.1] hover:bg-[#86AEC0] mt-[1.6px]'>+</button>
+            </td>
+          )}
+          {troca && (
+            <td >
+              <ButtonModal>Trocar</ButtonModal>
+            </td>
+          )}
+          {cancel && (
+            <td >
+              <ButtonModal cor="#919191">Cancelar</ButtonModal>
+            </td>
+          )}
             {status && (
               <td>
-                <div className={`h-4 w-[5rem] rounded ${getStatusColor(linha.status)} flex justify-center items-center`}></div>
+                <div className={`h-[1.1rem] ml-1 border-[1px] w-11/12 rounded-lg ${getStatusBorderColor(linha.status)} ${getStatusColor(linha.status)} `}>{linha.status}</div>
               </td>
             )}
           </tr>

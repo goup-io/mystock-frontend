@@ -87,7 +87,7 @@ function Usuario() {
                 <TitleBox title="Usuários" buttons={buttons}></TitleBox>
                 <ChartBox >
 
-                    <div className='w-full h-[30rem] px-4 flex justify-start flex-col items-center'>
+                    <div className='w-full px-4 flex justify-start flex-col items-center'>
 
                         <div className='w-full mt-2 flex justify-between'>
 
@@ -100,7 +100,7 @@ function Usuario() {
 
                         </div>
 
-                        <div className='w-full mt-4 bg-slate-700 border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto rounded'>
+                        <div className='w-full h-[60vh] mt-2 bg-slate-700 border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto rounded'>
                             <TabelaPage colunas={colunas} dados={dados.map(({ id, ...dados }) => dados)} edit={handleEditarUsuario} remove id={0}/>
                         </div>
                     </div>

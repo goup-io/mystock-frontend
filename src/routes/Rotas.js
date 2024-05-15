@@ -12,9 +12,11 @@ import EstoqueGerente from '../components/pages/estoque/EstoqueGerente.js'
 
 //Historico
 import Historico from '../components/pages/historico/Historico.js'
+import HistoricoVendasGerente from '../components/pages/historico/HistoricoVendasGerente.js'
 
 //Transacoes
 import Transacoes from '../components/pages/transacoes/Transacoes.js'
+import TransacoesGerente from '../components/pages/transacoes/TransacoesGerente.js'
 import Usuario from '../components/pages/usuario/Usuario.js'
 
 //Pagamentos
@@ -248,6 +250,16 @@ const Rotas = () => {
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
                     <Route path="/estoque-gerente" element={<EstoqueGerente />} />
+                </Route>
+
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
+                    <Route path="/historico-vendas-gerente" element={<HistoricoVendasGerente />} />
+                </Route>
+
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
+                    <Route path="/transacao-gerente" element={<TransacoesGerente />} />
                 </Route>
 
             </Routes>
