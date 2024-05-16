@@ -67,7 +67,7 @@ function Transacoes() {
                     <Filter modelo cor tamanho status data></Filter>
                 </div>
 
-                <div className='bg-white mt-4 h-[74%] flex flex-col justify-start pl-10 pr-10 pt-2 pb-2 items-center shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)]'>
+                <div className='bg-white mt-4 h-[74%] flex flex-col justify-start pl-10 pr-10 pt-2 pb-2 items-center shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] rounded-md'>
                     <div className='w-full h-[8%] flex justify-between items-center '>
 
                         <div className='flex items-center gap-4'>
