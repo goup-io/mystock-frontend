@@ -76,25 +76,29 @@ function ModalSalesHistory() {
                             infoEsquerda={"Desconto em Produtos:"}
                             infoDireita={"R$ 10,00"}
                         />
-                         <ItemSeparadoPorLinhaTracejada
+                        <ItemSeparadoPorLinhaTracejada
                             infoEsquerda={"Subtotal 2:"}
                             infoDireita={"R$ 20,00"}
                         />
-                         <ItemSeparadoPorLinhaTracejada
+                        <ItemSeparadoPorLinhaTracejada
                             infoEsquerda={"Desconto da Venda:"}
                             infoDireita={"R$ 250,00"}
                         />
-                         <ItemSeparadoPorLinhaTracejada
-                            infoEsquerda={"Valor Total:"}
-                            infoDireita={"R$ 200,00"}
-                        />
+
+                        <li class="flex flex-row justify-between">
+                            <p class="text-sm font-bold">Valor Total:</p>
+                            <p class="text-sm font-bold">R$ 200,00</p>
+                        </li>
+
+
+                        <div className="w-full h-[0.1rem] bg-[#355070] mt-2"></div>
 
                     </div>
 
-                    <div className="w-[40rem] h-[12rem] flex flex-col justify-start ">
-                        <p className="w-[40rem] h-[1rem] text-base font-medium flex justify-start">Itens da Venda</p>
+                    <div className="w-[40rem] h-[13rem] flex flex-col justify-start mt-2 ">
+                        <p className="w-[40rem] h-[0.7rem] text-base font-medium flex justify-start">Itens da Venda</p>
 
-                        <div className=" w-[40rem] h-[12rem]  border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto mt-4">
+                        <div className=" w-[40rem] h-[10.5rem]  border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto mt-4">
 
                             <TabelaModal colunas={colunas} dados={dados} ></TabelaModal>
 
@@ -105,9 +109,9 @@ function ModalSalesHistory() {
 
                 </div>
                 <div className="w-[42rem] flex justify-between h-6 ">
-                    <ButtonModal>Histórico de pagamento</ButtonModal>
-                    <div>
-                        <button className="w-[9rem] mr-4 rounded bg-[#919191] text-white">Cancelar Venda</button>
+                    <ButtonModal cor="#6A8ACF">Histórico de pagamento</ButtonModal>
+                    <div className="w-5/12 flex justify-between">
+                        <ButtonModal cor="#919191">Cancelar Vendas</ButtonModal>
                         <ButtonModal>Trocar Itens</ButtonModal>
                     </div>
 
