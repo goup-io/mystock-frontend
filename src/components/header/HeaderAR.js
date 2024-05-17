@@ -31,18 +31,18 @@ function HeaderAR() {
     }
 
     return (
-        <div class="flex flex-row justify-between items-center text-base text-[#FFFFFF] bg-[#355070] p-2 px-8">
+        <div className="flex flex-row justify-between items-center text-base text-[#FFFFFF] bg-[#355070] p-2 px-8">
             <h3>Gerenciamento - Administrador</h3>
-            <select class="bg-inherit outline-none cursor-pointer ">
+            <select className="bg-inherit outline-none cursor-pointer ">
                 <option value="opcao1">Visão Geral</option>
                 <option value="opcao2">Opção 2</option>
             </select>
-            <div class="flex items-center gap-6">
-                <ul class="flex flex-row justify-between gap-6">
+            <div className="flex items-center gap-6">
+                <ul className="flex flex-row justify-between gap-6">
                     <li>{tempo.toLocaleDateString()}</li>
                     <li>{tempo.toLocaleTimeString()} - GMT -03:00</li>
                 </ul>
-                <img src={iconLogout} onClick={logout} alt="Sair do sistema" class="cursor-pointer h-7" />
+                <img src={iconLogout} onClick={logout} alt="Sair do sistema" className="cursor-pointer h-7" />
             </div>
         </div>
     )

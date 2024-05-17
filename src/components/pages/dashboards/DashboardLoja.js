@@ -74,7 +74,7 @@ function DashboardGeral() {
             <PageLayout>
                 <TitleBox title="Dashboard Geral"></TitleBox>
                 <Kpis kpis={kpis}></Kpis>
-                <div class="flex gap-3 w-full h-1/2">
+                <div className="flex gap-3 w-full h-1/2">
                     <ChartBox title="Gráfico de Faturamento" size="medium">
                         <div className="absolute top-2 right-3">
                             <ButtonTwoOption 
@@ -94,7 +94,7 @@ function DashboardGeral() {
                         <ButtonInfo mensagem={"Listagem dos funcionários ordenados dos que estão com o maior faturamento nas vendas ao menor (dados obtidos do mês vigente)."}></ButtonInfo>
                     </ChartBox>
                 </div>
-                <div class="flex gap-3 w-full h-[200px]">
+                <div className="flex gap-3 w-full h-[200px]">
                     <ChartBox title="Gráfico de Fluxo de Estoque" size="medium">
                         <BarChart categories={categoriesFluxoEstoque} series={seriesFluxoEstoque }></BarChart>
                         <ButtonInfo mensagem={"O gráfico mostra o fluxo de estoque no determinado mês, ou seja, o quanto foi vendido, transferido ou ainda possuem em estoque."}></ButtonInfo>

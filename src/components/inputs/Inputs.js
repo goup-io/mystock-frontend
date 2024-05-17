@@ -2,7 +2,7 @@
 
 function Input(props) {
     return (
-        <div class="relative">
+        <div className="relative">
             {props.icon && (
                 <div className="absolute top-1 left-3">
                     <img src={props.icon} className="h-[2rem]" alt="Ícone" />
@@ -14,7 +14,7 @@ function Input(props) {
                 id={props.id} 
                 type={`${props.type}`} 
                 placeholder={props.placeholder == undefined ? "" : props.placeholder} 
-                class="w-[29vw] h-[2.5rem] rounded-[3.125rem] bg-[F5F3F4] pl-14 text-[1.2rem] font-[400] text-[#555] form-control border border-slate-600"
+                className="w-[29vw] h-[2.5rem] rounded-[3.125rem] bg-[F5F3F4] pl-14 text-[1.2rem] font-[400] text-[#555] form-control border border-slate-600"
             ></input>
         </div>
     )

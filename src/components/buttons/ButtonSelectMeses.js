@@ -12,7 +12,7 @@ const ButtonSelectMeses = () => {
     };
 
     return (
-        <div class="absolute top-0 right-3">
+        <div className="absolute top-0 right-3">
             <select value={mesSelecionado} onChange={handleSelectMes} className="bg-inherit font-medium border-b-2 border-[#355070] px-4 py-1 pl-1 leading-tight focus:outline-none focus:bg-inherit focus:border-gray-500">
                 {meses.map((mes, index) => (
                     <option key={index} value={mes}>

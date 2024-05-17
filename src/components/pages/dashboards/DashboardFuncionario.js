@@ -59,7 +59,7 @@ function DashboardGeral() {
             <PageLayout>
                 <TitleBox title={funcionario}></TitleBox>
                 <Kpis kpis={kpis}></Kpis>
-                <div class="flex gap-3 w-full h-1/2">
+                <div className="flex gap-3 w-full h-1/2">
                     <ChartBox title="Gráfico de Faturamento do Funcionario" size="medium">
                         <LineChart categories={labelsGraficoFaturamento} series={seriesGraficoFaturamento}></LineChart>
                         <ButtonInfo mensagem={"O gráfico mostra o faturamento do funcionário no determinado período, ou seja, o quanto ele vendeu (R$) em cada um dos meses exibidos."}></ButtonInfo>

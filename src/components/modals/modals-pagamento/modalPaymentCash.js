@@ -46,7 +46,7 @@ function ModalPaymentCash() {
 
                     <div className=" w-[36rem] h-[6rem] ">
 
-                        <div class="border-[2px] border-dashed mb-4 border-[#355070] rounded"></div>
+                        <div className="border-[2px] border-dashed mb-4 border-[#355070] rounded"></div>
 
                         <ItemSeparadoPorLinhaTracejada
                             infoEsquerda={"Valor total da compra:"}
@@ -60,9 +60,9 @@ function ModalPaymentCash() {
                             infoEsquerda={"Valor restante:"}
                             infoDireita={"R$ 250,00"}
                         />
-                        <li class="flex flex-row justify-between">
-                            <p class="text-sm">Troco em Dinheiro:</p>
-                            <p class="text-sm">R$ 200,00</p>
+                        <li className="flex flex-row justify-between">
+                            <p className="text-sm">Troco em Dinheiro:</p>
+                            <p className="text-sm">R$ 200,00</p>
                         </li>
 
                         <div className="w-full h-[0.1rem] bg-[#355070] mt-4"></div>

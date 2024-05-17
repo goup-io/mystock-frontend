@@ -30,7 +30,7 @@ function MenuCaixa() {
         return (
             <>
                 <Header telaAtual="Menu" icon="crossed" tipo="caixa"></Header>
-                <ul class="flex flex-col items-center gap-7 mt-20 px-12">
+                <ul className="flex flex-col items-center gap-7 mt-20 px-12">
                     <ItemLista handleClick={handleNavigateBack}>VOLTAR</ItemLista>
                     <ItemLista handleClick={() => handleOnClick("sair")}>SAIR</ItemLista>
                 </ul>
@@ -40,7 +40,7 @@ function MenuCaixa() {
 
     function ItemLista(props) {
         return (
-            <li onClick={props.handleClick} class="bg-[#D0D4F0] cursor-pointer w-full h-[3.5rem] text-[1.5rem] items-center flex align-center justify-center font-[500] rounded-[0.3125rem] shadow-lg duration-150 ease-in-out hover:scale-[1.01] hover:bg-[#C5CAF2]">
+            <li onClick={props.handleClick} className="bg-[#D0D4F0] cursor-pointer w-full h-[3.5rem] text-[1.5rem] items-center flex align-center justify-center font-[500] rounded-[0.3125rem] shadow-lg duration-150 ease-in-out hover:scale-[1.01] hover:bg-[#C5CAF2]">
                 {props.children}
             </li>
         )

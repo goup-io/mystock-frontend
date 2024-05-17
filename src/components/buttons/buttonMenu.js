@@ -17,13 +17,13 @@ function ButtonMenu(props) {
 
         props.tipo === "caixa" ?
             <>
-                <a onClick={() => navigate("/menuCaixa")} class="cursor-pointer">
+                <a onClick={() => navigate("/menuCaixa")} className="cursor-pointer">
                     <img src={icon}></img>
                 </a>
             </>
             :
             <>
-                <a onClick={() => navigate("/menu")} class="cursor-pointer">
+                <a onClick={() => navigate("/menu")} className="cursor-pointer">
                     <img src={icon}></img>
                 </a>
             </>

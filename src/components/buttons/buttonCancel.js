@@ -7,7 +7,7 @@ function ButtonCancel(props){
     }
 
     return(
-        <a onClick={props.funcao} class="cursor-pointer">
+        <a onClick={props.funcao} className="cursor-pointer">
             <img style={props != undefined ? style : ""} src={CancelIcon}></img>
         </a>
     )

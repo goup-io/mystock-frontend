@@ -28,7 +28,7 @@ function Menu() {
         return (
             <>
                 <Header telaAtual="Menu" icon="crossed"></Header>
-                <ul class="flex flex-col items-center gap-7 mt-20 px-12">
+                <ul className="flex flex-col items-center gap-7 mt-20 px-12">
                     <ItemLista handleClick={() => handleOnClick("/venda")}>ÁREA DE VENDA</ItemLista>
                     <ItemLista handleClick={() => handleOnClick("/estoque")}>ESTOQUE</ItemLista>
                     <ItemLista handleClick={() => handleOnClick("/historico")}>HISTÓRICO DE VENDAS</ItemLista>
@@ -41,7 +41,7 @@ function Menu() {
 
     function ItemLista(props) {
         return (
-            <li onClick={props.handleClick} class="bg-[#D0D4F0] cursor-pointer w-full h-[3.5rem] text-[1.5rem] items-center flex align-center justify-center font-[500] rounded-[0.3125rem] shadow-lg duration-150 ease-in-out hover:scale-[1.01] hover:bg-[#C5CAF2]">
+            <li onClick={props.handleClick} className="bg-[#D0D4F0] cursor-pointer w-full h-[3.5rem] text-[1.5rem] items-center flex align-center justify-center font-[500] rounded-[0.3125rem] shadow-lg duration-150 ease-in-out hover:scale-[1.01] hover:bg-[#C5CAF2]">
                 {props.children}
             </li>
         )

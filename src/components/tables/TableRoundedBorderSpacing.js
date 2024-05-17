@@ -8,7 +8,7 @@ function TableRoundedBorderSpacing(props){
     }
 
     return(
-        <table  class="w-full rounded-lg table-fixed border-solid border-separate border-spacing-y-4" style={props != undefined ? style : ""}>
+        <table  className="w-full rounded-lg table-fixed border-solid border-separate border-spacing-y-4" style={props != undefined ? style : ""}>
             {props.children}
         </table>
     )
