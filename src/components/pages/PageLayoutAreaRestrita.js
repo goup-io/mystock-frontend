@@ -17,7 +17,7 @@ function PageLayoutAreaRestrita(props){
                     <Header></Header>
 
                     <div id="mainDiv" className="w-full h-full bg-[#F5F3F4] p-5 px-8 pb-12 rounded-tl-3xl flex flex-col gap-4 justify-between">
-                        <div className='w-full h-[85vh] mb-10 flex flex-col gap-3 overflow-hidden'>
+                        <div className='w-full h-[85vh] mb-10 flex flex-col gap-3 overflow-y-auto overflow-x-auto'>
                             {props.children}
                         </div>
                     </div>
