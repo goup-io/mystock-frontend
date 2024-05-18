@@ -1,9 +1,5 @@
-import { Button } from '@mui/material'
-import ButtonClear from '../../buttons/buttonClear.js'
 import ButtonModal from '../../buttons/buttonsModal.js'
 import Header from '../../header/Header.js'
-import ComboBoxFilter from '../../inputs/comboBoxFilter.js'
-import InputFilterDate from '../../inputs/inputFilterDate.js'
 import InputSearcModal from '../../inputs/inputSearchModal.js'
 import AbrirModalCadastreKit from '../../modals/modals-kit/modalCadastreKit.js'
 import AbrirModalCadastreModel from '../../modals/modals-model/modalCadastreModel.js'
@@ -14,6 +10,8 @@ import AbrirModalEditProd from '../../modals/modals-produto/modalEditProd.js'
 import TabelaPage from '../../tables/tablePage.js'
 import PageLayout from '../PageLayout.js'
 import ApiRequest from "../../../connections/ApiRequest";
+import Alert from '../../alerts/Alert.js'
+import errorImage from "../../../assets/error.png"
 
 
 import React, { useState, useEffect } from 'react';
@@ -26,6 +24,7 @@ function Estoque() {
     const [dadosDoBancoETP, setDadosDoBancoETP] = useState([]);
     const [dadosDoBancoModel, setDadosDoBancoModel] = useState([]);
     const [isProdutoSelected, setIsProdutoSelected] = useState(true);
+    const [dadosFiltrados, setDadosFiltrados] = useState([]);
 
     async function fetchData() {
         const colunasDoBancoETP = ['Código', 'Nome', 'Modelo', 'Tamanho', 'Cor', 'Preço', 'Loja', 'N.Itens'];
@@ -37,6 +36,15 @@ function Estoque() {
             if (response.status === 200) {
                 const dados = response.data;
                 setDadosDoBancoETP(dados);
+
+                const filtrarDados = dados
+                    .map(obj => (
+                        {
+                            codigo: obj.codigo, nome: obj.nome, modelo: obj.modelo, tamanho: obj.tamanho, cor: obj.cor, preco: obj.preco, loja: obj.loja, quantidade: obj.quantidade
+                        }
+                    ));
+
+                setDadosFiltrados(filtrarDados);
             }
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
@@ -79,8 +87,29 @@ function Estoque() {
     };
 
     const handleEditarEtp = (etpId) => {
-        console.log("Editando o etp com ID:", etpId.id);
-        AbrirModalEditProd(etpId.id);
+        AbrirModalEditProd(etpId.id, updateTable);
+    };
+
+    async function excluir(etpId) {
+        const idProduto = etpId.idProduto
+        try {
+            const response = await ApiRequest.excluirProduto(idProduto);
+            if (response.status === 200) {
+                console.log("Produto deletado");
+            } else if (response.status === 409) {
+                Alert.alert(errorImage, "Este produto já foi excluido!");
+            }
+        } catch (error) {
+            console.log("Erro ao excluir um produto: ", error);
+        }
+    }
+
+    const handleDeleteEtp = (etpId) => {
+        Alert.alertQuestion("Deseja excluir esse produto? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluir(etpId), () => updateTable())
+    }
+
+    const updateTable = () => {
+        fetchData();
     };
 
     return (
@@ -117,9 +146,9 @@ function Estoque() {
                     <div className='w-full h-[78%] mt-2 flex justify-center items-center '>
                         <div className=' w-full h-[100%] border-solid border-[1px] border-slate-700  bg-slate-700 overflow-y-auto rounded-md'>
                             {isProdutoSelected ? (
-                                <TabelaPage colunas={colunasETP} dados={dadosDoBancoETP.map(({ id, ...dadosDoBancoETP }) => dadosDoBancoETP)} edit={handleEditarEtp} remove id={dadosDoBancoETP.map(({ ...dadosDoBancoETP }) => dadosDoBancoETP)} />
+                                <TabelaPage colunas={colunasETP} dados={dadosFiltrados.map(({ ...dados }) => dados)} edit={handleEditarEtp} remove={handleDeleteEtp} id={dadosDoBancoETP.map(({ ...dadosDoBancoETP }) => dadosDoBancoETP)} />
                             ) : (
-                                <TabelaPage colunas={colunasModel} dados={dadosDoBancoModel.map(({ id, ...dadosDoBancoModel }) => dadosDoBancoModel)} edit remove  id={dadosDoBancoETP.map(({ ...dadosDoBancoETP }) => dadosDoBancoETP)}/>
+                                <TabelaPage colunas={colunasModel} dados={dadosDoBancoModel.map(({ id, ...dadosDoBancoModel }) => dadosDoBancoModel)} edit remove id={dadosDoBancoETP.map(({ ...dadosDoBancoETP }) => dadosDoBancoETP)} />
                             )}
                         </div>
                     </div>
@@ -134,7 +163,7 @@ function Estoque() {
                             <ButtonModal
                                 funcao={AbrirModalCadastreProd}
                             >Novo Produto</ButtonModal>
-                                 <ButtonModal
+                            <ButtonModal
                                 funcao={AbrirModalCadastreProdPreConfig}
                             >ADD Produto</ButtonModal>
                         </div>

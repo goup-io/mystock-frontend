@@ -13,9 +13,8 @@ import ApiRequest from "../../../connections/ApiRequest";
 import Alert from '../../alerts/Alert.js';
 import ErrorImage from '../../../assets/icons/error.svg'
 import SucessImage from '../../../assets/icons/sucess.svg'
-import { Navigate } from "react-router-dom";
 
-function ModalEditProd(idEtp) {
+function ModalEditProd({ id, onUpdate }) {
     const [dadosModelo, setDadosModelo] = useState([]);
     const [dadosTamanho, setDadosTamanho] = useState([]);
     const [dadosCor, setDadosCor] = useState([]);
@@ -25,11 +24,7 @@ function ModalEditProd(idEtp) {
     const [modelo, setModelo] = useState("");
     const [tamanho, setTamanho] = useState("");
     const [cor, setCor] = useState("");
-    const [loja, setIdLoja] = useState("");
-    const [loading, setLoading] = useState(true);
-
-
-    const setters = [setNome, setPrecoCusto, setPrecoRevenda, setModelo, setTamanho, setCor];
+    const [idProduto, setIdProduto] = useState("");
 
     function handleInputChange(event, setStateFunction) {
         setStateFunction(event.target.value);
@@ -48,112 +43,83 @@ function ModalEditProd(idEtp) {
     };
 
     async function fetchDadosModeloCorTamanho() {
-        setLoading(true);
-        await ApiRequest.modeloGetAll().then((response) => {
-            if (response.status === 200) {
-                setDadosModelo(response.data);
-                console.log(dadosModelo);
+        try {
+            const responseModelo = await ApiRequest.modeloGetAll();
+            if (responseModelo.status === 200) {
+                setDadosModelo(responseModelo.data);
             }
-        }).catch((error) => {
-            console.log("Erro ao buscar os dados", error)
-        })
 
-        await ApiRequest.corGetAll().then((response) => {
-            if (response.status === 200) {
-                setDadosCor(response.data);
-                console.log(dadosCor);
+            const responseCor = await ApiRequest.corGetAll();
+            if (responseCor.status === 200) {
+                setDadosCor(responseCor.data);
             }
-        }).catch((error) => {
-            console.log("Erro ao buscar os dados", error)
-        })
 
-        await ApiRequest.tamanhoGetAll().then((response) => {
-            if (response.status === 200) {
-                setDadosTamanho(response.data)
-                setLoading(false);
+            const responseTamanho = await ApiRequest.tamanhoGetAll();
+            if (responseTamanho.status === 200) {
+                setDadosTamanho(responseTamanho.data);
             }
-        }).catch((error) => {
-            console.log("caiu aqui", error)
-        })
-        setLoading(false);
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
     }
 
     async function fetchEtp() {
-        await ApiRequest.etpsGetByIdEditar(idEtp.id).then((response) => {
+        try {
+            const response = await ApiRequest.etpsGetByIdEditar(id);
             if (response.status === 200) {
-                setNome(response.data.nome)
-                setModelo(response.data.modelo)
-                setTamanho(response.data.tamanho)
-                setCor(response.data.cor)
-                setPrecoCusto(response.data.precoCusto)
-                setPrecoRevenda(response.data.precoRevenda)
-                setIdLoja(response.data.idLoja)
+                setNome(response.data.nome);
+                setModelo(response.data.modelo);
+                setTamanho(response.data.tamanho);
+                setCor(response.data.cor);
+                setPrecoCusto(response.data.precoCusto);
+                setPrecoRevenda(response.data.precoRevenda);
+                setIdProduto(response.data.idProduto);
             }
-        }).catch((error) => {
-            console.log("Erro ao buscar os dados", error)
-        })
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
     }
 
     useEffect(() => {
-        fetchEtp()
+        fetchEtp();
         fetchDadosModeloCorTamanho();
-    }, [])
+    }, []);
 
-
-    const handleSave = () => {
-
+    const handleSave = async () => {
         if (!modelo || !cor || !tamanho || !nome || !precoCusto || !precoRevenda) {
-            //todo: acionar modal de cadastro incorreto
-            alert("Preencha todos os campos corretamente")
+            alert("Preencha todos os campos corretamente");
             return;
         }
 
-        var precoC = parseFloat(precoCusto)
-        var precoR = parseFloat(precoRevenda)
-
-        // usando a function find do javascript para percorrer uma lista de objetos baseado na verificação de uma key
-        const modeloObj = dadosModelo.find(objModelo => objModelo.nome === modelo);
-        const idModelo = modeloObj ? modeloObj.id : null;
-
-        const corObj = dadosCor.find(objCor => objCor.nome === cor);
-        const idCor = corObj ? corObj.id : null;
-
-        //const tamanhoObj = dadosTamanho.find(objTamanho => objTamanho.numero.toString() === tamanho.toString());
-        //const idTamanho = tamanhoObj ? tamanhoObj.id : null;
+        const precoC = parseFloat(precoCusto);
+        const precoR = parseFloat(precoRevenda);
 
         const objetoAdicionado = {
             nome,
             precoC,
-            precoR,
-            idModelo,
-            idCor
+            precoR
         };
 
-        ApiRequest.editarProduto(idEtp.id, objetoAdicionado).then((response) => {
-            console.log(response);
+        try {
+            const response = await ApiRequest.editarProduto(idProduto, objetoAdicionado);
             if (response.status === 200) {
-                Alert.alert(SucessImage, "Produto atualizado!")
+                Alert.alert(SucessImage, "Produto atualizado!");
+                onUpdate();
+            } else if (response.status === 409) {
+                Alert.alert(ErrorImage, "Este produto já está cadastrado!");
             }
-            if (response.status === 409) {
-                Alert.alert(ErrorImage, "Este produto já está cadastrado!")
-            }
-        }).catch((error) => {
-            console.log("Erro ao cadastrar um produto: ", error)
-            //todo: mostrar modal de erro ao cadastrar
-        });
-
-    }
+        } catch (error) {
+            console.log("Erro ao cadastrar um produto: ", error);
+        }
+    };
 
     return (
         <>
             <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[42rem] h-[24rem] flex flex-col items-center justify-around  bg-white p-2 rounded-lg border border-black">
                 <div className="w-[40rem]">
-                    <HeaderModal
-                        props="Editar informações do Produto"
-                    ></HeaderModal>
+                    <HeaderModal props="Editar informações do Produto" />
                 </div>
                 <div className="w-[40rem] h-[16rem] flex flex-col rounded justify-around p-3 bg-[#F5F3F4] border-solid shadow-[5px_5px_10px_0_rgba(0,0,0,0.14)] border-gray-700">
-
                     <div className="flex justify-around">
                         <ComboBoxModal
                             dadosBanco={dadosModelo.map(value => value.nome)}
@@ -201,7 +167,7 @@ function ModalEditProd(idEtp) {
                         >Preço Revenda</InputAndLabelModal>
                     </div>
                 </div>
-                <div className="w-[40rem] flex justify-end  h-6 ">
+                <div className="w-[40rem] flex justify-end h-6">
                     <ButtonClear>Limpar</ButtonClear>
                     <ButtonModal funcao={handleSave}>Editar</ButtonModal>
                 </div>
@@ -210,10 +176,11 @@ function ModalEditProd(idEtp) {
     );
 }
 
-function AbrirModalEditProd(etpId) {
+
+function AbrirModalEditProd(etpId, onUpdate) {
     const MySwal = withReactContent(Swal);
     MySwal.fire({
-        html: <ModalEditProd id={etpId} />,
+        html: <ModalEditProd id={etpId} onUpdate={onUpdate} />,
         width: "auto",
         heigth: "60rem",
         showConfirmButton: false,

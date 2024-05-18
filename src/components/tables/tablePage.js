@@ -20,11 +20,6 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, stat
     }
   };
 
-  useEffect(() => {
-    console.log(colunas);
-    console.log(dados);
-  }, [colunas, dados]);
-
   return (
     <table className='w-full'>
       <thead className='text-[1rem] h-[2rem] text-white'>
@@ -59,7 +54,7 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, stat
             )}
             {remove && (
               <td >
-                <button className='text-sm font-medium w-5 h-5 rounded text-white bg-red-500'>X</button>
+                <button onClick={() => remove(id[index])} className='text-sm font-medium w-5 h-5 rounded text-white bg-red-500'>X</button>
               </td>
             )}
             {verMais && (
