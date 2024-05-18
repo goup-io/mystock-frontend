@@ -1,0 +1,8 @@
+.swal2-actions {
+    display: flex;
+    justify-content: space-between; /* Ou outro valor conforme necessário */
+  }
+  
+  .swal2-actions .swal2-confirm {
+    margin-right: 1.25rem; /* Espaçamento entre os botões */
+  }

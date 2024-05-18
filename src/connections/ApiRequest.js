@@ -154,7 +154,7 @@ export class ApiRequest {
             const resposta = await axios.post(springEndPoint + "/usuarios", funcionario, {
                 headers: header,
             });
-    
+
             return resposta;
         } catch (error) {
             return {
@@ -162,7 +162,7 @@ export class ApiRequest {
                 data: error.response.data
             };
         }
-        
+
 
     }
 
@@ -400,23 +400,34 @@ export class ApiRequest {
 
     }
 
-    static async editarProduto(id, produtoObj){
+    static async editarProduto(id, produtoObj) {
         try {
             const prod = {
-                "idCor": produtoObj.idCor,
-                "idModelo": produtoObj.idModelo,
                 "nome": produtoObj.nome,
-                "precoCusto": produtoObj.precoC,
-                "precoRevenda": produtoObj.precoR
+                "valorCusto": produtoObj.precoC,
+                "valorRevenda": produtoObj.precoR
             }
 
-            console.log("bacnen", prod);
-
-            const resposta = await axios.put(springEndPoint + "/produtos/etp-id/" + id, prod, {
+            const resposta = await axios.put(springEndPoint + "/produtos/" + id, prod, {
                 headers: header,
             });
 
-            console.log("olha a res ", resposta);
+            return resposta;
+
+        } catch (erro) {
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
+        }
+    }
+
+    static async excluirProduto(id) {
+        try {
+            const resposta = await axios.delete(springEndPoint + "/produtos/" + id, {
+                headers: header,
+            });
+
             return resposta;
 
         } catch (erro) {

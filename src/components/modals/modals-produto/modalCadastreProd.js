@@ -25,10 +25,6 @@ function ModalCadastreProd() {
     const [modelo, setModelo] = useState("");
     const [tamanho, setTamanho] = useState("");
     const [cor, setCor] = useState("");
-    const [loading, setLoading] = useState(true);
-
-
-    const setters = [setNome, setPrecoCusto, setPrecoRevenda, setModelo, setTamanho, setCor];
 
     function handleInputChange(event, setStateFunction) {
         setStateFunction(event.target.value);
@@ -47,11 +43,7 @@ function ModalCadastreProd() {
         setCor(event.target.value);
     };
 
-    console.log(dadosModelo);
-    console.log(dadosTamanho);
-
     async function fetchDadosModeloCorTamanho() {
-        setLoading(true);
         await ApiRequest.modeloGetAll().then((response) => {
             if (response.status === 200) {
                 setDadosModelo(response.data);
@@ -73,12 +65,10 @@ function ModalCadastreProd() {
         await ApiRequest.tamanhoGetAll().then((response) => {
             if (response.status === 200) {
                 setDadosTamanho(response.data)
-                setLoading(false);
             }
         }).catch((error) => {
             console.log("caiu aqui", error)
         })
-        setLoading(false);
     }
 
     useEffect(() => {
@@ -89,7 +79,6 @@ function ModalCadastreProd() {
     const handleSave = () => {
 
         if (!modelo || !cor || !tamanho || !nome || !precoCusto || !precoRevenda) {
-            //todo: acionar modal de cadastro incorreto
             Alert.alert(ErrorImage, "Preencha todos os campos!")
             return;
         }
@@ -117,7 +106,6 @@ function ModalCadastreProd() {
         };
 
         ApiRequest.produtoCreate(objetoAdicionado).then((response) => {
-            console.log(response);
             if (response.status === 201) {
                 Alert.alert(SucessImage, "Produto cadastrado no sistema!")
             }
@@ -145,7 +133,6 @@ function ModalCadastreProd() {
                         <ComboBoxModal
                             dadosBanco={dadosModelo.map(value => value.nome)}
                             value={modelo}
-                            onChange={(e) => (e, setModelo)}
                             handleChange={handleChangeModelo}
                         >Modelo</ComboBoxModal>
                         <InputAndLabelModal
