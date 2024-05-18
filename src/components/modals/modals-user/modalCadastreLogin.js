@@ -78,7 +78,7 @@ function ModalCadastreLogin({dadosAdicionais}) {
                             handlerAtributeChanger={setUsuario}
                         >Usuário:</InputAndLabelModal>
                         <InputAndLabelModal
-                            type="Text"
+                            type="password"
                             placeholder="digite a senha..."
                             value={senha}
                             handleInput={handleInputChange}
