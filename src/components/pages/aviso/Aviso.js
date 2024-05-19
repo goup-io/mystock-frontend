@@ -3,7 +3,7 @@ import PageLayout from '../PageLayoutAreaRestrita.js'
 import TitleBox from '../../header/TitleBox.js'
 import ChartBox from '../../chartsBoxes/ChartBox.js'
 import Filter from '../../inputs/filter.js'
-import InputSearch from '../../inputs/inputSearch.js'
+import InputSearcModal from '../../inputs/inputSearchModal.js'
 import ModalAviso from '../../alerts/ModalAviso.js'
 
 function Aviso() {
@@ -28,7 +28,7 @@ function Aviso() {
                 <ChartBox>
                     <div className='p-2 px-3 flex justify-between'>
                         <h2 className='font-medium text-lg'>AVISOS</h2>                        
-                        <InputSearch>Pesquisar</InputSearch>
+                        <InputSearcModal props="text">Pesquisar</InputSearcModal>
                     </div>
                     <div className='h-[50vh] flex flex-col gap-2 px-3 mt-2 mb-5 overflow-y-auto'>
                         {avisos.map((aviso, index) => (
