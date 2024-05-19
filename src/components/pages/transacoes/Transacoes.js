@@ -15,8 +15,6 @@ import Filter from '../../inputs/filter.js'
 function Transacoes() {
 
     const [colunas, setColunas] = useState([]);
-    
-    const [colunas2, setColunas2] = useState([]);
     const [dados, setDados] = useState([]);
 
     const [isHistoricoSelected, setIsHistoricoSelected] = useState(true);
@@ -30,36 +28,31 @@ function Transacoes() {
     };
 
     useEffect(() => {
-
        
-        const colunasDoBanco = ['Data', 'Solicitante', 'Destinatário', 'Cod.Modelo', 'Cor', 'Tamanho', 'N.Solic.', 'N.Lib.', 'Liberador','Coletor'];
-        const colunasDoBanco2 = ['Data', 'Solicitante', 'Destinatário', 'Produto', 'Modelo', 'Tamanho', 'N.Solic.', 'N.Lib.', 'Liberador','Coletor'];
-
+        const colunasDoBanco = ['Data', 'Solicitante', 'Destinatário', 'Cod.Modelo', 'Cor', 'Tamanho', 'N.Solic.', 'N.Lib.', 'Liberador','Coletor', 'Status'];
 
         const dadosDoBanco = [
-            { id: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
-            { id: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Pendente'},
-            { id: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
-            { id: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Negado'},
-            { id: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
-            { id: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Negado'},
-            { id: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
-            { id: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
-            { id: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
-            { id: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Pendente'},
-            { id: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
-            { id: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
-            { id: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
-            { id: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
-            { id: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
-            { id: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
-            { id: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
-            { id: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
+            { id: 1, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
+            { id: 1, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Pendente'},
+            { id: 1, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
+            { id: 1, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Negado'},
+            { id: 1, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
+            { id: 1, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Negado'},
+            { id: 1, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
+            { id: 1, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
+            { id: 1, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
+            { id: 1, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Pendente'},
+            { id: 1, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
+            { id: 1, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
+            { id: 1, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
+            { id: 1, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
+            { id: 1, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
+            { id: 1, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
+            { id: 1, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
+            { id: 1, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9:'Emilly', coluna10: 'José', status: 'Aceito'},
         ];
 
         setColunas(colunasDoBanco);
-        setColunas2(colunasDoBanco2);
-
         setDados(dadosDoBanco);
 
     }, []);
@@ -98,9 +91,9 @@ function Transacoes() {
                     <div className='w-full h-[85%] mt-2 flex justify-center items-center '>
                         <div className=' w-full h-full border-solid border-[1px] border-slate-700  bg-slate-700 overflow-y-auto rounded'>
                             {isHistoricoSelected ? (
-                                <TabelaPage colunas={colunas} dados={dados} edit={0} />
+                                <TabelaPage colunas={colunas} dados={dados.map(({ id, ...dados }) => dados)} edit={0} />
                             ) : (
-                                <TabelaPage colunas={colunas2} dados={dados} negar aceitar id={0}/>
+                                <TabelaPage colunas={colunas} dados={dados.map(({ id, ...dados }) => dados)} negar aceitar id={0}/>
                             )}
                         </div>
                     </div>
