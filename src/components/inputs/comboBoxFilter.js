@@ -17,7 +17,7 @@ function ComboBoxFilter(props) {
 
   return (
     <div className="w-full flex items-center text-center ">
-    <p class="form-floating text-[1rem] text-black font-normal">{props.children}:</p>
+    <p className="form-floating text-[1rem] text-black font-normal">{props.children}:</p>
       <select value={selecionado} onChange={handleChange} className="w-[6rem] h-[1.2rem] rounded bg-[F5F3F4] pl-2 ml-2 text-[0.7rem] font-[300] text-[#555] form-control border border-1 border-slate-600">
         <option value="">Selecione...</option>
         {opcoes.map((opcao, index) => (

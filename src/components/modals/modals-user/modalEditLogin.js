@@ -23,7 +23,7 @@ function ModalEditLogin() {
                             placeholder="digite o usuário..."
                         >Usuário:</InputAndLabelModal>
                         <InputAndLabelModal
-                            type="Text"
+                            type="password"
                             placeholder="digite a senha..."
                         >Senha:</InputAndLabelModal>
                     </div>

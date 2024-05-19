@@ -14,8 +14,8 @@ const ButtonInfo = ({ mensagem }) => {
                 <img src={iconInfo} alt="Info" className="w-5" />
             </a>
             {modalAberto && (     
-                <div onClose={toggleModal} class="max-w-80 absolute bottom-5 right-[-150px] transform -translate-x-1/2 bg-white shadow-md p-4 rounded z-10">
-                    <p class="text-xs">{mensagem}</p>
+                <div onClose={toggleModal} className="max-w-80 absolute bottom-5 right-[-150px] transform -translate-x-1/2 bg-white shadow-md p-4 rounded z-10">
+                    <p className="text-xs">{mensagem}</p>
                 </div>
             )}
         

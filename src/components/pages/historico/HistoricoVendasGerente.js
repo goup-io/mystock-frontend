@@ -16,29 +16,29 @@ function HistoricoVendasGerente() {
     const colunasHistorico = ['Data', 'Horário', 'Vendedor', 'Tipo Venda', 'N. Itens', 'Valor', 'Status'];
 
     const dadosHistorico = [
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Concluída'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Concluída'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Concluída'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Concluída'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Concluída'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Concluída'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Concluída'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Concluída'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Concluída'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Concluída'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Concluída'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Concluída'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Concluída'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Concluída'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Concluída'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Concluída'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Concluída'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Concluída'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Concluída'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Concluída'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Concluída'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Concluída'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Concluída'},
+        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
+        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
+        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
+        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
+        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
+        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
+        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
+        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
+        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
+        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
+        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
+        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
+        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
+        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
+        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
+        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
+        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
+        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
+        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
+        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
+        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
+        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
+        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
     ]
 
     async function csvHistoricoVendas() {
@@ -66,7 +66,7 @@ function HistoricoVendasGerente() {
                         </div>
 
                         <div className='w-full h-[50vh] mt-2 bg-slate-700 border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto rounded'>
-                            <TabelaPage colunas={colunasHistorico} dados={dadosHistorico} verMais troca cancel id={0} />
+                            <TabelaPage colunas={colunasHistorico} dados={dadosHistorico} status verMais troca cancel id={0} /> 
                         </div>
                     </div>
                 </ChartBox>

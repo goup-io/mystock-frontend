@@ -22,7 +22,7 @@ function MenuLateral(){
 
         return(
             <>
-                <ul class="flex flex-col gap-4 text-[#CFD0D9]">
+                <ul className="flex flex-col gap-4 text-[#CFD0D9]">
                     <ItemLista route={"/dashboard-geral"} icon={iconDash} rotaAtual={location.pathname}>Dashboard</ItemLista>
                     <ItemLista route={"/usuarios"} icon={iconUsers} rotaAtual={location.pathname}>Usuários</ItemLista>
                     <ItemLista route={"/estoque-gerente"} icon={iconEstoque} rotaAtual={location.pathname}>Estoque</ItemLista>
@@ -46,7 +46,7 @@ function MenuLateral(){
         };
 
         return(
-            <li onClick={() => navigate(props.route)} class="cursor-pointer text-base flex items-center gap-2 mr-5 transition duration-300 ease-in-out hover:text-[#FFFFFF] hover:font-semibold filter hover:invert hover:brightness-0" style={itemStyle}>
+            <li onClick={() => navigate(props.route)} className="cursor-pointer text-base flex items-center gap-2 mr-5 transition duration-300 ease-in-out hover:text-[#FFFFFF] hover:font-semibold filter hover:invert hover:brightness-0" style={itemStyle}>
                 <img src={props.icon} style={iconStyle} alt="Ícone"/>
                 {props.children}
             </li>
@@ -55,12 +55,12 @@ function MenuLateral(){
 
     return(
         <>
-            <div class="flex flex-col items-center justify-between p-5 bg-[#355070] m-0">
-                <img class="w-28" src={myStockLogo}/>
+            <div className="flex flex-col items-center justify-between p-5 bg-[#355070] m-0">
+                <img className="w-28" src={myStockLogo}/>
                 {MenuItems()}
-                <footer class="flex flex-col items-center">
+                <footer className="flex flex-col items-center">
                     <img src={GoUpLogo}/>
-                    <span class="text-slate-300 font-semibold">2024</span>
+                    <span className="text-slate-300 font-semibold">2024</span>
                 </footer>
             </div>
         </>

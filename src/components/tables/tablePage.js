@@ -1,39 +1,30 @@
-import React from 'react';
-import ButEdit from '../buttons/buttonEdit'
+import React, { useEffect } from 'react';
+import ButEdit from '../buttons/buttonEdit';
 import ButtonModal from '../buttons/buttonsModal';
 import ImgNegar from '../../assets/negate.png';
 import ImgAceitar from '../../assets/acept.png';
  
 function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais,negar , aceitar,status, id }) {
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'aceito':
-        return 'bg-[#B2DF8A]'; 
-      case 'pendente':
-        return 'bg-[#C1C1C1]'; 
-      case 'negado':
-        return 'bg-[#F47D8B]'; 
-      default:
-        return 'bg-slate-500'; 
-    }
-  };
+function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, status, id }) {
 
-  const getStatusBorderColor = (status) => {
+  const getStyleFundoStatus = (status) => {
     switch (status) {
-      case 'aceito':
-        return 'border-[#0B8F48]'; 
-      case 'pendente':
-        return 'border-[#5E6977]'; 
-      case 'negado':
-        return 'border-[#EF233C]'; 
+      case 'Aceito':
+      case 'Finalizada':
+        return 'bg-[#B2DF8A] border-[#0B8F48]';
+      case 'Pendente':
+      case 'Em andamento':
+        return 'bg-[#C1C1C1] border-[#5E6977]';
+      case 'Negado':
+      case 'Cancelado':
+        return 'bg-[#F47D8B] border-[#EF233C]';
       default:
-        return 'border-slate-700'; 
+        return 'bg-slate-500 border-slate-700';
     }
   };
 
   return (
-
     <table className='w-full'>
       <thead className='text-[1rem] h-[2rem] text-white'>
         <tr className='sticky top-0 bg-slate-600'>
@@ -53,8 +44,15 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais,negar
       <tbody className=' text-base'>
         {dados.map((linha, index) => (
           <tr key={index} style={{ backgroundColor: index % 2 === 0 ? '#D0D4F0' : '#E7E7E7' }}>
-            {Object.values(linha).map((valor, index) => (
-              <td key={index}>{valor}</td>
+            {Object.entries(linha).map(([chave, valor], index) => (
+              chave === 'status' ?
+                <td key={index}>
+                  <div className={`ml-1 border-[1px] w-11/12 rounded-full shadow ${getStyleFundoStatus(valor)}`}>
+                    {valor}
+                  </div>
+                </td>
+                :
+                <td key={index}>{valor}</td>
             ))}
             {edit && (
               <td>
@@ -63,7 +61,7 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais,negar
             )}
             {remove && (
               <td >
-                <button className='text-sm font-medium w-5 h-5 rounded text-white bg-red-500'>X</button>
+                <button onClick={() => remove(id[index])} className='text-sm font-medium w-5 h-5 rounded text-white bg-red-500'>X</button>
               </td>
             )}
               {negar && (
@@ -104,9 +102,6 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais,negar
         ))}
       </tbody>
     </table>
-
-
-
   );
 }
 

@@ -29,7 +29,7 @@ function ModalDiscount() {
                         >Valor Calculado(R$):</InputAndLabelModal>
                     </div>
 
-                    <div class="border-[1px] border-dashed border-[#355070] rounded"></div>
+                    <div className="border-[1px] border-dashed border-[#355070] rounded"></div>
 
                     <ItemSeparadoPorLinhaTracejada
                         infoEsquerda={"Valor Atual:"}

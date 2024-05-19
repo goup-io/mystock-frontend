@@ -3,7 +3,7 @@ import notificationIcon from '../../assets/icons/notificationIcon.svg'
 function buttonNotification(){
     return(
 
-    <a onClick={ativarNotificacao}class="cursor-pointer">
+    <a onClick={ativarNotificacao}className="cursor-pointer">
         <img className='w-[2.5rem]' src={notificationIcon}></img>
     </a>)
 

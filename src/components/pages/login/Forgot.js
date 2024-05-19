@@ -46,19 +46,19 @@ function Forgot() {
     }
 
     return (
-        <section class="flex flex-col items-center justify-center h-[100vh]">
-            <img class="absolute top-4 left-0" src={`${myStockLogo}`}></img>
-            <img class="absolute right-8 top-5" src={`${dots01}`}></img>
-            <div class="bg-indigo-100 rounded-[0.3125rem] w-[35vw] h-min-[70vh] flex flex-col justify-evenly items-center shadow-lg z-10">
-                <div class="mt-[3.25rem] flex flex-col items-center">
-                    <h1 class="text-[2rem] font-medium">Esqueci a senha</h1>
-                    <p class="text-[1.2rem] w-3/4">Digite seu email para a recuperação de senha.
+        <section className="flex flex-col items-center justify-center h-[100vh]">
+            <img className="absolute top-4 left-0" src={`${myStockLogo}`}></img>
+            <img className="absolute right-8 top-5" src={`${dots01}`}></img>
+            <div className="bg-indigo-100 rounded-[0.3125rem] w-[35vw] h-min-[70vh] flex flex-col justify-evenly items-center shadow-lg z-10">
+                <div className="mt-[3.25rem] flex flex-col items-center">
+                    <h1 className="text-[2rem] font-medium">Esqueci a senha</h1>
+                    <p className="text-[1.2rem] w-3/4">Digite seu email para a recuperação de senha.
                         Você receberá um email com o link para a recuperação da senha.</p>
                 </div>
 
                 <form>
-                    <div class="flex flex-col items-start mb-[1.5rem]">
-                        <p class="form-floating text-[1.06rem] mb-[0.5rem] text-black">Email:</p>
+                    <div className="flex flex-col items-start mb-[1.5rem]">
+                        <p className="form-floating text-[1.06rem] mb-[0.5rem] text-black">Email:</p>
                         <Input
                             id="inputEmail"
                             handleInput={handleInput}
@@ -72,16 +72,16 @@ function Forgot() {
                     <ButtonEnter funcao={(event) => handleClick(event)}>Recuperar Senha</ButtonEnter>
                 </form>
 
-                <div class=" mb-[2rem] mt-[0.6rem]">
-                    <a class="text-[1.2rem]" href="/">Entrar</a>
+                <div className=" mb-[2rem] mt-[0.6rem]">
+                    <a className="text-[1.2rem]" href="/">Entrar</a>
                 </div>
-                <div class="mb-[1.69rem]">
-                    <p class="text-[1.06rem]">Não tem acesso ao nosso sistema?</p>
-                    <a class="text-[1.06rem] underline" href="">Entre em contato conosco!</a>
+                <div className="mb-[1.69rem]">
+                    <p className="text-[1.06rem]">Não tem acesso ao nosso sistema?</p>
+                    <a className="text-[1.06rem] underline" href="">Entre em contato conosco!</a>
                 </div>
             </div>
-            <img class="absolute bottom-0 left-0" src={`${dots02}`}></img>
-            <img class="absolute bottom-0 right-0" src={`${goUpLogo}`}></img>
+            <img className="absolute bottom-0 left-0" src={`${dots02}`}></img>
+            <img className="absolute bottom-0 right-0" src={`${goUpLogo}`}></img>
         </section>
     )
 }

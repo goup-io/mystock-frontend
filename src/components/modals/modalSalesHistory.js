@@ -85,9 +85,9 @@ function ModalSalesHistory() {
                             infoDireita={"R$ 250,00"}
                         />
 
-                        <li class="flex flex-row justify-between">
-                            <p class="text-sm font-bold">Valor Total:</p>
-                            <p class="text-sm font-bold">R$ 200,00</p>
+                        <li className="flex flex-row justify-between">
+                            <p className="text-sm font-bold">Valor Total:</p>
+                            <p className="text-sm font-bold">R$ 200,00</p>
                         </li>
 
 

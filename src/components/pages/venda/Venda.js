@@ -59,7 +59,7 @@ var contadorId = 0
 function ResumoVenda(props) {
 
     return (
-        <ul class="flex flex-col gap-2 px-4 py-6 text-[1.2rem] font-semibold">
+        <ul className="flex flex-col gap-2 px-4 py-6 text-[1.2rem] font-semibold">
             <ItemSeparadoPorLinhaTracejada
                 infoEsquerda={"Código da Venda"}
                 infoDireita={props.codigoVenda}
@@ -95,27 +95,27 @@ function ResumoVenda(props) {
 function ItemCarrinho(props) {
     return (
 
-        <tr class="bg-[#DEE2FF] h-16 rounded ">
-            <td className={tabelaEstilos.tabelaLinhaRounded} class="">
-                <p class="font-medium text-[1.4rem]">{props.codigoProduto}</p>
+        <tr className="bg-[#DEE2FF] h-16 rounded ">
+            <td className={tabelaEstilos.tabelaLinhaRounded} className="">
+                <p className="font-medium text-[1.4rem]">{props.codigoProduto}</p>
             </td>
             <td className={tabelaEstilos.tabelaLinhaRounded}>
-                <p class="font-medium text-[1.4rem]">{props.descricaoProduto}</p>
+                <p className="font-medium text-[1.4rem]">{props.descricaoProduto}</p>
             </td>
             <td className={tabelaEstilos.tabelaLinhaRounded}>
-                <p class="font-medium text-[1.4rem]">{props.precoUnitario}</p>
+                <p className="font-medium text-[1.4rem]">{props.precoUnitario}</p>
             </td>
             <td className={tabelaEstilos.tabelaLinhaRounded}>
-                <p class="font-medium text-[1.4rem]">{props.quantidade}</p>
+                <p className="font-medium text-[1.4rem]">{props.quantidade}</p>
             </td>
             <td className={tabelaEstilos.tabelaLinhaRounded}>
-                <p class="font-medium text-[1.4rem]">{props.descontoUnitario}</p>
+                <p className="font-medium text-[1.4rem]">{props.descontoUnitario}</p>
             </td>
             <td className={tabelaEstilos.tabelaLinhaRounded}>
-                <p class="font-medium text-[1.4rem]">{props.precoLiquido}</p>
+                <p className="font-medium text-[1.4rem]">{props.precoLiquido}</p>
             </td>
             <td className={tabelaEstilos.tabelaLinhaRounded}>
-                <div class="flex flex-row items-center gap-12 justify-center">
+                <div className="flex flex-row items-center gap-12 justify-center">
                     <ButtonEdit
                         width={40}
                     />
@@ -253,27 +253,27 @@ function Venda() {
     
     function ItemCarrinho(props) {
         return (
-            <tr class="bg-[#DEE2FF] h-20 rounded" >
-                <td class="">
-                    <p class="font-medium text-[1rem]">{props.codigoProduto}</p>
+            <tr className="bg-[#DEE2FF] h-20 rounded" >
+                <td className="">
+                    <p className="font-medium text-[1rem]">{props.codigoProduto}</p>
                 </td>
                 <td>
-                    <p class="font-medium text-[1rem]">{props.descricaoProduto}</p>
+                    <p className="font-medium text-[1rem]">{props.descricaoProduto}</p>
                 </td>
                 <td>
-                    <p class="font-medium text-[1rem]">R$ {props.precoUnitario}</p>
+                    <p className="font-medium text-[1rem]">R$ {props.precoUnitario}</p>
                 </td>
                 <td>
-                    <p class="font-medium text-[1rem]">{props.quantidade}</p>
+                    <p className="font-medium text-[1rem]">{props.quantidade}</p>
                 </td>
                 <td>
-                    <p class="font-medium text-[1rem]">R$ {props.descontoUnitario}</p>
+                    <p className="font-medium text-[1rem]">R$ {props.descontoUnitario}</p>
                 </td>
                 <td>
-                    <p class="font-medium text-[1rem]">R$ {props.precoLiquido}</p>
+                    <p className="font-medium text-[1rem]">R$ {props.precoLiquido}</p>
                 </td>
                 <td>
-                    <div class="flex flex-row items-center gap-12 justify-center">
+                    <div className="flex flex-row items-center gap-12 justify-center">
                         <ButtonEdit
                             width={40}
                             funcao={() => AbrirModalEditProd()}
@@ -309,38 +309,38 @@ function Venda() {
         <PageLayout>
             <Header telaAtual="Área de Venda"/>
             <div style={divPai}>
-                <div style={div1} class="shadow flex flex-col items-start py-4 px-8">
-                    <div class="flex justify-between w-full text-2xl">
-                        <p class="font-semibold text-xl">CARRINHO</p>
-                        <div class="flex flex-row-reverse w-2/3 gap-4 items-center">
-                            <Button funcao={() => AbrirModalAddProdCart(adicionarItemCarrinho)}><p class="flex justify-between w-full text-xl">Adicionar Produto</p></Button>
+                <div style={div1} className="shadow flex flex-col items-start py-4 px-8">
+                    <div className="flex justify-between w-full text-2xl">
+                        <p className="font-semibold text-xl">CARRINHO</p>
+                        <div className="flex flex-row-reverse w-2/3 gap-4 items-center">
+                            <Button funcao={() => AbrirModalAddProdCart(adicionarItemCarrinho)}><p className="flex justify-between w-full text-xl">Adicionar Produto</p></Button>
                             <Button funcao={() => AbrirModalAddKitCart()}>
-                                <p class="flex justify-between w-full text-xl">Adicionar Kit</p>
+                                <p className="flex justify-between w-full text-xl">Adicionar Kit</p>
                             </Button>
                         </div>
                     </div>
 
-                    <div class="bg-[#F5F3F4] w-full h-full rounded-[5px] my-2 overflow-y-scroll p-4">
+                    <div className="bg-[#F5F3F4] w-full h-full rounded-[5px] my-2 overflow-y-scroll p-4">
                         <Tabela>
                             <thead>
-                                <tr class="flex-row gap-16 pl-6 table-row">
+                                <tr className="flex-row gap-16 pl-6 table-row">
                                     <th>
-                                        <p class="font-medium text-[1rem]">Código Prod.</p>
+                                        <p className="font-medium text-[1rem]">Código Prod.</p>
                                     </th>
                                     <th>
-                                        <p class="font-medium text-[1rem]">Descrição Prod.</p>
+                                        <p className="font-medium text-[1rem]">Descrição Prod.</p>
                                     </th>
                                     <th>
-                                        <p class="font-medium text-[1rem]">Preço Un.</p>
+                                        <p className="font-medium text-[1rem]">Preço Un.</p>
                                     </th>
                                     <th>
-                                        <p class="font-medium text-[1rem]">Quanti.</p>
+                                        <p className="font-medium text-[1rem]">Quanti.</p>
                                     </th>
                                     <th>
-                                        <p class="font-medium text-[1rem]">Desconto Un.</p>
+                                        <p className="font-medium text-[1rem]">Desconto Un.</p>
                                     </th>
                                     <th>
-                                        <p class="font-medium text-[1rem]">Preço Líquido</p>
+                                        <p className="font-medium text-[1rem]">Preço Líquido</p>
                                     </th>
                                 </tr>
                             </thead>
@@ -350,26 +350,26 @@ function Venda() {
  
                         </Tabela>
                                 {itemsCarrinho.length == 0 ? null : 
-                                    <div class="bg-[#DEE2FF] flex flex-row mt-[-24px] w-full h-9 rounded-b-md">
-                                        <div class="bg-[#354f7014] flex flex-row w-full h-9 rounded-b-lg items-center justify-end">
-                                            <p class="text-right pr-12 text-[1rem] font-bold text-black">Subtotal: R$ {subTotal2.toFixed(2)}</p>
+                                    <div className="bg-[#DEE2FF] flex flex-row mt-[-24px] w-full h-9 rounded-b-md">
+                                        <div className="bg-[#354f7014] flex flex-row w-full h-9 rounded-b-lg items-center justify-end">
+                                            <p className="text-right pr-12 text-[1rem] font-bold text-black">Subtotal: R$ {subTotal2.toFixed(2)}</p>
                                         </div>
                                     </div>
                                 } 
                         
                     </div>
                 </div>
-                <div style={div2} class="shadow flex flex-col items-start px-8 justify-evenly">
-                    <p class="font-semibold text-xl">DADOS BÁSICOS DA VENDA:</p>
-                    <div class="flex flex-row items-center align-middle gap-6">
-                        <div class="flex flex-row items-center text-[1.1rem] gap-3">
+                <div style={div2} className="shadow flex flex-col items-start px-8 justify-evenly">
+                    <p className="font-semibold text-xl">DADOS BÁSICOS DA VENDA:</p>
+                    <div className="flex flex-row items-center align-middle gap-6">
+                        <div className="flex flex-row items-center text-[1.1rem] gap-3">
                             <p>Cód. vendedor:</p>
                             <Input
                                 handleInput={handleInput}
                                 handlerAtributeChanger={setCodigoVendedor}
                             />
                         </div>
-                        <div class="flex flex-row items-center text-[1.1rem] gap-3">
+                        <div className="flex flex-row items-center text-[1.1rem] gap-3">
                             <p>Tipo Venda:</p>
                             <Input 
                                 handleInput={handleInput}
@@ -378,9 +378,9 @@ function Venda() {
                         </div>
                     </div>
                 </div>
-                <div style={div3} class="shadow flex flex-col items-center">
-                    <p class="font-semibold text-xl mt-4">RESUMO DA VENDA</p>
-                    <div class="bg-[#F5F3F4] w-11/12 h-full rounded-[8px] my-3 mb-3">
+                <div style={div3} className="shadow flex flex-col items-center">
+                    <p className="font-semibold text-xl mt-4">RESUMO DA VENDA</p>
+                    <div className="bg-[#F5F3F4] w-11/12 h-full rounded-[8px] my-3 mb-3">
                         <ResumoVenda
                             codigoVenda={1}
                             totalItens={itemsCarrinho.length}
@@ -391,16 +391,16 @@ function Venda() {
                             valorTotal={valorTotal.toFixed(2)}
                         />
                     </div>
-                    <div class="flex flex-col w-full gap-2 my-2 px-5">
+                    <div className="flex flex-col w-full gap-2 my-2 px-5">
                         <Button
                         cor={"#DEE2FF"}
                         >
-                            <p class="text-[1rem] font-semibold p-2 text-black">ADICIONAR DESCONTO À VENDA</p>
+                            <p className="text-[1rem] font-semibold p-2 text-black">ADICIONAR DESCONTO À VENDA</p>
                         </Button>
                         <Button
                             funcao={() => navigate("/venda/caixa")}
                         >
-                            <p class="text-xl p-2">FINALIZAR PRÉ-VENDA</p>
+                            <p className="text-xl p-2">FINALIZAR PRÉ-VENDA</p>
                         </Button>
                     </div>
                 </div>

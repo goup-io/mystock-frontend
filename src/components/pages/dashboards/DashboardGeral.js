@@ -85,7 +85,7 @@ function DashboardGeral() {
                     <LineChart categories={labelsGraficoFaturamento} series={seriesGraficoFaturamento}></LineChart>
                     <ButtonInfo mensagem={"O gráfico mostra o faturamento por loja no determinado mês, ou seja, o quanto cada loja vendeu (R$) em cada um dos meses exibidos."}></ButtonInfo>
                 </ChartBox>
-                <div class="flex gap-3 w-full h-1/2">
+                <div className="flex gap-3 w-full h-1/2">
                     <ChartBox title="Gráfico de Fluxo de Estoque" size="medium">
                         <BarChart categories={categoriesFluxoEstoque} series={seriesFluxoEstoque }></BarChart>
                         <ButtonInfo mensagem={"O gráfico mostra o fluxo de estoque por loja no determinado mês, ou seja, o quanto foi vendido, transferido ou ainda possuem em estoque."}></ButtonInfo>

@@ -5,9 +5,9 @@ function ChartBox(props) {
 
     return(
         <>
-            <div class={styleContainerClass}>
-                <div class="flex">
-                    <h3 class="font-semibold">{props.title}</h3>
+            <div className={styleContainerClass}>
+                <div className="flex">
+                    <h3 className="font-semibold">{props.title}</h3>
                 </div>
                 <div>{props.children}</div>
             </div>

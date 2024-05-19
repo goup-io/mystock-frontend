@@ -10,14 +10,14 @@ function PageLayoutAreaRestrita(props){
 
     return(
         <>
-            <section class="flex h-[100vh] bg-[#355070] w-full overflow-hidden">
+            <section className="flex h-[100vh] bg-[#355070] w-full overflow-hidden">
                 <Menu></Menu>    
 
-                <div class="flex flex-col w-full h-full">
+                <div className="flex flex-col w-full h-full">
                     <Header></Header>
 
-                    <div id="mainDiv" class="w-full h-full bg-[#F5F3F4] p-5 px-8 pb-12 rounded-tl-3xl flex flex-col gap-4 justify-between">
-                        <div className='w-full h-[85vh] mb-10 flex flex-col gap-3 overflow-hidden'>
+                    <div id="mainDiv" className="w-full h-full bg-[#F5F3F4] p-5 px-8 pb-12 rounded-tl-3xl flex flex-col gap-4 justify-between">
+                        <div className='w-full h-[85vh] mb-10 flex flex-col gap-3 overflow-y-auto overflow-x-hidden'>
                             {props.children}
                         </div>
                     </div>
