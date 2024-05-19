@@ -6,7 +6,6 @@ import ImgAceitar from '../../assets/acept.png';
  
 function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais,negar , aceitar,status, id }) {
 
-function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, status, id }) {
 
   const getStyleFundoStatus = (status) => {
     switch (status) {
