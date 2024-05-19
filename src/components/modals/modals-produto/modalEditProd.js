@@ -202,7 +202,9 @@ function ModalEditProd(idEtp) {
                     </div>
                 </div>
                 <div className="w-[40rem] flex justify-end  h-6 ">
-                    <ButtonClear>Limpar</ButtonClear>
+                    <ButtonClear
+                      setters={setters}
+                    >Limpar</ButtonClear>
                     <ButtonModal funcao={handleSave}>Editar</ButtonModal>
                 </div>
             </div>

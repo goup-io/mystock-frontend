@@ -6,14 +6,19 @@ import HeaderModal from "../modals/headerModal";
 import LargeComboBoxModal from "./largeComboBoxModal";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import React, { useState, useEffect } from 'react';
 
 function ModalComission() {
+
+    const [comissao, setComissao] = useState(50); 
+    const valorMinimo = 100;
+
     return (
         <>
             <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[42rem] h-[24rem] flex flex-col items-center justify-around  bg-white p-2 rounded-lg border border-black">
           <div className="w-[40rem]">
           <HeaderModal
-             props="Calculadora de Comissão"
+             props="Calculadora de thiago"
              ></HeaderModal>
           </div>
                 <div className="w-[40rem] h-[16rem] flex flex-col rounded justify-around p-3 bg-[#F5F3F4] border-solid shadow-[5px_5px_10px_0_rgba(0,0,0,0.14)] border-gray-700">
@@ -37,7 +42,7 @@ function ModalComission() {
                     <div className="w-full h-[2rem] bg-[#DFDFDF] border-[1px] border-[#355070] flex items-center justify-end rounded ">
                  <p className="mr-4 font-bold">R$ 20,00</p>
                     </div>
-                    <p className=" text-sm ml-[22rem]">o funcionario não alcançou a comissão</p>
+                    <p className={` text-sm ml-[22rem] ${comissao < valorMinimo ? 'text-red-500' : ''}`}>o funcionario não alcançou a comissão</p>
                 </div>
                 <div className="w-[40rem] flex justify-end h-6 ">
                     <ButtonClear>Limpar</ButtonClear>

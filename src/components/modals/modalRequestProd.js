@@ -51,7 +51,7 @@ function ModalRequestProd() {
             <div className="w-[40rem] h-[2rem] flex justify-between items-center ">
               <div className='w-[15rem] flex justify-between'>
               <p>Cód. vendedor:</p>
-               <input className='w-[7rem] h-6 border-[1px] border-slate-700 rounded'></input>
+               <input className='w-[7rem] h-6 border-[1px] border-slate-700 rounded-lg'></input>
 
               </div>
                 <InputSearcModal

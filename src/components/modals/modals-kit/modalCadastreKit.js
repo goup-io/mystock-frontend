@@ -56,7 +56,9 @@ function ModalCadastreKit() {
                 <TabelaModal colunas={colunas} dados={dados} edit remove iptQuantidade></TabelaModal>
             </div>
             <div className="w-[40rem] flex justify-end items-end mt-1 h-7">
-                <ButtonClear>Limpar</ButtonClear>
+                <ButtonClear 
+                    // setters={setters}
+                >Limpar</ButtonClear>
                 <ButtonModal>Cadastrar</ButtonModal>
             </div>
 

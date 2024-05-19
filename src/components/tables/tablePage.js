@@ -1,8 +1,10 @@
 import React from 'react';
 import ButEdit from '../buttons/buttonEdit'
 import ButtonModal from '../buttons/buttonsModal';
+import ImgNegar from '../../assets/negate.png';
+import ImgAceitar from '../../assets/acept.png';
  
-function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais,status, id }) {
+function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais,negar , aceitar,status, id }) {
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -41,6 +43,8 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais,statu
           {edit && <th>Editar</th>}
           {remove && <th>Remover</th>}
           {status && <th>Status</th>}
+          {negar && <th>Negar</th>}
+          {aceitar && <th>Aceitar</th>}
           {verMais && <th>Ver Mais</th>}
           {troca && <th>&nbsp;</th>}
           {cancel && <th>&nbsp;</th>}
@@ -60,6 +64,20 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais,statu
             {remove && (
               <td >
                 <button className='text-sm font-medium w-5 h-5 rounded text-white bg-red-500'>X</button>
+              </td>
+            )}
+              {negar && (
+              <td>
+                <button className=' h-5 w-5 '>
+                <img src={ImgNegar}></img>
+                </button>
+              </td>
+            )}
+              {aceitar && (
+              <td>
+                <button className='h-5 w-5'>
+                <img src={ImgAceitar}></img>
+                </button>
               </td>
             )}
              {verMais && (
