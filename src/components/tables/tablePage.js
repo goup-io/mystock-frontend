@@ -63,7 +63,7 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, nega
             )}
             {negar && (
               <td>
-                <button className=' h-5 w-5 '>
+                <button className=' h-4 w-4 '>
                   <img src={ImgNegar}></img>
                 </button>
               </td>
@@ -90,11 +90,6 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, nega
                 <ButtonModal cor="#919191">Cancelar</ButtonModal>
               </td>
             )}
-            {/* {status && (
-              <td>
-                <div className={`h-[1.1rem] ml-1 border-[1px] w-11/12 rounded-lg ${getStatusBorderColor(linha.status)} ${getStatusColor(linha.status)} `}>{linha.status}</div>
-              </td>
-            )} */}
           </tr>
         ))}
       </tbody>
