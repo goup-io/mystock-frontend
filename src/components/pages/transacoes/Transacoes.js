@@ -81,7 +81,7 @@ function Transacoes() {
                                 onClick={handlePendentesButtonClick}>
                                 PENDENTES DE APROVAÇÃO
                             </button>
-                            <button className=' bg-red-600 rounded-2xl w-5 h-5 mb-4 font-medium flex justify-center items-center text-white text-sm'>2</button>
+                            <button className=' bg-red-600 rounded-2xl w-4 h-4 mb-4 font-medium flex justify-center items-center text-white text-[0.7rem]'>2</button>
                             </div>
                         
                         </div>
@@ -93,7 +93,7 @@ function Transacoes() {
                             {isHistoricoSelected ? (
                                 <TabelaPage colunas={colunas} dados={dados.map(({ id, ...dados }) => dados)} edit={0} />
                             ) : (
-                                <TabelaPage colunas={colunas} dados={dados.map(({ id, ...dados }) => dados)} negar aceitar id={0}/>
+                                <TabelaPage colunas={colunas} dados={dados.map(({ id, ...dados }) => dados)} negar aceitar/>
                             )}
                         </div>
                     </div>
