@@ -30,12 +30,12 @@ function Login() {
         event.preventDefault()
         if (usuario === "" || usuario === null || usuario === undefined) {
             Alert.alert(ErrorImage, "Informe o seu usuario")
-            return
+            return;
         }
 
         if (senha === "" || senha === null || senha === undefined) {
             Alert.alert(ErrorImage, "Informe a sua senha")
-            return
+            return;
         }
 
         const respostaHTTP = await ApiRequest.userLogin(usuario, senha);
@@ -47,16 +47,19 @@ function Login() {
 
         if (respostaHTTP.status === 200) {
             var data = respostaHTTP.data.token;
+            console.log(respostaHTTP.data)
             localStorage.setItem("token", data);
-
             if (respostaHTTP.data.contexto === "usuario") {
+                localStorage.setItem("loja_id", respostaHTTP.data.idLoja)
+                localStorage.setItem("cargo", respostaHTTP.data.cargo)
                 localStorage.setItem("user_id", respostaHTTP.data.idUser);
                 Alert.alertTimer(SucessImage, "Seja bem-vindo!");
                 navigate("/dashboard-geral");
-            } 
-            if (respostaHTTP.data.contexto === "loja"){
+            }
+            if (respostaHTTP.data.contexto === "loja") {
                 localStorage.setItem("loja_id", respostaHTTP.data.idLoja);
-                if(respostaHTTP.data.tipoLogin === "AREA_VENDA"){
+                localStorage.setItem("tipo_acesso", respostaHTTP.data.tipoLogin);
+                if (respostaHTTP.data.tipoLogin === "AREA_VENDA") {
                     Alert.alertTimer(SucessImage, "Seja bem-vindo!");
                     navigate("/menu");
                 } else {
