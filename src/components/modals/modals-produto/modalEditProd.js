@@ -167,8 +167,10 @@ function ModalEditProd({ id, onUpdate }) {
                         >Preço Revenda</InputAndLabelModal>
                     </div>
                 </div>
-                <div className="w-[40rem] flex justify-end h-6">
-                    <ButtonClear>Limpar</ButtonClear>
+                <div className="w-[40rem] flex justify-end  h-6 ">
+                    <ButtonClear
+                      setters={setters}
+                    >Limpar</ButtonClear>
                     <ButtonModal funcao={handleSave}>Editar</ButtonModal>
                 </div>
             </div>

@@ -68,8 +68,8 @@ function AbrirModalCadastreProdPreConfig() {
   const MySwal = withReactContent(Swal);
   MySwal.fire({
       html: <ModalCadastreProdPreConfig />,
-      width: "auto",
-      heigth: "60rem",
+      // width: "auto",
+      // heigth: "60rem",
       showConfirmButton: false,
       heightAuto: true,
   });

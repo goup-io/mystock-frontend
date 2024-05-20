@@ -29,7 +29,9 @@ function ModalEditLogin() {
                     </div>
                 </div>
                 <div className="w-[32rem] flex justify-end  h-6 ">
-                    <ButtonClear>Limpar</ButtonClear>
+                    <ButtonClear
+                      setters={setters}
+                    >Limpar</ButtonClear>
                     <ButtonModal>Cadastrar</ButtonModal>
                 </div>
             </div>

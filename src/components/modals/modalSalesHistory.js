@@ -111,7 +111,7 @@ function ModalSalesHistory() {
                 <div className="w-[42rem] flex justify-between h-6 ">
                     <ButtonModal cor="#6A8ACF">Histórico de pagamento</ButtonModal>
                     <div className="w-5/12 flex justify-between">
-                        <ButtonModal cor="#919191">Cancelar Vendas</ButtonModal>
+                        <ButtonModal cor="#919191">Cancelar Venda</ButtonModal>
                         <ButtonModal>Trocar Itens</ButtonModal>
                     </div>
 

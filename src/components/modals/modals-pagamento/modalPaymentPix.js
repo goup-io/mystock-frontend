@@ -28,17 +28,17 @@ function ModalPaymentPix() {
                     <div className=" w-[40rem] h-[5rem] flex justify-between ml-[4rem]">
                         <InputAndLabelModal
                             placeholder="Digite o valor aqui..."
-                            text="text"
+                            text="number"
                         // value={nome}
                         // handleInput={handleInputChange}
                         // handlerAtributeChanger={setNome}
-                        >Valor á Pagar:</InputAndLabelModal>
+                        >Valor a Pagar:</InputAndLabelModal>
 
                     </div>
 
                     <div className=" w-[36rem] h-[6rem] mt-2">
 
-                        <div className="border-[2px] border-dashed mb-4 border-[#355070] rounded"></div>
+                        <div class="border-[1px] border-dashed mb-4 border-[#355070] rounded"></div>
 
                         <ItemSeparadoPorLinhaTracejada
                             infoEsquerda={"Valor total da compra:"}
@@ -48,9 +48,9 @@ function ModalPaymentPix() {
                             infoEsquerda={"Valor pago (até agora):"}
                             infoDireita={"R$ 20,00"}
                         />
-                        <li className="flex flex-row justify-between">
-                            <p className="text-sm">Valor Restante:</p>
-                            <p className="text-sm">R$ 200,00</p>
+                        <li class="flex flex-row justify-between">
+                            <p class="text-sm font-bold">Valor Restante:</p>
+                            <p class="text-sm font-bold">R$ 200,00</p>
                         </li>
 
 

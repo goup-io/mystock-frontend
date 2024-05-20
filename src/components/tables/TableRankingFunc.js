@@ -16,7 +16,7 @@ function TableRankingFunc({ header, series }) {
         };
 
         return series.map((item, index) => (
-            <tr key={index} className="w-full bg-[#D0D4F0] border-2 border-[#355070] h-8 cursor-pointer hover:h-10 hover:bg-[#AFB3D4]" >
+            <tr key={index} className="w-full bg-[#D0D4F0] border-y-2 border-[#355070] h-8 cursor-pointer hover:h-10 hover:bg-[#AFB3D4]" >
                 <td className="">{index + 1}º</td>
                 <td className="">{item.funcionario}</td>
                 <td className="">{item.faturamento}</td>

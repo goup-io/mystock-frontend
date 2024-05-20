@@ -30,21 +30,21 @@ function ModalPaymentCard() {
                         <ComboBoxModal>Tipo</ComboBoxModal>
                         <InputAndLabelModal
                             placeholder="Digite o valor aqui..."
-                            text="text"
+                            text="number"
                         // value={nome}
                         // handleInput={handleInputChange}
                         // handlerAtributeChanger={setNome}
-                        >Valor á Pagar:</InputAndLabelModal>
+                        >Valor a Pagar:</InputAndLabelModal>
                     </div>
 
                     <div className=" w-[40rem] h-[3rem] flex justify-start ml-[4rem] mb-12">
                         <InputAndLabelModal
                             placeholder="Digite número de parcelas..."
-                            text="text"
+                            text="number"
                         // value={nome}
                         // handleInput={handleInputChange}
                         // handlerAtributeChanger={setNome}
-                        >Qtd.Parcelas:</InputAndLabelModal>
+                        >Qtd. Parcelas:</InputAndLabelModal>
     
                     </div>
 
@@ -52,7 +52,7 @@ function ModalPaymentCard() {
 
                     <div className=" w-[36rem] h-[6rem] mb-4">
 
-                        <div className="border-[2px] border-dashed mb-4 border-[#355070] rounded"></div>
+                        <div class="border-[1px] border-dashed mb-4 border-[#355070] rounded"></div>
 
                         <ItemSeparadoPorLinhaTracejada
                             infoEsquerda={"Valor total da compra:"}
@@ -62,9 +62,9 @@ function ModalPaymentCard() {
                             infoEsquerda={"Valor pago (até agora):"}
                             infoDireita={"R$ 20,00"}
                         />
-                        <li className="flex flex-row justify-between">
-                            <p className="text-sm">Valor Restante:</p>
-                            <p className="text-sm">R$ 200,00</p>
+                        <li class="flex flex-row justify-between">
+                            <p class="text-sm font-bold">Valor Restante:</p>
+                            <p class="text-sm font-bold">R$ 200,00</p>
                         </li>
 
 

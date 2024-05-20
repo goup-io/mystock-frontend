@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import ButEdit from '../buttons/buttonEdit';
 import ButtonModal from '../buttons/buttonsModal';
+import ImgNegar from '../../assets/negate.png';
+import ImgAceitar from '../../assets/acept.png';
 
-function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, status, id }) {
+function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, negar, aceitar, status, id }) {
 
   const getStyleFundoStatus = (status) => {
     switch (status) {
@@ -29,6 +31,8 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, stat
           ))}
           {edit && <th>Editar</th>}
           {remove && <th>Remover</th>}
+          {negar && <th>Negar</th>}
+          {aceitar && <th>Aceitar</th>}
           {verMais && <th>Ver Mais</th>}
           {troca && <th>&nbsp;</th>}
           {cancel && <th>&nbsp;</th>}
@@ -57,8 +61,22 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, stat
                 <button onClick={() => remove(id[index])} className='text-sm font-medium w-5 h-5 rounded text-white bg-red-500'>X</button>
               </td>
             )}
+            {negar && (
+              <td>
+                <button className=' h-4 w-4 '>
+                  <img src={ImgNegar}></img>
+                </button>
+              </td>
+            )}
+            {aceitar && (
+              <td>
+                <button className='h-5 w-5'>
+                  <img src={ImgAceitar}></img>
+                </button>
+              </td>
+            )}
             {verMais && (
-              <td className='flex justify-center items-center'>
+              <td className='flex justify-center items-center' >
                 <button className='text-lg font-bold w-5 h-5 rounded text-white bg-[#96BDCE] flex items-center justify-center duration-50 ease-in-out hover:scale-[1.1] hover:bg-[#86AEC0] mt-[1.6px]'>+</button>
               </td>
             )}

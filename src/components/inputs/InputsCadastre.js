@@ -22,7 +22,7 @@ function InputCadastre(props) {
                id={props.id} 
                type={`${props.type}`} 
                placeholder={props.placeholder == undefined ? "" : props.placeholder} 
-               className="w-[16rem] h-7 rounded bg-[F5F3F4] pl-2 text-[1rem] font-[300] text-[#555] form-control border border-1 border-slate-600"
+               class="w-[16rem] h-7 rounded capitalize bg-[F5F3F4] pl-2 text-[1rem] font-[300] text-[#555] form-control border border-1 border-slate-600"
             >{props.children}</input>
             {props.type === 'password' && (
                 <div

@@ -61,6 +61,7 @@ import AbrirModalPaymentCard from '../components/modals/modals-pagamento/modalPa
 import AbrirModalPaymentPix from '../components/modals/modals-pagamento/modalPaymentPix.js';
 import AbrirModalNotification from '../components/modals/modalNotification.js';
 import AbrirModalPaymentHistory from '../components/modals/modals-pagamento/modalPaymentHistory.js';
+import AbrirModalPaymentWait from '../components/modals/modals-pagamento/modalPaymentWait.js';
 
 const Rotas = () => {
     return (
@@ -171,6 +172,11 @@ const Rotas = () => {
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
                     <Route path="/pagamento-pix" element={<AbrirModalPaymentPix />} />
+                </Route>
+
+                <Route path="/" element={<App />}>
+                    <Route index element={<Login />} />
+                    <Route path="/aguardar-pagamento" element={<AbrirModalPaymentWait />} />
                 </Route>
 
                 <Route path="/" element={<App />}>
