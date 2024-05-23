@@ -129,12 +129,33 @@ export class ApiRequest {
     }
 
     static async lojaGetAll() {
+        try {
+            const resposta = await axios.get(springEndPoint + "/lojas", {
+                headers: header
+            });
 
-        const resposta = await axios.get(springEndPoint + "/lojas", {
-            headers: header
-        });
+            return resposta;
+        } catch (erro) {
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
+        }
+    }
 
-        return resposta;
+    static async lojaGet(idLoja) {
+        try {
+            const resposta = await axios.get(springEndPoint + `/lojas/${idLoja}`, {
+                headers: header
+            });
+
+            return resposta;
+        } catch (erro) {
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
+        }
     }
 
     // ***************************************************************************

@@ -121,7 +121,7 @@ const Rotas = () => {
 
                 <Route path="/" element={<App />}>
                     <Route index element={<Login />} />
-                    <Route path="/dashboard-funcionario" element={<DashboardFuncionario />} />
+                    <Route path="/dashboard-funcionario/:idFunc" element={<DashboardFuncionario />} />
                 </Route>
 
                 <Route path="/" element={<App />}>
