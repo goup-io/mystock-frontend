@@ -1,3 +1,4 @@
+import { Height } from '@mui/icons-material';
 import React, { useState, useEffect } from 'react';
 
 function ComboBoxFilter(props) {
@@ -14,6 +15,13 @@ function ComboBoxFilter(props) {
   const handleChange = (event) => {
     setSelecionado(event.target.value);
   };
+
+  var style = {
+    width: props.width === undefined ? "10rem" : props.width,
+    height: props.height === undefined ? "1.5rem" : props.height,
+    fontWeight: props.bold === undefined ? "300" : props.bold,
+
+  }
 
   return (
     <div className="w-full flex items-center text-center ">

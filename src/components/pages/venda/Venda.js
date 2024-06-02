@@ -1,12 +1,15 @@
 import Header from '../../header/Header.js'
 import PageLayout from '../PageLayout.js'
-import Input from '../../inputs/inputAndLabelModal.js'
+
+//Inputs
+// import Input from '../../inputs/inputAndLabelModal.js'
+import Input from '../../inputs/InputsCadastre.js'
 import ItemSeparadoPorLinhaTracejada from '../../tables/ItemSeparadoPorLinhaTracejada.js'
+import ComboBoxFilter from '../../inputs/comboBoxFilter.js'
 
 //Tabela
 import Tabela from '../../tables/TableRoundedBorderSpacing.js'
 import tabelaEstilos from '../../tables/TableRoundedBorderSpacing.module.css'
-
 
 //Modais
 import AbrirModalAddProdCart from "../../modals/modals-produto/modalAddProdCart.js"
@@ -27,27 +30,27 @@ var divPai = {
     backgroundColor: "#F5F3F4",
     marginTop: "0.5rem",
     display: "grid",
-    height: "72vh",
+    height: "89%",
     gap: "16px",
     gridTemplateColumns: "repeat(7, 1fr)",
     gridTemplateRows: "repeat(9, 1fr)",
 }
 
-var div2 = {
+var divDadosBasicosVenda = {
     backgroundColor: "#fff",
     boxShadow: "rgba(0, 0, 0, 0.25) 1px 4px 4px 0px",
     borderRadius: "6px",
-    gridArea: "1 / 1 / 3 / 6",
+    gridArea: "1 / 1 / 2 / 6",
 };
 
-var div1 = {
+var divCarrinho = {
     backgroundColor: "#fff",
     boxShadow: "rgba(0, 0, 0, 0.25) 1px 4px 4px 0px",
     borderRadius: "6px",
-    gridArea: "3 / 1 / 10 / 6",
+    gridArea: "2 / 1 / 10 / 6",
 };
 
-var div3 = {
+var divResumoVenda = {
     backgroundColor: "#fff",
     boxShadow: "rgba(0, 0, 0, 0.25) 1px 4px 4px 0px",
     borderRadius: "6px",
@@ -89,14 +92,14 @@ function ResumoVenda(props) {
                 infoDireita={"R$ "+props.valorTotal}
             />
         </ul>
-    );
+    )
 }
 
 function ItemCarrinho(props) {
     return (
 
         <tr className="bg-[#DEE2FF] h-16 rounded ">
-            <td className={tabelaEstilos.tabelaLinhaRounded} className="">
+            <td className={tabelaEstilos.tabelaLinhaRounded}>
                 <p className="font-medium text-[1.4rem]">{props.codigoProduto}</p>
             </td>
             <td className={tabelaEstilos.tabelaLinhaRounded}>
@@ -253,24 +256,24 @@ function Venda() {
     
     function ItemCarrinho(props) {
         return (
-            <tr className="bg-[#DEE2FF] h-20 rounded" >
-                <td className="">
-                    <p className="font-medium text-[1rem]">{props.codigoProduto}</p>
+            <tr class="bg-[#DEE2FF] h-24 rounded text-[1.2rem]" >
+                <td>
+                    <p class="font-medium">{props.codigoProduto}</p>
                 </td>
                 <td>
-                    <p className="font-medium text-[1rem]">{props.descricaoProduto}</p>
+                    <p class="font-medium">{props.descricaoProduto}</p>
                 </td>
                 <td>
-                    <p className="font-medium text-[1rem]">R$ {props.precoUnitario}</p>
+                    <p class="font-medium">R$ {props.precoUnitario}</p>
                 </td>
                 <td>
-                    <p className="font-medium text-[1rem]">{props.quantidade}</p>
+                    <p class="font-medium">{props.quantidade}</p>
                 </td>
                 <td>
-                    <p className="font-medium text-[1rem]">R$ {props.descontoUnitario}</p>
+                    <p class="font-medium">R$ {props.descontoUnitario}</p>
                 </td>
                 <td>
-                    <p className="font-medium text-[1rem]">R$ {props.precoLiquido}</p>
+                    <p class="font-medium">R$ {props.precoLiquido}</p>
                 </td>
                 <td>
                     <div className="flex flex-row items-center gap-12 justify-center">
@@ -309,38 +312,40 @@ function Venda() {
         <PageLayout>
             <Header telaAtual="Área de Venda"/>
             <div style={divPai}>
-                <div style={div1} className="shadow flex flex-col items-start py-4 px-8">
-                    <div className="flex justify-between w-full text-2xl">
-                        <p className="font-semibold text-xl">CARRINHO</p>
-                        <div className="flex flex-row-reverse w-2/3 gap-4 items-center">
-                            <Button funcao={() => AbrirModalAddProdCart(adicionarItemCarrinho)}><p className="flex justify-between w-full text-xl">Adicionar Produto</p></Button>
+                <div style={divCarrinho} class="shadow flex flex-col items-start py-4 px-8">
+                    <div class="flex justify-between w-full text-2xl">
+                        <p class="font-semibold text-2xl">CARRINHO</p>
+                        <div class="flex flex-row-reverse w-2/3 gap-4 items-center">
+                            <Button funcao={() => AbrirModalAddProdCart(adicionarItemCarrinho)}>
+                                <p class="flex justify-between w-full text-2xl">Adicionar Produto</p>
+                            </Button>
                             <Button funcao={() => AbrirModalAddKitCart()}>
                                 <p className="flex justify-between w-full text-xl">Adicionar Kit</p>
                             </Button>
                         </div>
                     </div>
 
-                    <div className="bg-[#F5F3F4] w-full h-full rounded-[5px] my-2 overflow-y-scroll p-4">
+                    <div class="bg-[#F5F3F4] w-full h-full rounded-[5px] my-2 overflow-y-scroll px-4">
                         <Tabela>
                             <thead>
-                                <tr className="flex-row gap-16 pl-6 table-row">
+                                <tr class="flex-row gap-16 pl-6 table-row text-[1.2rem]">
                                     <th>
-                                        <p className="font-medium text-[1rem]">Código Prod.</p>
+                                        <p class="font-medium ">Código Prod.</p>
                                     </th>
                                     <th>
-                                        <p className="font-medium text-[1rem]">Descrição Prod.</p>
+                                        <p class="font-medium">Descrição Prod.</p>
                                     </th>
                                     <th>
-                                        <p className="font-medium text-[1rem]">Preço Un.</p>
+                                        <p class="font-medium">Preço Un.</p>
                                     </th>
                                     <th>
-                                        <p className="font-medium text-[1rem]">Quanti.</p>
+                                        <p class="font-medium">Quanti.</p>
                                     </th>
                                     <th>
-                                        <p className="font-medium text-[1rem]">Desconto Un.</p>
+                                        <p class="font-medium">Desconto Un.</p>
                                     </th>
                                     <th>
-                                        <p className="font-medium text-[1rem]">Preço Líquido</p>
+                                        <p class="font-medium">Preço Líquido</p>
                                     </th>
                                 </tr>
                             </thead>
@@ -359,28 +364,35 @@ function Venda() {
                         
                     </div>
                 </div>
-                <div style={div2} className="shadow flex flex-col items-start px-8 justify-evenly">
-                    <p className="font-semibold text-xl">DADOS BÁSICOS DA VENDA:</p>
-                    <div className="flex flex-row items-center align-middle gap-6">
-                        <div className="flex flex-row items-center text-[1.1rem] gap-3">
+                <div style={divDadosBasicosVenda} class="shadow flex flex-col items-start px-8 justify-evenly">
+                    <div class="flex flex-wrap flex-row items-center align-middle gap-6 p-2">
+                        <p class="font-semibold text-2xl">DADOS BÁSICOS DA VENDA:</p>
+                        <div class="flex flex-row items-center text-[1.45rem] gap-3">
                             <p>Cód. vendedor:</p>
                             <Input
                                 handleInput={handleInput}
                                 handlerAtributeChanger={setCodigoVendedor}
+                                width="7rem"
                             />
                         </div>
-                        <div className="flex flex-row items-center text-[1.1rem] gap-3">
+                        <div class="flex flex-row items-center text-[1.45rem] gap-3 text-nowrap">
                             <p>Tipo Venda:</p>
-                            <Input 
+                            <ComboBoxFilter
+                                width="8rem"
+                                height="2rem"
+                                bold="500"
+                            />
+                            {/* <Input 
                                 handleInput={handleInput}
                                 handlerAtributeChanger={setTipoVenda}
-                            />
+                                width="7rem"
+                            /> */}
                         </div>
                     </div>
                 </div>
-                <div style={div3} className="shadow flex flex-col items-center">
-                    <p className="font-semibold text-xl mt-4">RESUMO DA VENDA</p>
-                    <div className="bg-[#F5F3F4] w-11/12 h-full rounded-[8px] my-3 mb-3">
+                <div style={divResumoVenda} class="shadow flex flex-col items-center">
+                    <p class="font-semibold text-2xl mt-4">RESUMO DA VENDA</p>
+                    <div class="bg-[#F5F3F4] w-11/12 h-full rounded-[8px] my-4 mb-3">
                         <ResumoVenda
                             codigoVenda={1}
                             totalItens={itemsCarrinho.length}
@@ -391,16 +403,16 @@ function Venda() {
                             valorTotal={valorTotal.toFixed(2)}
                         />
                     </div>
-                    <div className="flex flex-col w-full gap-2 my-2 px-5">
+                    <div class="flex flex-col w-full gap-2 my-2 px-5 flex-wrap text-[1.1rem] font-semibold">
                         <Button
                         cor={"#DEE2FF"}
                         >
-                            <p className="text-[1rem] font-semibold p-2 text-black">ADICIONAR DESCONTO À VENDA</p>
+                            <p class="p-2 text-black">ADICIONAR DESCONTO À VENDA</p>
                         </Button>
                         <Button
                             funcao={() => navigate("/venda/caixa")}
                         >
-                            <p className="text-xl p-2">FINALIZAR PRÉ-VENDA</p>
+                            <p class="p-2">FINALIZAR PRÉ-VENDA</p>
                         </Button>
                     </div>
                 </div>
