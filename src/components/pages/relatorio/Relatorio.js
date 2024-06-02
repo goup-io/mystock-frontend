@@ -5,6 +5,29 @@ import imgPageRelatorios from '../../../assets/icons/svg_page_relatorios.png'
 import ButtonModal from '../../buttons/buttonsModal.js'
 import React, { useState } from 'react';
 
+const gerarRelatorio = (
+    responseObject = {},
+    fileName = ""
+    ) => {
+    const link = document.createElement("a");
+    const url = window.URL.createObjectURL(
+        new Blob([responseObject.data], { type: "application/pdf" })
+    );
+    link.href = url;
+    link.setAttribute("download", fileName);
+    document.body.appendChild(link);
+    link.click();
+    };
+    
+    const openUrlInNewTab = (url) => {
+    const link = document.createElement("a");
+    link.href = url;
+    link.target = "_blank";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+};
+
 function Relatorio() {
     const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
     const mesAtual = new Date().getMonth();
@@ -75,7 +98,9 @@ function Relatorio() {
                                     </select>
                                 </div>
                                 <div className='w-full flex flex-col bottom-0'>
-                                    <ButtonModal>GERAR RELATÓRIO</ButtonModal>
+                                    <ButtonModal
+                                    funcao={gerarRelatorio}
+                                    >GERAR RELATÓRIO</ButtonModal>
                                 </div>                                
                             </form>
                         </div>
