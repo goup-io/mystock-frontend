@@ -3,6 +3,7 @@ import myStockLogo from '../../assets/icons/logoMyStock.svg'
 import Notification from '../buttons/buttonNotification.js'
 import ButtonModal from '../buttons/buttonsModal.js'
 import Footer from '../footer/Footer.js'
+// import AbrirModalRequestProd from '../components/modals/modalRequestProd.js';
 import { useState, useEffect } from 'react'
 
 function PageLayout(props){
@@ -33,7 +34,9 @@ function PageLayout(props){
             <div className="flex flex-row w-full justify-between items-center px-4 pl-[5%] h-[3.2rem] ">
                 <img className='w-[8rem]' src={myStockLogo}></img>
                 <div className='flex h-10 w-[18rem] justify-between items-center'>
-                    <ButtonModal>Solicitar Produto na Rede</ButtonModal>
+                    <ButtonModal
+                    //    funcao={AbrirModalRequestProd}
+                    >Solicitar Produto na Rede</ButtonModal>
                 <Notification></Notification>
                 </div>
               

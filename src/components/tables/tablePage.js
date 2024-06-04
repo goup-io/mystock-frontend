@@ -94,7 +94,7 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais,negar
           )}
             {status && (
               <td>
-                <div className={`h-[1.1rem] ml-1 border-[1px] w-11/12 rounded-lg ${getStatusBorderColor(linha.status)} ${getStatusColor(linha.status)} `}>{linha.status}</div>
+                <div className={`h-[1.1rem] ml-1 border-[1px] w-11/12 rounded-lg ${getStyleFundoStatus(linha.status)}`}>{linha.status}</div>
               </td>
             )}
           </tr>
