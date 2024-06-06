@@ -37,7 +37,7 @@ function BarChart({ categories, series }) {
     return (
         <div>
             <div id="chart">
-                <Chart options={options} series={series} type="bar" height={'120%'} />
+                <Chart options={options} series={series} type="bar" height={'100%'} />
             </div>
             <div id="html-dist"></div>
         </div>

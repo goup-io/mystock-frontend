@@ -64,7 +64,7 @@ function LineChart({ categories, series }) {
     };
 
     return (
-        <Chart options={options} series={series} type="line" height={'120%'} />
+        <Chart options={options} series={series} type="line" height={'110%'} />
     );
 }
 
