@@ -131,7 +131,7 @@ function Estoque() {
     }
 
     const handleDeleteModel = (modelId) => {
-        Alert.alertQuestion("Deseja excluir esse modelo? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluir(etpId), () => updateTable())
+        Alert.alertQuestion("Deseja excluir esse modelo? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluir(modelId), () => updateTable())
     }
 
     const updateTable = () => {

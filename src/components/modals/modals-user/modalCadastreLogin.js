@@ -35,8 +35,9 @@ function ModalCadastreLogin({dadosAdicionais}) {
         const limiteTextoSenha = 20;
         console.log(usuario)
         console.log(senha)
-        if (usuario.length >= limiteTextoUsuario || senha >= limiteTextoSenha){
+        if (usuario.length >= limiteTextoUsuario || senha.length >= limiteTextoSenha){
             console.log("que isso amigo? mucho texto")
+            return
         }
 
         console.log(dadosAdicionais)

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import ButEdit from '../buttons/buttonEdit'
+import ButEdit from '../buttons/buttonEdit';
 
-function TabelaModal({ colunas, dados, edit, remove,  iptQuantidade }) {
-  // Função para recuperar valores do local storage
+function TabelaModal({ colunas, dados, edit, remove, iptQuantidade, onQuantityChange }) {
   const getInitialValues = () => {
     const storedValues = localStorage.getItem('inputValues');
     if (storedValues) {
@@ -11,13 +10,14 @@ function TabelaModal({ colunas, dados, edit, remove,  iptQuantidade }) {
     return dados.map(() => 0);
   };
 
-  // Inicialize o estado inputValues com valores recuperados do local storage ou valores padrão
   const [inputValues, setInputValues] = useState(getInitialValues);
 
-  // Atualize o local storage sempre que inputValues mudar
   useEffect(() => {
     localStorage.setItem('inputValues', JSON.stringify(inputValues));
-  }, [inputValues]);
+    if (onQuantityChange) {
+      onQuantityChange(inputValues.reduce((acc, value) => acc + value, 0));
+    }
+  }, [inputValues, onQuantityChange]);
 
   const handleAdicionar = (index) => {
     setInputValues((prevValues) => {
@@ -89,3 +89,4 @@ function TabelaModal({ colunas, dados, edit, remove,  iptQuantidade }) {
 }
 
 export default TabelaModal;
+
