@@ -1025,6 +1025,173 @@ export class ApiRequest {
 
         return resposta;
     }
+
+    
+    // ***************************************************************************
+    // *  HISTORICO-PRODUTO
+    // ***************************************************************************
+
+    static async historicoProdutoGetAll(){
+
+        try {
+
+            const resposta = await axios.get(springEndPoint + "/historico-produtos", {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async historicoProdutoGetById(idHistoricoProduto){
+
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/historico-produtos/${idHistoricoProduto}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+        
+    }
+
+    static async historicoProdutoByIdProdutoVenda(idProdutoVenda){
+
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/historico-produtos/produto-venda/${idProdutoVenda}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+        
+    }
+
+    // ***************************************************************************
+    // *  PAGAMENTO
+    // ***************************************************************************
+
+    static async pagamentoGetAll(){
+
+        try {
+
+            const resposta = await axios.get(springEndPoint + "/pagamentos", {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async pagamentoGetById(idPagamento){
+
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/pagamentos/${idPagamento}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async pagamentoCreate(idTipoPagamento, idVenda, valor, qtdParcelas){
+
+        try {
+
+            const pagamento = {
+                "idTipoPagamento": idTipoPagamento,
+                "idVenda": idVenda,
+                "valor": valor,
+                "qtdParcelas": qtdParcelas,
+            }
+
+            const resposta = await axios.post(springEndPoint + `/pagamentos`, pagamento, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    // ***************************************************************************
+    // *  PRODUTO-VENDA
+    // ***************************************************************************
+
+    static async produtoVendaGetAll(){
+
+        try {
+
+            const resposta = await axios.get(springEndPoint + "/produto-vendas", {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async produtoVendaGetById(idPagamento){
+
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/produto-vendas/${idPagamento}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async produtoVendaCreate(idTipoPagamento, idVenda, valor, qtdParcelas){
+
+        try {
+
+            const pagamento = {
+                "idTipoPagamento": idTipoPagamento,
+                "idVenda": idVenda,
+                "valor": valor,
+                "qtdParcelas": qtdParcelas,
+            }
+
+            const resposta = await axios.post(springEndPoint + `/pagamentos/${idTipoPagamento}`, pagamento, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    
+
 }
 
 export default ApiRequest;
