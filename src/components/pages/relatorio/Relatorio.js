@@ -4,28 +4,40 @@ import ChartBox from '../../chartsBoxes/ChartBox.js'
 import imgPageRelatorios from '../../../assets/icons/svg_page_relatorios.png'
 import ButtonModal from '../../buttons/buttonsModal.js'
 import React, { useState } from 'react';
+import RelatorioGeral from './pdf/relatorioGeral.js'
+import { PDFDownloadLink, Document, Page } from '@react-pdf/renderer';
 
-const gerarRelatorio = (
-    responseObject = {},
-    fileName = ""
-    ) => {
-    const link = document.createElement("a");
-    const url = window.URL.createObjectURL(
-        new Blob([responseObject.data], { type: "application/pdf" })
-    );
-    link.href = url;
-    link.setAttribute("download", fileName);
-    document.body.appendChild(link);
-    link.click();
-    };
+
+// const gerarRelatorio = (
+//     responseObject = {},
+//     fileName = "Relatorio"
+//     ) => {
+//         const link = document.createElement("a");
+//         const url = window.URL.createObjectURL(
+//             new Blob([responseObject.data], { type: "application/pdf" })
+//         );
+
+//         link.href = url;
+//         link.setAttribute("download", fileName);
+//         document.body.appendChild(link);
+//         link.click();
+//     };
     
-    const openUrlInNewTab = (url) => {
-    const link = document.createElement("a");
-    link.href = url;
-    link.target = "_blank";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+//     const openUrlInNewTab = (url) => {
+//     const link = document.createElement("a");
+//     link.href = url;
+//     link.target = "_blank";
+//     document.body.appendChild(link);
+//     link.click();
+//     document.body.removeChild(link);
+// };
+
+const GerarRelatorio = () => {
+    return (
+        <PDFDownloadLink document={<RelatorioGeral />} fileName="Relatorio">
+            {({loading}) => (loading ? 'Loading document...' : 'Download now!')}
+        </PDFDownloadLink>
+    );
 };
 
 function Relatorio() {
@@ -99,8 +111,9 @@ function Relatorio() {
                                 </div>
                                 <div className='w-full flex flex-col bottom-0'>
                                     <ButtonModal
-                                    funcao={gerarRelatorio}
-                                    >GERAR RELATÓRIO</ButtonModal>
+                                    >GERAR RELATÓRIO
+                                        <GerarRelatorio />
+                                    </ButtonModal>
                                 </div>                                
                             </form>
                         </div>
