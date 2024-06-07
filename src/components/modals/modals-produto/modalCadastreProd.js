@@ -25,6 +25,11 @@ function ModalCadastreProd() {
     const [modelo, setModelo] = useState("");
     const [tamanho, setTamanho] = useState("");
     const [cor, setCor] = useState("");
+    const [isPromocional, setIsPromocional] = useState(false);
+
+    const handleCheckboxChange = () => {
+        setIsPromocional((prev) => !prev);
+    };
 
     function handleInputChange(event, setStateFunction) {
         setStateFunction(event.target.value);
@@ -102,7 +107,8 @@ function ModalCadastreProd() {
             precoR,
             idModelo,
             idCor,
-            idTamanho
+            idTamanho,
+            isPromocional
         };
 
         ApiRequest.produtoCreate(objetoAdicionado).then((response) => {
@@ -174,7 +180,10 @@ function ModalCadastreProd() {
 
                     <div className="mt-2 flex justify-start items-center">
                     <input type="checkbox" className="w-6 h-6 ml-6"></input>
-                       <p className="form-floating text-lg text-black font-normal ml-4">Item Promocional</p>
+                       <p className="form-floating text-lg text-black font-normal ml-4"
+                         checked={isPromocional}
+                         onChange={handleCheckboxChange}
+                       >Item Promocional</p>
                     </div>
 
                 </div>
