@@ -10,7 +10,7 @@ function HeaderAR() {
     const navigate = useNavigate();
     const [tempo, definirTempo] = useState(new Date());
     const [options, setOptions] = useState([]);
-    const [selectedLoja, setSelectedLoja] = useState(localStorage.getItem('visao_loja') || localStorage.getItem('loja_id'));
+    const [selectedLoja, setSelectedLoja] = useState(localStorage.getItem('visao_loja'));
     const isAdmin = localStorage.getItem('cargo') === 'ADMIN';
 
     async function logout() {
@@ -53,14 +53,6 @@ function HeaderAR() {
     useEffect(() => {
         fetchData();
     }, []);
-
-    useEffect(() => {
-        const visaoLoja = localStorage.getItem('visao_loja') || localStorage.getItem('loja_id');
-        setSelectedLoja(visaoLoja);
-        if (isAdmin && visaoLoja === '0') {
-            navigate("/dashboard-geral");
-        }
-    }, [localStorage.getItem('visao_loja'), isAdmin, navigate]);
 
     const irParaDashLoja = (loja) => {
         localStorage.setItem('visao_loja', loja);

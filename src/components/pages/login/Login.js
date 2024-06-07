@@ -58,6 +58,7 @@ function Login() {
                     localStorage.setItem("visao_loja", 0)
                     navigate("/dashboard-geral");
                 } else {
+                    localStorage.setItem("visao_loja", respostaHTTP.data.idLoja)
                     navigate(`/dashboard-loja`)
                 }
             }

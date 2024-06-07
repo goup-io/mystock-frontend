@@ -4,18 +4,18 @@ import ButtonModal from '../buttons/buttonsModal';
 import ImgNegar from '../../assets/negate.png';
 import ImgAceitar from '../../assets/acept.png';
 
-function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, negar, aceitar, status, id }) {
+function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, negar, aceitar, id }) {
 
   const getStyleFundoStatus = (status) => {
     switch (status) {
-      case 'Aceito':
-      case 'Finalizada':
+      case 'ACEITO'.toUpperCase:
+      case 'FINALIZADA':
         return 'bg-[#B2DF8A] border-[#0B8F48]';
-      case 'Pendente':
-      case 'Em andamento':
+      case 'PENDENTE':
+      case 'EM ANDAMENTO':
         return 'bg-[#C1C1C1] border-[#5E6977]';
-      case 'Negado':
-      case 'Cancelado':
+      case 'NEGADO':
+      case 'CANCELADO':
         return 'bg-[#F47D8B] border-[#EF233C]';
       default:
         return 'bg-slate-500 border-slate-700';
@@ -44,7 +44,7 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, nega
             {Object.entries(linha).map(([chave, valor], index) => (
               chave === 'status' ?
                 <td key={index}>
-                  <div className={`ml-1 border-[1px] w-11/12 rounded-full shadow ${getStyleFundoStatus(valor)}`}>
+                  <div className={`ml-1 border-[1px] w-11/12 rounded-full shadow text-sm ${getStyleFundoStatus(valor)}`}>
                     {valor}
                   </div>
                 </td>

@@ -1021,18 +1021,35 @@ export class ApiRequest {
         }
     }
 
+    // ***************************************************************************
+    // *  TRANSFERENCIAS 
+    // ***************************************************************************
+    static async transferenciaGetAll() {
 
-    // static async lojaEstoque(){
-    //     var resposta = await fetch(springEndPoint, {
-    //         method : "GET",
-    //         headers : {
-    //             "Content-Type": "application/json",
-    //             "Authorization": `Bearer ${Cookie.getCookie("token")}`
-    //         } 
-    //     });
+        try {
+            const resposta = await axios.get(springEndPoint + "/transferencias", {
+                headers: header
+            });
 
-    // }
+            console.log(resposta);
+            return resposta;
+        } catch (erro) {
+            return erro
+        }
+    }
 
+    static async getTransferenciaLoja(idLoja) {
+        try {
+            const resposta = await axios.get(springEndPoint + `/transferencias/filtro?id_loja=${idLoja}`, {
+                headers: header
+            });
+            console.log(resposta);
+
+            return resposta;
+        } catch (erro) {
+            return erro
+        }
+    }
 
     // ***************************************************************************
     // *  CSV
