@@ -15,6 +15,7 @@ import tabelaEstilos from '../../tables/TableRoundedBorderSpacing.module.css'
 import AbrirModalAddProdCart from "../../modals/modals-produto/modalAddProdCart.js"
 import AbrirModalEditProd from "../../modals/modals-produto/modalEditProd.js"
 import AbrirModalAddKitCart from '../../modals/modals-kit/modalAddKitCart.js'
+import Alert from '../../alerts/Alert.js'
 
 //Botões
 import ButtonEdit from '../../buttons/buttonEdit.js'
@@ -24,7 +25,12 @@ import Button from '../../buttons/buttonsModal.js'
 //Hooks
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { ApiRequest } from '../../../connections/ApiRequest.js'
 import AbrirModalCadastreProd from '../../modals/modals-produto/modalCadastreProd.js'
+
+//Icons
+import ErrorIcon from '../../../assets/icons/error.svg'
+import SucessIcon from '../../../assets/icons/sucess.svg'
 
 var divPai = {
     backgroundColor: "#F5F3F4",
@@ -130,7 +136,6 @@ function ItemCarrinho(props) {
         </tr>
     )
 }
-
 
 function Venda() {
 
@@ -294,13 +299,23 @@ function Venda() {
     }
 
     function finalizarVenda(){
-        if(codigoVendedor === "" && codigoVendedor === null){
-            
+
+        if(codigoVendedor === "" || codigoVendedor === null){
+            Alert.alert(ErrorIcon, "Favor informar o código do vendedor")
+            return;
         }
 
-        if(tipoVenda === "" && tipoVenda === null){
-
+        if(tipoVenda === "" || tipoVenda === null){
+            Alert.alert(ErrorIcon, "Favor informar o tipo da venda")
+            return;
         }
+
+        ApiRequest.vendaCreate(
+            descontoVenda, 
+            tipoVenda,
+            codigoVendedor,
+            itemsCarrinho
+        )
     }
 
     function handleInput(evento, stateFunction){
@@ -381,6 +396,7 @@ function Venda() {
                                 width="8rem"
                                 height="2rem"
                                 bold="500"
+                                // dadosBanco={ApiRequest.tipoVendaGetAll()}
                             />
                             {/* <Input 
                                 handleInput={handleInput}
@@ -409,9 +425,8 @@ function Venda() {
                         >
                             <p class="p-2 text-black">ADICIONAR DESCONTO À VENDA</p>
                         </Button>
-                        <Button
-                            funcao={() => navigate("/venda/caixa")}
-                        >
+                        <Button funcao={finalizarVenda}>
+
                             <p class="p-2">FINALIZAR PRÉ-VENDA</p>
                         </Button>
                     </div>

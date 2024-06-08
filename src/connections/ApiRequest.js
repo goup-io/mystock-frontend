@@ -1302,15 +1302,14 @@ export class ApiRequest {
         }
     }
 
-    static async vendaCreate(desconto, tipoVendaId, usuarioId, qtdParcelas, produtoVendaReq) {
+    static async vendaCreate(desconto, tipoVendaId, codigoVendedor, produtoVendaReq) {
 
         try {
 
             const vendaReq = {
                 "desconto": desconto,
                 "tipoVendaId": tipoVendaId,
-                "usuarioId": usuarioId,
-                "qtdParcelas": qtdParcelas,
+                "codigoVendedor": codigoVendedor,
             }
 
             const venda = {
@@ -1471,6 +1470,78 @@ export class ApiRequest {
             console.log(resposta);
     
             return resposta;
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    
+    // ***************************************************************************
+    // *  TIPO-VENDA
+    // ***************************************************************************
+
+    static async tipoVendaGetAll(){
+        try {
+
+            const resposta = await axios.get(springEndPoint + "/tiposVenda", {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+
+    static async tipoVendaGetById(idTipoVenda){
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/tiposVenda/${idTipoVenda}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    
+    static async tipoVendaCreate(tipo, desconto, idTipoVenda){
+        try {
+
+            const tipoVenda = {
+                "tipo" : tipo,
+                "desconto" : desconto
+            }
+
+            const resposta = await axios.put(springEndPoint + `/tiposVenda/${idTipoVenda}`, tipoVenda, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async tipoVendaUpdate(desconto, idTipoVenda){
+        try {
+
+            const descontoConst = {
+                "desconto" : desconto
+            }
+
+            const resposta = await axios.patch(springEndPoint + `/tiposVenda/${idTipoVenda}`, descontoConst, {
+                headers: header
+            });
+
+            return resposta;
+
         } catch (erro) {
             return erro
         }
