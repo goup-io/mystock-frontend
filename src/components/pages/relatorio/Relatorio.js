@@ -22,7 +22,7 @@ function Relatorio() {
 
     const handleDia = (event) => {
         setDiaSelecionado(event.target.value);
-    };
+};
 
     const handleAno = (event) => {
         setAnoSelecionado(event.target.value);

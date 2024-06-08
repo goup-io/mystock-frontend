@@ -34,7 +34,7 @@ function PageLayout(props){
                 <img className='w-[8rem]' src={myStockLogo}></img>
                 <div className='flex h-10 w-[18rem] justify-between items-center'>
                     <ButtonModal>Solicitar Produto na Rede</ButtonModal>
-                <Notification></Notification>
+                    <Notification></Notification>
                 </div>
               
             </div>

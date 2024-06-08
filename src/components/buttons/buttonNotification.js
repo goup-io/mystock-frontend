@@ -1,4 +1,5 @@
 import notificationIcon from '../../assets/icons/notificationIcon.svg'
+import AbrirModalNotification from '../modals/modalNotification'
 
 function buttonNotification(){
     return(
@@ -10,7 +11,7 @@ function buttonNotification(){
 }
 
 function ativarNotificacao(){
-    alert("Ativar notificações")
+    AbrirModalNotification()
 }
 
 export default buttonNotification
