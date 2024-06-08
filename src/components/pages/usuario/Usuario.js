@@ -36,7 +36,6 @@ async function csvTodosUsuarios() {
             link.click();
             document.body.removeChild(link);
 
-            console.log(csvData);
         } 
     } catch (error) {
         console.log("Erro ao buscar os dados", error);
