@@ -31,7 +31,7 @@ function EstoqueGerente() {
     const [isProdutoSelected, setIsProdutoSelected] = useState(true);
 
     async function fetchData() {
-        const colunasDoBancoETP = ['Código', 'Nome', 'Modelo', 'Tamanho', 'Cor', 'Preço', 'Loja', 'N.Itens'];
+        const colunasDoBancoETP = ['Código', 'Nome', 'Modelo', 'Tamanho', 'Cor', 'Preço', 'Loja', 'Item Promo.',  'N.Itens'];
         const colunasDoBancoModel = ['Código', 'Nome', 'Categoria', 'Tipo'];
 
         try {
@@ -39,7 +39,15 @@ function EstoqueGerente() {
 
             if (response.status === 200) {
                 const dados = response.data;
-                setDadosDoBancoETP(dados);
+
+                const filtrarDados = dados
+                    .map(obj => (
+                        {
+                            codigo: obj.codigo, nome: obj.nome, modelo: obj.modelo, tamanho: obj.tamanho, cor: obj.cor, preco: obj.preco, loja: obj.loja, itemPromocional: obj.itemPromocional == 'SIM' ? 'Sim' : 'Não', quantidade: obj.quantidade
+                        }
+                    ));
+
+                setDadosDoBancoETP(filtrarDados);
             }
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
@@ -112,7 +120,7 @@ function EstoqueGerente() {
                         </div>
                         <div className='w-full h-[50vh] mt-2 bg-slate-700 border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto rounded'>
                             {isProdutoSelected ? (
-                                <TabelaPage colunas={colunasETP} dados={dadosDoBancoETP.map(({ id, ...dadosDoBancoETP }) => dadosDoBancoETP)} edit remove id={0} />
+                                <TabelaPage colunas={colunasETP} dados={dadosDoBancoETP.map(({ ...dados }) => dados)} edit remove id={0} />
                             ) : (
                                 <TabelaPage colunas={colunasModel} dados={dadosDoBancoModel.map(({ id, ...dados }) => dados)} edit remove id={0} />
                             )}
