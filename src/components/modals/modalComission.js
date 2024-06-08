@@ -7,11 +7,37 @@ import LargeComboBoxModal from "./largeComboBoxModal";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import React, { useState, useEffect } from 'react';
+import ApiRequest from "../../connections/ApiRequest";
 
 function ModalComission() {
 
+    const [dadosFunc, setDadosFunc] = useState([]);
+    const [funcionario, setFunc] = useState("");
     const [comissao, setComissao] = useState(50); 
     const valorMinimo = 100;
+
+    const handleChangeFunc = (event) => {
+        setFunc(event.target.value);
+    };
+
+    const handleChangeComission = (event) => {
+        setComissao(event.target.value);
+    };
+
+    async function fetchDadosFunc() {
+        await ApiRequest.userGetAll().then((response) => {
+            if (response.status === 200) {
+                setDadosFunc(response.data);
+                console.log(dadosFunc);
+            }
+        }).catch((error) => {
+            console.log("Erro ao buscar os dados", error)
+        })
+    }
+
+    useEffect(() => {
+        fetchDadosFunc();
+    }, [])
 
     return (
         <>
@@ -25,6 +51,9 @@ function ModalComission() {
             
                     <div className="flex w-full justify-start mb-4">
                     <LargeComboBoxModal
+                     dadosBanco={dadosFunc.map(value => value.nome)}
+                     value={funcionario}
+                     handleChange={handleChangeFunc}
                     >Funcionário</LargeComboBoxModal>
                     </div>
                     <div className="flex justify-between mb-4">
@@ -35,6 +64,8 @@ function ModalComission() {
                            <InputAndLabelModal
                         type="Text"
                         placeholder="Digite a % da comissão..."
+                        value={comissao}
+                        handleChange={handleChangeComission}
                         >Comissão(%):</InputAndLabelModal>
                     </div>
                     <div className="w-full h-[0.1rem] bg-[#355070] mb-4"></div>
@@ -53,7 +84,7 @@ function ModalComission() {
     );
 }
 
-function AbrirModalComission() {
+ function AbrirModalComission() {
     const MySwal = withReactContent(Swal);
     MySwal.fire({
         html: <ModalComission />,
@@ -62,6 +93,6 @@ function AbrirModalComission() {
         showConfirmButton: false,
         heightAuto: true,
     });
-}
+ }
 
 export default AbrirModalComission;

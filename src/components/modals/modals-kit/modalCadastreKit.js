@@ -7,36 +7,70 @@ import React, { useState, useEffect } from 'react';
 import TabelaModal from '../../tables/tableModal';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import ApiRequest from "../../../connections/ApiRequest";
+import Alert from '../../alerts/Alert.js'
+import errorImage from "../../../assets/error.png"
 
 function ModalCadastreKit() {
 
     const [colunas, setColunas] = useState([]);
-    const [dados, setDados] = useState([]);
+    const [dados, setDadosDoBanco] = useState([]);
+    const [dadosFiltrados, setDadosFiltrados] = useState([]);
 
-    useEffect(() => {
-
+    async function fetchData() {
         const colunasDoBanco = ['Cod.', 'Modelo', 'N.Itens', 'Cor' ];
 
-        const dadosDoBanco = [
-            { id: 1, coluna1: 'papete', coluna2: 20 , coluna4: 'vermelho'},
-            { id: 1, coluna1: 'papete', coluna2: 20 , coluna4: 'vermelho'},
-            { id: 1, coluna1: 'papete', coluna2: 20 , coluna4: 'vermelho'},
-            { id: 1, coluna1: 'papete', coluna2: 20 , coluna4: 'vermelho'},
-            { id: 1, coluna1: 'papete', coluna2: 20 , coluna4: 'vermelho'},
-            { id: 1, coluna1: 'papete', coluna2: 20 , coluna4: 'vermelho'},
-            { id: 1, coluna1: 'papete', coluna2: 20 , coluna4: 'vermelho'},
-            { id: 1, coluna1: 'papete', coluna2: 20 , coluna4: 'vermelho'},
-            { id: 1, coluna1: 'papete', coluna2: 20 , coluna4: 'vermelho'},
-            { id: 1, coluna1: 'papete', coluna2: 20 , coluna4: 'vermelho'},
-            { id: 1, coluna1: 'papete', coluna2: 20 , coluna4: 'vermelho'},
-            { id: 1, coluna1: 'papete', coluna2: 20 , coluna4: 'vermelho'},
-        ];
+        try {
+            // const response = await ApiRequest.???();
 
-        setColunas(colunasDoBanco);
+            // if (response.status === 200) {
+            //     const dados = response.data;
+            //     setDadosDoBanco(dados);
 
-        setDados(dadosDoBanco);
+            //     const filtrarDados = dados
+            //         .map(obj => (
+            //             {
+            //                 codigo: obj.codigo, modelo: obj.modelo,  itens: obj.itens, cor: obj.cor
+            //             }
+            //         ));
 
+            //     setDadosFiltrados(filtrarDados);
+            // }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+       
+       
+        setColunas(colunas);
+    }
+
+    async function excluir(kitId) {
+        const idKit = kitId.idKit
+        try {
+            // const response = await ApiRequest.???(idKit);
+            // if (response.status === 200) {
+            //     console.log("Kit deletado");
+            // } else if (response.status === 409) {
+            //     Alert.alert(errorImage, "Este Kit já foi excluido!");
+            // }
+        } catch (error) {
+            console.log("Erro ao excluir um Kit: ", error);
+        }
+    }
+
+    const handleDeleteKit = (kitId) => {
+        Alert.alertQuestion("Deseja excluir esse kit? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluir(etpId), () => updateTable())
+    }
+
+    useEffect(() => {
+        fetchData();
     }, []);
+
+    const handleSave = () => {
+
+    //   fazer logica
+
+    }
 
     return (
 
@@ -53,13 +87,13 @@ function ModalCadastreKit() {
                 >Pesquisar</InputSearcModal>
             </div>
             <div className='w-[40rem] h-[16rem]  border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto'>
-                <TabelaModal colunas={colunas} dados={dados} edit remove iptQuantidade></TabelaModal>
+                <TabelaModal colunas={colunas} dados={dadosFiltrados.map(({ ...dados }) => dados)} remove={handleDeleteKit} id={dados.map(({ ...dados }) => dados)} remove iptQuantidade></TabelaModal>
             </div>
             <div className="w-[40rem] flex justify-end items-end mt-1 h-7">
                 <ButtonClear 
                     // setters={setters}
                 >Limpar</ButtonClear>
-                <ButtonModal>Cadastrar</ButtonModal>
+                   <ButtonModal funcao={handleSave}>Cadastrar</ButtonModal>
             </div>
 
         </div>

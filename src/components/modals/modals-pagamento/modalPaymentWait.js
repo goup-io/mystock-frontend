@@ -22,7 +22,7 @@ function ModalPaymentWait() {
         <>
             <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[36rem] h-[20rem] flex flex-col items-center justify-around  bg-white p-2 rounded-lg border border-black">
             <img className="w-[12rem] h-[12rem]" src={imgPagamento}></img>
-            <img className="w-6 h-6" src={imgLoading}></img>
+            <img className="w-6 h-6 animate-spin" src={imgLoading}></img>
             <p>Aguardando finalização do pagamento...</p>
             <ButtonModal>Cancelar</ButtonModal>
             </div>

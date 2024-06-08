@@ -9,6 +9,9 @@ import HeaderModal from "../headerModal";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import ApiRequest from "../../../connections/ApiRequest";
+import ErrorImage from '../../../assets/icons/error.svg'
+import SucessImage from '../../../assets/icons/sucess.svg'
+import Alert from '../../alerts/Alert.js';
 
 function ModalCadastreModel() {
 
@@ -16,8 +19,8 @@ function ModalCadastreModel() {
     const [dadosTipo, setDadosTipo] = useState([]);
     const [codigo, setCodigo] = useState("");
     const [nome, setNome] = useState("");
-    const [idCategoria, setCategoria] = useState("");
-    const [idTipo, setTipo] = useState("");
+    const [categoria, setCategoria] = useState("");
+    const [tipo, setTipo] = useState("");
 
 
     const setters = [setCodigo, setNome, setCategoria, setTipo, setDadosCategoria, setDadosTipo];
@@ -61,17 +64,38 @@ function ModalCadastreModel() {
 
 
     const handleSave = () => {
+        if ( !codigo || !nome || !categoria || !tipo) {
+            Alert.alert(ErrorImage, "Preencha todos os campos!")
+            return;
+        }
+      
+        console.log("Categorias: ", dadosCategoria );
+        // usando a function find do javascript para percorrer uma lista de objetos baseado na verificação de uma key
+        const categoriaObj = dadosCategoria.find(objCategoria => objCategoria.nome === categoria);
+        const idCategoria = categoriaObj ? categoriaObj.id : null;
+
+        console.log("Tipo: ", dadosTipo );
+        const tipoObj = dadosTipo.find(objTipo => objTipo.nome.toLowerCase() === tipo.toLowerCase());
+        const idTipo = tipoObj ? tipoObj.id : null;
+
         const objetoAdicionado = {
-            codigo,
             nome,
+            codigo,
             idCategoria,
             idTipo
         };
 
         console.log(objetoAdicionado);
-
-        ApiRequest.modeloCreate(objetoAdicionado);
-
+        ApiRequest.modeloCreate(objetoAdicionado).then((response) => {
+            if (response.status === 201) {
+                Alert.alert(SucessImage, "Modelo cadastrado no sistema!")
+            }
+            if (response.status === 409) {
+                Alert.alert(ErrorImage, "Modelo já está cadastrado no sistema!")
+            }
+        }).catch((error) => {
+            Alert.alert(ErrorImage, "Erro ao cadastrar um modelo")
+        });
     }
 
     return (
@@ -103,13 +127,13 @@ function ModalCadastreModel() {
                     <div className="flex justify-around">
                         <ComboBoxModal
                             dadosBanco={dadosCategoria.map(value => value.nome)}
-                            value={idCategoria}
+                            value={categoria}
                             onChange={(e) => (e, setCategoria)}
                             handleChange={handleChangeCategoria}
                         >Categoria</ComboBoxModal>
                         <ComboBoxModal
                             dadosBanco={dadosCategoria.map(value => value.nome)}
-                            value={idTipo}
+                            value={tipo}
                             onChange={(e) => (e, setTipo)}
                             handleChange={handleChangeTipo}
                         >Tipo</ComboBoxModal>

@@ -26,6 +26,8 @@ function ModalEditProd({ id, onUpdate }) {
     const [cor, setCor] = useState("");
     const [idProduto, setIdProduto] = useState("");
 
+    const setters = [setNome, setPrecoCusto, setPrecoRevenda, setModelo, setTamanho, setCor];
+
     function handleInputChange(event, setStateFunction) {
         setStateFunction(event.target.value);
     }
@@ -102,7 +104,8 @@ function ModalEditProd({ id, onUpdate }) {
 
         try {
             const response = await ApiRequest.editarProduto(idProduto, objetoAdicionado);
-            if (response.status === 200) {
+            console.log(response);
+            if (response.status === 201) {
                 Alert.alert(SucessImage, "Produto atualizado!");
                 onUpdate();
             } else if (response.status === 409) {
@@ -115,11 +118,11 @@ function ModalEditProd({ id, onUpdate }) {
 
     return (
         <>
-            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[42rem] h-[24rem] flex flex-col items-center justify-around  bg-white p-2 rounded-lg border border-black">
+            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[42rem] h-[28rem] flex flex-col items-center justify-around  bg-white p-2 rounded-lg border border-black">
                 <div className="w-[40rem]">
                     <HeaderModal props="Editar informações do Produto" />
                 </div>
-                <div className="w-[40rem] h-[16rem] flex flex-col rounded justify-around p-3 bg-[#F5F3F4] border-solid shadow-[5px_5px_10px_0_rgba(0,0,0,0.14)] border-gray-700">
+                <div className="w-[40rem] h-[20rem] flex flex-col rounded justify-around p-3 bg-[#F5F3F4] border-solid shadow-[5px_5px_10px_0_rgba(0,0,0,0.14)] border-gray-700">
                     <div className="flex justify-around">
                         <ComboBoxModal
                             dadosBanco={dadosModelo.map(value => value.nome)}
@@ -166,6 +169,12 @@ function ModalEditProd({ id, onUpdate }) {
                             handlerAtributeChanger={setPrecoRevenda}
                         >Preço Revenda</InputAndLabelModal>
                     </div>
+
+                    <div className="mt-2 flex justify-start items-center">
+                    <input type="checkbox" className="w-6 h-6 ml-6"></input>
+                       <p className="form-floating text-lg text-black font-normal ml-4">Item Promocional</p>
+                    </div>
+
                 </div>
                 <div className="w-[40rem] flex justify-end  h-6 ">
                     <ButtonClear

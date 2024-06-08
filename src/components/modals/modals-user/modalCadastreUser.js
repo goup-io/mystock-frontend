@@ -126,7 +126,7 @@ function ModalCadastreUser() {
                                 handlerAtributeChanger={setNome}
                             >Nome</InputAndLabelModal>
                             <InputAndLabelModal
-                                placeholder="Digite o email..."
+                                placeholder="nome@gmail.com"
                                 value={email}
                                 handleInput={handleInputChange}
                                 handlerAtributeChanger={setEmail}
@@ -139,7 +139,7 @@ function ModalCadastreUser() {
                         onChange={(e) => handleInputChange(e, setUsuario)}
                         >Usuário</InputAndLabelModal> */}
                             <InputAndLabelModal
-                                placeholder="Digite o celular..."
+                                placeholder="(00) 00000-0000"
                                 value={celular}
                                 handleInput={handleInputChange}
                                 handlerAtributeChanger={setCelular}

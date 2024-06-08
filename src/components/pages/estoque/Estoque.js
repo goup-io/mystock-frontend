@@ -16,6 +16,7 @@ import errorImage from "../../../assets/error.png"
 
 import React, { useState, useEffect } from 'react';
 import Filter from '../../inputs/filter.js'
+import AbrirModalEditModel from '../../modals/modals-model/modalEditModel.js'
 
 function Estoque() {
 
@@ -24,7 +25,9 @@ function Estoque() {
     const [dadosDoBancoETP, setDadosDoBancoETP] = useState([]);
     const [dadosDoBancoModel, setDadosDoBancoModel] = useState([]);
     const [isProdutoSelected, setIsProdutoSelected] = useState(true);
-    const [dadosFiltrados, setDadosFiltrados] = useState([]);
+    const [dadosFiltradosETP, setDadosFiltradosETP] = useState([]);
+    const [dadosFiltradosModel, setDadosFiltradosModel] = useState([]);
+
 
     async function fetchData() {
         const colunasDoBancoETP = ['Código', 'Nome', 'Modelo', 'Tamanho', 'Cor', 'Preço', 'Loja', 'N.Itens'];
@@ -37,34 +40,34 @@ function Estoque() {
                 const dados = response.data;
                 setDadosDoBancoETP(dados);
 
-                const filtrarDados = dados
+                const filtrarDadosETP = dados
                     .map(obj => (
                         {
                             codigo: obj.codigo, nome: obj.nome, modelo: obj.modelo, tamanho: obj.tamanho, cor: obj.cor, preco: obj.preco, loja: obj.loja, quantidade: obj.quantidade
                         }
                     ));
 
-                setDadosFiltrados(filtrarDados);
+                setDadosFiltradosETP(filtrarDadosETP);
             }
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
         }
+       
         try {
-            const responseModel = await ApiRequest.modeloGetAll();
+            const response = await ApiRequest.modeloGetAll();
 
-            if (responseModel.status === 200) {
-                const dados = responseModel.data;
+            if (response.status === 200) {
+                const dados = response.data;
                 setDadosDoBancoModel(dados);
-            }
-        } catch (error) {
-            console.log("Erro ao buscar os dados", error);
-        }
-        try {
-            const responseModel = await ApiRequest.modeloGetAll();
 
-            if (responseModel.status === 200) {
-                const dados = responseModel.data;
-                setDadosDoBancoModel(dados);
+                const filtrarDadosModel = dados
+                    .map(obj => (
+                        {
+                            codigo: obj.codigo, nome: obj.nome, categoria: obj.categoria, tipo: obj.tipo
+                        }
+                    ));
+
+                setDadosFiltradosModel(filtrarDadosModel);
             }
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
@@ -90,6 +93,11 @@ function Estoque() {
         AbrirModalEditProd(etpId.id, updateTable);
     };
 
+    const handleEditarModel = (modelId) => {
+        console.log(modelId);
+        AbrirModalEditModel(modelId.id, updateTable);
+    };
+
     async function excluir(etpId) {
         const idProduto = etpId.idProduto
         try {
@@ -104,8 +112,26 @@ function Estoque() {
         }
     }
 
+    async function excluir(modelId) {
+        const idModelo = modelId.idModelo
+        try {
+            const response = await ApiRequest.excluirProduto(idModelo);
+            if (response.status === 200) {
+                console.log("Modelo deletado");
+            } else if (response.status === 409) {
+                Alert.alert(errorImage, "Este modelo já foi excluido!");
+            }
+        } catch (error) {
+            console.log("Erro ao excluir um modelo: ", error);
+        }
+    }
+
     const handleDeleteEtp = (etpId) => {
         Alert.alertQuestion("Deseja excluir esse produto? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluir(etpId), () => updateTable())
+    }
+
+    const handleDeleteModel = (modelId) => {
+        Alert.alertQuestion("Deseja excluir esse modelo? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluir(modelId), () => updateTable())
     }
 
     const updateTable = () => {
@@ -146,9 +172,9 @@ function Estoque() {
                     <div className='w-full h-[78%] mt-2 flex justify-center items-center '>
                         <div className=' w-full h-[100%] border-solid border-[1px] border-slate-700  bg-slate-700 overflow-y-auto rounded-md'>
                             {isProdutoSelected ? (
-                                <TabelaPage colunas={colunasETP} dados={dadosFiltrados.map(({ ...dados }) => dados)} edit={handleEditarEtp} remove={handleDeleteEtp} id={dadosDoBancoETP.map(({ ...dadosDoBancoETP }) => dadosDoBancoETP)} />
+                                <TabelaPage colunas={colunasETP} dados={dadosFiltradosETP.map(({ ...dados }) => dados)} edit={handleEditarEtp} remove={handleDeleteEtp} id={dadosDoBancoETP.map(({ ...dadosDoBancoETP }) => dadosDoBancoETP)} />
                             ) : (
-                                <TabelaPage colunas={colunasModel} dados={dadosDoBancoModel.map(({ id, ...dadosDoBancoModel }) => dadosDoBancoModel)} edit remove id={dadosDoBancoETP.map(({ ...dadosDoBancoETP }) => dadosDoBancoETP)} />
+                                <TabelaPage colunas={colunasModel} dados={dadosFiltradosModel.map(({ ...dados }) => dados)} edit={handleEditarModel} remove={handleDeleteModel} id={dadosDoBancoModel.map(({ ...dadosDoBancoModel }) => dadosDoBancoModel)} />
                             )}
                         </div>
                     </div>

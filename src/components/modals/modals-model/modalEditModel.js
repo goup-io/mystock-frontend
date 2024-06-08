@@ -8,8 +8,11 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { useState, useEffect } from "react";
 import ApiRequest from "../../../connections/ApiRequest";
+import Alert from '../../alerts/Alert.js';
+import ErrorImage from '../../../assets/icons/error.svg'
+import SucessImage from '../../../assets/icons/sucess.svg'
 
-function ModalEditModel() {
+function ModalEditModel({ id, onUpdate }) {
 
     const [dadosCategoria, setDadosCategoria] = useState([]);
     const [dadosTipo, setDadosTipo] = useState([]);
@@ -17,6 +20,7 @@ function ModalEditModel() {
     const [codigo, setCodigo] = useState("");
     const [categoria, setCategoria] = useState("");
     const [tipo, setTipo] = useState("");
+    const [idModelo, setIdModelo] = useState("");
     const [loading, setLoading] = useState(true);
  
     const setters = [setNome, setCodigo, setCategoria, setTipo];
@@ -35,65 +39,78 @@ function ModalEditModel() {
     };
  
  
-    async function fetchDados() {
-        setLoading(true);
-        await ApiRequest.categoriaGetAll().then((response) => {
-            if (response.status === 200) {
-                setDadosCategoria(response.data);
-                console.log(dadosCategoria);
+    async function fetchDadosCategoriaTipo() {
+        try {
+            const responseCategoria = await ApiRequest.categoriaGetAll();
+            if (responseCategoria.status === 200) {
+                setDadosCategoria(responseCategoria.data);
             }
-        }).catch((error) => {
-            console.log("Erro ao buscar os dados", error)
-        })
- 
-        await ApiRequest.tipoGetAll().then((response) => {
-            if (response.status === 200) {
-                setDadosTipo(response.data)
-                setLoading(false);
+
+            const responseTipo = await ApiRequest.tipoGetAll();
+            if (responseTipo.status === 200) {
+                setDadosTipo(responseTipo.data);
             }
-        }).catch((error) => {
-            console.log("caiu aqui", error)
-        })
-        setLoading(false);
+
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
     }
- 
+
+    async function fetchModel() {
+        try {
+            const response = await ApiRequest.modelGetByIdEditar(id);
+            if (response.status === 200) {
+                setNome(response.data.nome);
+                setCodigo(response.data.codigo);
+                setCategoria(response.data.categoria);
+                setTipo(response.data.tipo);
+                setIdModelo(response.data.id);
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+    }
+
     useEffect(() => {
-        fetchDados();
-    },[])
+        fetchModel();
+        fetchDadosCategoriaTipo();
+    }, []);
  
- 
-    const handleSave = () => {
+    const handleSave = async () => {
+        if (!codigo || !categoria || !tipo || !nome ) {
+            alert("Preencha todos os campos corretamente");
+            return;
+        }
+
         // usando a function find do javascript para percorrer uma lista de objetos baseado na verificação de uma key
         const categoriaObj = dadosCategoria.find(objCategoria => objCategoria.nome === categoria);
         const idCategoria = categoriaObj ? categoriaObj.id : null;
-        
+
         const tipoObj = dadosTipo.find(objTipo => objTipo.nome === tipo);
         const idTipo = tipoObj ? tipoObj.id : null;
-    
-        if(!idCategoria || !idTipo || !nome || !codigo ){
-            //todo: acionar modal de cadastro incorreto
-            alert("Preencha todos os campos corretamente")
-            return;
-        }
-        
+
         const objetoAdicionado = {
             nome,
             codigo,
             idCategoria,
             idTipo
         };
- 
-            ApiRequest.modeloCreate(objetoAdicionado).then((response) => {
-                if (response.status === 201) {
-                    alert("Modelo Cadastrado!!")
-                    //todo: mostrar modal de sucesso ao cadastrar
-                }
-            }).catch((error) => {
-                console.log("Erro ao cadastrar um modelo: ", error)
-                //todo: mostrar modal de erro ao cadastrar
-            });
-       
-    }
+
+        console.log(objetoAdicionado)
+
+        try {
+           
+            const response = await ApiRequest.editarModelo(idModelo, objetoAdicionado);
+            if (response.status === 200) {
+                Alert.alert(SucessImage, "Modelo atualizado!");
+                onUpdate();
+            } else if (response.status === 409) {
+                Alert.alert(ErrorImage, "Este modelo já está cadastrado!");
+            }
+        } catch (error) {
+            console.log("Erro ao cadastrar um modelo: ", error);
+        }
+    };
  
 
     return (
@@ -143,19 +160,17 @@ function ModalEditModel() {
                     <ButtonClear
                         setters={setters}
                     >Limpar</ButtonClear>
-                    <ButtonModal
-                     
-                    >Cadastrar</ButtonModal>
+                     <ButtonModal funcao={handleSave}>Editar</ButtonModal>
                 </div>
             </div>
         </>
     );
 }
 
-function AbrirModalEditModel() {
+function AbrirModalEditModel(modelId, onUpdate) {
     const MySwal = withReactContent(Swal);
     MySwal.fire({
-        html: <ModalEditModel />,
+        html: <ModalEditModel id={modelId} onUpdate={onUpdate} />,
         width: "auto",
         heigth: "60rem",
         showConfirmButton: false,

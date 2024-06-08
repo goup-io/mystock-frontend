@@ -351,10 +351,11 @@ export class ApiRequest {
             const produto = {
                 "idCor": produtoObj.idCor,
                 "idModelo": produtoObj.idModelo,
-                "idTamanho": produtoObj.idTamanho,
+                "tamanho": produtoObj.tamanhoNumero,
                 "nome": produtoObj.nome,
                 "valorCusto": produtoObj.precoC,
-                "valorRevenda": produtoObj.precoR
+                "valorRevenda": produtoObj.precoR,
+                "itemPromocional": produtoObj.isPromocional
             }
 
             const resposta = await axios.post(springEndPoint + "/produtos", produto, {
@@ -696,15 +697,17 @@ export class ApiRequest {
     // *  MODELO
     // ***************************************************************************  
 
-    static async modeloCreate(codigo, nome, idCategoria, idTipo) {
+    static async modeloCreate(modeloCreate) {
 
         try {
             const modelo = {
-                "codigo": codigo,
-                "nome": nome,
-                "idCategoria": idCategoria,
-                "idTipo": idTipo
+                "codigo": modeloCreate.codigo,
+                "nome": modeloCreate.nome,
+                "idCategoria": modeloCreate.idCategoria,
+                "idTipo": modeloCreate.idTipo
             }
+
+            console.log("Dados do modelo na por do back", modelo);
 
             const resposta = await axios.post(springEndPoint + "/modelos", modelo, {
                 headers: header,
@@ -761,6 +764,46 @@ export class ApiRequest {
             return erro
         }
 
+    }
+
+    static async modelGetByIdEditar(id) {
+
+        try {
+            const resposta = await axios.get(springEndPoint + "/modelos/" + id, {
+                headers: header
+            });
+
+            return resposta;
+        } catch (erro) {
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
+        }
+    }
+
+    static async editarModelo(id, modeloObj) {
+        try {
+            const modelo = {
+                "nome": modeloObj.nome,
+                "codigo": modeloObj.codigo,
+                "idCategoria":modeloObj.idCategoria,
+                "idTipo":modeloObj.idTipo
+
+            }
+
+            const resposta = await axios.put(springEndPoint + "/modelos/" + id, modelo, {
+                headers: header,
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
+        }
     }
 
     static async modeloDelete(id) {

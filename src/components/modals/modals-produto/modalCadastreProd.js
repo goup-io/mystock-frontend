@@ -25,6 +25,11 @@ function ModalCadastreProd() {
     const [modelo, setModelo] = useState("");
     const [tamanho, setTamanho] = useState("");
     const [cor, setCor] = useState("");
+    const [isPromocional, setIsPromocional] = useState(false);
+
+    const handleCheckboxChange = () => {
+        setIsPromocional((prev) => !prev);
+    };
 
     function handleInputChange(event, setStateFunction) {
         setStateFunction(event.target.value);
@@ -94,7 +99,7 @@ function ModalCadastreProd() {
         const idCor = corObj ? corObj.id : null;
 
         const tamanhoObj = dadosTamanho.find(objTamanho => objTamanho.numero.toString() === tamanho.toString());
-        const idTamanho = tamanhoObj ? tamanhoObj.id : null;
+        const tamanhoNumero = tamanhoObj ? tamanhoObj.numero : null;
 
         const objetoAdicionado = {
             nome,
@@ -102,7 +107,8 @@ function ModalCadastreProd() {
             precoR,
             idModelo,
             idCor,
-            idTamanho
+            tamanhoNumero,
+            isPromocional
         };
 
         ApiRequest.produtoCreate(objetoAdicionado).then((response) => {
@@ -121,13 +127,13 @@ function ModalCadastreProd() {
 
     return (
         <>
-            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[42rem] h-[24rem] flex flex-col items-center justify-around  bg-white p-2 rounded-lg border border-black">
+            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[42rem] h-[28rem] flex flex-col items-center justify-around  bg-white p-2 rounded-lg border border-black">
                 <div className="w-[40rem]">
                     <HeaderModal
                         props="Cadastrar Novo Produto"
                     ></HeaderModal>
                 </div>
-                <div className="w-[40rem] h-[16rem] flex flex-col rounded justify-around p-3 bg-[#F5F3F4] border-solid shadow-[5px_5px_10px_0_rgba(0,0,0,0.14)] border-gray-700">
+                <div className="w-[40rem] h-[20rem] flex flex-col rounded justify-around p-3 bg-[#F5F3F4] border-solid shadow-[5px_5px_10px_0_rgba(0,0,0,0.14)] border-gray-700">
 
                     <div className="flex justify-around ">
                         <ComboBoxModal
@@ -171,6 +177,15 @@ function ModalCadastreProd() {
                             handlerAtributeChanger={setPrecoRevenda}
                         >Preço Revenda</InputAndLabelModal>
                     </div>
+
+                    <div className="mt-2 flex justify-start items-center">
+                    <input type="checkbox" className="w-6 h-6 ml-6"></input>
+                       <p className="form-floating text-lg text-black font-normal ml-4"
+                         checked={isPromocional}
+                         onChange={handleCheckboxChange}
+                       >Item Promocional</p>
+                    </div>
+
                 </div>
                 <div className="w-[40rem] flex justify-end  h-6 ">
                     <ButtonClear>Limpar</ButtonClear>
