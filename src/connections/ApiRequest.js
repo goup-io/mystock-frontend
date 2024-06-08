@@ -1187,6 +1187,24 @@ export class ApiRequest {
         return resposta;
     }
 
+    static async getCsvEstoque() {
+        const resposta = await axios.get(springEndPoint + "/csv/estoque-geral", {
+            headers: header,
+            responseType: 'arraybuffer', // Add this line
+        });
+
+        return resposta;
+    }
+
+    static async getCsvEstoqueByLoja(idLoja) {
+        const resposta = await axios.get(springEndPoint + `/csv/etp/estoque-por-loja/${idLoja}`, {
+            headers: header,
+            responseType: 'arraybuffer', // Add this line
+        });
+
+        return resposta;
+    }
+
 
     // ***************************************************************************
     // *  HISTORICO-PRODUTO
