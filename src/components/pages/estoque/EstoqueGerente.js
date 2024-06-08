@@ -35,7 +35,12 @@ function EstoqueGerente() {
         const colunasDoBancoModel = ['Código', 'Nome', 'Categoria', 'Tipo'];
 
         try {
-            const response = await ApiRequest.etpsGetAll();
+            let response;
+            if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
+                response = await ApiRequest.etpsGetAll();
+            } else {
+                response = await ApiRequest.etpsGetAllByLoja(localStorage.getItem('visao_loja'));
+            }
 
             if (response.status === 200) {
                 const dados = response.data;
@@ -52,6 +57,7 @@ function EstoqueGerente() {
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
         }
+        
         try {
             const responseModel = await ApiRequest.modeloGetAll();
 

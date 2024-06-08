@@ -32,10 +32,8 @@ function HistoricoVendasGerente() {
             let response;
             if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
                 response = await ApiRequest.transferenciaGetAll();
-                console.log('Entrei - Admin visão 0');
             } else {
                 response = await ApiRequest.getTransferenciaLoja(localStorage.getItem('visao_loja'));
-                console.log('Entrei -visão alguma loja');
             }
 
             if (response.status === 200) {

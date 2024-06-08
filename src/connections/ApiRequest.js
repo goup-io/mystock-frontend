@@ -478,6 +478,22 @@ export class ApiRequest {
             };
         }
     }
+ 
+    static async etpsGetAllByLoja(idLoja) {
+
+        try {
+            const resposta = await axios.get(springEndPoint + `/etps/loja/${idLoja}`, {
+                headers: header
+            });
+
+            return resposta;
+        } catch (erro) {
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
+        }
+    }
 
     static async etpsGetByIdEditar(id) {
 
