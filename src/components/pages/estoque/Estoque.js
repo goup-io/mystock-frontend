@@ -59,16 +59,6 @@ function Estoque() {
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
         }
-        try {
-            const responseModel = await ApiRequest.modeloGetAll();
-
-            if (responseModel.status === 200) {
-                const dados = responseModel.data;
-                setDadosDoBancoModel(dados);
-            }
-        } catch (error) {
-            console.log("Erro ao buscar os dados", error);
-        }
 
         setColunasETP(colunasDoBancoETP);
         setColunasModel(colunasDoBancoModel);

@@ -1,20 +1,19 @@
-
-import ButtonClear from "../buttons/buttonClear";
 import ButtonModal from "../buttons/buttonsModal";
-import InputAndLabelModal from "../inputs/inputAndLabelModal";
 import HeaderModal from "../modals/headerModal";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import TabelaPage from "../tables/tablePage";
 import ItemSeparadoPorLinhaTracejada from '../tables/ItemSeparadoPorLinhaTracejada'
 
 import React, { useState, useEffect } from 'react';
 import TabelaModal from "../tables/tableModal";
+import ApiRequest from "../../connections/ApiRequest.js";
 
-function ModalSalesHistory() {
+function ModalSalesHistory({idVenda}) {
 
-    const [colunas, setColunas] = useState([]);
-    const [dados, setDados] = useState([]);
+    const [infosEsquerdaDadosVenda, setInfosEsquerdaDadosVenda] = useState([]);
+    const [infosDireitaDadosVenda, setInfosDireitaDadosVenda] = useState([]);
+    const [colunasItens, setColunasItens] = useState([]);
+    const [dadosItens, setDadosItens] = useState([]);
 
     useEffect(() => {
         const colunasDoBanco = ['Código', 'Descrição ', 'Preço', 'Quantidade', 'Desconto Unitário', 'Preço Líquido', 'Subtotal'];
@@ -32,8 +31,30 @@ function ModalSalesHistory() {
             { id: 12439, coluna1: 'papete duas tiras com brilho', coluna2: '300,00', coluna4: '2', coluna5: '10,00', coluna6: '120,00', coluna7: '200,00' },
         ];
 
-        setColunas(colunasDoBanco);
-        setDados(dadosDoBanco);
+        setColunasItens(colunasDoBanco);
+        setDadosItens(dadosDoBanco);
+
+        // try{
+        //     const response = await ApiRequest.vendaGetById(idVenda);
+
+        //     if (response.status === 200) {
+        //         const dados = response.data;
+
+        //         const filtrarDados = dados
+        //             .map(obj => (
+        //                 {
+        //                     data: obj.data, horario: obj.hora, vendedor: obj.nomeVendedor, tipoVenda: obj.tipoVenda.tipo, qtdItens: obj.qtdItens, valor: obj.valor, status: obj.statusVenda
+                            
+        //                 }
+        //             ));
+
+        //         setDadosItens(filtrarDados);
+        //     }
+
+        // } catch (error) {
+        //     console.log("Erro ao buscar os dados", error);
+        // }
+        
     }, []);
 
     return (
@@ -98,10 +119,8 @@ function ModalSalesHistory() {
                     <div className="w-[40rem] h-[13rem] flex flex-col justify-start mt-2 ">
                         <p className="w-[40rem] h-[0.7rem] text-base font-medium flex justify-start">Itens da Venda</p>
 
-                        <div className=" w-[40rem] h-[10.5rem]  border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto mt-4">
-
-                            <TabelaModal colunas={colunas} dados={dados} ></TabelaModal>
-
+                        <div className="w-[40rem] h-[10.5rem]  border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto mt-4 rounded">
+                            <TabelaModal colunas={colunasItens} dados={dadosItens} ></TabelaModal>
                         </div>
 
                     </div>
@@ -121,10 +140,10 @@ function ModalSalesHistory() {
     );
 }
 
-function AbrirModalSalesHistory() {
+function AbrirModalSalesHistory(idVenda) {
     const MySwal = withReactContent(Swal);
     MySwal.fire({
-        html: <ModalSalesHistory />,
+        html: <ModalSalesHistory idVenda={idVenda} />,
         // width: "auto",
         // heigth: "60rem",
         showConfirmButton: false,

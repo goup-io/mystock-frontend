@@ -1303,6 +1303,20 @@ export class ApiRequest {
         }
     }
 
+    static async vendaGetAllByLoja(idLoja) {
+
+        try {
+            const resposta = await axios.get(springEndPoint + `/vendas/filtro?id_loja=${idLoja}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
     static async vendaGetById(idPagamento) {
 
         try {
@@ -1483,7 +1497,6 @@ export class ApiRequest {
             const resposta = await axios.get(springEndPoint + `/transferencias/filtro?id_loja=${idLoja}`, {
                 headers: header
             });
-            console.log(resposta);
     
             return resposta;
         } catch (erro) {
