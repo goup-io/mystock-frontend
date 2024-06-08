@@ -16,6 +16,7 @@ import AbrirModalAddProdCart from "../../modals/modals-produto/modalAddProdCart.
 import AbrirModalEditProd from "../../modals/modals-produto/modalEditProd.js"
 import AbrirModalAddKitCart from '../../modals/modals-kit/modalAddKitCart.js'
 import Alert from '../../alerts/Alert.js'
+import AbrirModalAddDiscount from '../../modals/modalAddDiscount.js'
 
 //Botões
 import ButtonEdit from '../../buttons/buttonEdit.js'
@@ -149,9 +150,18 @@ function Venda() {
     const [codigoVendedor, setCodigoVendedor] = useState("")
     const [tipoVenda, setTipoVenda] = useState("");
 
+    const [tipoVendaLista, setTipoVendaLista] = useState([]);
+
     const navigate = useNavigate();
 
     useEffect(() => {
+
+        ApiRequest.tipoVendaGetAll()
+            .then((response) => {
+                setTipoVendaLista(response.data)
+        });
+            
+        console.log(tipoVendaLista)
 
         let subTotal1 = 0;
         let subTotal2 = 0;
@@ -396,7 +406,7 @@ function Venda() {
                                 width="8rem"
                                 height="2rem"
                                 bold="500"
-                                // dadosBanco={ApiRequest.tipoVendaGetAll()}
+                                dadosBanco={tipoVendaLista}
                             />
                             {/* <Input 
                                 handleInput={handleInput}
@@ -420,9 +430,7 @@ function Venda() {
                         />
                     </div>
                     <div class="flex flex-col w-full gap-2 my-2 px-5 flex-wrap text-[1.1rem] font-semibold">
-                        <Button
-                        cor={"#DEE2FF"}
-                        >
+                        <Button cor={"#DEE2FF"} funcao={AbrirModalAddDiscount}>
                             <p class="p-2 text-black">ADICIONAR DESCONTO À VENDA</p>
                         </Button>
                         <Button funcao={finalizarVenda}>
