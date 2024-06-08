@@ -1169,8 +1169,17 @@ export class ApiRequest {
     // *  CSV
     // ***************************************************************************
 
-    static async getCsvUsuario(options = {}) {
-        const resposta = await axios.get(springEndPoint + "/csv", {
+    static async getCsvUsuario() {
+        const resposta = await axios.get(springEndPoint + "/csv/funcionarios-todas-as-loja", {
+            headers: header,
+            responseType: 'arraybuffer', // Add this line
+        });
+
+        return resposta;
+    }
+
+    static async getCsvUsuarioByLoja(idLoja) {
+        const resposta = await axios.get(springEndPoint + `/csv/funcionarios-por-loja/${idLoja}`, {
             headers: header,
             responseType: 'arraybuffer', // Add this line
         });
