@@ -241,6 +241,21 @@ export class ApiRequest {
 
     }
 
+    static async userGetAllByLoja(idLoja) {
+        try {
+            const resposta = await axios.get(springEndPoint + `/usuarios/loja/${idLoja}`, {
+                headers: header,
+            });
+            return resposta;
+        } catch (erro) {
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
+        }
+
+    }
+
     // ***************************************************************************
     // *  CARGO
     // ***************************************************************************

@@ -10,7 +10,7 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, nega
     switch (status) {
       case 'Aceito':
       case 'Finalizada':
-      case 'ACEITO'.toUpperCase:
+      case 'ACEITO':
       case 'FINALIZADA':
         return 'bg-[#B2DF8A] border-[#0B8F48]';
       case 'Pendente':

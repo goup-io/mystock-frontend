@@ -43,8 +43,12 @@ function Usuario() {
         const colunasDoBanco = ['Código', 'Nome', 'Email', 'Celular', 'Cargo', 'Loja', 'Usuario'];
 
         try {
-            const response = await ApiRequest.userGetAll();
-            console.log(response);
+            let response;
+            if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
+                response = await ApiRequest.userGetAll();
+            } else {
+                response = await ApiRequest.userGetAllByLoja(localStorage.getItem('visao_loja'));
+            }
 
             if (response.status === 200) {
                 const dados = response.data;
@@ -53,6 +57,7 @@ function Usuario() {
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
         }
+
         setColunas(colunasDoBanco);
     }
 
