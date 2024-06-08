@@ -479,6 +479,22 @@ export class ApiRequest {
             };
         }
     }
+ 
+    static async etpsGetAllByLoja(idLoja) {
+
+        try {
+            const resposta = await axios.get(springEndPoint + `/etps/loja/${idLoja}`, {
+                headers: header
+            });
+
+            return resposta;
+        } catch (erro) {
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
+        }
+    }
 
     static async etpsGetByIdEditar(id) {
 
@@ -1330,6 +1346,20 @@ export class ApiRequest {
         }
     }
 
+    static async vendaGetAllByLoja(idLoja) {
+
+        try {
+            const resposta = await axios.get(springEndPoint + `/vendas/filtro?id_loja=${idLoja}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
     static async vendaGetById(idPagamento) {
 
         try {
@@ -1510,7 +1540,6 @@ export class ApiRequest {
             const resposta = await axios.get(springEndPoint + `/transferencias/filtro?id_loja=${idLoja}`, {
                 headers: header
             });
-            console.log(resposta);
     
             return resposta;
         } catch (erro) {

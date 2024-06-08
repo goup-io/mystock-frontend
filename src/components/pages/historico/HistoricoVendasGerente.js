@@ -5,6 +5,7 @@ import ChartBox from '../../chartsBoxes/ChartBox.js'
 import ButtonDownLoad from '../../buttons/buttonDownLoad.js'
 import InputSearcModal from '../../inputs/inputSearchModal.js'
 import TabelaPage from '../../tables/tablePage.js'
+import AbrirModalSalesHistory from '../../modals/modalSalesHistory.js'
 
 import Filter from '../../inputs/filter.js'
 
@@ -12,37 +13,50 @@ import React, { useState, useEffect } from 'react';
 
 
 function HistoricoVendasGerente() {
+    const [colunas, setColunas] = useState([]);
+    const [dadosDoBanco, setDadosDoBanco] = useState([]);
 
-    const colunasHistorico = ['Data', 'Horário', 'Vendedor', 'Tipo Venda', 'N. Itens', 'Valor', 'Status'];
+        async function fetchData() {
+        const colunas = ['Data', 'Horário', 'Vendedor', 'Tipo Venda', 'N. Itens', 'Valor', 'Status'];
 
-    const dadosHistorico = [
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
-        {data: '12/11/2024', horario: '11:11:00', vendedor: 'Emily', tipo: 'Varejo', quantItens: 4, valor: 'R$450,00', status: 'Finalizada'},
-    ]
+        try {
+            let response;
+            if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
+                response = await ApiRequest.vendaGetAll();
+            } else {
+                response = await ApiRequest.vendaGetAllByLoja(localStorage.getItem('visao_loja'));
+            }
+
+            if (response.status === 200) {
+                const dados = response.data;
+
+                const filtrarDados = dados
+                    .map(obj => (
+                        {
+                            data: obj.data, horario: obj.hora, vendedor: obj.nomeVendedor, tipoVenda: obj.tipoVenda.tipo, qtdItens: obj.qtdItens, valor: obj.valor, status: obj.statusVenda
+                            
+                        }
+                    ));
+
+                setDadosDoBanco(filtrarDados);
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+
+        setColunas(colunas);
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     async function csvHistoricoVendas() {
         alert("Implementar lógica csv!")
+    }
+
+    const handleDetailsVenda = (idVenda) => {
+        AbrirModalSalesHistory(idVenda);
     }
 
     return (
@@ -66,7 +80,7 @@ function HistoricoVendasGerente() {
                         </div>
 
                         <div className='w-full h-[50vh] mt-2 bg-slate-700 border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto rounded'>
-                            <TabelaPage colunas={colunasHistorico} dados={dadosHistorico} status verMais troca cancel id={0} /> 
+                            <TabelaPage colunas={colunas} dados={dadosDoBanco} status verMais={handleDetailsVenda} troca cancel id={0} /> 
                         </div>
                     </div>
                 </ChartBox>

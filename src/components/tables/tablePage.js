@@ -8,12 +8,18 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, nega
 
   const getStyleFundoStatus = (status) => {
     switch (status) {
+      case 'Aceito':
+      case 'Finalizada':
       case 'ACEITO'.toUpperCase:
       case 'FINALIZADA':
         return 'bg-[#B2DF8A] border-[#0B8F48]';
+      case 'Pendente':
+      case 'Em andamento':
       case 'PENDENTE':
       case 'EM ANDAMENTO':
         return 'bg-[#C1C1C1] border-[#5E6977]';
+      case 'Negado':
+      case 'Cancelado':
       case 'NEGADO':
       case 'CANCELADO':
         return 'bg-[#F47D8B] border-[#EF233C]';
@@ -77,7 +83,7 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, nega
             )}
             {verMais && (
               <td className='flex justify-center items-center' >
-                <button className='text-lg font-bold w-5 h-5 rounded text-white bg-[#96BDCE] flex items-center justify-center duration-50 ease-in-out hover:scale-[1.1] hover:bg-[#86AEC0] mt-[1.6px]'>+</button>
+                <button onClick={() => verMais(id[index])} className='text-lg font-bold w-5 h-5 rounded text-white bg-[#96BDCE] flex items-center justify-center duration-50 ease-in-out hover:scale-[1.1] hover:bg-[#86AEC0] mt-[1.6px]'>+</button>
               </td>
             )}
             {troca && (
