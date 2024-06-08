@@ -75,7 +75,7 @@ function ModalCadastreModel() {
         const idCategoria = categoriaObj ? categoriaObj.id : null;
 
         console.log("Tipo: ", dadosTipo );
-        const tipoObj = dadosTipo.find(objTipo => objTipo.nome === tipo);
+        const tipoObj = dadosTipo.find(objTipo => objTipo.nome.toLowerCase() === tipo.toLowerCase());
         const idTipo = tipoObj ? tipoObj.id : null;
 
         const objetoAdicionado = {

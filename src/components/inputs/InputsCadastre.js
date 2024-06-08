@@ -3,10 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 function InputCadastre(props) {
+    const [passwordVisible, setPasswordVisible] = useState(false);
 
-    var style = {
-        width: props.width === undefined ? "16rem" : props.width,
-    }
+    const togglePasswordVisibility = () => {
+        setPasswordVisible(!passwordVisible);
+    };
 
     return (
         <form className="relative">
@@ -16,13 +17,12 @@ function InputCadastre(props) {
                 </div>
             )}
             <input
-               style={style}
                value={props.value}
                onChange={(e) => {props.handleInput(e, props.handlerAtributeChanger)}}
                id={props.id} 
                type={`${props.type}`} 
                placeholder={props.placeholder == undefined ? "" : props.placeholder} 
-               className="h-7 rounded bg-[F5F3F4] pl-2 text-[1.2rem] font-[500] text-[#555] form-control border border-[0.1rem] border-slate-600"
+               className="w-[16rem] h-7 rounded bg-[F5F3F4] pl-2 text-[1rem] font-[300] capitalize text-[#555] form-control border border-[0.1rem] border-slate-600"
             >{props.children}</input>
             {props.type === 'password' && (
                 <div

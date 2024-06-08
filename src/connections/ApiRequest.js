@@ -330,10 +330,11 @@ export class ApiRequest {
             const produto = {
                 "idCor": produtoObj.idCor,
                 "idModelo": produtoObj.idModelo,
-                "idTamanho": produtoObj.idTamanho,
+                "tamanho": produtoObj.tamanhoNumero,
                 "nome": produtoObj.nome,
                 "valorCusto": produtoObj.precoC,
-                "valorRevenda": produtoObj.precoR
+                "valorRevenda": produtoObj.precoR,
+                "itemPromocional": produtoObj.isPromocional
             }
 
             const resposta = await axios.post(springEndPoint + "/produtos", produto, {

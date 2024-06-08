@@ -3,35 +3,33 @@ import ButEdit from '../buttons/buttonEdit';
 
 function TabelaModal({ colunas, dados, edit, remove, iptQuantidade, onQuantityChange }) {
   const getInitialValues = () => {
-    const storedValues = localStorage.getItem('inputValues');
-    if (storedValues) {
-      return JSON.parse(storedValues);
-    }
-    return dados.map(() => 0);
+    return dados.reduce((acc, item) => {
+      acc[item.codigo] = 0; // Inicializa as quantidades como 0
+      return acc;
+    }, {});
   };
 
   const [inputValues, setInputValues] = useState(getInitialValues);
 
   useEffect(() => {
-    localStorage.setItem('inputValues', JSON.stringify(inputValues));
     if (onQuantityChange) {
-      onQuantityChange(inputValues.reduce((acc, value) => acc + value, 0));
+      onQuantityChange(inputValues);
     }
   }, [inputValues, onQuantityChange]);
 
-  const handleAdicionar = (index) => {
+  const handleAdicionar = (codigo) => {
     setInputValues((prevValues) => {
-      const newValues = [...prevValues];
-      newValues[index] = newValues[index] + 1;
+      const newValues = { ...prevValues };
+      newValues[codigo] = (newValues[codigo] || 0) + 1;
       return newValues;
     });
   };
 
-  const handleTirar = (index) => {
+  const handleTirar = (codigo) => {
     setInputValues((prevValues) => {
-      const newValues = [...prevValues];
-      if (newValues[index] > 0) {
-        newValues[index] = newValues[index] - 1;
+      const newValues = { ...prevValues };
+      if ((newValues[codigo] || 0) > 0) {
+        newValues[codigo] = (newValues[codigo] || 0) - 1;
       }
       return newValues;
     });
@@ -46,7 +44,7 @@ function TabelaModal({ colunas, dados, edit, remove, iptQuantidade, onQuantityCh
           ))}
           {edit && <th>Editar</th>}
           {remove && <th>Remover</th>}
-          {iptQuantidade && <th>Add</th>}
+          {iptQuantidade && <th>Quantidade</th>}
         </tr>
       </thead>
       <tbody className='text-xs'>
@@ -70,14 +68,14 @@ function TabelaModal({ colunas, dados, edit, remove, iptQuantidade, onQuantityCh
             {iptQuantidade && (
               <td>
                 <div className='flex items-center justify-around'>
-                  <button className='text-xl font-medium' onClick={() => handleTirar(index)}>-</button>
+                  <button className='text-xl font-medium' onClick={() => handleTirar(linha.codigo)}>-</button>
                   <input
                     type="text"
                     className='w-5 h-5 border border-slate-700 rounded text-center'
-                    value={inputValues[index]}
+                    value={inputValues[linha.codigo] || 0}
                     readOnly
                   />
-                  <button className='text-xl font-medium' onClick={() => handleAdicionar(index)}>+</button>
+                  <button className='text-xl font-medium' onClick={() => handleAdicionar(linha.codigo)}>+</button>
                 </div>
               </td>
             )}
@@ -89,4 +87,3 @@ function TabelaModal({ colunas, dados, edit, remove, iptQuantidade, onQuantityCh
 }
 
 export default TabelaModal;
-

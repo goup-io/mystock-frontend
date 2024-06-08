@@ -99,7 +99,7 @@ function ModalCadastreProd() {
         const idCor = corObj ? corObj.id : null;
 
         const tamanhoObj = dadosTamanho.find(objTamanho => objTamanho.numero.toString() === tamanho.toString());
-        const idTamanho = tamanhoObj ? tamanhoObj.id : null;
+        const tamanhoNumero = tamanhoObj ? tamanhoObj.numero : null;
 
         const objetoAdicionado = {
             nome,
@@ -107,7 +107,7 @@ function ModalCadastreProd() {
             precoR,
             idModelo,
             idCor,
-            idTamanho,
+            tamanhoNumero,
             isPromocional
         };
 
