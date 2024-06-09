@@ -1417,6 +1417,21 @@ export class ApiRequest {
         }
     }
 
+    static async vendaDetalhamentoGetById(idVenda) {
+
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/vendas/detalhamento/${idVenda}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
     static async vendaCreate(desconto, tipoVendaId, codigoVendedor, produtoVendaReq) {
 
         try {

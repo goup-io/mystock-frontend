@@ -83,7 +83,7 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, nega
             )}
             {verMais && (
               <td className='flex justify-center items-center' >
-                <button onClick={() => verMais(id[index])} className='text-lg font-bold w-5 h-5 rounded text-white bg-[#96BDCE] flex items-center justify-center duration-50 ease-in-out hover:scale-[1.1] hover:bg-[#86AEC0] mt-[1.6px]'>+</button>
+                <button onClick={() => verMais(id[index].id)} className='text-lg font-bold w-5 h-5 rounded text-white bg-[#96BDCE] flex items-center justify-center duration-50 ease-in-out hover:scale-[1.1] hover:bg-[#86AEC0] mt-[1.6px]'>+</button>
               </td>
             )}
             {troca && (
