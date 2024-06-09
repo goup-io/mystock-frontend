@@ -1676,6 +1676,40 @@ export class ApiRequest {
         }
     }
 
+    // ***************************************************************************
+    // *  AVISOS / ALERTAS
+    // ***************************************************************************
+
+    static async alertasGetAll(){
+        try {
+
+            const resposta = await axios.get(springEndPoint + "/alertas", {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async alertasGetAllByLoja(idLoja){
+        try {
+            
+            const resposta = await axios.get(springEndPoint + `/alertas/loja/${idLoja}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+
 }
+
 
 export default ApiRequest;

@@ -69,14 +69,14 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, nega
             )}
             {negar && (
               <td>
-                <button className=' h-4 w-4 '>
+                <button className=' h-4 w-4 duration-150 ease-in-out hover:scale-[1.05]'>
                   <img src={ImgNegar}></img>
                 </button>
               </td>
             )}
             {aceitar && (
               <td>
-                <button className='h-5 w-5'>
+                <button className='h-5 w-5 duration-150 ease-in-out hover:scale-[1.05]'>
                   <img src={ImgAceitar}></img>
                 </button>
               </td>

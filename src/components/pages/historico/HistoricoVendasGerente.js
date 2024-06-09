@@ -54,8 +54,6 @@ function HistoricoVendasGerente() {
         fetchData();
     }, []);
 
-    console.log(dadosDoBanco);
-
     async function csvHistoricoVendas() {
         alert("Implementar lógica csv!")
     }
