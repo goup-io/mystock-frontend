@@ -12,24 +12,33 @@ import ButtonDownLoad from '../../buttons/buttonDownLoad.js'
 
 
 async function csvTodosUsuarios() {
-    const response = await ApiRequest.getCsvUsuario();
-    if (response.status === 200) {
-        const csvData = new TextDecoder('utf-8').decode(new Uint8Array(response.data));
-        const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
+    try { 
+        let response;
+        if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
+            response = await ApiRequest.getCsvUsuario();
+        } else {
+            response = await ApiRequest.getCsvUsuarioByLoja(localStorage.getItem('visao_loja'));
+        }
 
-        // Get current date and format it as YY_mm_dd
-        const date = new Date();
-        const formattedDate = `${date.getFullYear()}_${date.getMonth() + 1}_${date.getDate()}`;
+        if (response.status === 200) {
+            const csvData = new TextDecoder('utf-8').decode(new Uint8Array(response.data));
+            const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
 
-        link.setAttribute('download', `Funcionarios_${formattedDate}.csv`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+            // Get current date and format it as YY_mm_dd
+            const date = new Date();
+            const formattedDate = `${date.getFullYear()}_${date.getMonth() + 1}_${date.getDate()}`;
 
-        console.log(csvData);
+            link.setAttribute('download', `Funcionarios_${formattedDate}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+        } 
+    } catch (error) {
+        console.log("Erro ao buscar os dados", error);
     }
 }
 
@@ -43,8 +52,12 @@ function Usuario() {
         const colunasDoBanco = ['Código', 'Nome', 'Email', 'Celular', 'Cargo', 'Loja', 'Usuario'];
 
         try {
-            const response = await ApiRequest.userGetAll();
-            console.log(response);
+            let response;
+            if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
+                response = await ApiRequest.userGetAll();
+            } else {
+                response = await ApiRequest.userGetAllByLoja(localStorage.getItem('visao_loja'));
+            }
 
             if (response.status === 200) {
                 const dados = response.data;
@@ -53,6 +66,7 @@ function Usuario() {
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
         }
+
         setColunas(colunasDoBanco);
     }
 

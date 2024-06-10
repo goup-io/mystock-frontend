@@ -8,7 +8,7 @@ function ComboBoxFilter(props) {
   useEffect(() => {
     // Aqui você faria a requisição para o banco de dados para obter as opções
     // Substitua este trecho pelo código que obtém as opções do seu banco de dados
-    const opcoesDoBanco = [props.dadosBanco];
+    const opcoesDoBanco = [props.dadosBanco != null ? props.dadosBanco : [""]];
     setOpcoes(opcoesDoBanco);
   }, []);
 

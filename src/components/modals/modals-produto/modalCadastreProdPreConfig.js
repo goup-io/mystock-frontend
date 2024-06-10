@@ -13,7 +13,7 @@ import SucessImage from '../../../assets/icons/sucess.svg';
 
 function ModalCadastreProdPreConfig() {
   const [colunasETP, setColunasETP] = useState([]);
-  const [dadosDoBancoETP, setDadosDoBancoETP] = useState([]);
+  const [idEtps, setIdEtps] = useState([]);
   const [dadosFiltradosETP, setDadosFiltradosETP] = useState([]);
   const [totalItens, setTotalItens] = useState(0);
   const [quantidades, setQuantidades] = useState({});
@@ -32,7 +32,7 @@ function ModalCadastreProdPreConfig() {
 
       if (response.status === 200) {
         const dados = response.data;
-        setDadosDoBancoETP(dados);
+        console.log(dados);
 
         const filtrarDadosETP = dados.map(obj => ({
           codigo: obj.codigo,
@@ -42,8 +42,16 @@ function ModalCadastreProdPreConfig() {
           cor: obj.cor,
           preco: obj.preco,
           loja: obj.loja,
-          quantidade: 0
+          quantidade: obj.quantidade
         }));
+        
+
+        const ids = dados.map(obj => ({
+          id: obj.id
+        }))
+        
+        setIdEtps(ids);
+
 
         setDadosFiltradosETP(filtrarDadosETP);
       }
@@ -59,6 +67,8 @@ function ModalCadastreProdPreConfig() {
   }, []);
 
   const handleCadastrar = async () => {
+    console.log(quantidades);
+    return;
     const produtosParaCadastrar = dadosFiltradosETP.filter(produto => quantidades[produto.codigo] > 0);
 
     if (produtosParaCadastrar.length === 0) {
@@ -106,11 +116,12 @@ function ModalCadastreProdPreConfig() {
           dados={dadosFiltradosETP}
           iptQuantidade
           onQuantityChange={handleQuantityChange}
-        />
+          id={idEtps.map(({ ...id }) => id)}
+      />
       </div>
       <div className="w-[43rem] flex justify-end items-end mt-1 h-7">
         <ButtonClear>Limpar</ButtonClear>
-        <ButtonModal onClick={handleCadastrar}>Cadastrar</ButtonModal>
+        <ButtonModal funcao={handleCadastrar}>Cadastrar</ButtonModal>
       </div>
     </div>
   );

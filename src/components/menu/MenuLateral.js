@@ -20,10 +20,12 @@ function MenuLateral(){
 
     function MenuItems(){
 
+        var routeDash =  localStorage.getItem('visao_loja') == 0 ? "/dashboard-geral" : "/dashboard-loja"
+
         return(
             <>
                 <ul className="flex flex-col gap-4 text-[#CFD0D9]">
-                    <ItemLista route={"/dashboard-geral"} icon={iconDash} rotaAtual={location.pathname}>Dashboard</ItemLista>
+                    <ItemLista route={routeDash} icon={iconDash} rotaAtual={location.pathname}>Dashboard</ItemLista>
                     <ItemLista route={"/usuarios"} icon={iconUsers} rotaAtual={location.pathname}>Usuários</ItemLista>
                     <ItemLista route={"/estoque-gerente"} icon={iconEstoque} rotaAtual={location.pathname}>Estoque</ItemLista>
                     <ItemLista route={"/historico-vendas-gerente"} icon={iconVenda} rotaAtual={location.pathname}>Vendas</ItemLista>

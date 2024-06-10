@@ -31,19 +31,33 @@ function EstoqueGerente() {
     const [isProdutoSelected, setIsProdutoSelected] = useState(true);
 
     async function fetchData() {
-        const colunasDoBancoETP = ['Código', 'Nome', 'Modelo', 'Tamanho', 'Cor', 'Preço', 'Loja', 'N.Itens'];
+        const colunasDoBancoETP = ['Código', 'Nome', 'Modelo', 'Tamanho', 'Cor', 'Preço', 'Loja', 'Item Promo.',  'N.Itens'];
         const colunasDoBancoModel = ['Código', 'Nome', 'Categoria', 'Tipo'];
 
         try {
-            const response = await ApiRequest.etpsGetAll();
+            let response;
+            if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
+                response = await ApiRequest.etpsGetAll();
+            } else {
+                response = await ApiRequest.etpsGetAllByLoja(localStorage.getItem('visao_loja'));
+            }
 
             if (response.status === 200) {
                 const dados = response.data;
-                setDadosDoBancoETP(dados);
+
+                const filtrarDados = dados
+                    .map(obj => (
+                        {
+                            codigo: obj.codigo, nome: obj.nome, modelo: obj.modelo, tamanho: obj.tamanho, cor: obj.cor, preco: obj.preco, loja: obj.loja, itemPromocional: obj.itemPromocional == 'SIM' ? 'Sim' : 'Não', quantidade: obj.quantidade
+                        }
+                    ));
+
+                setDadosDoBancoETP(filtrarDados);
             }
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
         }
+        
         try {
             const responseModel = await ApiRequest.modeloGetAll();
 
@@ -72,7 +86,35 @@ function EstoqueGerente() {
     };
 
     async function csvProdutos() {
-        alert("Implementar lógica csv produtos!")
+        try { 
+            let response;
+            if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
+                response = await ApiRequest.getCsvEstoque();
+            } else {
+                response = await ApiRequest.getCsvEstoqueByLoja(localStorage.getItem('visao_loja'));
+            }
+    
+            if (response.status === 200) {
+                const csvData = new TextDecoder('utf-8').decode(new Uint8Array(response.data));
+                const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+    
+                // Get current date and format it as YY_mm_dd
+                const date = new Date();
+                const formattedDate = `${date.getFullYear()}_${date.getMonth() + 1}_${date.getDate()}`;
+    
+                link.setAttribute('download', `Estoque_${formattedDate}.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+    
+            } 
+
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
     }
 
     async function csvModelos() {
@@ -112,7 +154,7 @@ function EstoqueGerente() {
                         </div>
                         <div className='w-full h-[50vh] mt-2 bg-slate-700 border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto rounded'>
                             {isProdutoSelected ? (
-                                <TabelaPage colunas={colunasETP} dados={dadosDoBancoETP.map(({ id, ...dadosDoBancoETP }) => dadosDoBancoETP)} edit remove id={0} />
+                                <TabelaPage colunas={colunasETP} dados={dadosDoBancoETP.map(({ ...dados }) => dados)} edit remove id={0} />
                             ) : (
                                 <TabelaPage colunas={colunasModel} dados={dadosDoBancoModel.map(({ id, ...dados }) => dados)} edit remove id={0} />
                             )}
