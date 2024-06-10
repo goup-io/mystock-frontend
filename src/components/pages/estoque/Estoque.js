@@ -52,7 +52,7 @@ function Estoque() {
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
         }
-       
+
         try {
             const response = await ApiRequest.modeloGetAll();
 
@@ -191,7 +191,7 @@ function Estoque() {
                                 funcao={AbrirModalCadastreProd}
                             >Novo Produto</ButtonModal>
                             <ButtonModal
-                                funcao={AbrirModalCadastreProdPreConfig}
+                                funcao={() => AbrirModalCadastreProdPreConfig(updateTable)}
                             >ADD Produto</ButtonModal>
                         </div>
                     </div>
