@@ -334,7 +334,8 @@ export class ApiRequest {
                 "nome": produtoObj.nome,
                 "valorCusto": produtoObj.precoC,
                 "valorRevenda": produtoObj.precoR,
-                "itemPromocional": produtoObj.isPromocional
+                "itemPromocional": produtoObj.isPromocional,
+                "idLoja": produtoObj.idLoja
             }
 
             const resposta = await axios.post(springEndPoint + "/produtos", produto, {
@@ -503,6 +504,22 @@ export class ApiRequest {
             };
         }
 
+    }
+
+    static async excluirETP(id) {
+        try {
+            const resposta = await axios.delete(springEndPoint + "/etps/" + id, {
+                headers: header,
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
+        }
     }
 
 
