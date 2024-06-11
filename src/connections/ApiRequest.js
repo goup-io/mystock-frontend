@@ -495,7 +495,7 @@ export class ApiRequest {
             };
         }
     }
- 
+
     static async etpsGetAllByLoja(idLoja) {
 
         try {
@@ -574,6 +574,23 @@ export class ApiRequest {
         }
     }
 
+    static async adicionarNoEstoque(soma, idLoja, listaEtpsQuantidade) {
+        const etpsEQuantidade = listaEtpsQuantidade;
+
+        try {
+            const resposta = await axios.patch(springEndPoint + "/etps/adicionar-estoque/" + idLoja, etpsEQuantidade, {
+                params: { "soma": soma },
+                headers: header,
+            });
+            return resposta;
+
+        } catch (erro) {
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
+        }
+    }
 
 
     // ***************************************************************************
@@ -835,8 +852,8 @@ export class ApiRequest {
             const modelo = {
                 "nome": modeloObj.nome,
                 "codigo": modeloObj.codigo,
-                "idCategoria":modeloObj.idCategoria,
-                "idTipo":modeloObj.idTipo
+                "idCategoria": modeloObj.idCategoria,
+                "idTipo": modeloObj.idTipo
 
             }
 
@@ -1599,19 +1616,19 @@ export class ApiRequest {
             const resposta = await axios.get(springEndPoint + `/transferencias/filtro?id_loja=${idLoja}`, {
                 headers: header
             });
-    
+
             return resposta;
         } catch (erro) {
             return erro
         }
     }
 
-    
+
     // ***************************************************************************
     // *  TIPO-VENDA
     // ***************************************************************************
 
-    static async tipoVendaGetAll(){
+    static async tipoVendaGetAll() {
         try {
 
             const resposta = await axios.get(springEndPoint + "/tiposVenda", {
@@ -1626,7 +1643,7 @@ export class ApiRequest {
     }
 
 
-    static async tipoVendaGetById(idTipoVenda){
+    static async tipoVendaGetById(idTipoVenda) {
         try {
 
             const resposta = await axios.get(springEndPoint + `/tiposVenda/${idTipoVenda}`, {
@@ -1640,13 +1657,13 @@ export class ApiRequest {
         }
     }
 
-    
-    static async tipoVendaCreate(tipo, desconto, idTipoVenda){
+
+    static async tipoVendaCreate(tipo, desconto, idTipoVenda) {
         try {
 
             const tipoVenda = {
-                "tipo" : tipo,
-                "desconto" : desconto
+                "tipo": tipo,
+                "desconto": desconto
             }
 
             const resposta = await axios.put(springEndPoint + `/tiposVenda/${idTipoVenda}`, tipoVenda, {
@@ -1660,11 +1677,11 @@ export class ApiRequest {
         }
     }
 
-    static async tipoVendaUpdate(desconto, idTipoVenda){
+    static async tipoVendaUpdate(desconto, idTipoVenda) {
         try {
 
             const descontoConst = {
-                "desconto" : desconto
+                "desconto": desconto
             }
 
             const resposta = await axios.patch(springEndPoint + `/tiposVenda/${idTipoVenda}`, descontoConst, {
