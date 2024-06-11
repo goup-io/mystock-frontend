@@ -3,6 +3,11 @@ import Header from '../../header/Header.js'
 
 import Button from '../../buttons/buttonsModal.js'
 import ItemSeparadoPorLinhaTracejada from '../../tables/ItemSeparadoPorLinhaTracejada.js'
+import ApiRequest from "../../../connections/ApiRequest.js"
+import AbrirModalPaymentPix from '../../modals/modals-pagamento/modalPaymentPix.js'
+const { useState, useEffect } = require("react");
+
+
 
 var divPai = {
     display: "grid",
@@ -44,11 +49,63 @@ function CaixaTexto(props) {
     )
 }
 
-function Pagamento() {
+
+
+
+function Pagamento({ idVenda }) {
+
+    const [tipoPagamento, setTipoPagamento] = useState([]);
+    const [venda, setVenda] = useState();
+    const [dinheiro, setDinheiro] = useState(-1);
+    const [pix, setPix] = useState(-1);
+
+    async function fetchVenda() {
+
+        try {
+            const response = await ApiRequest.detalhamentosVendas(1);
+
+            if (response.status === 200) {
+                const dados = response.data;
+                console.log(dados);
+                setVenda(dados);
+                
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+    }
+
+    async function fetchTipoPagamento() {
+
+        try {
+            const response = await ApiRequest.getTipoPagamento();
+
+            if (response.status === 200) {
+                const dados = response.data;
+
+
+                const idPix = dados.filter((tipoVenda) => tipoVenda.metodo.toUpperCase() === "PIX")
+                const idDinheiro = dados.filter((tipoVenda) => tipoVenda.metodo.toUpperCase() === "DINHEIRO")
+
+
+                setPix(idPix[0].id);
+                setDinheiro(idDinheiro[0].id);
+                setTipoPagamento(dados);
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+    }
+
+    useEffect(() => {
+        fetchVenda();
+
+        fetchTipoPagamento();
+    },[]);
 
     return (
         <PageLayout>
-            <Header telaAtual="Área de Venda - Pagamento" tipo="caixa"/>
+            <Header telaAtual="Área de Venda - Pagamento" tipo="caixa" />
             <div className="bg-[#fff] w-full h-[75vh] shadow-sm rounded-md px-12 py-6">
                 <CaixaTexto titulo="PAGAR COM :">
                     <div style={divPai} className="h-full ">
@@ -103,7 +160,7 @@ function Pagamento() {
                                 </div>
                             </div>
                             <div>
-                                <hr className='border-2 border-[#8E9BAB] my-2'/>
+                                <hr className='border-2 border-[#8E9BAB] my-2' />
                                 <div className="flex flex-row justify-between">
                                     <p className="text-left font-semibold text-[1.6rem]">Restante à Pagar: </p>
                                     <p className="text-left font-semibold text-[1.5rem]">R$ --{ }</p>
@@ -118,7 +175,7 @@ function Pagamento() {
                             <p>CARTÃO</p>
                             <p>F2</p>
                         </div>
-                        <div style={div4} className="flex flex-col text-2xl justify-center font-semibold cursor-pointer bg-[#E7E7E7] rounded-md duration-150 ease-in-out hover:scale-[1.02] hover:bg-[#E1E1E1]">
+                        <div style={div4} onClick={() => AbrirModalPaymentPix(1,pix,1,0.0,venda.valorTotal,venda.valorTotal - 0.0)} className="flex flex-col text-2xl justify-center font-semibold cursor-pointer bg-[#E7E7E7] rounded-md duration-150 ease-in-out hover:scale-[1.02] hover:bg-[#E1E1E1]">
                             <p>PIX</p>
                             <p>F3</p>
                         </div>

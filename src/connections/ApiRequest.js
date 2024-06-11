@@ -1116,6 +1116,35 @@ export class ApiRequest {
     // ***************************************************************************
     // *  TIPO-PAGAMENTO
     // ***************************************************************************
+    static async getTipoPagamento() {
+            
+            try {
+                const resposta = await axios.get(springEndPoint + "/tiposPagamento", {
+                    headers: header
+                });
+    
+                return resposta;
+            } catch (erro) {
+                return erro
+            }
+    }
+
+    static async getTipoPagamentoById(idPagamento) {
+        try {
+            const resposta = await axios.get(springEndPoint + `/tiposPagamento/${idPagamento}`, {
+                headers: header
+            });
+
+            return resposta;
+        } catch (erro) {
+            return erro
+        }
+    }
+
+ 
+    // ***************************************************************************
+    // *  HISTORICO-PAGAMENTO
+    // ***************************************************************************
 
     static async historicoProdutoGetAll() {
 
@@ -1204,6 +1233,8 @@ export class ApiRequest {
 
         return resposta;
     }
+
+
 
 
     // ***************************************************************************
@@ -1368,6 +1399,7 @@ export class ApiRequest {
             return erro
         }
     }
+ 
 
     // ***************************************************************************
     // *  VENDA
@@ -1442,6 +1474,23 @@ export class ApiRequest {
             return erro
         }
     }
+
+
+    static async detalhamentosVendas(idVenda) {
+            
+            try {
+    
+                const resposta = await axios.get(springEndPoint + `/vendas/detalhamento/${idVenda}`, {
+                    headers: header
+                });
+    
+                return resposta;
+    
+            } catch (erro) {
+                return erro
+            }
+    }
+
 
     static async pagamentoFinalizar(idVenda) {
 
@@ -1659,6 +1708,15 @@ export class ApiRequest {
         } catch (erro) {
             return erro
         }
+    }
+
+
+    // ***************************************************************************
+    // *  PIX
+    // ***************************************************************************
+
+    static async pixGetbyloja(){
+
     }
 
 }
