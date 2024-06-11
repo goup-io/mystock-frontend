@@ -1678,6 +1678,43 @@ export class ApiRequest {
         }
     }
 
+
+    
+    // ***************************************************************************
+    // *  DASHBOARDS KPIS
+    // ***************************************************************************
+
+    static async kpisGetAll(){
+        try {
+
+            const resposta = await axios.get(springEndPoint + "/dashboards/dashboard-geral/kpis", {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+
+    static async faturamentoPorLoja(){
+        try {
+
+            const resposta = await axios.get(springEndPoint + "/dashboards/dashboard-geral/faturamento-por-loja", {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+
+
 }
 
 export default ApiRequest;
