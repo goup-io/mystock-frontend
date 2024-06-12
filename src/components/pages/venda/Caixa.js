@@ -1,44 +1,46 @@
-import PageLayout from '../PageLayout.js'
-import Header from '../../header/Header.js'
-import Tabela from '../../tables/TableRoundedBorderSpacing.js'
-import Button from '../../buttons/buttonsModal.js'
+import PageLayout from '../PageLayout.js';
+import Header from '../../header/Header.js';
+import Button from '../../buttons/buttonsModal.js';
+import ApiRequest from "../../../connections/ApiRequest";
+import React, { useState, useEffect } from 'react';
 
 const styleTitulo = {
     display: 'flex',
     justifyContent: 'space-between'
-}
+};
 
 function CaixaTexto(props) {
     return (
         <div style={styleTitulo}>
-            <p className="text-left font-semibold text-xl mb-2">{props.titulo != undefined ? props.titulo : "SEM TITULO"}</p>
+            <p className="text-left font-semibold text-xl mb-2">{props.titulo !== undefined ? props.titulo : "SEM TITULO"}</p>
             <span>Quantidade:  {props.quantidadeItens}</span>
         </div>
-    )
+    );
 }
 
 function ItemCarrinho(props) {
+    const { horario, vendedor, quantidadeItens, tipoVenda, valor, par } = props;
 
-    var style = {
-        backgroundColor: props.par === undefined ? "#E7E7E7" : "#D0D4F0",
-    }
-    
+    const style = {
+        backgroundColor: par ? "#E7E7E7" : "#D0D4F0",
+    };
+
     return (
-        <tr className="bg-[#E7E7E7] h-20 rounded-md shadow p-5 pl-5 text-left">
+        <tr style={style} className="h-20 rounded-md shadow p-5 pl-5 text-left">
             <td className='pl-5'>
-                <p className="font-medium text-[1.1rem]"> {props.horario}</p>
+                <p className="font-medium text-[1.1rem]"> {horario}</p>
             </td>
             <td className="text-start pl-8">
-                <p className="font-medium text-[1.1rem]">{props.vendedor}</p>
+                <p className="font-medium text-[1.1rem]">{vendedor}</p>
             </td>
             <td>
-                <p className="font-medium text-[1.1rem]">{props.quantidadeItens}</p>
+                <p className="font-medium text-[1.1rem]">{quantidadeItens}</p>
             </td>
             <td>
-                <p className="font-medium text-[1.1rem]">{props.tipoVenda}</p>
+                <p className="font-medium text-[1.1rem]">{tipoVenda}</p>
             </td>
             <td className="text-start">
-                <p className="font-medium text-[1.1rem]">{"R$ " + props.valor}</p>
+                <p className="font-medium text-[1.1rem]">{"R$ " + valor}</p>
             </td>
             <td>
                 <div className="flex flex-row items-center gap-4 justify-center">
@@ -47,18 +49,36 @@ function ItemCarrinho(props) {
                 </div>
             </td>
         </tr>
-    )
+    );
 }
 
 function Caixa() {
+    const [dadosDoBancoVenda, setDadosDoBancoVenda] = useState([]);
+    const idLoja = localStorage.getItem("loja_id");
+
+    async function fetchData() {
+        try {
+            const response = await ApiRequest.vendaGetAllByLoja(idLoja);
+            if (response.status === 200) {
+                const dados = response.data;
+                setDadosDoBancoVenda(dados);
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     return (
         <PageLayout>
-            <Header telaAtual="Área de Venda - Caixa" tipo="caixa"/>
+            <Header telaAtual="Área de Venda - Caixa" tipo="caixa" />
             <div className="bg-[#fff] w-full h-[75vh] shadow-sm rounded-md px-12 py-5">
-                <CaixaTexto titulo="PRÉ-VENDA" quantidadeItens="3" />
+                <CaixaTexto titulo="PRÉ-VENDA" quantidadeItens={dadosDoBancoVenda.length} />
                 <div className="bg-[#F5F3F4] w-full h-[90%] px-5 rounded-md overflow-auto">
-                    <table className='w-full rounded-lg border-solid border-separate border-spacing-y-4' >
+                    <table className='w-full rounded-lg border-solid border-separate border-spacing-y-4'>
                         <thead>
                             <tr className="text-base text-left">
                                 <th className='pl-5'>Horário</th>
@@ -70,33 +90,23 @@ function Caixa() {
                             </tr>
                         </thead>
                         <tbody>
-                            <ItemCarrinho
-                                horario={"12:12:12"}
-                                vendedor={"0221 - Jhonson"}
-                                quantidadeItens={32}
-                                tipoVenda={"Varejo"}
-                                valor={1223.32}
-                            />
-                            <ItemCarrinho
-                                horario={"12:12:12"}
-                                vendedor={"0221 - Alexandre"}
-                                quantidadeItens={32}
-                                tipoVenda={"Varejo"}
-                                valor={13.32}
-                            />
-                            <ItemCarrinho
-                                horario={"12:12:12"}
-                                vendedor={"0221 - Cleyton"}
-                                quantidadeItens={32}
-                                tipoVenda={"Varejo"}
-                                valor={1223.32}
-                            />
+                            {dadosDoBancoVenda.map((venda, index) => (
+                                <ItemCarrinho
+                                    key={venda.id}
+                                    horario={venda.hora}
+                                    vendedor={`${venda.codigoVendedor} - ${venda.nomeVendedor}`}
+                                    quantidadeItens={venda.qtdItens}
+                                    tipoVenda={venda.tipoVenda.tipo}
+                                    valor={venda.valor.toFixed(2)}
+                                    par={index % 2 === 0}
+                                />
+                            ))}
                         </tbody>
                     </table>
                 </div>
             </div>
         </PageLayout>
-    )
+    );
 }
 
 export default Caixa;
