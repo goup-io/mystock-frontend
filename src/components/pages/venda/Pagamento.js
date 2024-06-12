@@ -5,7 +5,7 @@ import Button from '../../buttons/buttonsModal.js'
 import ItemSeparadoPorLinhaTracejada from '../../tables/ItemSeparadoPorLinhaTracejada.js'
 import ApiRequest from "../../../connections/ApiRequest.js"
 import AbrirModalPaymentPix from '../../modals/modals-pagamento/modalPaymentPix.js'
-const { useState, useEffect } = require("react");
+import React, { useState, useEffect } from 'react';
 
 
 
@@ -58,17 +58,20 @@ function Pagamento({ idVenda }) {
     const [venda, setVenda] = useState();
     const [dinheiro, setDinheiro] = useState(-1);
     const [pix, setPix] = useState(-1);
+    const [valorTotal, setValorTotal] = useState(0);
+    const [valorPago, setValorPago] = useState(0);
+    const [valorRestante, setValorRestante] = useState(0);
+
 
     async function fetchVenda() {
 
         try {
             const response = await ApiRequest.detalhamentosVendas(1);
 
+
             if (response.status === 200) {
                 const dados = response.data;
-                console.log(dados);
                 setVenda(dados);
-                
             }
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
@@ -87,10 +90,10 @@ function Pagamento({ idVenda }) {
                 const idPix = dados.filter((tipoVenda) => tipoVenda.metodo.toUpperCase() === "PIX")
                 const idDinheiro = dados.filter((tipoVenda) => tipoVenda.metodo.toUpperCase() === "DINHEIRO")
 
-
                 setPix(idPix[0].id);
                 setDinheiro(idDinheiro[0].id);
                 setTipoPagamento(dados);
+
             }
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
@@ -99,9 +102,14 @@ function Pagamento({ idVenda }) {
 
     useEffect(() => {
         fetchVenda();
-
         fetchTipoPagamento();
-    },[]);
+    }, []);
+
+    useEffect(() => {
+        setValorTotal(venda ? venda.valorTotal : 0);
+        setValorRestante(venda ? venda.valorTotal - 0  : 0); //ESSE MENOS AI SERIA O VALOR PAGO !!!!!!!
+    }, [venda]);
+    
 
     return (
         <PageLayout>
@@ -118,27 +126,27 @@ function Pagamento({ idVenda }) {
                                 <div className="flex flex-col gap-2">
                                     <ItemSeparadoPorLinhaTracejada
                                         infoEsquerda={"Horario"}
-                                        infoDireita={"12:12:12"}
+                                        infoDireita={venda ? venda.hora : "00:00:00"}
                                     />
                                     <ItemSeparadoPorLinhaTracejada
                                         infoEsquerda={"Vendedor"}
-                                        infoDireita={"Fabio O."}
+                                        infoDireita={venda ? venda.nomeVendedor : "Vendedor"}
                                     />
                                     <ItemSeparadoPorLinhaTracejada
                                         infoEsquerda={"Tp. de Venda"}
-                                        infoDireita={"Varejo"}
+                                        infoDireita={venda ? venda.tipoVenda : "Venda"}
                                     />
                                     <ItemSeparadoPorLinhaTracejada
                                         infoEsquerda={"Quant. Itens"}
-                                        infoDireita={"4"}
+                                        infoDireita={venda ? venda.qtdItens : "0"}
                                     />
                                     <ItemSeparadoPorLinhaTracejada
                                         infoEsquerda={"Valor Total"}
-                                        infoDireita={"R$ 400,00"}
+                                        infoDireita={venda ? "R$ " + venda.valorTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "R$ 0,00"}
                                     />
                                     <ItemSeparadoPorLinhaTracejada
                                         infoEsquerda={"Valor Pago"}
-                                        infoDireita={"R$ 395,00"}
+                                        infoDireita={"R$ 195,00"}
                                     />
                                 </div>
                                 <div className='text-left'>
@@ -150,7 +158,7 @@ function Pagamento({ idVenda }) {
                                         />
                                         <ItemSeparadoPorLinhaTracejada
                                             infoEsquerda={"2. Crédito"}
-                                            infoDireita={"R$ 350,00  4x"}
+                                            infoDireita={"R$ 150,00  4x"}
                                         />
                                         <ItemSeparadoPorLinhaTracejada
                                             infoEsquerda={"3. Débito"}
@@ -175,7 +183,7 @@ function Pagamento({ idVenda }) {
                             <p>CARTÃO</p>
                             <p>F2</p>
                         </div>
-                        <div style={div4} onClick={() => AbrirModalPaymentPix(1,pix,1,0.0,venda.valorTotal,venda.valorTotal - 0.0)} className="flex flex-col text-2xl justify-center font-semibold cursor-pointer bg-[#E7E7E7] rounded-md duration-150 ease-in-out hover:scale-[1.02] hover:bg-[#E1E1E1]">
+                        <div style={div4} onClick={() => AbrirModalPaymentPix(1, pix, 1, 10.0, venda ? venda.valorTotal : 0, valorRestante)} className="flex flex-col text-2xl justify-center font-semibold cursor-pointer bg-[#E7E7E7] rounded-md duration-150 ease-in-out hover:scale-[1.02] hover:bg-[#E1E1E1]">
                             <p>PIX</p>
                             <p>F3</p>
                         </div>

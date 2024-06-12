@@ -5,8 +5,9 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import ItemSeparadoPorLinhaTracejada from '../../tables/ItemSeparadoPorLinhaTracejada';
 import React, { useEffect, useState } from 'react';
-import ApiRequest from '../../../api';
+import ApiRequest from "../../../connections/ApiRequest.js"
 import { Await } from "react-router-dom";
+import AbrirModalPaymentWait from "./modalPaymentWait";
 
 
 
@@ -14,8 +15,9 @@ function ModalPaymentPix({ idVenda, idTipoPagamento, qtdParcelas,valorPagoAteAgo
 
     const [valorRealTotal, setValorTotal] = useState(valorTotal ? valorTotal : 0);
     const [valorPago, setValorPagoAteAgora] = useState(valorPagoAteAgora ? valorPagoAteAgora : 0);
-    const [valorAPagar, setValorPagar] = useState(valorRestante ? valorRestante : 0);
+    const [valorAPagar, setValorPagar] = useState(0);
     const [valorQueResta, setValorRestante] = useState(valorTotal - valorPagoAteAgora ? valorTotal - valorPagoAteAgora : 0);
+    const [base64String, setBase64String] = useState("");
 
     const handleInputChange = (e) => {
         setValorPagar(Number(e.target.value));
@@ -24,20 +26,31 @@ function ModalPaymentPix({ idVenda, idTipoPagamento, qtdParcelas,valorPagoAteAgo
     const handleFinalizar = () => {
         const novoValorRestante = valorRestante - valorAPagar;
         setValorRestante(novoValorRestante);
+        realizarPagamento();
         //onFinalizar(novoValorRestante); // Chama a função de callback passando o novo valor restante
     };
 
 
-    function ImageComponent({ base64String }) {
-        const [resposta, setResposta] = useState(null);
-
+    function ImageComponent() {
         return (
-            <img src={`data:image/jpeg;base64,${resposta}`} alt="Converted from base64" />
+            <img src={`data:image/jpeg;base64,${base64String}`} alt="Converted from base64" />
         );
     }
 
 
-    
+     async function realizarPagamento() {
+        try {
+            const response = await ApiRequest.pagamentoCreate(idTipoPagamento, idVenda, valorAPagar, 1);
+            if (response.status === 201) {
+                const dados = response.data;
+                AbrirModalPaymentWait(dados.Base64QRCode); 
+
+            }
+        } catch (error) {
+            console.log("Erro ao gerar pagamento", error);
+        }
+     }
+
 
 
 
@@ -75,13 +88,13 @@ function ModalPaymentPix({ idVenda, idTipoPagamento, qtdParcelas,valorPagoAteAgo
                 </div>
             </div>
             <div className="w-[40rem] flex justify-end h-6">
-                <ButtonModalFull onClick={handleFinalizar}>Finalizar</ButtonModalFull>
+                <ButtonModalFull funcao={handleFinalizar}>Finalizar</ButtonModalFull>
             </div>
         </div>
     );
 }
 
-function AbrirModalPaymentPix({ idVenda,idTipoPagamento, qtdParcelas,valorPagoAteAgora,valorTotal,valorRestante }) {
+function AbrirModalPaymentPix( idVenda, idTipoPagamento, qtdParcelas,valorPagoAteAgora,valorTotal,valorRestante ) {
     const MySwal = withReactContent(Swal);
     MySwal.fire({
         html: <ModalPaymentPix
