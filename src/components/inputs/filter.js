@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ButtonClearFilter from "../buttons/buttonClearFilter";
 import ButtonModal from "../buttons/buttonsModal";
 import InputFilterDate from "../inputs/inputFilterDate";
 import ComboBoxFilter from "../inputs/comboBoxFilter";
+
+import ApiRequest from '../../connections/ApiRequest';
 
 function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVenda, horario, tipoAlerta, produto }) {
     const [selectedValue, setSelectedValue] = useState('todos');
@@ -10,6 +12,143 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
     const handleChange = (event) => {
         setSelectedValue(event.target.value);
     };
+
+    const [cores, setCores] = useState([]);
+    const [modelos, setModelos] = useState([]);
+    const [tamanhos, setTamanhos] = useState([]);
+    const [tiposVenda, setTiposVenda] = useState([]);
+    const [vendedores, setVendedores] = useState([]);
+    const [produtos, setProdutos] = useState([]);
+
+    const [statusTransferencia, setStatusTransferencia] = useState([
+        {id: 'ACEITO', nome: 'Aceito'},
+        {id: 'NEGADO', nome: 'Negado'},
+        {id: 'PENDENTE', nome: 'Pendente'}
+    ]);
+
+    async function fetchData() {
+        if (cor) {
+            try {
+                const response = await ApiRequest.corGetAll();
+
+                if (response.status === 200) {
+                    const dados = response.data;
+                    setCores(dados);
+                }
+            } catch (error) {
+                console.log("Erro ao buscar os dados", error);
+            }
+        }
+
+        if (modelo) {
+            try {
+                const response = await ApiRequest.modeloGetAll();
+
+                if (response.status === 200) {
+                    const dados = response.data;
+
+                    const filtrarDados = dados
+                        .map(obj => (
+                            {
+                                id: obj.id, nome: obj.nome
+                            }
+                        ));
+
+                    setModelos(filtrarDados);
+                }
+            } catch (error) {
+                console.log("Erro ao buscar os dados", error);
+            }
+        }
+
+        if (tamanho) {
+            try {
+                const response = await ApiRequest.tamanhoGetAll();
+
+                if (response.status === 200) {
+                    const dados = response.data;
+
+                    const filtrarDados = dados
+                        .map(obj => (
+                            {
+                                id: obj.id, nome: obj.numero
+                            }
+                        ));
+
+                    setTamanhos(filtrarDados);
+                }
+            } catch (error) {
+                console.log("Erro ao buscar os dados", error);
+            }
+        }
+
+        if (tipoVenda) {
+            try {
+                const response = await ApiRequest.tipoVendaGetAll();
+
+                if (response.status === 200) {
+                    const dados = response.data;
+
+                    const filtrarDados = dados
+                        .map(obj => (
+                            {
+                                id: obj.id, nome: obj.tipo
+                            }
+                        ));
+
+                    setTiposVenda(filtrarDados);
+                }
+            } catch (error) {
+                console.log("Erro ao buscar os dados", error);
+            }
+        }
+
+        if (vendedor) {
+            try {
+                const response = await ApiRequest.userGetAll();
+
+                if (response.status === 200) {
+                    const dados = response.data;
+
+                    const filtrarDados = dados
+                        .map(obj => (
+                            {
+                                id: obj.id, nome: obj.nome
+                            }
+                        ));
+
+                    setVendedores(filtrarDados);
+                }
+            } catch (error) {
+                console.log("Erro ao buscar os dados", error);
+            }
+        }
+
+        if (produtos) {
+            try {
+                const response = await ApiRequest.produtoGetAll();
+
+                if (response.status === 200) {
+                    const dados = response.data;
+
+                    const filtrarDados = dados
+                        .map(obj => (
+                            {
+                                id: obj.id, nome: obj.nome
+                            }
+                        ));
+
+                    setProdutos(filtrarDados);
+                }
+            } catch (error) {
+                console.log("Erro ao buscar os dados", error);
+            }
+        }
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     return (
         <div className="w-full flex flex-wrap justify-between items-center text-center">
@@ -22,6 +161,7 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
                             placeholder="DD/MM/AAAA"
                             inicio="Data de"
                             fim="á"
+                            name="select_data"
                         />
                     </div>
                 )}
@@ -32,16 +172,17 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
                             placeholder="HH:MM"
                             inicio="Hora de"
                             fim="á"
+                            name="select_hora"
                         />
                     </div>
                 )}
-                {vendedor && <ComboBoxFilter>Vendedor</ComboBoxFilter>}
-                {tipoVenda && <ComboBoxFilter>Tipo</ComboBoxFilter>}
-                {cor && <ComboBoxFilter>Cor</ComboBoxFilter>}
-                {modelo && <ComboBoxFilter>Modelo</ComboBoxFilter>}
-                {produto && <ComboBoxFilter>Produto</ComboBoxFilter>}
-                {tamanho && <ComboBoxFilter>Tamanho</ComboBoxFilter>}
-                {status && <ComboBoxFilter>Status</ComboBoxFilter>}
+                {vendedor && <ComboBoxFilter name="select_vendedor" opcoes={vendedores}>Vendedor</ComboBoxFilter>}
+                {tipoVenda && <ComboBoxFilter name="select_tipo" opcoes={tiposVenda}>Tipo</ComboBoxFilter>}
+                {cor && <ComboBoxFilter name="select_cor" opcoes={cores}>Cor</ComboBoxFilter>}
+                {modelo && <ComboBoxFilter name="select_modelo" opcoes={modelos}>Modelo</ComboBoxFilter>}
+                {produto && <ComboBoxFilter name="select_produto" opcoes={produtos}>Produto</ComboBoxFilter>}
+                {tamanho && <ComboBoxFilter name="select_tamanho" opcoes={tamanhos}>Tamanho</ComboBoxFilter>}
+                {status && <ComboBoxFilter name="select_status" opcoes={statusTransferencia}>Status</ComboBoxFilter>}
                 {preço && (
                     <div>
                         <InputFilterDate
@@ -49,6 +190,7 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
                             placeholder="R$00,00"
                             inicio="Preço de"
                             fim="á"
+                            name="select_preco"
                         />
                     </div>
                 )}
