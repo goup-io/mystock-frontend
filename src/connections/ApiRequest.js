@@ -370,7 +370,8 @@ export class ApiRequest {
                 "nome": produtoObj.nome,
                 "valorCusto": produtoObj.precoC,
                 "valorRevenda": produtoObj.precoR,
-                "itemPromocional": produtoObj.isPromocional
+                "itemPromocional": produtoObj.isPromocional,
+                "idLoja": produtoObj.idLoja
             }
 
             const resposta = await axios.post(springEndPoint + "/produtos", produto, {
@@ -494,7 +495,7 @@ export class ApiRequest {
             };
         }
     }
- 
+
     static async etpsGetAllByLoja(idLoja) {
 
         try {
@@ -557,6 +558,39 @@ export class ApiRequest {
 
     }
 
+    static async excluirETP(id) {
+        try {
+            const resposta = await axios.delete(springEndPoint + "/etps/" + id, {
+                headers: header,
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
+        }
+    }
+
+    static async adicionarNoEstoque(soma, idLoja, listaEtpsQuantidade) {
+        const etpsEQuantidade = listaEtpsQuantidade;
+
+        try {
+            const resposta = await axios.patch(springEndPoint + "/etps/adicionar-estoque/" + idLoja, etpsEQuantidade, {
+                params: { "soma": soma },
+                headers: header,
+            });
+            return resposta;
+
+        } catch (erro) {
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
+        }
+    }
 
 
     // ***************************************************************************
@@ -818,8 +852,8 @@ export class ApiRequest {
             const modelo = {
                 "nome": modeloObj.nome,
                 "codigo": modeloObj.codigo,
-                "idCategoria":modeloObj.idCategoria,
-                "idTipo":modeloObj.idTipo
+                "idCategoria": modeloObj.idCategoria,
+                "idTipo": modeloObj.idTipo
 
             }
 
@@ -1582,19 +1616,19 @@ export class ApiRequest {
             const resposta = await axios.get(springEndPoint + `/transferencias/filtro?id_loja=${idLoja}`, {
                 headers: header
             });
-    
+
             return resposta;
         } catch (erro) {
             return erro
         }
     }
 
-    
+
     // ***************************************************************************
     // *  TIPO-VENDA
     // ***************************************************************************
 
-    static async tipoVendaGetAll(){
+    static async tipoVendaGetAll() {
         try {
 
             const resposta = await axios.get(springEndPoint + "/tiposVenda", {
@@ -1609,7 +1643,7 @@ export class ApiRequest {
     }
 
 
-    static async tipoVendaGetById(idTipoVenda){
+    static async tipoVendaGetById(idTipoVenda) {
         try {
 
             const resposta = await axios.get(springEndPoint + `/tiposVenda/${idTipoVenda}`, {
@@ -1623,13 +1657,13 @@ export class ApiRequest {
         }
     }
 
-    
-    static async tipoVendaCreate(tipo, desconto, idTipoVenda){
+
+    static async tipoVendaCreate(tipo, desconto, idTipoVenda) {
         try {
 
             const tipoVenda = {
-                "tipo" : tipo,
-                "desconto" : desconto
+                "tipo": tipo,
+                "desconto": desconto
             }
 
             const resposta = await axios.put(springEndPoint + `/tiposVenda/${idTipoVenda}`, tipoVenda, {
@@ -1643,11 +1677,11 @@ export class ApiRequest {
         }
     }
 
-    static async tipoVendaUpdate(desconto, idTipoVenda){
+    static async tipoVendaUpdate(desconto, idTipoVenda) {
         try {
 
             const descontoConst = {
-                "desconto" : desconto
+                "desconto": desconto
             }
 
             const resposta = await axios.patch(springEndPoint + `/tiposVenda/${idTipoVenda}`, descontoConst, {
@@ -1660,6 +1694,43 @@ export class ApiRequest {
             return erro
         }
     }
+
+
+    
+    // ***************************************************************************
+    // *  DASHBOARDS KPIS
+    // ***************************************************************************
+
+    static async kpisGetAll(){
+        try {
+
+            const resposta = await axios.get(springEndPoint + "/dashboards/dashboard-geral/kpis", {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+
+    static async faturamentoPorLoja(){
+        try {
+
+            const resposta = await axios.get(springEndPoint + "/dashboards/dashboard-geral/faturamento-por-loja", {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+
 
 }
 

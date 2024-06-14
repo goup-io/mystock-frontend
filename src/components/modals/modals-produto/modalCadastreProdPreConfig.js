@@ -11,9 +11,9 @@ import Alert from '../../alerts/Alert.js';
 import ErrorImage from '../../../assets/icons/error.svg';
 import SucessImage from '../../../assets/icons/sucess.svg';
 
-function ModalCadastreProdPreConfig() {
+function ModalCadastreProdPreConfig({ onUpdate }) {
   const [colunasETP, setColunasETP] = useState([]);
-  const [dadosDoBancoETP, setDadosDoBancoETP] = useState([]);
+  const [idEtps, setIdEtps] = useState([]);
   const [dadosFiltradosETP, setDadosFiltradosETP] = useState([]);
   const [totalItens, setTotalItens] = useState(0);
   const [quantidades, setQuantidades] = useState({});
@@ -32,7 +32,6 @@ function ModalCadastreProdPreConfig() {
 
       if (response.status === 200) {
         const dados = response.data;
-        setDadosDoBancoETP(dados);
 
         const filtrarDadosETP = dados.map(obj => ({
           codigo: obj.codigo,
@@ -42,8 +41,14 @@ function ModalCadastreProdPreConfig() {
           cor: obj.cor,
           preco: obj.preco,
           loja: obj.loja,
-          quantidade: 0
+          quantidade: obj.quantidade
         }));
+
+        const ids = dados.map(obj => ({
+          id: obj.id
+        }))
+
+        setIdEtps(ids);
 
         setDadosFiltradosETP(filtrarDadosETP);
       }
@@ -59,36 +64,38 @@ function ModalCadastreProdPreConfig() {
   }, []);
 
   const handleCadastrar = async () => {
-    const produtosParaCadastrar = dadosFiltradosETP.filter(produto => quantidades[produto.codigo] > 0);
+    console.log(quantidades);
+    const produtosParaCadastrar = idEtps.filter(idEtp => quantidades[idEtp.id] > 0);
 
     if (produtosParaCadastrar.length === 0) {
       Alert.alert(ErrorImage, "Adicione a quantidade de pelo menos um produto!");
       return;
     }
 
-    for (const produto of produtosParaCadastrar) {
-      for (let i = 0; i < quantidades[produto.codigo]; i++) {
-        const objetoAdicionado = {
-          nome: produto.nome,
-          precoC: parseFloat(produto.preco), // Assumindo que precoC é o preço do produto
-          precoR: parseFloat(produto.preco), // Assumindo que precoR é o preço do produto
-          idModelo: produto.modelo,
-          idCor: produto.cor,
-          idTamanho: produto.tamanho,
-        };
+    var etpsEQuantidade = [];
 
-        try {
-          const response = await ApiRequest.produtoCreate(objetoAdicionado);
-          if (response.status === 201) {
-            Alert.alert(SucessImage, "Produto cadastrado no sistema!");
-          } else if (response.status === 409) {
-            Alert.alert(ErrorImage, "Produto já está cadastrado no sistema!");
-          }
-        } catch (error) {
-          console.log("Erro ao cadastrar um produto: ", error);
-          // todo: mostrar modal de erro ao cadastrar
-        }
+    for (const [key, value] of Object.entries(quantidades)) {
+      console.log(`${key}: ${value}`);
+
+      etpsEQuantidade.push({
+        "idEtp": key,
+        "quantidade": value
+      })
+    }
+
+    const idLoja = localStorage.getItem("loja_id")
+
+    try {
+      const response = await ApiRequest.adicionarNoEstoque(true, idLoja, etpsEQuantidade);
+      if (response.status === 200) {
+        (() => {
+          onUpdate()
+        })();
+        Alert.alert(SucessImage, "Produtos adicionados no sistema!");
       }
+    } catch (error) {
+      console.log("Erro ao cadastrar um produto: ", error);
+      Alert.alert(ErrorImage, "Erro ao cadastrar um produto!");
     }
   };
 
@@ -106,20 +113,21 @@ function ModalCadastreProdPreConfig() {
           dados={dadosFiltradosETP}
           iptQuantidade
           onQuantityChange={handleQuantityChange}
+          id={idEtps.map(({ ...id }) => id)}
         />
       </div>
       <div className="w-[43rem] flex justify-end items-end mt-1 h-7">
-        <ButtonClear>Limpar</ButtonClear>
-        <ButtonModal onClick={handleCadastrar}>Cadastrar</ButtonModal>
+        <ButtonClear >Limpar</ButtonClear>
+        <ButtonModal funcao={handleCadastrar}>Cadastrar</ButtonModal>
       </div>
     </div>
   );
 }
 
-function AbrirModalCadastreProdPreConfig() {
+function AbrirModalCadastreProdPreConfig(onUpdate) {
   const MySwal = withReactContent(Swal);
   MySwal.fire({
-    html: <ModalCadastreProdPreConfig />,
+    html: <ModalCadastreProdPreConfig onUpdate={onUpdate} />,
     showConfirmButton: false,
     heightAuto: true,
   });

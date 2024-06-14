@@ -48,7 +48,7 @@ function ModalDiscount(props) {
                         type="number"
                         placeholder="00%"
                         value={percentualDesconto}
-                        onChange={handlePercentualChange}
+                        handleInput={handlePercentualChange}
                         disabled={valorDesconto !== ''}
                     >
                         Porcentagem(%):
@@ -57,7 +57,7 @@ function ModalDiscount(props) {
                         type="number"
                         placeholder="R$ 0,00"
                         value={valorDesconto}
-                        onChange={handleValorChange}
+                        handleInput={handleValorChange}
                         disabled={percentualDesconto !== ''}
                     >
                         Valor Calculado(R$):
