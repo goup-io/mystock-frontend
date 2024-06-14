@@ -54,7 +54,7 @@ function Login() {
                 localStorage.setItem("cargo", respostaHTTP.data.cargo)
                 localStorage.setItem("user_id", respostaHTTP.data.idUser);
                 Alert.alertTimer(SucessImage, "Seja bem-vindo!");
-                if (respostaHTTP.data.cargo == 'ADMIN') {
+                if (respostaHTTP.data.cargo === 'ADMIN') {
                     localStorage.setItem("visao_loja", 0)
                     navigate("/dashboard-geral");
                 } else {

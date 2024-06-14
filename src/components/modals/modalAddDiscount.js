@@ -7,7 +7,7 @@ import withReactContent from 'sweetalert2-react-content';
 import ItemSeparadoPorLinhaTracejada from '../tables/ItemSeparadoPorLinhaTracejada';
 import React, { useState } from 'react';
 
-function ModalDiscount() {
+function ModalDiscount(props) {
     const [percentualDesconto, setPercentualDesconto] = useState('');
     const [valorDesconto, setValorDesconto] = useState('');
     const [valorAtual, setValorAtual] = useState(300.00); // Exemplo de valor atual
@@ -79,16 +79,18 @@ function ModalDiscount() {
                     setValorDesconto('');
                     setValorAposDesconto(valorAtual);
                 }}>Limpar</ButtonClear>
-                <ButtonModal>Adicionar</ButtonModal>
+                <ButtonModal
+                funcao={() => props.funcao(valorDesconto)}
+                >Adicionar</ButtonModal>
             </div>
         </div>
     );
 }
 
-function AbrirModalAddDiscount() {
+function AbrirModalAddDiscount(funcao) {
     const MySwal = withReactContent(Swal);
     MySwal.fire({
-        html: <ModalDiscount />,
+        html: <ModalDiscount funcao={funcao}/>,
         width: "auto",
         heightAuto: true,
         showConfirmButton: false,
