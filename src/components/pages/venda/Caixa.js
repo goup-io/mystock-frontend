@@ -3,6 +3,7 @@ import Header from '../../header/Header.js';
 import Button from '../../buttons/buttonsModal.js';
 import ApiRequest from "../../../connections/ApiRequest";
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const styleTitulo = {
     display: 'flex',
@@ -19,10 +20,16 @@ function CaixaTexto(props) {
 }
 
 function ItemCarrinho(props) {
-    const { horario, vendedor, quantidadeItens, tipoVenda, valor, par } = props;
+    
+    const { idVenda, horario, vendedor, quantidadeItens, tipoVenda, valor, par } = props;
+    const navigate = useNavigate();
 
     const style = {
         backgroundColor: par ? "#E7E7E7" : "#D0D4F0",
+    };
+
+    const handleFinalizarVenda = () => {
+        navigate(`/pagamento/${idVenda}`, { state: { idVenda } });
     };
 
     return (
@@ -45,7 +52,7 @@ function ItemCarrinho(props) {
             <td>
                 <div className="flex flex-row items-center gap-4 justify-center">
                     <Button cor={"#919191"}><p className="text-[1rem] p-1 px-5">CANCELAR</p></Button>
-                    <Button><p className="text-[1rem] p-1 px-5">FINALIZAR VENDA</p></Button>
+                    <Button onClick={handleFinalizarVenda}><p className="text-[1rem] p-1 px-5">FINALIZAR VENDA</p></Button>
                 </div>
             </td>
         </tr>
@@ -101,6 +108,7 @@ function Caixa() {
                                     par={index % 2 === 0}
                                 />
                             ))}
+                            
                         </tbody>
                     </table>
                 </div>
