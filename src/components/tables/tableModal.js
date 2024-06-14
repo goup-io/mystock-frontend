@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import ButEdit from '../buttons/buttonEdit';
+import { ContextAdicionar } from '../modals/modals-produto/modalCadastreProdPreConfig';
+
 
 function TabelaModal({ colunas, dados, edit, remove, iptQuantidade, onQuantityChange, id }) {
   const getInitialValues = () => {
@@ -9,17 +11,15 @@ function TabelaModal({ colunas, dados, edit, remove, iptQuantidade, onQuantityCh
     }, {});
   };
 
-  const [inputValues, setInputValues] = useState(getInitialValues ? getInitialValues : ['','']);
+  const [inputValues, setInputValues] = useState(getInitialValues ? getInitialValues : ['', '']);
 
-  useEffect(() => {    
+  useEffect(() => {
     if (onQuantityChange) {
       onQuantityChange(inputValues);
-      console.log(inputValues);
     }
   }, [inputValues, onQuantityChange]);
 
   const handleAdicionar = (idEtp) => {
-    console.log("OLHA AQUI Ó", idEtp)
     setInputValues((prevValues) => {
       const newValues = { ...prevValues };
       newValues[`${idEtp}`] = (newValues[`${idEtp}`] || 0) + 1;
