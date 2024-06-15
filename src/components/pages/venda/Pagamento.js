@@ -7,6 +7,10 @@ import ApiRequest from "../../../connections/ApiRequest.js"
 import AbrirModalPaymentPix from '../../modals/modals-pagamento/modalPaymentPix.js'
 import React, { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom'
+import Swal from 'sweetalert2'
+import { useNavigate } from 'react-router-dom';
+
+
 
 
 
@@ -61,12 +65,14 @@ function Pagamento() {
     const [pix, setPix] = useState(-1);
     const [valorTotal, setValorTotal] = useState(0);
     const [valorPago, setValorPago] = useState(0);
-    const [valorRestante, setValorRestante] = useState(0);
+    //const [valorRestante, setValorRestante] = useState(0);
 
     const { idVenda } = useParams();
     const location = useLocation();
     const { state } = location;
     const vendaId = state ? state.idVenda : null;
+
+    const [fluxoPagamento, setFluxoPagamento] = useState([]);
 
     async function fetchVenda() {
 
@@ -82,6 +88,8 @@ function Pagamento() {
             console.log("Erro ao buscar os dados", error);
         }
     }
+
+
 
     async function fetchTipoPagamento() {
 
@@ -105,16 +113,73 @@ function Pagamento() {
         }
     }
 
+    const navigate = useNavigate();
+
+    async function fetchFluxoPagamento() {
+        try {
+            const response = await ApiRequest.getPagamentoFluxoCaixa(idVenda);
+            if (response.status === 200) {
+                const dados = response.data;
+                var valorPago2 = 0;
+                // var valorRestante = 0;
+                dados.forEach((pagamento) => {
+                    valorPago2 += pagamento.valor;
+                });
+                //valorRestante = venda ? venda.valorTotal - valorPago : 0;
+                setValorPago(valorPago2);
+                //setValorRestante(valorRestante);
+                setFluxoPagamento(dados);
+
+               // if (valorTotal <= valorPago2) {
+                  //  console.log("Venda finalizada");
+                  //  finalizarVenda();
+              //  }
+
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+    }
+
+    async function finalizarVenda() {
+        try {
+            const response = await ApiRequest.pagamentoFinalizar(idVenda);
+            if (response.status === 200) {
+                const dados = response.data;
+              /*  Swal.fire({
+                    title: "Venda finalizada",
+                    text: `Pagamento de R$ ${valorTotal} finalizado com sucesso`,
+                    icon: "success",
+                    confirmButtonText: "OK",
+                });
+                navigate(`/venda/caixa`);
+                */
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+    }
+
+    const fetchPagamentoRealizado = () => {
+        fetchVenda();
+        fetchTipoPagamento();
+        fetchFluxoPagamento();
+
+    }
+
+
     useEffect(() => {
         fetchVenda();
         fetchTipoPagamento();
+        fetchFluxoPagamento();
     }, []);
+
 
     useEffect(() => {
         setValorTotal(venda ? venda.valorTotal : 0);
-        setValorRestante(venda ? venda.valorTotal - 0  : 0); //ESSE MENOS AI SERIA O VALOR PAGO !!!!!!!
     }, [venda]);
-    
+
+
 
     return (
         <PageLayout>
@@ -151,24 +216,18 @@ function Pagamento() {
                                     />
                                     <ItemSeparadoPorLinhaTracejada
                                         infoEsquerda={"Valor Pago"}
-                                        infoDireita={"R$ 195,00"}
+                                        infoDireita={"R$ " + valorPago.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                     />
                                 </div>
                                 <div className='text-left'>
                                     <p className='text-[1rem] font-medium'>Fluxo de pagamento</p>
                                     <div className='bg-[#CFD0D9] h-[20vh] flex flex-col gap-2 p-3 rounded-md overflow-y-auto'>
-                                        <ItemSeparadoPorLinhaTracejada
-                                            infoEsquerda={"1. Dinheiro"}
-                                            infoDireita={"R$ 35,00  1x"}
-                                        />
-                                        <ItemSeparadoPorLinhaTracejada
-                                            infoEsquerda={"2. Crédito"}
-                                            infoDireita={"R$ 150,00  4x"}
-                                        />
-                                        <ItemSeparadoPorLinhaTracejada
-                                            infoEsquerda={"3. Débito"}
-                                            infoDireita={"R$ 10,00  1x"}
-                                        />
+                                        {fluxoPagamento && fluxoPagamento.map((pagamento, index) =>
+                                            <ItemSeparadoPorLinhaTracejada
+                                                infoEsquerda={(index + 1) + " " + pagamento.tipoPagamento}
+                                                infoDireita={"R$ " + pagamento.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " " + pagamento.qtdParcelas + "x"}
+                                            />
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -176,7 +235,7 @@ function Pagamento() {
                                 <hr className='border-2 border-[#8E9BAB] my-2' />
                                 <div className="flex flex-row justify-between">
                                     <p className="text-left font-semibold text-[1.6rem]">Restante à Pagar: </p>
-                                    <p className="text-left font-semibold text-[1.5rem]">R$ --{ }</p>
+                                    <p className="text-left font-semibold text-[1.5rem]">{"R$" + (valorTotal - valorPago).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                                 </div>
                             </div>
                         </div>
@@ -188,7 +247,7 @@ function Pagamento() {
                             <p>CARTÃO</p>
                             <p>F2</p>
                         </div>
-                        <div style={div4} onClick={() => AbrirModalPaymentPix(1, pix, 1, 10.0, venda ? venda.valorTotal : 0, valorRestante)} className="flex flex-col text-2xl justify-center font-semibold cursor-pointer bg-[#E7E7E7] rounded-md duration-150 ease-in-out hover:scale-[1.02] hover:bg-[#E1E1E1]">
+                        <div style={div4} onClick={() => AbrirModalPaymentPix(idVenda, pix, 1, valorPago, venda ? venda.valorTotal : 0, (valorTotal - valorPago), fetchPagamentoRealizado)} className="flex flex-col text-2xl justify-center font-semibold cursor-pointer bg-[#E7E7E7] rounded-md duration-150 ease-in-out hover:scale-[1.02] hover:bg-[#E1E1E1]">
                             <p>PIX</p>
                             <p>F3</p>
                         </div>

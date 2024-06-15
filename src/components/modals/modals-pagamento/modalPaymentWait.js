@@ -10,20 +10,34 @@ import ItemSeparadoPorLinhaTracejada from '../../tables/ItemSeparadoPorLinhaTrac
 import imgPagamento from '../../../assets/paymentWait.png';
 import imgLoading from '../../../assets/loading.png';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import TabelaModal from "../../tables/tableModal";
 import ButtonModalFull from "../../buttons/buttonModalFull";
 import { LoadingButton } from "@mui/lab";
 
-function ModalPaymentWait(base64String) {
-
-    const [base64, setBase64] = useState('');
+function ModalPaymentWait({ base64String , valorPago = 0 , onFinalizar}) {
+    const [base64, setBase64] = useState(base64String || '');
+    const [valorTotalPago, setValorPago] = useState(valorPago ? valorPago : 0);
 
     useEffect(() => {
-        console.log(base64String);
-        setBase64(base64String.base64String);
-    }, [base64String]);
 
+        if (valorPago) {
+            setValorPago(valorPago);
+        }
+
+    }, [base64String, valorPago]);
+
+    
+
+    function handleFinalizarPagamento() {
+        Swal.fire({
+            title: "Pagamento finalizado",
+            text: `Pagamento de R$ ${valorTotalPago} finalizado com sucesso`,
+            icon: "success",
+            confirmButtonText: "OK",
+        });
+        onFinalizar();
+    }
 
     return (
         <>
@@ -32,23 +46,26 @@ function ModalPaymentWait(base64String) {
                 <img className="w-6 h-6 animate-spin" src={imgLoading}></img>
                 <p>Aguardando finalização do pagamento...</p>
                 <ButtonModal>Cancelar</ButtonModal>
+
+                {base64.length > 0 && <ButtonModal funcao={handleFinalizarPagamento} >Finalizar pagamento</ButtonModal>}
             </div>
         </>
     );
 }
 
 
-function AbrirModalPaymentWait(base64String) {
+function AbrirModalPaymentWait(base64String,valorPago, onFinalizar) {
     const MySwal = withReactContent(Swal);
     MySwal.fire({
         html: <ModalPaymentWait
             base64String={base64String}
+            valorPago={valorPago} 
+            onFinalizar={onFinalizar}
         />,
-        // width: "auto",
-        // heigth: "60rem",
         showConfirmButton: false,
         heightAuto: true,
     });
+    console.log(valorPago);
 }
 
 export default AbrirModalPaymentWait;
