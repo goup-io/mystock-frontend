@@ -21,15 +21,18 @@ function CaixaTexto(props) {
 
 function ItemCarrinho(props) {
     
-    const { idVenda, horario, vendedor, quantidadeItens, tipoVenda, valor, par } = props;
+    const { id, horario, vendedor, quantidadeItens, tipoVenda, valor, par } = props;
     const navigate = useNavigate();
+    
+    console.log(props);
 
     const style = {
         backgroundColor: par ? "#E7E7E7" : "#D0D4F0",
+
     };
 
-    const handleFinalizarVenda = () => {
-        navigate(`/pagamento/${idVenda}`, { state: { idVenda } });
+    function handleFinalizarVenda(){
+        navigate(`/venda/pagamento/${props.id}`, { state: { id } });
     };
 
     return (
@@ -52,7 +55,7 @@ function ItemCarrinho(props) {
             <td>
                 <div className="flex flex-row items-center gap-4 justify-center">
                     <Button cor={"#919191"}><p className="text-[1rem] p-1 px-5">CANCELAR</p></Button>
-                    <Button onClick={handleFinalizarVenda}><p className="text-[1rem] p-1 px-5">FINALIZAR VENDA</p></Button>
+                    <Button funcao={handleFinalizarVenda} ><p className="text-[1rem] p-1 px-5">FINALIZAR VENDA</p></Button>
                 </div>
             </td>
         </tr>
@@ -62,6 +65,7 @@ function ItemCarrinho(props) {
 function Caixa() {
     const [dadosDoBancoVenda, setDadosDoBancoVenda] = useState([]);
     const idLoja = localStorage.getItem("loja_id");
+
 
     async function fetchData() {
         try {
@@ -99,7 +103,7 @@ function Caixa() {
                         <tbody>
                             {dadosDoBancoVenda.map((venda, index) => (
                                 <ItemCarrinho
-                                    key={venda.id}
+                                    id={venda.id}
                                     horario={venda.hora}
                                     vendedor={`${venda.codigoVendedor} - ${venda.nomeVendedor}`}
                                     quantidadeItens={venda.qtdItens}
