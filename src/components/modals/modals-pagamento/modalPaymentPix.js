@@ -11,7 +11,7 @@ import AbrirModalPaymentWait from "./modalPaymentWait";
 
 
 
-function ModalPaymentPix({ idVenda, idTipoPagamento, qtdParcelas,valorPagoAteAgora,valorTotal,valorRestante }) {
+function ModalPaymentPix({ idVenda, idTipoPagamento, qtdParcelas,valorPagoAteAgora,valorTotal,valorRestante, onFinalizar}) {
 
     const [valorRealTotal, setValorTotal] = useState(valorTotal ? valorTotal : 0);
     const [valorPago, setValorPagoAteAgora] = useState(valorPagoAteAgora ? valorPagoAteAgora : 0);
@@ -27,7 +27,6 @@ function ModalPaymentPix({ idVenda, idTipoPagamento, qtdParcelas,valorPagoAteAgo
         const novoValorRestante = valorRestante - valorAPagar;
         setValorRestante(novoValorRestante);
         realizarPagamento();
-        //onFinalizar(novoValorRestante); // Chama a função de callback passando o novo valor restante
     };
 
 
@@ -43,8 +42,7 @@ function ModalPaymentPix({ idVenda, idTipoPagamento, qtdParcelas,valorPagoAteAgo
             const response = await ApiRequest.pagamentoCreate(idTipoPagamento, idVenda, valorAPagar, 1);
             if (response.status === 201) {
                 const dados = response.data;
-                AbrirModalPaymentWait(dados.Base64QRCode); 
-
+                AbrirModalPaymentWait(dados.Base64QRCode,valorAPagar,onFinalizar);                
             }
         } catch (error) {
             console.log("Erro ao gerar pagamento", error);
@@ -94,7 +92,7 @@ function ModalPaymentPix({ idVenda, idTipoPagamento, qtdParcelas,valorPagoAteAgo
     );
 }
 
-function AbrirModalPaymentPix( idVenda, idTipoPagamento, qtdParcelas,valorPagoAteAgora,valorTotal,valorRestante ) {
+function AbrirModalPaymentPix( idVenda, idTipoPagamento, qtdParcelas,valorPagoAteAgora,valorTotal,valorRestante, onFinalizar) {
     const MySwal = withReactContent(Swal);
     MySwal.fire({
         html: <ModalPaymentPix
@@ -104,7 +102,7 @@ function AbrirModalPaymentPix( idVenda, idTipoPagamento, qtdParcelas,valorPagoAt
             valorPagoAteAgora={valorPagoAteAgora}
             valorTotal={valorTotal}
             valorRestante={valorRestante}
-            //onFinalizar={onFinalizar}
+            onFinalizar={onFinalizar}
         />,
         showConfirmButton: false,
         heightAuto: true,
