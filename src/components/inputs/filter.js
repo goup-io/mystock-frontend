@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import ButtonClearFilter from "../buttons/buttonClearFilter";
 import ButtonModal from "../buttons/buttonsModal";
 import InputFilterDate from "../inputs/inputFilterDate";
 import ComboBoxFilter from "../inputs/comboBoxFilter";
 
 import ApiRequest from '../../connections/ApiRequest';
+import Alert from '../alerts/Alert';
 
-function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVenda, horario, tipoAlerta, produto }) {
+function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVenda, horario, tipoAlerta, produto, funcaoFilter, funcaoOriginal }) {
     const [selectedValue, setSelectedValue] = useState('todos');
 
     const handleChange = (event) => {
@@ -21,11 +21,47 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
     const [produtos, setProdutos] = useState([]);
 
     const [statusTransferencia, setStatusTransferencia] = useState([
-        {id: 'ACEITO', nome: 'Aceito'},
-        {id: 'NEGADO', nome: 'Negado'},
-        {id: 'PENDENTE', nome: 'Pendente'}
+        { id: 'ACEITO', nome: 'Aceito' },
+        { id: 'NEGADO', nome: 'Negado' },
+        { id: 'PENDENTE', nome: 'Pendente' }
     ]);
 
+    const [inputCorSelecionada, setInputCorSelecionada] = useState('');
+    const [inputModeloSelecionado, setInputModeloSelecionado] = useState('');
+    const [inputTipoVendaSelecionado, setInputTipoVendaSelecionado] = useState('');
+    const [inputTamanhoSelecionado, setInputTamanhoSelecionado] = useState('');
+    const [inputStatusSelecionado, setInputStatusSelecionado] = useState('');
+    const [inputVendedorSelecionado, setInputVendedorSelecionado] = useState('');
+    const [inputProdutoSelecionado, setInputProdutoSelecionado] = useState('');
+    const [inputDataInicioSelecionada, setInputDataInicioSelecionada] = useState('');
+    const [inputDataFimSelecionada, setInputDataFimSelecionada] = useState('');
+    const [inputHorarioInicioSelecionado, setInputHorarioInicioSelecionado] = useState('');
+    const [inputHorarioFimSelecionado, setInputHorarioFimSelecionado] = useState('');
+    const [inputPrecoInicioSelecionado, setInputPrecoInicioSelecionado] = useState('');
+    const [inputPrecoFimSelecionado, setInputPrecoFimSelecionado] = useState('');
+
+    const handleInput = (evento, stateFunction) => {
+        stateFunction(evento.target.value);
+    };
+
+    const handleClearFilters = () => {
+        setInputCorSelecionada('');
+        setInputModeloSelecionado('');
+        setInputTamanhoSelecionado('');
+        setInputStatusSelecionado('');
+        setInputTipoVendaSelecionado('');
+        setInputVendedorSelecionado('');
+        setInputProdutoSelecionado('');
+        setInputDataInicioSelecionada('');
+        setInputDataFimSelecionada('');
+        setInputHorarioInicioSelecionado('');
+        setInputHorarioFimSelecionado('');
+        setInputPrecoInicioSelecionado('');
+        setInputPrecoFimSelecionado('');
+        setSelectedValue('todos');
+
+        funcaoOriginal();
+    };
 
     async function fetchData() {
         if (cor) {
@@ -48,12 +84,9 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
                 if (response.status === 200) {
                     const dados = response.data;
 
-                    const filtrarDados = dados
-                        .map(obj => (
-                            {
-                                id: obj.id, nome: obj.nome
-                            }
-                        ));
+                    const filtrarDados = dados.map(obj => (
+                        { id: obj.id, nome: obj.nome }
+                    ));
 
                     setModelos(filtrarDados);
                 }
@@ -69,12 +102,9 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
                 if (response.status === 200) {
                     const dados = response.data;
 
-                    const filtrarDados = dados
-                        .map(obj => (
-                            {
-                                id: obj.id, nome: obj.numero
-                            }
-                        ));
+                    const filtrarDados = dados.map(obj => (
+                        { id: obj.id, nome: obj.numero }
+                    ));
 
                     setTamanhos(filtrarDados);
                 }
@@ -90,12 +120,9 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
                 if (response.status === 200) {
                     const dados = response.data;
 
-                    const filtrarDados = dados
-                        .map(obj => (
-                            {
-                                id: obj.id, nome: obj.tipo
-                            }
-                        ));
+                    const filtrarDados = dados.map(obj => (
+                        { id: obj.id, nome: obj.tipo }
+                    ));
 
                     setTiposVenda(filtrarDados);
                 }
@@ -111,12 +138,9 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
                 if (response.status === 200) {
                     const dados = response.data;
 
-                    const filtrarDados = dados
-                        .map(obj => (
-                            {
-                                id: obj.id, nome: obj.nome
-                            }
-                        ));
+                    const filtrarDados = dados.map(obj => (
+                        { id: obj.id, nome: obj.nome }
+                    ));
 
                     setVendedores(filtrarDados);
                 }
@@ -125,19 +149,16 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
             }
         }
 
-        if (produtos) {
+        if (produto) {
             try {
                 const response = await ApiRequest.produtoGetAll();
 
                 if (response.status === 200) {
                     const dados = response.data;
 
-                    const filtrarDados = dados
-                        .map(obj => (
-                            {
-                                id: obj.id, nome: obj.nome
-                            }
-                        ));
+                    const filtrarDados = dados.map(obj => (
+                        { id: obj.id, nome: obj.nome }
+                    ));
 
                     setProdutos(filtrarDados);
                 }
@@ -151,6 +172,31 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
         fetchData();
     }, []);
 
+    const handleFilter = () => {
+        const filterData = {
+            cor: inputCorSelecionada,
+            modelo: inputModeloSelecionado,
+            tamanho: inputTamanhoSelecionado,
+            status: inputStatusSelecionado,
+            tipoVenda: inputTipoVendaSelecionado,
+            vendedor: inputVendedorSelecionado,
+            produto: inputProdutoSelecionado,
+            dataInicio: inputDataInicioSelecionada,
+            dataFim: inputDataFimSelecionada,
+            horarioInicio: inputHorarioInicioSelecionado,
+            horarioFim: inputHorarioFimSelecionado,
+            precoInicio: inputPrecoInicioSelecionado,
+            precoFim: inputPrecoFimSelecionado,
+            tipoAlerta: selectedValue,
+        };
+
+        if (filterData.cor !== '' || filterData.modelo !== '' || filterData.tamanho !== '' || filterData.status !== '' || filterData.tipoVenda !== '' || filterData.vendedor !== '' || filterData.produto !== '' || filterData.dataInicio !== '' || filterData.dataFim !== '' || filterData.horarioInicio !== '' || filterData.horarioFim !== '' || filterData.precoInicio !== '' || filterData.precoFim !== '') {
+            funcaoFilter(filterData);
+        } else {
+            Alert.alertTop(true, 'Nenhum campo preenchido!');
+        }
+    };
+
     return (
         <div className="w-full flex flex-wrap justify-between items-center text-center">
             {/* Seção dos filtros */}
@@ -163,6 +209,10 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
                             inicio="Data de"
                             fim="á"
                             name="select_data"
+                            valueInicio={inputDataInicioSelecionada}
+                            valueFim={inputDataFimSelecionada}
+                            handleInputInicio={(e) => handleInput(e, setInputDataInicioSelecionada)}
+                            handleInputFim={(e) => handleInput(e, setInputDataFimSelecionada)}
                         />
                     </div>
                 )}
@@ -174,16 +224,20 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
                             inicio="Hora de"
                             fim="á"
                             name="select_hora"
+                            valueInicio={inputHorarioInicioSelecionado}
+                            valueFim={inputHorarioFimSelecionado}
+                            handleInputInicio={(e) => handleInput(e, setInputHorarioInicioSelecionado)}
+                            handleInputFim={(e) => handleInput(e, setInputHorarioFimSelecionado)}
                         />
                     </div>
                 )}
-                {vendedor && <ComboBoxFilter name="select_vendedor" opcoes={vendedores}>Vendedor</ComboBoxFilter>}
-                {tipoVenda && <ComboBoxFilter name="select_tipo" opcoes={tiposVenda}>Tipo</ComboBoxFilter>}
-                {cor && <ComboBoxFilter name="select_cor" opcoes={cores}>Cor</ComboBoxFilter>}
-                {modelo && <ComboBoxFilter name="select_modelo" opcoes={modelos}>Modelo</ComboBoxFilter>}
-                {produto && <ComboBoxFilter name="select_produto" opcoes={produtos}>Produto</ComboBoxFilter>}
-                {tamanho && <ComboBoxFilter name="select_tamanho" opcoes={tamanhos}>Tamanho</ComboBoxFilter>}
-                {status && <ComboBoxFilter name="select_status" opcoes={statusTransferencia}>Status</ComboBoxFilter>}
+                {vendedor && <ComboBoxFilter name="select_vendedor" opcoes={vendedores} value={inputVendedorSelecionado} handleInput={handleInput} handleAtribute={setInputVendedorSelecionado}>Vendedor</ComboBoxFilter>}
+                {tipoVenda && <ComboBoxFilter name="select_tipo" opcoes={tiposVenda} value={inputTipoVendaSelecionado} handleInput={handleInput} handleAtribute={setInputTipoVendaSelecionado}>Tipo</ComboBoxFilter>}
+                {cor && <ComboBoxFilter name="select_cor" opcoes={cores} value={inputCorSelecionada} handleInput={handleInput} handleAtribute={setInputCorSelecionada}>Cor</ComboBoxFilter>}
+                {modelo && <ComboBoxFilter name="select_modelo" opcoes={modelos} value={inputModeloSelecionado} handleInput={handleInput} handleAtribute={setInputModeloSelecionado}>Modelo</ComboBoxFilter>}
+                {produto && <ComboBoxFilter name="select_produto" opcoes={produtos} value={inputProdutoSelecionado} handleInput={handleInput} handleAtribute={setInputProdutoSelecionado}>Produto</ComboBoxFilter>}
+                {tamanho && <ComboBoxFilter name="select_tamanho" opcoes={tamanhos} value={inputTamanhoSelecionado} handleInput={handleInput} handleAtribute={setInputTamanhoSelecionado}>Tamanho</ComboBoxFilter>}
+                {status && <ComboBoxFilter name="select_status" opcoes={statusTransferencia} value={inputStatusSelecionado} handleInput={handleInput} handleAtribute={setInputStatusSelecionado}>Status</ComboBoxFilter>}
                 {preço && (
                     <div>
                         <InputFilterDate
@@ -192,6 +246,10 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
                             inicio="Preço de"
                             fim="á"
                             name="select_preco"
+                            valueInicio={inputPrecoInicioSelecionado}
+                            valueFim={inputPrecoFimSelecionado}
+                            handleInputInicio={(e) => handleInput(e, setInputPrecoInicioSelecionado)}
+                            handleInputFim={(e) => handleInput(e, setInputPrecoFimSelecionado)}
                         />
                     </div>
                 )}
@@ -236,8 +294,8 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
 
             {/* Botões de limpar e filtrar */}
             <div className="flex h-6 gap-2">
-                <ButtonModal cor="#919191" >Limpar</ButtonModal>
-                <ButtonModal>Filtrar</ButtonModal>
+                <ButtonModal cor="#919191" funcao={handleClearFilters}>Limpar</ButtonModal>
+                <ButtonModal funcao={handleFilter}>Filtrar</ButtonModal>
             </div>
         </div>
     );

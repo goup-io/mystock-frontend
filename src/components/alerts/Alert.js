@@ -42,6 +42,7 @@ export class Alert {
             // heightAuto: true,
         });
     }
+
     static alertQuestion(mensagem, opcaoPositiva, opcaoNegativa, funcao, callBack) {
         const MySwal = withReactContent(Swal);
         MySwal.fire({
@@ -81,6 +82,24 @@ export class Alert {
             } else if (result.dismiss === Swal.DismissReason.cancel) {
             }
         });
+    }
+
+    static alertTop(iconeErro, mensagem){
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+          });
+          Toast.fire({
+            icon: !iconeErro ? "success" : "error",
+            title: mensagem
+          });
     }
 
 

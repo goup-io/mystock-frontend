@@ -557,6 +557,44 @@ export class ApiRequest {
 
     }
 
+    static async etpsGetFiltrados(modelo, tamanho, cor, precoInicio, precoFim, lojaId) {
+        try {
+            let queryParams = [];
+
+            if (modelo !== '') {
+                queryParams.push(`modelo=${modelo}`);
+            }
+            if (cor !== '') {
+                queryParams.push(`cor=${cor}`);
+            }
+            if (tamanho !== '') {
+                queryParams.push(`tamanho=${tamanho}`);
+            }
+            if (precoInicio !== '') {
+                queryParams.push(`precoMinimo=${precoInicio}`);
+            }
+            if (precoFim !== '') {
+                queryParams.push(`precoMaximo=${precoFim}`);
+            }
+            if (lojaId !== '') {
+                queryParams.push(`id_loja=${lojaId}`);
+            }
+
+            const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
+
+            const resposta = await axios.get(springEndPoint + `/etps/filtro${queryString}`, { 
+                headers: header 
+            });
+
+            return resposta;
+        } catch (erro) {
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
+        }
+    }
+
 
 
     // ***************************************************************************
