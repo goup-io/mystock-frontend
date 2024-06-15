@@ -10,10 +10,13 @@ import AbrirModalCadastreKit from '../../modals/modals-kit/modalCadastreKit.js'
 import AbrirModalCadastreModel from '../../modals/modals-model/modalCadastreModel.js'
 import AbrirModalCadastreProd from '../../modals/modals-produto/modalCadastreProd.js'
 import ModalAddProdCart from '../../modals/modals-produto/modalAddProdCart.js'
+import AbrirModalEditProd from '../../modals/modals-produto/modalEditProd.js'
+import AbrirModalEditModel from '../../modals/modals-model/modalEditModel.js'
 import Filter from '../../inputs/filter.js'
 
 import React, { useState, useEffect } from 'react';
-
+import Alert from '../../alerts/Alert.js'
+import errorImage from "../../../assets/error.png"
 
 function EstoqueGerente() {
 
@@ -77,6 +80,10 @@ function EstoqueGerente() {
         fetchData();
     }, []);
 
+    const updateTable = () => {
+        fetchData();
+    };
+
     const handleProdutoButtonClick = () => {
         setIsProdutoSelected(true);
     };
@@ -84,6 +91,50 @@ function EstoqueGerente() {
     const handleModeloButtonClick = () => {
         setIsProdutoSelected(false);
     };
+
+    const handleEditarEtp = (etpId) => {
+        AbrirModalEditProd(etpId.id, updateTable);
+    };
+
+    const handleEditarModel = (modelId) => {
+        AbrirModalEditModel(modelId.id, updateTable);
+    };
+
+    async function excluir(etpId) {
+        const idProduto = etpId.idProduto
+        try {
+            const response = await ApiRequest.excluirProduto(idProduto);
+            if (response.status === 200) {
+                console.log("Produto deletado");
+            } else if (response.status === 409) {
+                Alert.alert(errorImage, "Este produto já foi excluido!");
+            }
+        } catch (error) {
+            console.log("Erro ao excluir um produto: ", error);
+        }
+    }
+
+    async function excluir(modelId) {
+        const idModelo = modelId.idModelo
+        try {
+            const response = await ApiRequest.excluirProduto(idModelo);
+            if (response.status === 200) {
+                console.log("Modelo deletado");
+            } else if (response.status === 409) {
+                Alert.alert(errorImage, "Este modelo já foi excluido!");
+            }
+        } catch (error) {
+            console.log("Erro ao excluir um modelo: ", error);
+        }
+    }
+
+    const handleDeleteEtp = (etpId) => {
+        Alert.alertQuestion("Deseja excluir esse produto? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluir(etpId), () => updateTable())
+    }
+
+    const handleDeleteModel = (modelId) => {
+        Alert.alertQuestion("Deseja excluir esse modelo? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluir(modelId), () => updateTable())
+    }
 
     async function csvProdutos() {
         try { 
@@ -154,9 +205,9 @@ function EstoqueGerente() {
                         </div>
                         <div className='w-full h-[50vh] mt-2 bg-slate-700 border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto rounded'>
                             {isProdutoSelected ? (
-                                <TabelaPage colunas={colunasETP} dados={dadosDoBancoETP.map(({ ...dados }) => dados)} edit remove id={0} />
+                                <TabelaPage colunas={colunasETP} dados={dadosDoBancoETP.map(({ ...dados }) => dados)} edit={handleEditarEtp} remove={handleDeleteEtp} id={dadosDoBancoETP.map(({ ...dadosDoBancoETP }) => dadosDoBancoETP)}/>
                             ) : (
-                                <TabelaPage colunas={colunasModel} dados={dadosDoBancoModel.map(({ id, ...dados }) => dados)} edit remove id={0} />
+                                <TabelaPage colunas={colunasModel} dados={dadosDoBancoModel.map(({ id, ...dados }) => dados)}  edit={handleEditarModel} remove={handleDeleteModel} id={dadosDoBancoModel.map(({ ...dadosDoBancoModel }) => dadosDoBancoModel)}/>
                             )}
                         </div>
                     </div>

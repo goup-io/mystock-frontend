@@ -26,6 +26,7 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
         {id: 'PENDENTE', nome: 'Pendente'}
     ]);
 
+
     async function fetchData() {
         if (cor) {
             try {
@@ -234,8 +235,8 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
             </div>
 
             {/* Botões de limpar e filtrar */}
-            <div className="flex h-6">
-                <ButtonClearFilter>Limpar</ButtonClearFilter>
+            <div className="flex h-6 gap-2">
+                <ButtonModal cor="#919191" >Limpar</ButtonModal>
                 <ButtonModal>Filtrar</ButtonModal>
             </div>
         </div>
