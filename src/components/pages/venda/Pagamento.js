@@ -6,6 +6,7 @@ import ItemSeparadoPorLinhaTracejada from '../../tables/ItemSeparadoPorLinhaTrac
 import ApiRequest from "../../../connections/ApiRequest.js"
 import AbrirModalPaymentPix from '../../modals/modals-pagamento/modalPaymentPix.js'
 import React, { useState, useEffect } from 'react';
+import { useParams, useLocation } from 'react-router-dom'
 
 
 
@@ -52,7 +53,7 @@ function CaixaTexto(props) {
 
 
 
-function Pagamento({ idVenda }) {
+function Pagamento() {
 
     const [tipoPagamento, setTipoPagamento] = useState([]);
     const [venda, setVenda] = useState();
@@ -62,11 +63,15 @@ function Pagamento({ idVenda }) {
     const [valorPago, setValorPago] = useState(0);
     const [valorRestante, setValorRestante] = useState(0);
 
+    const { idVenda } = useParams();
+    const location = useLocation();
+    const { state } = location;
+    const vendaId = state ? state.idVenda : null;
 
     async function fetchVenda() {
 
         try {
-            const response = await ApiRequest.detalhamentosVendas(1);
+            const response = await ApiRequest.detalhamentosVendas(idVenda);
 
 
             if (response.status === 200) {

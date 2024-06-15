@@ -1457,10 +1457,11 @@ export class ApiRequest {
     static async vendaGetAllByLoja(idLoja) {
 
         try {
-            const resposta = await axios.get(springEndPoint + `/vendas/filtro?id_loja=${idLoja}`, {
+            const resposta = await axios.get(springEndPoint + `/vendas/vendas-pendentes/${idLoja}`, {
                 headers: header
             });
 
+            console.log(resposta);
             return resposta;
 
         } catch (erro) {
