@@ -4,6 +4,12 @@ import Header from '../../header/Header.js'
 import Button from '../../buttons/buttonsModal.js'
 import ItemSeparadoPorLinhaTracejada from '../../tables/ItemSeparadoPorLinhaTracejada.js'
 
+
+//MODAIS
+import PaymentCashModal from '../../modals/modals-pagamento/modalPaymentCash.js'
+import PaymentCardModal from '../../modals/modals-pagamento/modalPaymentCard.js'
+import PaymentPixModal from '../../modals/modals-pagamento/modalPaymentPix.js'
+
 var divPai = {
     display: "grid",
     gridTemplateColumns: "repeat(8, 1fr)",
@@ -45,6 +51,17 @@ function CaixaTexto(props) {
 }
 
 function Pagamento() {
+
+
+    //RESUMO DE VENDA
+    const [horario, setHorario] = useState();
+    const [vendedor, setVendedor] = useState("");
+    const [tipoVenda, setTipoVenda] = useState("");
+    const [quantidadeItens, setQuantidadeItens] = useState(0);
+    const [valorTotal, setValorTotal] = useState(0.00);
+    const [valorPago, setValorPago] = useState(0.00);
+
+    //FLUXO DE PAGAMENTO
 
     return (
         <PageLayout>
@@ -110,17 +127,25 @@ function Pagamento() {
                                 </div>
                             </div>
                         </div>
+
                         <div style={div2} className="flex flex-col text-2xl justify-center font-semibold cursor-pointer bg-[#E7E7E7] rounded-md duration-150 ease-in-out hover:scale-[1.02] hover:bg-[#E1E1E1]">
-                            <p>DINHEIRO</p>
-                            <p>F1</p>
+                            <a onClick={PaymentCashModal}>
+                                <p>DINHEIRO</p>
+                                <p>(F1)</p>
+                            </a>
                         </div>
+
                         <div style={div3} className="flex flex-col text-2xl justify-center font-semibold cursor-pointer bg-[#E7E7E7] rounded-md duration-150 ease-in-out hover:scale-[1.02] hover:bg-[#E1E1E1]">
-                            <p>CARTÃO</p>
-                            <p>F2</p>
+                            <a onClick={PaymentCardModal}>
+                                <p>CARTÃO</p>
+                                <p>(F2)</p>
+                            </a>
                         </div>
                         <div style={div4} className="flex flex-col text-2xl justify-center font-semibold cursor-pointer bg-[#E7E7E7] rounded-md duration-150 ease-in-out hover:scale-[1.02] hover:bg-[#E1E1E1]">
-                            <p>PIX</p>
-                            <p>F3</p>
+                            <a onClick={() => PaymentPixModal(valorTotal, valorPago, true)}>
+                                <p>PIX</p>
+                                <p>(F3)</p>
+                            </a>
                         </div>
                     </div>
                 </CaixaTexto>
