@@ -1876,6 +1876,20 @@ export class ApiRequest {
         }
     }
 
+    static async faturamentoMesVigenteFuncionario(idFuncionario){
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-funcionario/${idFuncionario}/faturamento-mes-atual`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
 }
 
 
