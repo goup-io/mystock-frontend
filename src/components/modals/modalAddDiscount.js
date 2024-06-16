@@ -7,7 +7,7 @@ import withReactContent from 'sweetalert2-react-content';
 import ItemSeparadoPorLinhaTracejada from '../tables/ItemSeparadoPorLinhaTracejada';
 import React, { useState } from 'react';
 
-function ModalDiscount() {
+function ModalDiscount(props) {
     const [percentualDesconto, setPercentualDesconto] = useState('');
     const [valorDesconto, setValorDesconto] = useState('');
     const [valorAtual, setValorAtual] = useState(300.00); // Exemplo de valor atual
@@ -48,7 +48,7 @@ function ModalDiscount() {
                         type="number"
                         placeholder="00%"
                         value={percentualDesconto}
-                        onChange={handlePercentualChange}
+                        handleInput={handlePercentualChange}
                         disabled={valorDesconto !== ''}
                     >
                         Porcentagem(%):
@@ -57,7 +57,7 @@ function ModalDiscount() {
                         type="number"
                         placeholder="R$ 0,00"
                         value={valorDesconto}
-                        onChange={handleValorChange}
+                        handleInput={handleValorChange}
                         disabled={percentualDesconto !== ''}
                     >
                         Valor Calculado(R$):
@@ -79,16 +79,18 @@ function ModalDiscount() {
                     setValorDesconto('');
                     setValorAposDesconto(valorAtual);
                 }}>Limpar</ButtonClear>
-                <ButtonModal>Adicionar</ButtonModal>
+                <ButtonModal
+                funcao={() => props.funcao(valorDesconto)}
+                >Adicionar</ButtonModal>
             </div>
         </div>
     );
 }
 
-function AbrirModalAddDiscount() {
+function AbrirModalAddDiscount(funcao) {
     const MySwal = withReactContent(Swal);
     MySwal.fire({
-        html: <ModalDiscount />,
+        html: <ModalDiscount funcao={funcao}/>,
         width: "auto",
         heightAuto: true,
         showConfirmButton: false,

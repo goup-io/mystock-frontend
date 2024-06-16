@@ -4,21 +4,53 @@ import HeaderModal from "../headerModal";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import ItemSeparadoPorLinhaTracejada from '../../tables/ItemSeparadoPorLinhaTracejada';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import ApiRequest from "../../../connections/ApiRequest.js"
+import { Await } from "react-router-dom";
+import AbrirModalPaymentWait from "./modalPaymentWait";
 
-function ModalPaymentPix({ valorTotal, valorPagoAteAgora, onFinalizar }) {
-    const [valorPagar, setValorPagar] = useState(0);
-    const [valorRestante, setValorRestante] = useState(valorTotal - valorPagoAteAgora);
+
+
+function ModalPaymentPix({ idVenda, idTipoPagamento, qtdParcelas,valorPagoAteAgora,valorTotal,valorRestante, onFinalizar}) {
+
+    const [valorRealTotal, setValorTotal] = useState(valorTotal ? valorTotal : 0);
+    const [valorPago, setValorPagoAteAgora] = useState(valorPagoAteAgora ? valorPagoAteAgora : 0);
+    const [valorAPagar, setValorPagar] = useState(0);
+    const [valorQueResta, setValorRestante] = useState(valorTotal - valorPagoAteAgora ? valorTotal - valorPagoAteAgora : 0);
+    const [base64String, setBase64String] = useState("");
 
     const handleInputChange = (e) => {
         setValorPagar(Number(e.target.value));
     };
 
     const handleFinalizar = () => {
-        const novoValorRestante = valorRestante - valorPagar;
+        const novoValorRestante = valorRestante - valorAPagar;
         setValorRestante(novoValorRestante);
-        onFinalizar(novoValorRestante); // Chama a função de callback passando o novo valor restante
+        realizarPagamento();
     };
+
+
+    function ImageComponent() {
+        return (
+            <img src={`data:image/jpeg;base64,${base64String}`} alt="Converted from base64" />
+        );
+    }
+
+
+     async function realizarPagamento() {
+        try {
+            const response = await ApiRequest.pagamentoCreate(idTipoPagamento, idVenda, valorAPagar, 1);
+            if (response.status === 201) {
+                const dados = response.data;
+                AbrirModalPaymentWait(dados.Base64QRCode,valorAPagar,onFinalizar);                
+            }
+        } catch (error) {
+            console.log("Erro ao gerar pagamento", error);
+        }
+     }
+
+
+
 
     return (
         <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[42rem] h-[22rem] flex flex-col items-center justify-around bg-white p-2 rounded-lg border border-black">
@@ -30,7 +62,7 @@ function ModalPaymentPix({ valorTotal, valorPagoAteAgora, onFinalizar }) {
                     <InputAndLabelModal
                         placeholder="Digite o valor aqui..."
                         text="number"
-                        value={valorPagar}
+                        value={valorAPagar}
                         handleInput={handleInputChange}
                     >
                         Valor a Pagar:
@@ -40,37 +72,43 @@ function ModalPaymentPix({ valorTotal, valorPagoAteAgora, onFinalizar }) {
                     <div className="border-[1px] border-dashed mb-4 border-[#355070] rounded"></div>
                     <ItemSeparadoPorLinhaTracejada
                         infoEsquerda="Valor total da compra:"
-                        infoDireita={`R$ ${valorTotal.toFixed(2)}`}
+                        infoDireita={`R$ ${valorRealTotal.toFixed(2) }`}
                     />
                     <ItemSeparadoPorLinhaTracejada
                         infoEsquerda="Valor pago (até agora):"
-                        infoDireita={`R$ ${valorPagoAteAgora.toFixed(2)}`}
+                        infoDireita={`R$ ${valorPago.toFixed(2)}`}
                     />
                     <li className="flex flex-row justify-between">
                         <p className="text-sm font-bold">Valor Restante:</p>
-                        <p className="text-sm font-bold">{`R$ ${valorRestante.toFixed(2)}`}</p>
+                        <p className="text-sm font-bold">{`R$ ${valorQueResta.toFixed(2)}`}</p>
                     </li>
                     <div className="w-full h-[0.1rem] bg-[#355070] mt-4"></div>
                 </div>
             </div>
             <div className="w-[40rem] flex justify-end h-6">
-                <ButtonModalFull onClick={handleFinalizar}>Finalizar</ButtonModalFull>
+                <ButtonModalFull funcao={handleFinalizar}>Finalizar</ButtonModalFull>
             </div>
         </div>
     );
 }
 
-function AbrirModalPaymentPix({ valorTotal, valorPagoAteAgora, onFinalizar }) {
+function AbrirModalPaymentPix( idVenda, idTipoPagamento, qtdParcelas,valorPagoAteAgora,valorTotal,valorRestante, onFinalizar) {
     const MySwal = withReactContent(Swal);
     MySwal.fire({
         html: <ModalPaymentPix
-            valorTotal={valorTotal}
+            idVenda={idVenda}
+            idTipoPagamento={idTipoPagamento}
+            qtdParcelas={qtdParcelas}
             valorPagoAteAgora={valorPagoAteAgora}
+            valorTotal={valorTotal}
+            valorRestante={valorRestante}
             onFinalizar={onFinalizar}
         />,
         showConfirmButton: false,
         heightAuto: true,
     });
 }
+
+
 
 export default AbrirModalPaymentPix;

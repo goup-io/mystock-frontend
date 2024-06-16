@@ -25,10 +25,10 @@ function ModalCadastreProd() {
     const [modelo, setModelo] = useState("");
     const [tamanho, setTamanho] = useState("");
     const [cor, setCor] = useState("");
-    const [isPromocional, setIsPromocional] = useState(false);
+    const [isPromocional, setIsPromocional] = useState("Não"); // Inicializa como "Não"
 
     const handleCheckboxChange = () => {
-        setIsPromocional((prev) => !prev);
+        setIsPromocional(prev => (prev === "Sim" ? "Não" : "Sim")); // Alterna entre "Sim" e "Não"
     };
 
     function handleInputChange(event, setStateFunction) {
@@ -108,7 +108,8 @@ function ModalCadastreProd() {
             idModelo,
             idCor,
             tamanhoNumero,
-            isPromocional
+            isPromocional: isPromocional ? "SIM" : "NAO",
+            idLoja: localStorage.getItem("loja_id")
         };
 
         ApiRequest.produtoCreate(objetoAdicionado).then((response) => {

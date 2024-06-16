@@ -151,17 +151,13 @@ function Venda() {
     const [tipoVenda, setTipoVenda] = useState("");
 
     const [tipoVendaLista, setTipoVendaLista] = useState([]);
+    const [tipoVendaListaNomes, setTipoVendaListaNomes] = useState([])
 
     const navigate = useNavigate();
 
     useEffect(() => {
 
-        ApiRequest.tipoVendaGetAll()
-            .then((response) => {
-                setTipoVendaLista(response.data)
-        });
-            
-        console.log(tipoVendaLista)
+        recuperarTipoVenda();
 
         let subTotal1 = 0;
         let subTotal2 = 0;
@@ -182,6 +178,10 @@ function Venda() {
         setValorTotal(valorTotal);
 
     }, [itemsCarrinho]);
+
+    function adicionarDescontoVenda(qtdDescontoVenda){
+        setDescontoVenda(qtdDescontoVenda)
+    } 
 
     function adicionarItemCarrinho(item) {
 
@@ -232,6 +232,22 @@ function Venda() {
         });
 
         contadorId++;
+    }
+
+    async function recuperarTipoVenda(){
+        // const tipoVendaListaResponse = await ApiRequest.tipoVendaGetAll()
+
+        // var arrayAux = [tipoVendaListaResponse.data]
+
+        // var arrayAux02 = [arrayAux.at(0)]
+        // var listaTipos = []
+        // console.log(listaTipos)
+
+        // // console.log(arrayAux02)
+        // setTipoVendaLista(arrayAux)
+
+
+        
     }
 
     function removerItemCarrinho(id){
@@ -406,13 +422,8 @@ function Venda() {
                                 width="8rem"
                                 height="2rem"
                                 bold="500"
-                                dadosBanco={tipoVendaLista}
+                                dadosBanco={tipoVendaListaNomes}
                             />
-                            {/* <Input 
-                                handleInput={handleInput}
-                                handlerAtributeChanger={setTipoVenda}
-                                width="7rem"
-                            /> */}
                         </div>
                     </div>
                 </div>
@@ -430,7 +441,7 @@ function Venda() {
                         />
                     </div>
                     <div class="flex flex-col w-full gap-2 my-2 px-5 flex-wrap text-[1.1rem] font-semibold">
-                        <Button cor={"#DEE2FF"} funcao={AbrirModalAddDiscount}>
+                        <Button cor={"#DEE2FF"} funcao={() => AbrirModalAddDiscount(adicionarDescontoVenda)}>
                             <p class="p-2 text-black">ADICIONAR DESCONTO À VENDA</p>
                         </Button>
                         <Button funcao={finalizarVenda}>

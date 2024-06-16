@@ -52,7 +52,7 @@ function Estoque() {
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
         }
-       
+
         try {
             const response = await ApiRequest.modeloGetAll();
 
@@ -98,10 +98,11 @@ function Estoque() {
         AbrirModalEditModel(modelId.id, updateTable);
     };
 
-    async function excluir(etpId) {
-        const idProduto = etpId.idProduto
+    async function excluirEtp(etpId) {
+        const idEtp = etpId.id
+
         try {
-            const response = await ApiRequest.excluirProduto(idProduto);
+            const response = await ApiRequest.excluirETP(idEtp);
             if (response.status === 200) {
                 console.log("Produto deletado");
             } else if (response.status === 409) {
@@ -112,10 +113,10 @@ function Estoque() {
         }
     }
 
-    async function excluir(modelId) {
+    async function excluirModel(modelId) {
         const idModelo = modelId.idModelo
         try {
-            const response = await ApiRequest.excluirProduto(idModelo);
+            const response = await ApiRequest.modeloDelete(idModelo);
             if (response.status === 200) {
                 console.log("Modelo deletado");
             } else if (response.status === 409) {
@@ -127,11 +128,11 @@ function Estoque() {
     }
 
     const handleDeleteEtp = (etpId) => {
-        Alert.alertQuestion("Deseja excluir esse produto? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluir(etpId), () => updateTable())
+        Alert.alertQuestion("Deseja excluir esse produto? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluirEtp(etpId), () => updateTable())
     }
 
     const handleDeleteModel = (modelId) => {
-        Alert.alertQuestion("Deseja excluir esse modelo? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluir(modelId), () => updateTable())
+        Alert.alertQuestion("Deseja excluir esse modelo? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluirModel(modelId), () => updateTable())
     }
 
     const updateTable = () => {
@@ -190,7 +191,7 @@ function Estoque() {
                                 funcao={AbrirModalCadastreProd}
                             >Novo Produto</ButtonModal>
                             <ButtonModal
-                                funcao={AbrirModalCadastreProdPreConfig}
+                                funcao={() => AbrirModalCadastreProdPreConfig(updateTable)}
                             >ADD Produto</ButtonModal>
                         </div>
                     </div>

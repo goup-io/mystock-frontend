@@ -9,11 +9,11 @@ function InputAndLabelModal(props) {
                 <p className="form-floating text-lg text-black mb-2 font-normal">{props.children}</p>
                 <InputCadastre
                    value={props.value}
-                   handleInput={ props.handleInput}
+                   handleInput={ props.handleInput === undefined ? "" : props.handleInput}
                    handlerAtributeChanger={props.handlerAtributeChanger}
                    id={props.id} 
                    type={`${props.type}`} 
-                   placeholder={props.placeholder == undefined ? "" : props.placeholder} 
+                   placeholder={props.placeholder === undefined ? "" : props.placeholder} 
                 ></InputCadastre>
             </div>
         </div>

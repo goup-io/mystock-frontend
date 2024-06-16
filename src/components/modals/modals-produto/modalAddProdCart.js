@@ -7,6 +7,11 @@ import Tabela from '../../tables/tableModal';
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import ApiRequest from "../../../connections/ApiRequest";
+import TabelaModal from '../../tables/tableModal';
+import Alert from '../../alerts/Alert.js';
+import ErrorImage from '../../../assets/icons/error.svg';
+import SucessImage from '../../../assets/icons/sucess.svg';
 
 
 var itemTeste = {
@@ -19,31 +24,95 @@ var itemTeste = {
 
 function ModalAddProdCart(props) {
 
-  const [colunas, setColunas] = useState([]);
-  const [dados, setDados] = useState([]);
+  const [colunasETP, setColunasETP] = useState([]);
+  const [idEtps, setIdEtps] = useState([]);
+  const [dadosFiltradosETP, setDadosFiltradosETP] = useState([]);
+  const [totalItens, setTotalItens] = useState(0);
+  const [quantidades, setQuantidades] = useState({});
+
+  // const [quantidades, setQuantidades] = useState({});
+
+
+  const handleQuantityChange = (newQuantities) => {
+    setQuantidades(newQuantities);
+    const newTotal = Object.values(newQuantities).reduce((acc, cur) => acc + cur, 0);
+    setTotalItens(newTotal);
+  };
+
+  async function fetchData() {
+    const colunasDoBancoETP = ['Código', 'Nome', 'Modelo', 'Tamanho', 'Cor', 'Preço', 'Loja', 'N.Itens'];
+
+    try {
+      const response = await ApiRequest.etpsGetAll();
+
+      if (response.status === 200) {
+        const dados = response.data;
+
+        const filtrarDadosETP = dados.map(obj => ({
+          codigo: obj.codigo,
+          nome: obj.nome,
+          modelo: obj.modelo,
+          tamanho: obj.tamanho,
+          cor: obj.cor,
+          preco: obj.preco,
+          loja: obj.loja,
+          quantidade: obj.quantidade
+        }));
+
+        const ids = dados.map(obj => ({
+          id: obj.id
+        }))
+        
+        setIdEtps(ids);
+
+        setDadosFiltradosETP(filtrarDadosETP);
+      }
+    } catch (error) {
+      console.log("Erro ao buscar os dados", error);
+    }
+
+    setColunasETP(colunasDoBancoETP);
+  }
 
   useEffect(() => {
-
-    const colunasDoBanco = ['Cod.', 'Nome', 'Modelo', 'tam.', 'cor', 'preço', 'loja', 'N.Itens'];
-
-    const dadosDoBanco = [
-      { id: 1, coluna1: 'papete', coluna2: 'papete', coluna3: '37', coluna4: 'vermelho', coluna5: '200,00', coluna6: 'Pérola', coluna7: '20' },
-      { id: 2, coluna1: 'papete', coluna2: 'papete', coluna3: '37', coluna4: 'vermelho', coluna5: '200,00', coluna6: 'Pérola', coluna7: '20' },
-      { id: 3, coluna1: 'papete', coluna2: 'papete', coluna3: '37', coluna4: 'vermelho', coluna5: '200,00', coluna6: 'Pérola', coluna7: '20' },
-      { id: 4, coluna1: 'papete', coluna2: 'papete', coluna3: '37', coluna4: 'vermelho', coluna5: '200,00', coluna6: 'Pérola', coluna7: '20' },
-      { id: 5, coluna1: 'papete', coluna2: 'papete', coluna3: '37', coluna4: 'vermelho', coluna5: '200,00', coluna6: 'Pérola', coluna7: '20' },
-      { id: 6, coluna1: 'papete', coluna2: 'papete', coluna3: '37', coluna4: 'vermelho', coluna5: '200,00', coluna6: 'Pérola', coluna7: '20' },
-      { id: 7, coluna1: 'papete', coluna2: 'papete', coluna3: '37', coluna4: 'vermelho', coluna5: '200,00', coluna6: 'Pérola', coluna7: '20' },
-      { id: 8, coluna1: 'papete', coluna2: 'papete', coluna3: '37', coluna4: 'vermelho', coluna5: '200,00', coluna6: 'Pérola', coluna7: '20' },
-      { id: 9, coluna1: 'papete', coluna2: 'papete', coluna3: '37', coluna4: 'vermelho', coluna5: '200,00', coluna6: 'Pérola', coluna7: '20' },
-      { id: 10, coluna1: 'papete', coluna2: 'papete', coluna3: '37', coluna4: 'vermelho', coluna5: '200,00', coluna6: 'Pérola', coluna7: '20' },
-    ];
-
-    setColunas(colunasDoBanco);
-
-    setDados(dadosDoBanco);
-
+    fetchData();
   }, []);
+
+  const handleCadastrar = async () => {
+    console.log(quantidades);
+    const produtosParaCadastrar = idEtps.filter(idEtp => quantidades[idEtp.id] > 0);
+
+    if (produtosParaCadastrar.length === 0) {
+      Alert.alert(ErrorImage, "Adicione a quantidade de pelo menos um produto!");
+      return;
+    }
+
+    var etpsEQuantidade = [];
+
+    for (const [key, value] of Object.entries(quantidades)) {
+      console.log(`${key}: ${value}`);
+
+      etpsEQuantidade.push({
+        "idEtp": key,
+        "quantidade": value
+      })
+    }
+
+    const idLoja = localStorage.getItem("loja_id")
+
+    try {
+      const response = await ApiRequest.adicionarNoEstoque(true, idLoja, etpsEQuantidade);
+      if (response.status === 200) {
+        (() => {
+      
+        })();
+        Alert.alert(SucessImage, "Produtos adicionados no sistema!");
+      }
+    } catch (error) {
+      console.log("Erro ao cadastrar um produto: ", error);
+      Alert.alert(ErrorImage, "Erro ao cadastrar um produto!");
+    }
+  };
 
   return (
 
@@ -60,11 +129,17 @@ function ModalAddProdCart(props) {
         >Pesquisar</InputSearcModal>
       </div>
       <div className='w-[35rem] h-[18rem] border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto'>
-        <Tabela colunas={colunas} dados={dados} iptQuantidade></Tabela>
+      <TabelaModal
+          colunas={colunasETP}
+          dados={dadosFiltradosETP}
+          iptQuantidade
+          onQuantityChange={handleQuantityChange}
+          id={idEtps.map(({ ...id }) => id)}
+        />
       </div>
       <div className="w-[35rem] flex justify-end items-end mt-1 h-7">
         <ButtonClear>Limpar</ButtonClear>
-        <ButtonModal funcao={() => props.funcao(itemTeste)} >Adicionar</ButtonModal>
+        <ButtonModal funcao={() => totalItens.map(element => props.funcao(element))} >Adicionar</ButtonModal>
       </div>
 
     </div >
