@@ -32,6 +32,8 @@ function EstoqueGerente() {
     const [dadosDoBancoETP, setDadosDoBancoETP] = useState([]);
     const [dadosDoBancoModel, setDadosDoBancoModel] = useState([]);
     const [isProdutoSelected, setIsProdutoSelected] = useState(true);
+    const [etpsIds, setEtpsIds] = useState([]);
+    const [modelsIds, setModelsIds] = useState([]);
 
     async function fetchData() {
         const colunasDoBancoETP = ['Código', 'Nome', 'Modelo', 'Tamanho', 'Cor', 'Preço', 'Loja', 'Item Promo.',  'N.Itens'];
@@ -55,6 +57,9 @@ function EstoqueGerente() {
                         }
                     ));
 
+                const filtrarIdsEtps = dados.map(obj => ({id: obj.id}));
+                setEtpsIds(filtrarIdsEtps);
+
                 setDadosDoBancoETP(filtrarDados);
             }
         } catch (error) {
@@ -67,6 +72,9 @@ function EstoqueGerente() {
             if (responseModel.status === 200) {
                 const dados = responseModel.data;
                 setDadosDoBancoModel(dados);
+
+                const filtrarIdsModels = dados.map(obj => ({id: obj.id}));
+                setModelsIds(filtrarIdsModels);
             }
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
@@ -76,17 +84,7 @@ function EstoqueGerente() {
         setColunasModel(colunasDoBancoModel);
     }
 
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-    const updateTable = () => {
-        fetchData();
-    };
-
-    async function fetchDataFilter(filterData) {
-        console.log("Filtrando dados", filterData);
-        
+    async function fetchDataFilter(filterData) { 
         try {
             let response;
             if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
@@ -117,6 +115,49 @@ function EstoqueGerente() {
         }
     }
 
+    async function fetchDataFilterSearchProduto(filterData) {
+        if (filterData === "") {
+            fetchData();
+        } else {
+            const searchData = dadosDoBancoETP.filter((item) => {
+                const lowerCaseFilter = filterData.toLowerCase();
+                return (
+                    item.codigo.toLowerCase().includes(lowerCaseFilter) ||
+                    item.nome.toLowerCase().includes(lowerCaseFilter) ||
+                    item.modelo.toLowerCase().includes(lowerCaseFilter) ||
+                    item.cor.toLowerCase().includes(lowerCaseFilter) ||
+                    item.loja.toLowerCase().includes(lowerCaseFilter) 
+                );
+            });
+            setDadosDoBancoETP(searchData);
+        }
+    }
+
+    async function fetchDataFilterSearchModel(filterData) {
+        if (filterData === "") {
+            fetchData();
+        } else {
+            const searchData = dadosDoBancoModel.filter((item) => {
+                const lowerCaseFilter = filterData.toLowerCase();
+                return (
+                    item.codigo.toLowerCase().includes(lowerCaseFilter) ||
+                    item.nome.toLowerCase().includes(lowerCaseFilter) ||
+                    item.categoria.toLowerCase().includes(lowerCaseFilter) ||
+                    item.tipo.toLowerCase().includes(lowerCaseFilter) 
+                );
+            });
+            setDadosDoBancoModel(searchData);
+        }
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const updateTable = () => {
+        fetchData();
+    };
+
     const handleProdutoButtonClick = () => {
         setIsProdutoSelected(true);
     };
@@ -134,28 +175,27 @@ function EstoqueGerente() {
     };
 
     async function excluirEtp(etpId) {
-        console.log("etpId excluir:" + etpId.produtoId)
-        const idProduto = etpId.idProduto
         try {
-            const response = await ApiRequest.excluirProduto(idProduto);
+            const response = await ApiRequest.excluirETP(etpId.id);
             if (response.status === 200) {
                 console.log("Produto deletado");
             } else if (response.status === 409) {
                 Alert.alert(errorImage, "Este produto já foi excluido!");
             }
         } catch (error) {
-            console.log("Erro ao excluir um produto: ", error);
+            console.log("Erro ao excluir etp: ", error);
         }
     }
 
     async function excluirModel(modelId) {
-        const idModelo = modelId.idModelo
         try {
-            const response = await ApiRequest.modeloDelete(idModelo);
+            const response = await ApiRequest.modeloDelete(modelId.id);
             if (response.status === 200) {
                 console.log("Modelo deletado");
             } else if (response.status === 409) {
                 Alert.alert(errorImage, "Este modelo já foi excluido!");
+            } else if (response.status === 500) {
+                Alert.alert(errorImage, "Este modelo não pode ser excluido pois está associado a um produto!");
             }
         } catch (error) {
             console.log("Erro ao excluir um modelo: ", error);
@@ -233,15 +273,15 @@ function EstoqueGerente() {
                             </div>
 
                             <div className='flex gap-4 items-center'>
-                                <InputSearcModal props="text">Pesquisar</InputSearcModal>
+                                <InputSearcModal props="text" funcao={isProdutoSelected ? fetchDataFilterSearchProduto : fetchDataFilterSearchModel}>Pesquisar</InputSearcModal>
                                 <ButtonDownLoad func={isProdutoSelected ? csvProdutos : csvModelos} ></ButtonDownLoad>
                             </div>
                         </div>
                         <div className='w-full h-[50vh] mt-2 bg-slate-700 border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto rounded'>
                             {isProdutoSelected ? (
-                                <TabelaPage colunas={colunasETP} dados={dadosDoBancoETP.map(({ ...dados }) => dados)} edit={handleEditarEtp} remove={handleDeleteEtp} id={dadosDoBancoETP.map(({ ...dadosDoBancoETP }) => dadosDoBancoETP)}/>
+                                <TabelaPage colunas={colunasETP} dados={dadosDoBancoETP.map(({ ...dados }) => dados)} edit={handleEditarEtp} remove={handleDeleteEtp} id={etpsIds}/>
                             ) : (
-                                <TabelaPage colunas={colunasModel} dados={dadosDoBancoModel.map(({ id, ...dados }) => dados)}  edit={handleEditarModel} remove={handleDeleteModel} id={dadosDoBancoModel.map(({ ...dadosDoBancoModel }) => dadosDoBancoModel)}/>
+                                <TabelaPage colunas={colunasModel} dados={dadosDoBancoModel.map(({ id, ...dados }) => dados)} edit={handleEditarModel} remove={handleDeleteModel} id={modelsIds}/>
                             )}
                         </div>
                     </div>

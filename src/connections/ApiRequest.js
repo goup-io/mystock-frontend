@@ -909,7 +909,6 @@ export class ApiRequest {
     }
 
     static async modeloDelete(id) {
-
         try {
 
             const resposta = await axios.delete(springEndPoint + `/modelos/${id}`, {
@@ -1850,7 +1849,7 @@ export class ApiRequest {
 
     static async kpisGetAll(){
         try {
-            
+
             const resposta = await axios.get(springEndPoint + "/dashboards/dashboard-geral/kpis", {
                 headers: header
             });
