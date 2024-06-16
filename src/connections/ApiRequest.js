@@ -1378,6 +1378,20 @@ export class ApiRequest {
         }
     }
 
+    static async getPagamentoFluxoCaixa(idVenda) {
+
+        try {
+            const resposta = await axios.get(springEndPoint + `/pagamentos/fluxo-pagamento/${idVenda}`,{
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
     // ***************************************************************************
     // *  PRODUTO-VENDA
     // ***************************************************************************
