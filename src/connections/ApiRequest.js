@@ -1794,6 +1794,47 @@ export class ApiRequest {
         }
     }
 
+    static async faturamentoPorLojamesAtual(){
+        try {
+
+            const resposta = await axios.get(springEndPoint + "/dashboards/dashboard-geral/faturamento-por-loja/mes-atual", {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async GraficomodelosMaisVendidos(){
+        try {
+
+            const resposta = await axios.get(springEndPoint + " /dashboards/dashboard-geral/modelos-mais-vendido", {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async GraficoFluxoEstoque(){
+        try {
+
+            const resposta = await axios.get(springEndPoint + " /dashboards/dashboard-geral/fluxo-estoque", {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
 
 
 }
