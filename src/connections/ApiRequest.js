@@ -1304,6 +1304,42 @@ export class ApiRequest {
         return resposta;
     }
 
+    static async getCsvModelos() {
+        const resposta = await axios.get(springEndPoint + "/csv/modelos", {
+            headers: header,
+            responseType: 'arraybuffer', // Add this line
+        });
+
+        return resposta;
+    }
+
+    static async getCsvModelosByLoja(idLoja) {
+        const resposta = await axios.get(springEndPoint + `/csv/modelos/${idLoja}`, {
+            headers: header,
+            responseType: 'arraybuffer', // Add this line
+        });
+
+        return resposta;
+    }
+
+    static async getCsvTransferencias() {
+        const resposta = await axios.get(springEndPoint + "/csv/transferencias", {
+            headers: header,
+            responseType: 'arraybuffer', // Add this line
+        });
+
+        return resposta;
+    }
+
+    static async getCsvTransferenciasByLoja(idLoja) {
+        const resposta = await axios.get(springEndPoint + `/csv/transferencias-por-loja/${idLoja}`, {
+            headers: header,
+            responseType: 'arraybuffer', // Add this line
+        });
+
+        return resposta;
+    }
+
 
 
 
