@@ -91,7 +91,7 @@ const Rotas = () => {
                     <Route index element={<Login />} />
                     <Route path="/venda" element={<Venda />} />
                     <Route path="/venda/caixa" element={<Caixa />} />
-                    <Route path="/venda/pagamento" element={<Pagamento />} />
+                    <Route path="/venda/pagamento/:idVenda" element={<Pagamento />} />
                 </Route>
 
                 <Route path="/" element={<App />}>

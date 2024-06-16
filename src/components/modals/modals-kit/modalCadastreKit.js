@@ -12,7 +12,6 @@ import Alert from '../../alerts/Alert.js'
 import errorImage from "../../../assets/error.png"
 
 function ModalCadastreKit() {
-
     const [colunas, setColunas] = useState([]);
     const [dados, setDadosDoBanco] = useState([]);
     const [dadosFiltrados, setDadosFiltrados] = useState([]);
@@ -59,7 +58,7 @@ function ModalCadastreKit() {
     }
 
     const handleDeleteKit = (kitId) => {
-        Alert.alertQuestion("Deseja excluir esse kit? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluir(etpId), () => updateTable())
+//        Alert.alertQuestion("Deseja excluir esse kit? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluir(etpId), () => updateTable())
     }
 
     useEffect(() => {

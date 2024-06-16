@@ -3,6 +3,22 @@ import Header from '../../header/Header.js'
 
 import Button from '../../buttons/buttonsModal.js'
 import ItemSeparadoPorLinhaTracejada from '../../tables/ItemSeparadoPorLinhaTracejada.js'
+import ApiRequest from "../../../connections/ApiRequest.js"
+import AbrirModalPaymentPix from '../../modals/modals-pagamento/modalPaymentPix.js'
+import React, { useState, useEffect } from 'react';
+import { useParams, useLocation } from 'react-router-dom'
+import Swal from 'sweetalert2'
+import { useNavigate } from 'react-router-dom';
+
+
+
+
+
+
+//MODAIS
+import PaymentCashModal from '../../modals/modals-pagamento/modalPaymentCash.js'
+import PaymentCardModal from '../../modals/modals-pagamento/modalPaymentCard.js'
+import PaymentPixModal from '../../modals/modals-pagamento/modalPaymentPix.js'
 
 var divPai = {
     display: "grid",
@@ -44,11 +60,138 @@ function CaixaTexto(props) {
     )
 }
 
+
+
+
 function Pagamento() {
+
+    //FLUXO DE PAGAMENTO
+
+    const [tipoPagamento, setTipoPagamento] = useState([]);
+    const [venda, setVenda] = useState();
+    const [dinheiro, setDinheiro] = useState(-1);
+    const [pix, setPix] = useState(-1);
+    const [valorTotal, setValorTotal] = useState(0);
+    const [valorPago, setValorPago] = useState(0);
+    //const [valorRestante, setValorRestante] = useState(0);
+
+    const { idVenda } = useParams();
+    const location = useLocation();
+    const { state } = location;
+    const vendaId = state ? state.idVenda : null;
+
+    const [fluxoPagamento, setFluxoPagamento] = useState([]);
+
+    async function fetchVenda() {
+
+        try {
+            const response = await ApiRequest.detalhamentosVendas(idVenda);
+
+
+            if (response.status === 200) {
+                const dados = response.data;
+                setVenda(dados);
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+    }
+
+
+
+    async function fetchTipoPagamento() {
+
+        try {
+            const response = await ApiRequest.getTipoPagamento();
+
+            if (response.status === 200) {
+                const dados = response.data;
+
+
+                const idPix = dados.filter((tipoVenda) => tipoVenda.metodo.toUpperCase() === "PIX")
+                const idDinheiro = dados.filter((tipoVenda) => tipoVenda.metodo.toUpperCase() === "DINHEIRO")
+
+                setPix(idPix[0].id);
+                setDinheiro(idDinheiro[0].id);
+                setTipoPagamento(dados);
+
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+    }
+
+    const navigate = useNavigate();
+
+    async function fetchFluxoPagamento() {
+        try {
+            const response = await ApiRequest.getPagamentoFluxoCaixa(idVenda);
+            if (response.status === 200) {
+                const dados = response.data;
+                var valorPago2 = 0;
+                // var valorRestante = 0;
+                dados.forEach((pagamento) => {
+                    valorPago2 += pagamento.valor;
+                });
+                //valorRestante = venda ? venda.valorTotal - valorPago : 0;
+                setValorPago(valorPago2);
+                //setValorRestante(valorRestante);
+                setFluxoPagamento(dados);
+
+               // if (valorTotal <= valorPago2) {
+                  //  console.log("Venda finalizada");
+                  //  finalizarVenda();
+              //  }
+
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+    }
+
+    async function finalizarVenda() {
+        try {
+            const response = await ApiRequest.pagamentoFinalizar(idVenda);
+            if (response.status === 200) {
+                const dados = response.data;
+              /*  Swal.fire({
+                    title: "Venda finalizada",
+                    text: `Pagamento de R$ ${valorTotal} finalizado com sucesso`,
+                    icon: "success",
+                    confirmButtonText: "OK",
+                });
+                navigate(`/venda/caixa`);
+                */
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+    }
+
+    const fetchPagamentoRealizado = () => {
+        fetchVenda();
+        fetchTipoPagamento();
+        fetchFluxoPagamento();
+
+    }
+
+
+    useEffect(() => {
+        fetchVenda();
+        fetchTipoPagamento();
+        fetchFluxoPagamento();
+    }, []);
+
+
+    useEffect(() => {
+        setValorTotal(venda ? venda.valorTotal : 0);
+    }, [venda]);
+
+
 
     return (
         <PageLayout>
-            <Header telaAtual="Área de Venda - Pagamento" tipo="caixa"/>
+            <Header telaAtual="Área de Venda - Pagamento" tipo="caixa" />
             <div className="bg-[#fff] w-full h-[75vh] shadow-sm rounded-md px-12 py-6">
                 <CaixaTexto titulo="PAGAR COM :">
                     <div style={divPai} className="h-full ">
@@ -61,64 +204,64 @@ function Pagamento() {
                                 <div className="flex flex-col gap-2">
                                     <ItemSeparadoPorLinhaTracejada
                                         infoEsquerda={"Horario"}
-                                        infoDireita={"12:12:12"}
+                                        infoDireita={venda ? venda.hora : "00:00:00"}
                                     />
                                     <ItemSeparadoPorLinhaTracejada
                                         infoEsquerda={"Vendedor"}
-                                        infoDireita={"Fabio O."}
+                                        infoDireita={venda ? venda.nomeVendedor : "Vendedor"}
                                     />
                                     <ItemSeparadoPorLinhaTracejada
                                         infoEsquerda={"Tp. de Venda"}
-                                        infoDireita={"Varejo"}
+                                        infoDireita={venda ? venda.tipoVenda : "Venda"}
                                     />
                                     <ItemSeparadoPorLinhaTracejada
                                         infoEsquerda={"Quant. Itens"}
-                                        infoDireita={"4"}
+                                        infoDireita={venda ? venda.qtdItens : "0"}
                                     />
                                     <ItemSeparadoPorLinhaTracejada
                                         infoEsquerda={"Valor Total"}
-                                        infoDireita={"R$ 400,00"}
+                                        infoDireita={venda ? "R$ " + venda.valorTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "R$ 0,00"}
                                     />
                                     <ItemSeparadoPorLinhaTracejada
                                         infoEsquerda={"Valor Pago"}
-                                        infoDireita={"R$ 395,00"}
+                                        infoDireita={"R$ " + valorPago.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                     />
                                 </div>
                                 <div className='text-left'>
                                     <p className='text-[1rem] font-medium'>Fluxo de pagamento</p>
                                     <div className='bg-[#CFD0D9] h-[20vh] flex flex-col gap-2 p-3 rounded-md overflow-y-auto'>
-                                        <ItemSeparadoPorLinhaTracejada
-                                            infoEsquerda={"1. Dinheiro"}
-                                            infoDireita={"R$ 35,00  1x"}
-                                        />
-                                        <ItemSeparadoPorLinhaTracejada
-                                            infoEsquerda={"2. Crédito"}
-                                            infoDireita={"R$ 350,00  4x"}
-                                        />
-                                        <ItemSeparadoPorLinhaTracejada
-                                            infoEsquerda={"3. Débito"}
-                                            infoDireita={"R$ 10,00  1x"}
-                                        />
+                                        {fluxoPagamento && fluxoPagamento.map((pagamento, index) =>
+                                            <ItemSeparadoPorLinhaTracejada
+                                                infoEsquerda={(index + 1) + " " + pagamento.tipoPagamento}
+                                                infoDireita={"R$ " + pagamento.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " " + pagamento.qtdParcelas + "x"}
+                                            />
+                                        )}
                                     </div>
                                 </div>
                             </div>
                             <div>
-                                <hr className='border-2 border-[#8E9BAB] my-2'/>
+                                <hr className='border-2 border-[#8E9BAB] my-2' />
                                 <div className="flex flex-row justify-between">
                                     <p className="text-left font-semibold text-[1.6rem]">Restante à Pagar: </p>
-                                    <p className="text-left font-semibold text-[1.5rem]">R$ --{ }</p>
+                                    <p className="text-left font-semibold text-[1.5rem]">{"R$" + (valorTotal - valorPago).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                                 </div>
                             </div>
                         </div>
+
                         <div style={div2} className="flex flex-col text-2xl justify-center font-semibold cursor-pointer bg-[#E7E7E7] rounded-md duration-150 ease-in-out hover:scale-[1.02] hover:bg-[#E1E1E1]">
-                            <p>DINHEIRO</p>
-                            <p>F1</p>
+                            <a onClick={PaymentCashModal}>
+                                <p>DINHEIRO</p>
+                                <p>(F1)</p>
+                            </a>
                         </div>
+
                         <div style={div3} className="flex flex-col text-2xl justify-center font-semibold cursor-pointer bg-[#E7E7E7] rounded-md duration-150 ease-in-out hover:scale-[1.02] hover:bg-[#E1E1E1]">
-                            <p>CARTÃO</p>
-                            <p>F2</p>
+                            <a onClick={PaymentCardModal}>
+                                <p>CARTÃO</p>
+                                <p>(F2)</p>
+                            </a>
                         </div>
-                        <div style={div4} className="flex flex-col text-2xl justify-center font-semibold cursor-pointer bg-[#E7E7E7] rounded-md duration-150 ease-in-out hover:scale-[1.02] hover:bg-[#E1E1E1]">
+                        <div style={div4} onClick={() => AbrirModalPaymentPix(idVenda, pix, 1, valorPago, venda ? venda.valorTotal : 0, (valorTotal - valorPago), fetchPagamentoRealizado)} className="flex flex-col text-2xl justify-center font-semibold cursor-pointer bg-[#E7E7E7] rounded-md duration-150 ease-in-out hover:scale-[1.02] hover:bg-[#E1E1E1]">
                             <p>PIX</p>
                             <p>F3</p>
                         </div>
