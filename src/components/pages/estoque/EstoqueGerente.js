@@ -110,6 +110,7 @@ function EstoqueGerente() {
 
             } else if (response.status === 204) {
                 Alert.alertTop(true, "Nenhum produto encontrado com os filtros aplicados!");
+                fetchData();
             }
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
@@ -132,7 +133,8 @@ function EstoqueGerente() {
         AbrirModalEditModel(modelId.id, updateTable);
     };
 
-    async function excluir(etpId) {
+    async function excluirEtp(etpId) {
+        console.log("etpId excluir:" + etpId.produtoId)
         const idProduto = etpId.idProduto
         try {
             const response = await ApiRequest.excluirProduto(idProduto);
@@ -146,10 +148,10 @@ function EstoqueGerente() {
         }
     }
 
-    async function excluir(modelId) {
+    async function excluirModel(modelId) {
         const idModelo = modelId.idModelo
         try {
-            const response = await ApiRequest.excluirProduto(idModelo);
+            const response = await ApiRequest.modeloDelete(idModelo);
             if (response.status === 200) {
                 console.log("Modelo deletado");
             } else if (response.status === 409) {
@@ -161,11 +163,11 @@ function EstoqueGerente() {
     }
 
     const handleDeleteEtp = (etpId) => {
-        Alert.alertQuestion("Deseja excluir esse produto? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluir(etpId), () => updateTable())
+        Alert.alertQuestion("Deseja excluir esse produto? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluirEtp(etpId), () => updateTable())
     }
 
     const handleDeleteModel = (modelId) => {
-        Alert.alertQuestion("Deseja excluir esse modelo? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluir(modelId), () => updateTable())
+        Alert.alertQuestion("Deseja excluir esse modelo? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluirModel(modelId), () => updateTable())
     }
 
     async function csvProdutos() {
