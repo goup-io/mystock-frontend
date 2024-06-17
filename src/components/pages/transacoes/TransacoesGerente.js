@@ -8,9 +8,11 @@ import InputSearcModal from '../../inputs/inputSearchModal.js';
 import TabelaPage from '../../tables/tablePage.js';
 import Filter from '../../inputs/filter.js';
 
+import AbrirModalRequestProd from '../../modals/modalRequestProd.js';
+
 function HistoricoVendasGerente() {
     const buttons = [
-        { label: "NOVO PEDIDO" },
+        { label: "NOVO PEDIDO", event: AbrirModalRequestProd},
     ];
 
     const [colunas, setColunas] = useState([]);
@@ -65,7 +67,35 @@ function HistoricoVendasGerente() {
     const qtdTransferenciasPendente = dados.filter(dado => dado.status == 'PENDENTE').length;
 
     async function csvTransferencias() {
-        alert("Implementar lógica csv!");
+        try { 
+            let response;
+            if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
+                response = await ApiRequest.getCsvTransferencias();
+            } else {
+                response = await ApiRequest.getCsvTransferenciasByLoja(localStorage.getItem('visao_loja'));
+            }
+    
+            if (response.status === 200) {
+                const csvData = new TextDecoder('utf-8').decode(new Uint8Array(response.data));
+                const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+    
+                // Get current date and format it as YY_mm_dd
+                const date = new Date();
+                const formattedDate = `${date.getFullYear()}_${date.getMonth() + 1}_${date.getDate()}`;
+    
+                link.setAttribute('download', `Transferencias_${formattedDate}.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+    
+            } 
+
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
     }
 
     return (

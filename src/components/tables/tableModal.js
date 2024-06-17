@@ -46,7 +46,7 @@ function TabelaModal({ colunas, dados, edit, remove, iptQuantidade, onQuantityCh
           ))}
           {edit && <th>Editar</th>}
           {remove && <th>Remover</th>}
-          {iptQuantidade && <th>Quantidade</th>}
+          {iptQuantidade && <th>Quant.</th>}
         </tr>
       </thead>
       <tbody className='text-xs'>

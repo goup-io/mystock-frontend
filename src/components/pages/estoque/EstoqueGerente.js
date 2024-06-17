@@ -126,7 +126,8 @@ function EstoqueGerente() {
                     item.nome.toLowerCase().includes(lowerCaseFilter) ||
                     item.modelo.toLowerCase().includes(lowerCaseFilter) ||
                     item.cor.toLowerCase().includes(lowerCaseFilter) ||
-                    item.loja.toLowerCase().includes(lowerCaseFilter) 
+                    item.loja.toLowerCase().includes(lowerCaseFilter) ||
+                    item.itemPromocional.toLowerCase().includes(lowerCaseFilter)
                 );
             });
             setDadosDoBancoETP(searchData);
