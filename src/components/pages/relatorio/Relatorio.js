@@ -5,6 +5,13 @@ import imgPageRelatorios from '../../../assets/icons/svg_page_relatorios.png'
 import ButtonModal from '../../buttons/buttonsModal.js'
 import React, { useState } from 'react';
 
+//RELATORIO
+import RelatorioGeral from '../../pdf/relatorioGeral.js'
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+import htmlToPdfmake from 'html-to-pdfmake';
+import ReactDOMServer from 'react-dom/server';
+
 function Relatorio() {
     const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
     const mesAtual = new Date().getMonth();
@@ -33,6 +40,38 @@ function Relatorio() {
     const handleModelo = (event) => {
         setModeloSelecionado(event.target.value); // Atualiza o estado do modelo selecionado
     };
+
+
+    const downloadFileFromResponseObjectPdf = (responseObject, fileName) => {
+        // const link = document.createElement("a");
+        // const url = window.URL.createObjectURL(
+        // new Blob([responseObject.data], { type: "application/pdf" })
+        // );
+        // link.href = url;
+        // link.setAttribute("download", fileName);
+        // document.body.appendChild(link);
+        // link.click();
+        // document.body.removeChild(link);
+
+        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
+        const htmlString = ReactDOMServer.renderToStaticMarkup(responseObject);
+        const pdfContent = htmlToPdfmake(htmlString);    
+        const docDefinition = { content: pdfContent };
+        
+        pdfMake.createPdf(docDefinition).download(fileName);
+    };
+    
+    const handleFileDownload = () => {
+        // const simulatedResponse = {
+        // data: new Uint8Array([RelatorioGeral ])
+        // };
+        // downloadFileFromResponseObjectPdf(simulatedResponse, "Relatorio.pdf");
+    
+        downloadFileFromResponseObjectPdf(<RelatorioGeral />, 'Relatorio.pdf');
+    };
+    
+
 
     return (
         <>
@@ -126,7 +165,9 @@ function Relatorio() {
                                     </select>
                                 </div>
                                 <div className='w-full flex flex-col bottom-0'>
-                                    <ButtonModal>GERAR RELATÓRIO</ButtonModal>
+                                    <ButtonModal
+                                        funcao={handleFileDownload}
+                                    >GERAR RELATÓRIO</ButtonModal>
                                 </div>
                             </form>
                         </div>
