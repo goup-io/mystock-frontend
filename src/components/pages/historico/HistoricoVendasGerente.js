@@ -15,8 +15,9 @@ import React, { useState, useEffect } from 'react';
 function HistoricoVendasGerente() {
     const [colunas, setColunas] = useState([]);
     const [dadosDoBanco, setDadosDoBanco] = useState([]);
+    const [idsDados, setIdsDados] = useState([]);
 
-        async function fetchData() {
+    async function fetchData() {
         const colunas = ['Data', 'Horário', 'Vendedor', 'Tipo Venda', 'N. Itens', 'Valor', 'Status'];
 
         try {
@@ -34,10 +35,12 @@ function HistoricoVendasGerente() {
                     .map(obj => (
                         {
                             data: obj.data, horario: obj.hora, vendedor: obj.nomeVendedor, tipoVenda: obj.tipoVenda.tipo, qtdItens: obj.qtdItens, valor: obj.valor, status: obj.statusVenda
-                            
                         }
                     ));
 
+                const filtrarIds = dados.map(obj => ({id: obj.id}));
+
+                setIdsDados(filtrarIds)
                 setDadosDoBanco(filtrarDados);
             }
         } catch (error) {
@@ -80,7 +83,7 @@ function HistoricoVendasGerente() {
                         </div>
 
                         <div className='w-full h-[50vh] mt-2 bg-slate-700 border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto rounded'>
-                            <TabelaPage colunas={colunas} dados={dadosDoBanco} status verMais={handleDetailsVenda} troca cancel id={0} /> 
+                            <TabelaPage colunas={colunas} dados={dadosDoBanco.map(({ ...dados }) => dados)} status verMais={handleDetailsVenda} troca cancel id={idsDados} /> 
                         </div>
                     </div>
                 </ChartBox>

@@ -558,6 +558,44 @@ export class ApiRequest {
 
     }
 
+    static async etpsGetFiltrados(modelo, tamanho, cor, precoInicio, precoFim, lojaId) {
+        try {
+            let queryParams = [];
+
+            if (modelo !== '') {
+                queryParams.push(`modelo=${modelo}`);
+            }
+            if (cor !== '') {
+                queryParams.push(`cor=${cor}`);
+            }
+            if (tamanho !== '') {
+                queryParams.push(`tamanho=${tamanho}`);
+            }
+            if (precoInicio !== '') {
+                queryParams.push(`precoMinimo=${precoInicio}`);
+            }
+            if (precoFim !== '') {
+                queryParams.push(`precoMaximo=${precoFim}`);
+            }
+            if (lojaId !== '') {
+                queryParams.push(`id_loja=${lojaId}`);
+            }
+
+            const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
+
+            const resposta = await axios.get(springEndPoint + `/etps/filtro${queryString}`, { 
+                headers: header 
+            });
+
+            return resposta;
+        } catch (erro) {
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
+        }
+    }
+
     static async excluirETP(id) {
         try {
             const resposta = await axios.delete(springEndPoint + "/etps/" + id, {
@@ -565,7 +603,6 @@ export class ApiRequest {
             });
 
             return resposta;
-
         } catch (erro) {
             return {
                 status: erro.response.status,
@@ -872,7 +909,6 @@ export class ApiRequest {
     }
 
     static async modeloDelete(id) {
-
         try {
 
             const resposta = await axios.delete(springEndPoint + `/modelos/${id}`, {
@@ -1498,6 +1534,21 @@ export class ApiRequest {
         }
     }
 
+    static async vendaDetalhamentoGetById(idVenda) {
+
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/vendas/detalhamento/${idVenda}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
     static async vendaCreate(desconto, tipoVendaId, codigoVendedor, produtoVendaReq) {
 
         try {
@@ -1759,6 +1810,37 @@ export class ApiRequest {
         }
     }
 
+    // ***************************************************************************
+    // *  AVISOS / ALERTAS
+    // ***************************************************************************
+
+    static async alertasGetAll(){
+        try {
+
+            const resposta = await axios.get(springEndPoint + "/alertas", {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async alertasGetAllByLoja(idLoja){
+        try {
+            
+            const resposta = await axios.get(springEndPoint + `/alertas/loja/${idLoja}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
 
     
     // ***************************************************************************
@@ -1794,8 +1876,21 @@ export class ApiRequest {
         }
     }
 
+    static async faturamentoMesVigenteFuncionario(idFuncionario){
+        try {
 
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-funcionario/${idFuncionario}/faturamento-mes-atual`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
 
 }
+
 
 export default ApiRequest;

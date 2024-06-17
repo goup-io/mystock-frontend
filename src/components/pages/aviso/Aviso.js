@@ -6,7 +6,33 @@ import Filter from '../../inputs/filter.js'
 import InputSearcModal from '../../inputs/inputSearchModal.js'
 import ModalAviso from '../../alerts/ModalAviso.js'
 
+import React, { useState, useEffect } from 'react';
+import ApiRequest from '../../../connections/ApiRequest.js'
+
 function Aviso() {
+    const [dadosDoBanco, setDadosDoBanco] = useState([]);
+
+    async function fetchData() {
+        try {
+            let response;
+            if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
+                response = await ApiRequest.alertasGetAll();
+            } else {
+                response = await ApiRequest.alertasGetAllByLoja(localStorage.getItem('visao_loja'));
+            }
+
+            if (response.status === 200) {
+                const dados = response.data;
+                setDadosDoBanco(dados);
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     const avisos = [
         {tipo: 'Vermelho', titulo: 'Baixo Estoque', descricao: 'O Air max 200 tamanho 45 possuem apenas 5 pares em estoque.', dataHora: '02/05/2024 17:57:12'},

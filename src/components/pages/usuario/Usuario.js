@@ -49,7 +49,7 @@ function Usuario() {
 
 
     async function fetchData() {
-        const colunasDoBanco = ['Código', 'Nome', 'Email', 'Celular', 'Cargo', 'Loja', 'Usuario'];
+        const colunasDoBanco = ['Código', 'Nome', 'Email', 'Celular', 'Loja', 'Cargo', 'Usuario'];
 
         try {
             let response;
@@ -74,6 +74,25 @@ function Usuario() {
         console.log(id);
     }
 
+    async function fetchDataFilterSearch(filterData) {
+        if (filterData === "") {
+            fetchData();
+        } else {
+            const searchData = dados.filter((item) => {
+                const lowerCaseFilter = filterData.toLowerCase();
+                return (
+                    // item.codigo.includes(lowerCaseFilter) ||
+                    item.nome.toLowerCase().includes(lowerCaseFilter) ||
+                    item.email.toLowerCase().includes(lowerCaseFilter) ||
+                    item.cargo.toLowerCase().includes(lowerCaseFilter) ||
+                    // item.loja.toLowerCase().includes(lowerCaseFilter) ||
+                    item.usuario.toLowerCase().includes(lowerCaseFilter)
+                );
+            });
+            setDados(searchData);
+        }
+    }
+
     useEffect(() => {
         fetchData();
     }, []);
@@ -96,7 +115,7 @@ function Usuario() {
                             <p className='font-medium text-lg'>USUÁRIOS CADASTRADOS:</p>
 
                             <div className='flex gap-4 items-center'>
-                                <InputSearcModal props="text">Pesquisar</InputSearcModal>
+                                <InputSearcModal props="text" funcao={fetchDataFilterSearch}>Pesquisar</InputSearcModal>
                                 <ButtonDownLoad func={csvTodosUsuarios} ></ButtonDownLoad>
                             </div>
 
