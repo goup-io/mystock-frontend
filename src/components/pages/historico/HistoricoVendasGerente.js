@@ -133,7 +133,7 @@ function HistoricoVendasGerente() {
                 <TitleBox title="Histórico de Vendas"></TitleBox>
 
                 <div className='w-full flex md:flex-row md:justify-center rounded-md py-4 px-6  shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] items-center text-sm bg-white'>
-                    <Filter data horario vendedor tipoVenda></Filter>
+                    <Filter data horario vendedor tipoVenda statusVenda></Filter>
                 </div>
 
                 <ChartBox>

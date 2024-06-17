@@ -1676,6 +1676,50 @@ export class ApiRequest {
         }
     }
 
+    static async vendaGetByFilter(dataInicio, dataFim, horaInicio, horaFim, vendedor, tipoVenda, status, lojaId) {
+        let queryParams = [];
+
+        if (dataInicio !== '') {
+            queryParams.push(`dataInicio=${dataInicio}`);
+        }
+        if (dataFim !== '') {
+            queryParams.push(`dataFim=${dataFim}`);
+        }
+
+        if (horaInicio !== '') {
+            queryParams.push(`horaInicio=${horaInicio}`);
+        }
+        if (horaFim !== '') {
+            queryParams.push(`horaFim=${horaFim}`);
+        }
+        if (vendedor !== '') {
+            queryParams.push(`id_vendedor=${vendedor}`);
+        }
+        if (tipoVenda !== '') {
+            queryParams.push(`tipoVenda=${tipoVenda}`);
+        }
+        if (status !== '') {
+            queryParams.push(`status=${status}`);
+        }
+        if (lojaId !== '') {
+            queryParams.push(`id_loja=${lojaId}`);
+        }
+
+        const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
+
+        try {
+            const resposta = await axios.get(springEndPoint + `/transferencias/filtro${queryString}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+
     // ***************************************************************************
     // *  TRANSFERENCIA
     // ***************************************************************************
@@ -1699,10 +1743,10 @@ export class ApiRequest {
         let queryParams = [];
 
         if (dataInicio !== '') {
-            queryParams.push(`dataInicio=${dataInicio}`);
+            queryParams.push(`dataInicio=${dataInicio}T00:00:00`);
         }
         if (dataFim !== '') {
-            queryParams.push(`dataFim=${dataFim}`);
+            queryParams.push(`dataFim=${dataFim}T23:59:59`);
         }
         if (modelo !== '') {
             queryParams.push(`modelo=${modelo}`);
@@ -1761,7 +1805,6 @@ export class ApiRequest {
     static async transferenciaAprovar(idTransferencia, requestBody) {
 
         try {
-
             const resposta = await axios.post(springEndPoint + `/transferencias/${idTransferencia}/aprovar`, requestBody, {
                 headers: header
             });

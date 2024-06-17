@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ButEdit from '../buttons/buttonEdit';
 import ButtonModal from '../buttons/buttonsModal';
 import ImgNegar from '../../assets/negate.png';
@@ -27,6 +27,8 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, nega
         return 'bg-slate-500 border-slate-700';
     }
   };
+
+  const [qtdSolicitadaTransf, setQtdSolicitadaTransf] = useState(0);
 
   return (
     <table className='w-full'>
@@ -76,7 +78,7 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, nega
             )}
             {aceitar && (
               <td>
-                <button onClick={() => aceitar(id[index])} className='h-5 w-5 duration-150 ease-in-out hover:scale-[1.05]'>
+                <button onClick={() => aceitar(id[index], dados[index].nSolic)} className='h-5 w-5 duration-150 ease-in-out hover:scale-[1.05]'>
                   <img src={ImgAceitar}></img>
                 </button>
               </td>

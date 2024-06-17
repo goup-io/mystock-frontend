@@ -9,11 +9,12 @@ import TabelaPage from '../../tables/tablePage.js';
 import Filter from '../../inputs/filter.js';
 
 import AbrirModalRequestProd from '../../modals/modalRequestProd.js';
+import AbrirModalLiberarTransferencia from '../../modals/modalLiberarTransferencia.js';
 import Alert from '../../alerts/Alert.js';
 
 function HistoricoVendasGerente() {
     const buttons = [
-        { label: "NOVO PEDIDO", event: AbrirModalRequestProd},
+        { label: "NOVO PEDIDO", event: AbrirModalRequestProd },
     ];
 
     const [colunas, setColunas] = useState([]);
@@ -30,7 +31,7 @@ function HistoricoVendasGerente() {
     };
 
     async function fetchData() {
-        const colunasDoBanco = ['Data', 'Solicitante', 'Destinatário', 'Cod.Modelo', 'Cor', 'Tamanho', 'N.Solic.', 'N.Lib.', 'Liberador', 'Coletor', 'Status'];
+        const colunasDoBanco = ['Data', 'Solicitante', 'Liberadora', 'Cod.Modelo', 'Cor', 'Tamanho', 'N.Solic.', 'N.Lib.', 'Liberador', 'Coletor', 'Status'];
 
         try {
             let response;
@@ -43,14 +44,14 @@ function HistoricoVendasGerente() {
             if (response.status === 200) {
                 const dados = response.data.map(item => ({
                     data: item.dataHora,
-                    solicitante: item.loja_liberadora,
-                    destinatario: item.loja_coletora,
+                    solicitante: item.loja_coletora,
+                    liberadora: item.loja_liberadora,
                     codModelo: item.etp.codigo,
                     cor: item.etp.cor,
                     tamanho: item.etp.tamanho,
                     nSolic: item.quantidadeSolicitada,
-                    nLib: item.quantidadeLiberada,
-                    liberador: item.liberador,
+                    nLib: item.quantidadeLiberada != null ? item.quantidadeLiberada : '---',
+                    liberador: item.liberador != null ?  item.liberador : '---',
                     coletor: item.coletor,
                     status: item.status.status,
                 }));
@@ -65,8 +66,7 @@ function HistoricoVendasGerente() {
         setColunas(colunasDoBanco);
     }
 
-    async function fetchDataFilter(filterData) { 
-        console.log(filterData);
+    async function fetchDataFilter(filterData) {
         try {
             let response;
             if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
@@ -115,7 +115,7 @@ function HistoricoVendasGerente() {
                     item.cor.toLowerCase().includes(lowerCaseFilter) ||
                     item.liberador.toLowerCase().includes(lowerCaseFilter) ||
                     item.coletor.toLowerCase().includes(lowerCaseFilter) ||
-                    item.status.toLowerCase().includes(lowerCaseFilter) 
+                    item.status.toLowerCase().includes(lowerCaseFilter)
                 );
             });
             setDados(searchData);
@@ -126,20 +126,14 @@ function HistoricoVendasGerente() {
         fetchData();
     }, []);
 
+    const updateTable = () => {
+        fetchData();
+    };
+
     const qtdTransferenciasPendente = dados.filter(dado => dado.status == 'PENDENTE').length;
 
-    async function aceitarTransferencia(id, requestBody) {
-        console.log(idsDadosPendentes)
-        console.log("Aceitar transferencia", id);
-        try {
-            const response = await ApiRequest.transferenciaAprovar(id, requestBody);
-            if (response.status === 200) {
-                fetchData();
-                Alert.alertTop(false, "Transferência aceita com sucesso!");
-            }
-        } catch (error) {
-            console.log("Erro ao buscar os dados", error);
-        }
+    const handleAceitarTransferencia = (id, qtdSolicitadaTransf) => {
+        AbrirModalLiberarTransferencia(id, qtdSolicitadaTransf, updateTable);
     }
 
     async function negarTransferencia(id, requestBody) {
@@ -155,34 +149,32 @@ function HistoricoVendasGerente() {
         }
     }
 
-
-
     async function csvTransferencias() {
-        try { 
+        try {
             let response;
             if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
                 response = await ApiRequest.getCsvTransferencias();
             } else {
                 response = await ApiRequest.getCsvTransferenciasByLoja(localStorage.getItem('visao_loja'));
             }
-    
+
             if (response.status === 200) {
                 const csvData = new TextDecoder('utf-8').decode(new Uint8Array(response.data));
                 const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-    
+
                 // Get current date and format it as YY_mm_dd
                 const date = new Date();
                 const formattedDate = `${date.getFullYear()}_${date.getMonth() + 1}_${date.getDate()}`;
-    
+
                 link.setAttribute('download', `Transferencias_${formattedDate}.csv`);
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-    
-            } 
+
+            }
 
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
@@ -231,7 +223,7 @@ function HistoricoVendasGerente() {
                                 {isHistoricoSelected ? (
                                     <TabelaPage colunas={colunas} dados={dados.filter(dado => dado.status !== 'PENDENTE')} />
                                 ) : (
-                                    <TabelaPage colunas={colunas} dados={dados.filter(dado => dado.status === 'PENDENTE')} negar={negarTransferencia} aceitar={aceitarTransferencia} id={idsDadosPendentes} />
+                                    <TabelaPage colunas={colunas} dados={dados.filter(dado => dado.status === 'PENDENTE')} aceitar={handleAceitarTransferencia} negar id={idsDadosPendentes} />
                                 )}
                             </div>
                         </div>

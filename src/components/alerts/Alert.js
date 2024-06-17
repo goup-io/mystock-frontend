@@ -155,6 +155,15 @@ export class Alert {
         }
     }
 
+    static alertError(titulo, mensagem){
+        Swal.fire({
+            icon: 'error',
+            title: titulo,
+            text: mensagem,
+            confirmButtonColor: "#355070"
+        });
+    }
+
 
 }
 

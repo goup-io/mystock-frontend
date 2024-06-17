@@ -198,7 +198,7 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
     };
 
     return (
-        <div className="w-full flex flex-wrap justify-between items-center text-center">
+        <div className="w-full flex flex-wrap justify-between items-center text-center gap-[5px]">
             {/* Seção dos filtros */}
             <div className="md:flex md:space-x-4 md:w-auto md:mb-0">
                 {data && (
