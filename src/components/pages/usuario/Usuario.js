@@ -11,6 +11,8 @@ import AbrirModalComission from '../../modals/modalComission.js'
 import ButtonDownLoad from '../../buttons/buttonDownLoad.js'
 import AbrirModalEditUser from '../../modals/modals-user/modalEditUser.js'
 
+import errorImage from "../../../assets/icons/error.svg"
+import SucessImage from '../../../assets/icons/sucess.svg'
 
 async function csvTodosUsuarios() {
     try {

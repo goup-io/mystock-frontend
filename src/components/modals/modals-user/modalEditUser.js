@@ -11,6 +11,10 @@ import { useEffect } from "react";
 import { useState } from "react";
 import ApiRequest from "../../../connections/ApiRequest";
 
+import Alert from '../../alerts/Alert.js'
+import ErrorImage from "../../../assets/icons/error.svg"
+import SucessImage from '../../../assets/icons/sucess.svg'
+
 function ModalEditUser({ id, onUpdate }) {
 
     // const navigate = useNavigate();
@@ -18,15 +22,13 @@ function ModalEditUser({ id, onUpdate }) {
     const [dadosCargo, setDadosCargo] = useState([]);
     const [nomesCargos, setNomeCargos] = useState([]);
     const [dadosLoja, setDadosLoja] = useState([]);
+    const [dadosUsuarios, setDadosUsuarios] = useState([])
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
     const [celular, setCelular] = useState("");
     const [cargo, setCargo] = useState("");
     const [loja, setLoja] = useState("");
     const [loading, setLoading] = useState(true);
-    const [idUser, setIdUser] = useState("");
-
-    const setters = [setNome, setEmail, setCelular, setDadosCargo, setLoja];
 
     function handleInputChange(event, setStateFunction) {
         setStateFunction(event.target.value);
@@ -66,14 +68,15 @@ function ModalEditUser({ id, onUpdate }) {
 
     async function fetchUser() {
         try {
-            const response = await ApiRequest.userGetAll(id);
+            const response = await ApiRequest.userGetById(id);
             if (response.status === 200) {
-                setNome(response.data.nome);
-                setEmail(response.data.email);
-                setCelular(response.data.celular);
-                setCargo(response.data.cargo);
-                setLoja(response.data.loja);
-                setIdUser(response.data.idUser);
+                const dados = response.data;
+                setDadosUsuarios(dados)
+                setNome(dados.nome);
+                setEmail(dados.email);
+                setCelular(dados.telefone);
+                setCargo(dados.cargo.nome);
+                setLoja(dados.loja.nome);
             }
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
@@ -81,12 +84,13 @@ function ModalEditUser({ id, onUpdate }) {
     }
 
     useEffect(() => {
+        console.log("OLHA O ID @@", id)
         fetchUser();
         fetchDadosCargoLoja();
     }, [])
 
 
-    const handleSave = async (idUser) => {
+    const handleSave = async () => {
         // usando a function find do javascript para percorrer uma lista de objetos baseado na verificação de uma key
         const cargoObj = dadosCargo.find(objCargo => objCargo.nome === cargo);
         const idCargo = cargoObj ? cargoObj.id : null;
@@ -101,6 +105,7 @@ function ModalEditUser({ id, onUpdate }) {
         }
 
         const objetoAdicionado = {
+            id,
             nome,
             email,
             celular,
@@ -108,18 +113,26 @@ function ModalEditUser({ id, onUpdate }) {
             idLoja
         };
 
-        try {
-            const response = await ApiRequest.userUpdate(idUser, objetoAdicionado);
-            console.log(response);
-            if (response.status === 200) {
-                Alert.alert(SucessImage, "Usuário atualizado!");
-                onUpdate();
-            } else if (response.status === 409) {
-                Alert.alert(ErrorImage, "Este usuário já está cadastrado!");
+        if (cargo.toLowerCase() === 'Vendedor'.toLowerCase()) {
+            try {
+                const response = await ApiRequest.userUpdate(id, objetoAdicionado);
+                if (response.status === 200) {
+                    Alert.alert(SucessImage, "Usuário atualizado!");
+                    onUpdate();
+                } else if (response.status === 400) {
+                    Alert.alert(ErrorImage, "Dados incorretos, não foi possível cadastrar!");
+                }
+            } catch (error) {
+                console.log("Erro ao atualizar um usuário: ", error);
+                if (error.response.status === 400) {
+                    Alert.alert(ErrorImage, "Dados incorretos, não foi possível cadastrar!");
+                }
             }
-        } catch (error) {
-            console.log("Erro ao cadastrar um usuário: ", error);
+        } else {
+            AbrirModalCadastreLogin(objetoAdicionado, true, onUpdate);
         }
+
+
     }
 
 
@@ -135,17 +148,27 @@ function ModalEditUser({ id, onUpdate }) {
                     <div className="flex justify-around">
                         <InputAndLabelModal
                             placeholder="digite o nome..."
+                            value={nome}
+                            handleInput={handleInputChange}
+                            handlerAtributeChanger={setNome}
                         >Nome</InputAndLabelModal>
                         <InputAndLabelModal
                             placeholder="digite o email..."
+                            value={email}
+                            handleInput={handleInputChange}
+                            handlerAtributeChanger={setEmail}
                         >Email</InputAndLabelModal>
                     </div>
                     <div className="flex justify-around">
                         <InputAndLabelModal
                             placeholder="digite o celular..."
+                            value={celular}
+                            handleInput={handleInputChange}
+                            handlerAtributeChanger={setCelular}
                         >Celular</InputAndLabelModal>
                         <ComboBoxModal
                             dadosBanco={dadosCargo.map(value => value.nome)}
+                            value={cargo}
                             handleChange={handleChangeCargo}
                         // id={dadosCargo.map(value => value.id)}
                         >Cargo</ComboBoxModal>
@@ -160,7 +183,7 @@ function ModalEditUser({ id, onUpdate }) {
                 </div>
                 <div className="w-[40rem] flex justify-end  h-6 ">
                     <ButtonClear
-                        setters={setters}
+                        setters={false}
                     >Limpar</ButtonClear>
                     <ButtonModal
                         funcao={handleSave}
