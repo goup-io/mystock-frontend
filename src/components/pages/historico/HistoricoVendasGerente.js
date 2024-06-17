@@ -51,6 +51,22 @@ function HistoricoVendasGerente() {
         setColunas(colunas);
     }
 
+    async function fetchDataFilterSearch(filterData) {
+        if (filterData === "") {
+            fetchData();
+        } else {
+            const searchData = dadosDoBanco.filter((item) => {
+                const lowerCaseFilter = filterData.toLowerCase();
+                return (
+                    item.vendedor.toLowerCase().includes(lowerCaseFilter) ||
+                    item.tipoVenda.toLowerCase().includes(lowerCaseFilter) ||
+                    item.status.toLowerCase().includes(lowerCaseFilter) 
+                );
+            });
+            setDadosDoBanco(searchData);
+        }
+    }
+
     useEffect(() => {
         fetchData();
     }, []);
@@ -98,8 +114,8 @@ function HistoricoVendasGerente() {
                             <p className='font-medium text-lg'>HISTÓRICO</p>
 
                             <div className='flex gap-4 items-center'>
-                                <InputSearcModal props="text">Pesquisar</InputSearcModal>
-                                <ButtonDownLoad func={csvHistoricoVendas} ></ButtonDownLoad>
+                                <InputSearcModal props="text" funcao={fetchDataFilterSearch}>Pesquisar</InputSearcModal>
+                                <ButtonDownLoad func={csvHistoricoVendas}></ButtonDownLoad>
                             </div>
                         </div>
 
