@@ -11,99 +11,117 @@ import { useEffect } from "react";
 import { useState } from "react";
 import ApiRequest from "../../../connections/ApiRequest";
 
-function ModalEditUser() {
+function ModalEditUser({ id, onUpdate }) {
 
-   // const navigate = useNavigate();
+    // const navigate = useNavigate();
 
-   const [dadosCargo, setDadosCargo] = useState([]);
-   const [nomesCargos, setNomeCargos] = useState([]);
-   const [dadosLoja, setDadosLoja] = useState([]);
-   const [nome, setNome] = useState("");
-   const [email, setEmail] = useState("");
-   const [celular, setCelular] = useState("");
-   const [cargo, setCargo] = useState("");
-   const [loja, setLoja] = useState("");
-   const [loading, setLoading] = useState(true);
+    const [dadosCargo, setDadosCargo] = useState([]);
+    const [nomesCargos, setNomeCargos] = useState([]);
+    const [dadosLoja, setDadosLoja] = useState([]);
+    const [nome, setNome] = useState("");
+    const [email, setEmail] = useState("");
+    const [celular, setCelular] = useState("");
+    const [cargo, setCargo] = useState("");
+    const [loja, setLoja] = useState("");
+    const [loading, setLoading] = useState(true);
+    const [idUser, setIdUser] = useState("");
 
-   const setters = [setNome, setEmail, setCelular, setDadosCargo, setLoja];
+    const setters = [setNome, setEmail, setCelular, setDadosCargo, setLoja];
 
-   function handleInputChange(event, setStateFunction) {
-       setStateFunction(event.target.value);
+    function handleInputChange(event, setStateFunction) {
+        setStateFunction(event.target.value);
 
-   }
+    }
 
-   const handleChangeCargo = (event) => {
-       setCargo(event.target.value);
-   };
+    const handleChangeCargo = (event) => {
+        setCargo(event.target.value);
+    };
 
-   const handleChangeLoja = (event) => {
-       setLoja(event.target.value);
-   };
-
-
-   async function fetchDadosCargoLoja() {
-       setLoading(true);
-       await ApiRequest.cargoGetAll().then((response) => {
-           if (response.status === 200) {
-               setDadosCargo(response.data);
-               console.log(dadosCargo);
-           }
-       }).catch((error) => {
-           console.log("Erro ao buscar os dados", error)
-       })
-
-       await ApiRequest.lojaGetAll().then((response) => {
-           if (response.status === 200) {
-               setDadosLoja(response.data)
-               setLoading(false);
-           }
-       }).catch((error) => {
-           console.log("caiu aqui", error)
-       })
-       setLoading(false);
-   }
-
-   useEffect(() => {
-       fetchDadosCargoLoja();
-   },[])
+    const handleChangeLoja = (event) => {
+        setLoja(event.target.value);
+    };
 
 
-   const handleSave = () => {
-       // usando a function find do javascript para percorrer uma lista de objetos baseado na verificação de uma key
-       const cargoObj = dadosCargo.find(objCargo => objCargo.nome === cargo);
-       const idCargo = cargoObj ? cargoObj.id : null;
-       
-       const lojaObj = dadosLoja.find(objLoja => objLoja.nome === loja);
-       const idLoja = lojaObj ? lojaObj.id : null;
-   
-       if(!idCargo || !idLoja || !nome || !email || !celular){
-           //todo: acionar modal de cadastro incorreto
-           alert("Preencha todos os campos corretamente")
-           return;
-       }
-       
-       const objetoAdicionado = {
-           nome,
-           email,
-           celular,
-           idCargo,
-           idLoja
-       };
+    async function fetchDadosCargoLoja() {
+        setLoading(true);
+        await ApiRequest.cargoGetAll().then((response) => {
+            if (response.status === 200) {
+                setDadosCargo(response.data);
+                console.log(dadosCargo);
+            }
+        }).catch((error) => {
+            console.log("Erro ao buscar os dados", error)
+        })
 
-       if (cargo.toLowerCase() === 'Vendedor'.toLowerCase()) {
-           ApiRequest.userCreate(objetoAdicionado).then((response) => {
-               if (response.status === 201) {
-                   alert("Usuário Cadastrado!!")
-                   //todo: mostrar modal de sucesso ao cadastrar
-               }
-           }).catch((error) => {
-               console.log("Erro ao cadastrar um usuário: ", error)
-               //todo: mostrar modal de erro ao cadastrar
-           });
-       } else {
-           AbrirModalCadastreLogin(objetoAdicionado);
-       }
-   }
+        await ApiRequest.lojaGetAll().then((response) => {
+            if (response.status === 200) {
+                setDadosLoja(response.data)
+                setLoading(false);
+            }
+        }).catch((error) => {
+            console.log("caiu aqui", error)
+        })
+        setLoading(false);
+    }
+
+    async function fetchUser() {
+        try {
+            const response = await ApiRequest.userGetAll(id);
+            if (response.status === 200) {
+                setNome(response.data.nome);
+                setEmail(response.data.email);
+                setCelular(response.data.celular);
+                setCargo(response.data.cargo);
+                setLoja(response.data.loja);
+                setIdUser(response.data.idUser);
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+    }
+
+    useEffect(() => {
+        fetchUser();
+        fetchDadosCargoLoja();
+    }, [])
+
+
+    const handleSave = async (idUser) => {
+        // usando a function find do javascript para percorrer uma lista de objetos baseado na verificação de uma key
+        const cargoObj = dadosCargo.find(objCargo => objCargo.nome === cargo);
+        const idCargo = cargoObj ? cargoObj.id : null;
+
+        const lojaObj = dadosLoja.find(objLoja => objLoja.nome === loja);
+        const idLoja = lojaObj ? lojaObj.id : null;
+
+        if (!idCargo || !idLoja || !nome || !email || !celular) {
+            //todo: acionar modal de cadastro incorreto
+            alert("Preencha todos os campos corretamente")
+            return;
+        }
+
+        const objetoAdicionado = {
+            nome,
+            email,
+            celular,
+            idCargo,
+            idLoja
+        };
+
+        try {
+            const response = await ApiRequest.userUpdate(idUser, objetoAdicionado);
+            console.log(response);
+            if (response.status === 200) {
+                Alert.alert(SucessImage, "Usuário atualizado!");
+                onUpdate();
+            } else if (response.status === 409) {
+                Alert.alert(ErrorImage, "Este usuário já está cadastrado!");
+            }
+        } catch (error) {
+            console.log("Erro ao cadastrar um usuário: ", error);
+        }
+    }
+
 
     return (
         <>
@@ -153,10 +171,10 @@ function ModalEditUser() {
     );
 }
 
-function AbrirModalEditUser() {
+function AbrirModalEditUser(userId, onUpdate) {
     const MySwal = withReactContent(Swal);
     MySwal.fire({
-        html: <ModalEditUser />,
+        html: <ModalEditUser id={userId} onUpdate={onUpdate} />,
         // width: "auto",
         // heigth: "60rem",
         showConfirmButton: false,

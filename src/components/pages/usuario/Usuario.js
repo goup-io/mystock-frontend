@@ -4,15 +4,16 @@ import TabelaPage from '../../tables/tablePage.js'
 import ApiRequest from '../../../connections/ApiRequest.js'
 import TitleBox from '../../header/TitleBox.js'
 import ChartBox from '../../chartsBoxes/ChartBox.js'
-
+import Alert from '../../alerts/Alert.js'
 import React, { useState, useEffect } from 'react';
 import PageLayoutAreaRestrita from '../PageLayoutAreaRestrita.js'
 import AbrirModalComission from '../../modals/modalComission.js'
 import ButtonDownLoad from '../../buttons/buttonDownLoad.js'
+import AbrirModalEditUser from '../../modals/modals-user/modalEditUser.js'
 
 
 async function csvTodosUsuarios() {
-    try { 
+    try {
         let response;
         if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
             response = await ApiRequest.getCsvUsuario();
@@ -36,7 +37,7 @@ async function csvTodosUsuarios() {
             link.click();
             document.body.removeChild(link);
 
-        } 
+        }
     } catch (error) {
         console.log("Erro ao buscar os dados", error);
     }
@@ -46,6 +47,7 @@ function Usuario() {
 
     const [colunas, setColunas] = useState([]);
     const [dados, setDados] = useState([]);
+    const [dadosDoBancoUser, setDadosDoBancoUser] = useState([]);
 
 
     async function fetchData() {
@@ -55,8 +57,15 @@ function Usuario() {
             let response;
             if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
                 response = await ApiRequest.userGetAll();
+
+                const dados = response.data;
+                setDadosDoBancoUser(dados);
             } else {
                 response = await ApiRequest.userGetAllByLoja(localStorage.getItem('visao_loja'));
+
+                const dados = response.data;
+                setDadosDoBancoUser(dados);
+
             }
 
             if (response.status === 200) {
@@ -68,10 +77,6 @@ function Usuario() {
         }
 
         setColunas(colunasDoBanco);
-    }
-
-    const handleEditarUsuario = (id) => {
-        console.log(id);
     }
 
     async function fetchDataFilterSearch(filterData) {
@@ -92,6 +97,38 @@ function Usuario() {
             setDados(searchData);
         }
     }
+
+    const handleEditarUser = (userId) => {
+        AbrirModalEditUser(userId.id, updateTable);
+    };
+
+    async function excluirUser(userId) {
+        if (!userId || !userId.id) {
+            console.log("ID do usuário não está definido");
+            return;
+        }
+
+        const idUser = userId.id;
+
+        try {
+            const response = await ApiRequest.userDelete(idUser);
+            if (response.status === 200) {
+                console.log("Usuário deletado");
+            } else if (response.status === 409) {
+                Alert.alert(errorImage, "Este usuário já foi excluído!");
+            }
+        } catch (error) {
+            console.log("Erro ao excluir um usuário: ", error);
+        }
+    }
+
+    const handleDeleteUser = (userId) => {
+        Alert.alertQuestion("Deseja excluir esse usuário? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluirUser(userId), () => updateTable())
+    }
+
+    const updateTable = () => {
+        fetchData();
+    };
 
     useEffect(() => {
         fetchData();
@@ -122,7 +159,7 @@ function Usuario() {
                         </div>
 
                         <div className='w-full h-[60vh] mt-2 bg-slate-700 border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto rounded'>
-                            <TabelaPage colunas={colunas} dados={dados.map(({ id, ...dados }) => dados)} edit={handleEditarUsuario} remove id={0}/>
+                            <TabelaPage colunas={colunas} dados={dados.map(({ id, ...dados }) => dados)} edit={handleEditarUser} remove={handleDeleteUser} id={dadosDoBancoUser.map(({ ...dadosDoBancoUser }) => dadosDoBancoUser)} />
                         </div>
                     </div>
 

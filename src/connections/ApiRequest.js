@@ -1844,7 +1844,7 @@ export class ApiRequest {
 
     
     // ***************************************************************************
-    // *  DASHBOARDS KPIS
+    // *  DASHBOARDS Geral
     // ***************************************************************************
 
     static async kpisGetAll(){
@@ -1893,7 +1893,7 @@ export class ApiRequest {
     static async GraficomodelosMaisVendidos(){
         try {
 
-            const resposta = await axios.get(springEndPoint + " /dashboards/dashboard-geral/modelos-mais-vendido", {
+            const resposta = await axios.get(springEndPoint + "/dashboards/dashboard-geral/modelos-mais-vendido", {
                 headers: header
             });
 
@@ -1907,7 +1907,7 @@ export class ApiRequest {
     static async GraficoFluxoEstoque(){
         try {
 
-            const resposta = await axios.get(springEndPoint + " /dashboards/dashboard-geral/fluxo-estoque", {
+            const resposta = await axios.get(springEndPoint + "/dashboards/dashboard-geral/fluxo-estoque", {
                 headers: header
             });
 
@@ -1921,6 +1921,95 @@ export class ApiRequest {
         try {
 
             const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-funcionario/${idFuncionario}/faturamento-mes-atual`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+      // ***************************************************************************
+    // *  DASHBOARDS Loja
+    // ***************************************************************************
+
+    static async kpisGetAllDashLoja(idLoja){
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-loja/${idLoja}/kpis`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+
+    static async faturamentoPorLojaDashLoja(idLoja){
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-loja/${idLoja}/faturamento-por-loja`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async faturamentoPorLojamesAtualDashLoja(idLoja){
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-loja/faturamento-por-loja/${idLoja}/mes-atual`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async GraficomodelosMaisVendidosDashLoja(idLoja){
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-loja/${idLoja}/modelos-mais-vendido`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async GraficoFluxoEstoqueDashLoja(idLoja){
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-loja/${idLoja}/fluxo-estoque`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async rankingFuncionarios(idLoja){
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-loja/${idLoja}/ranking-funcionarios`, {
                 headers: header
             });
 
