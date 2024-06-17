@@ -1340,6 +1340,24 @@ export class ApiRequest {
         return resposta;
     }
 
+    static async getCsvHistoricoVendas() {
+        const resposta = await axios.get(springEndPoint + "/csv/historico-vendas", {
+            headers: header,
+            responseType: 'arraybuffer', // Add this line
+        });
+
+        return resposta;
+    }
+
+    static async getCsvHistoricoVendasByLoja(idLoja) {
+        const resposta = await axios.get(springEndPoint + `/csv/historico-vendas/${idLoja}`, {
+            headers: header,
+            responseType: 'arraybuffer', // Add this line
+        });
+
+        return resposta;
+    }
+
 
 
 

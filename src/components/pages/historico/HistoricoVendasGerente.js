@@ -76,7 +76,35 @@ function HistoricoVendasGerente() {
     };
 
     async function csvHistoricoVendas() {
-        alert("Implementar lógica csv!")
+        try { 
+            let response;
+            if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
+                response = await ApiRequest.getCsvHistoricoVendas();
+            } else {
+                response = await ApiRequest.getCsvHistoricoVendasByLoja(localStorage.getItem('visao_loja'));
+            }
+    
+            if (response.status === 200) {
+                const csvData = new TextDecoder('utf-8').decode(new Uint8Array(response.data));
+                const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+    
+                // Get current date and format it as YY_mm_dd
+                const date = new Date();
+                const formattedDate = `${date.getFullYear()}_${date.getMonth() + 1}_${date.getDate()}`;
+    
+                link.setAttribute('download', `Historico_Vendas_${formattedDate}.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+    
+            } 
+
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
     }
 
     const handleDetailsVenda = (idVenda) => {
