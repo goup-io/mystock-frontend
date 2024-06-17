@@ -21,9 +21,9 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
     const [produtos, setProdutos] = useState([]);
 
     const [statusTransferencia, setStatusTransferencia] = useState([
-        { id: 'ACEITO', nome: 'Aceito' },
-        { id: 'NEGADO', nome: 'Negado' },
-        { id: 'PENDENTE', nome: 'Pendente' }
+        { nome: 'ACEITO'},
+        { nome: 'NEGADO'},
+        { nome: 'PENDENTE'}
     ]);
 
     const [inputCorSelecionada, setInputCorSelecionada] = useState('');

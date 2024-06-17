@@ -9,6 +9,7 @@ import TabelaPage from '../../tables/tablePage.js';
 import Filter from '../../inputs/filter.js';
 
 import AbrirModalRequestProd from '../../modals/modalRequestProd.js';
+import Alert from '../../alerts/Alert.js';
 
 function HistoricoVendasGerente() {
     const buttons = [
@@ -60,6 +61,63 @@ function HistoricoVendasGerente() {
         setColunas(colunasDoBanco);
     }
 
+    async function fetchDataFilter(filterData) { 
+        console.log(filterData);
+        try {
+            let response;
+            if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
+                response = await ApiRequest.transferenciaGetByFilter(filterData.dataInicio, filterData.dataFim, filterData.modelo, filterData.produto, filterData.tamanho, filterData.cor, filterData.status, '');
+            } else {
+                response = await ApiRequest.transferenciaGetByFilter(filterData.dataInicio, filterData.dataFim, filterData.modelo, filterData.produto, filterData.tamanho, filterData.cor, filterData.status, localStorage.getItem('visao_loja'));
+            }
+
+            if (response.status === 200) {
+                const dados = response.data.map(item => ({
+                    data: item.dataHora,
+                    solicitante: item.loja_liberadora,
+                    destinatario: item.loja_coletora,
+                    codModelo: item.etp.codigo,
+                    cor: item.etp.cor,
+                    tamanho: item.etp.tamanho,
+                    nSolic: item.quantidadeSolicitada,
+                    nLib: item.quantidadeLiberada,
+                    liberador: item.liberador,
+                    coletor: item.coletor,
+                    status: item.status.status,
+                }));
+
+                setDados(dados);
+                Alert.alertTop(false, "Filtro aplicado com sucesso!");
+
+            } else if (response.status === 204) {
+                Alert.alertTop(true, "Nenhum produto encontrado com os filtros aplicados!");
+                fetchData();
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+    }
+
+    async function fetchDataFilterSearch(filterData) {
+        if (filterData === "") {
+            fetchData();
+        } else {
+            const searchData = dados.filter((item) => {
+                const lowerCaseFilter = filterData.toLowerCase();
+                return (
+                    item.solicitante.toLowerCase().includes(lowerCaseFilter) ||
+                    item.destinatario.toLowerCase().includes(lowerCaseFilter) ||
+                    item.codModelo.toLowerCase().includes(lowerCaseFilter) ||
+                    item.cor.toLowerCase().includes(lowerCaseFilter) ||
+                    item.liberador.toLowerCase().includes(lowerCaseFilter) ||
+                    item.coletor.toLowerCase().includes(lowerCaseFilter) ||
+                    item.status.toLowerCase().includes(lowerCaseFilter) 
+                );
+            });
+            setDados(searchData);
+        }
+    }
+
     useEffect(() => {
         fetchData();
     }, []);
@@ -104,7 +162,7 @@ function HistoricoVendasGerente() {
                 <TitleBox title="Transferências" buttons={buttons}></TitleBox>
 
                 <div className='w-full flex md:flex-row md:justify-center rounded-md py-4 px-6 shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] items-center text-sm bg-white'>
-                    <Filter data modelo produto tamanho status></Filter>
+                    <Filter data modelo produto tamanho status funcaoOriginal={fetchData} funcaoFilter={fetchDataFilter} ></Filter>
                 </div>
 
                 <ChartBox>
@@ -131,7 +189,7 @@ function HistoricoVendasGerente() {
                             </div>
 
                             <div className='flex gap-4 items-center'>
-                                <InputSearcModal props="text">Pesquisar</InputSearcModal>
+                                <InputSearcModal props="text" funcao={fetchDataFilterSearch}>Pesquisar</InputSearcModal>
                                 <ButtonDownLoad func={csvTransferencias}></ButtonDownLoad>
                             </div>
                         </div>

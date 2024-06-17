@@ -69,7 +69,7 @@ function TabelaModal({ colunas, dados, edit, remove, iptQuantidade, onQuantityCh
             )}
             {iptQuantidade && (
               <td>
-                <div className='flex items-center justify-around'>
+                <div className='flex items-center justify-around gap-[2px]'>
                   <button className='text-xl font-medium' onClick={() => handleTirar(`${id[index].id}`)}>-</button>
                   <input
                     type="text"

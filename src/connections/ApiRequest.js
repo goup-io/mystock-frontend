@@ -1677,45 +1677,38 @@ export class ApiRequest {
         }
     }
 
-    static async transferenciaGetByFilter(dataInicio, dataFim, modelo, cor, tamanho) {
+    static async transferenciaGetByFilter(dataInicio, dataFim, modelo, produto, tamanho, cor, status, lojaId) {
+        let queryParams = [];
 
-        var query = "";
-
-        if (dataInicio != undefined) {
-            query += `dataInicio=${dataInicio}`;
+        if (dataInicio !== '') {
+            queryParams.push(`dataInicio=${dataInicio}`);
+        }
+        if (dataFim !== '') {
+            queryParams.push(`dataFim=${dataFim}`);
+        }
+        if (modelo !== '') {
+            queryParams.push(`modelo=${modelo}`);
+        }
+        if (produto !== '') {
+            queryParams.push(`produto=${produto}`);
+        }
+        if (status !== '') {
+            queryParams.push(`status=${status}`);
+        }
+        if (tamanho !== '') {
+            queryParams.push(`tamanho=${tamanho}`);
+        }
+        if (cor !== '') {
+            queryParams.push(`cor=${cor}`);
+        }
+        if (lojaId !== '') {
+            queryParams.push(`id_loja=${lojaId}`);
         }
 
-        if (dataFim != undefined) {
-            if (query != "") {
-                query += "&"
-            }
-            query += `dataFim=${dataFim}`;
-        }
-
-        if (modelo != undefined) {
-            if (query != "") {
-                query += "&"
-            }
-            query += `modelo=${modelo}`;
-        }
-
-        if (cor != undefined) {
-            if (query != "") {
-                query += "&"
-            }
-            query += `cor=${cor}`;
-        }
-
-        if (tamanho != undefined) {
-            if (query != "") {
-                query += "&"
-            }
-            query += `tamanho=${tamanho}`;
-        }
+        const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
 
         try {
-
-            const resposta = await axios.get(springEndPoint + `/transferencias/filtro?${query}`, {
+            const resposta = await axios.get(springEndPoint + `/transferencias/filtro${queryString}`, {
                 headers: header
             });
 
