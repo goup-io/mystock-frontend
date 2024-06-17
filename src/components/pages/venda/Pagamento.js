@@ -138,41 +138,76 @@ function Pagamento() {
                 //setValorRestante(valorRestante);
                 setFluxoPagamento(dados);
 
-               // if (valorTotal <= valorPago2) {
-                  //  console.log("Venda finalizada");
-                  //  finalizarVenda();
-              //  }
-
             }
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
         }
     }
+    
+    
 
     async function finalizarVenda() {
+
+        var valorRestanteTemp = 0;
+        var valorTotalTemp = 0;
+        var valorPagoTemp = 0;
+
         try {
-            const response = await ApiRequest.pagamentoFinalizar(idVenda);
+            const response = await ApiRequest.getPagamentoFluxoCaixa(idVenda);
             if (response.status === 200) {
                 const dados = response.data;
-              /*  Swal.fire({
-                    title: "Venda finalizada",
-                    text: `Pagamento de R$ ${valorTotal} finalizado com sucesso`,
-                    icon: "success",
-                    confirmButtonText: "OK",
+                var valorPago2 = 0;
+                dados.forEach((pagamento) => {
+                    valorPago2 += pagamento.valor;
                 });
-                navigate(`/venda/caixa`);
-                */
+
+                valorPagoTemp = valorPago2;
             }
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
         }
+
+
+        try {
+            const response = await ApiRequest.detalhamentosVendas(idVenda);
+
+            if (response.status === 200) {
+                const dados = response.data;
+                console.log(dados)
+                valorTotalTemp = dados.valorTotal
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+
+
+        if ((valorTotalTemp - valorPagoTemp) === 0) {
+            try {
+                const response = await ApiRequest.pagamentoFinalizar(idVenda);
+                if (response.status === 200) {
+                    const dados = response.data;
+                    console.log("ta finalizacalaio")
+                    Swal.fire({
+                        title: "Venda finalizada",
+                        text: `Pagamento de R$ ${valorTotal} finalizado com sucesso`,
+                        icon: "success",
+                        confirmButtonText: "OK",
+                    });
+                    navigate("/venda/caixa");
+
+                }
+            } catch (error) {
+                console.log("Erro ao buscar os dados", error);
+            }
+        }
+
     }
 
     const fetchPagamentoRealizado = () => {
         fetchVenda();
         fetchTipoPagamento();
         fetchFluxoPagamento();
-
+        finalizarVenda();
     }
 
 
