@@ -19,7 +19,7 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, nega
       case 'EM ANDAMENTO':
         return 'bg-[#C1C1C1] border-[#5E6977]';
       case 'Negado':
-      case 'Cancelado':
+      case 'Cancelada':
       case 'NEGADO':
       case 'CANCELADO':
         return 'bg-[#F47D8B] border-[#EF233C]';
@@ -93,7 +93,7 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, nega
             )}
             {cancel && (
               <td >
-                <ButtonModal cor="#919191">Cancelar</ButtonModal>
+                <ButtonModal cor="#919191" funcao={() => cancel(id[index].id)}>Cancelar</ButtonModal>
               </td>
             )}
           </tr>

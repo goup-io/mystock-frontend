@@ -9,6 +9,7 @@ import TabelaModal from "../tables/tableModal";
 import ApiRequest from "../../connections/ApiRequest.js";
 
 import AbrirModalPaymentHistory from "./modals-pagamento/modalPaymentHistory";
+import Alert from "../alerts/Alert.js";
 
 function ModalSalesHistory({idVenda}) {
 
@@ -17,7 +18,7 @@ function ModalSalesHistory({idVenda}) {
     const [dadosItens, setDadosItens] = useState([]);
 
     async function fetchData() {
-        const colunas = ['Código', 'Descrição ', 'Preço Un.', 'Quantidade', 'Desconto Un.', 'Preço Líquido', 'Subtotal'];
+        const colunas = ['Código', 'Descrição ', 'Preço Un.', 'Quantidade', 'Desconto Un.', 'Preço Líquido', 'Total bruto', 'Subtotal'];
 
         try{
             const response = await ApiRequest.vendaDetalhamentoGetById(idVenda);
@@ -25,11 +26,19 @@ function ModalSalesHistory({idVenda}) {
             if (response.status === 200) {
                 const dados = response.data;
 
-                const filtrarProdutosVenda = dados.produtosVenda
+                const filtrarProdutosVenda = dados.produtosVenda.map(obj => ({
+                    codigo: obj.codigo,
+                    descricao: obj.descricao,
+                    precoUnitario: obj.precoUnitario,
+                    quantidade: obj.qtd,
+                    descontoUnitario: obj.desconto,
+                    precoLiquido: obj.precoLiquidoUnitario,
+                    totalBruto: obj.totalBruto,
+                    subtotal: obj.subtotal
+                }));
 
-                setInfosVenda(dados)
+                setInfosVenda(dados);
                 setDadosItens(filtrarProdutosVenda);
-                console.log(infosVenda, dadosItens);
             }
 
         } catch (error) {
@@ -43,8 +52,28 @@ function ModalSalesHistory({idVenda}) {
         fetchData();
     }, []);
 
+    const updateTable = () => {
+        fetchData();
+    };
+
     const hanbleAbrirModalPaymentHistory = () => {
         AbrirModalPaymentHistory(idVenda);
+    }
+
+    const handleCancelarVenda = (idVenda) => {
+        Alert.alertQuestionCancelar("Deseja mesmo cancelar essa venda? Essa ação é irreversível.", "Sim", "Cancelar", () => cancelarVenda(idVenda), () => updateTable())
+    }
+
+    async function cancelarVenda(idVenda) {
+        try {
+            const response = await ApiRequest.pagamentoCancelar(idVenda);
+
+            if (response.status === 200) {
+                console.log("Venda cancelada com sucesso");
+            }
+        } catch (error) {
+            console.log("Erro ao cancelar a venda", error);
+        }
     }
 
     return (
@@ -118,7 +147,7 @@ function ModalSalesHistory({idVenda}) {
                 <div className="w-[42rem] flex justify-between h-6 ">
                     <ButtonModal cor="#6A8ACF" funcao={hanbleAbrirModalPaymentHistory}>Histórico de pagamento</ButtonModal>
                     <div className="w-5/12 flex justify-between">
-                        <ButtonModal cor="#919191">Cancelar Venda</ButtonModal>
+                        <ButtonModal cor="#919191" funcao={handleCancelarVenda} >Cancelar Venda</ButtonModal>
                         <ButtonModal>Trocar Itens</ButtonModal>
                     </div>
 

@@ -84,6 +84,47 @@ export class Alert {
         });
     }
 
+    static alertQuestionCancelar(mensagem, opcaoPositiva, opcaoNegativa, funcao, callBack) {
+        const MySwal = withReactContent(Swal);
+        MySwal.fire({
+            title: 'Você tem certeza?',
+            text: `${mensagem}`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: ' ', // Placeholder vazio
+            cancelButtonText: ' ', // Placeholder vazio
+            buttonsStyling: false,
+            didOpen: () => {
+                // Renderize os componentes personalizados depois que o modal estiver aberto
+                ReactDOM.render(
+                    <ButtonModal cor="#D93D3D" className="my-confirm-button" funcao={() => MySwal.clickConfirm()}>
+                        {opcaoPositiva}
+                    </ButtonModal>,
+                    document.querySelector('.swal2-confirm')
+                );
+
+                ReactDOM.render(
+                    <ButtonModal className="my-cancel-button" funcao={() => MySwal.clickCancel()}>
+                        {opcaoNegativa}
+                    </ButtonModal>,
+                    document.querySelector('.swal2-cancel')
+                );
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                async function confirmar() {
+                    await funcao();
+                    MySwal.fire('Cancelada!', 'Cancelada com sucesso.', 'success');
+                    if (callBack) {
+                        await callBack();
+                    }
+                }
+                confirmar();
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+            }
+        });
+    }
+
     static alertTop(iconeErro, mensagem){
         const Toast = Swal.mixin({
             toast: true,

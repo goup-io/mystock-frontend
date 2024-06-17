@@ -8,6 +8,7 @@ import TabelaPage from '../../tables/tablePage.js'
 import AbrirModalSalesHistory from '../../modals/modalSalesHistory.js'
 
 import Filter from '../../inputs/filter.js'
+import Alert from '../../alerts/Alert.js'
 
 import React, { useState, useEffect } from 'react';
 
@@ -54,12 +55,32 @@ function HistoricoVendasGerente() {
         fetchData();
     }, []);
 
+    const updateTable = () => {
+        fetchData();
+    };
+
     async function csvHistoricoVendas() {
         alert("Implementar lógica csv!")
     }
 
     const handleDetailsVenda = (idVenda) => {
         AbrirModalSalesHistory(idVenda);
+    }
+
+    const handleCancelarVenda = (idVenda) => {
+        Alert.alertQuestionCancelar("Deseja mesmo cancelar essa venda? Essa ação é irreversível.", "Sim", "Cancelar", () => cancelarVenda(idVenda), () => updateTable())
+    }
+
+    async function cancelarVenda(idVenda) {
+        try {
+            const response = await ApiRequest.pagamentoCancelar(idVenda);
+
+            if (response.status === 200) {
+                console.log("Venda cancelada com sucesso");
+            }
+        } catch (error) {
+            console.log("Erro ao cancelar a venda", error);
+        }
     }
 
     return (
@@ -83,7 +104,7 @@ function HistoricoVendasGerente() {
                         </div>
 
                         <div className='w-full h-[50vh] mt-2 bg-slate-700 border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto rounded'>
-                            <TabelaPage colunas={colunas} dados={dadosDoBanco.map(({ ...dados }) => dados)} status verMais={handleDetailsVenda} troca cancel id={idsDados} /> 
+                            <TabelaPage colunas={colunas} dados={dadosDoBanco.map(({ ...dados }) => dados)} status verMais={handleDetailsVenda} troca cancel={handleCancelarVenda} id={idsDados} /> 
                         </div>
                     </div>
                 </ChartBox>

@@ -21,7 +21,6 @@ function ModalPaymentHistory(idVenda) {
 
             if (response.status === 200) {
                 const dados = response.data;
-                console.log(dados);
 
                 const filtrarDados = dados
                     .map(obj => (
