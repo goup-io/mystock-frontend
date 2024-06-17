@@ -64,7 +64,7 @@ function HistoricoVendasGerente() {
     }
 
     const handleDetailsVenda = (idVenda) => {
-        AbrirModalSalesHistory(idVenda);
+        AbrirModalSalesHistory(idVenda, updateTable);
     }
 
     const handleCancelarVenda = (idVenda) => {
@@ -76,7 +76,7 @@ function HistoricoVendasGerente() {
             const response = await ApiRequest.pagamentoCancelar(idVenda);
 
             if (response.status === 200) {
-                console.log("Venda cancelada com sucesso");
+                Alert.alertSuccess("Cancelada!", "A venda foi cancelada com sucesso", updateTable);
             }
         } catch (error) {
             console.log("Erro ao cancelar a venda", error);

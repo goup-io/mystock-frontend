@@ -11,7 +11,7 @@ import ApiRequest from "../../connections/ApiRequest.js";
 import AbrirModalPaymentHistory from "./modals-pagamento/modalPaymentHistory";
 import Alert from "../alerts/Alert.js";
 
-function ModalSalesHistory({idVenda}) {
+function ModalSalesHistory({idVenda, funcaoUpdateTable}) {
 
     const [infosVenda, setInfosVenda] = useState([]);
     const [colunasItens, setColunasItens] = useState([]);
@@ -60,7 +60,7 @@ function ModalSalesHistory({idVenda}) {
         AbrirModalPaymentHistory(idVenda);
     }
 
-    const handleCancelarVenda = (idVenda) => {
+    const handleCancelarVenda = () => {
         Alert.alertQuestionCancelar("Deseja mesmo cancelar essa venda? Essa ação é irreversível.", "Sim", "Cancelar", () => cancelarVenda(idVenda), () => updateTable())
     }
 
@@ -69,7 +69,7 @@ function ModalSalesHistory({idVenda}) {
             const response = await ApiRequest.pagamentoCancelar(idVenda);
 
             if (response.status === 200) {
-                console.log("Venda cancelada com sucesso");
+                Alert.alertSuccess("Cancelada!", "A venda foi cancelada com sucesso", funcaoUpdateTable);
             }
         } catch (error) {
             console.log("Erro ao cancelar a venda", error);
@@ -157,10 +157,10 @@ function ModalSalesHistory({idVenda}) {
     );
 }
 
-function AbrirModalSalesHistory(idVenda) {
+function AbrirModalSalesHistory(idVenda, updateTable) {
     const MySwal = withReactContent(Swal);
     MySwal.fire({
-        html: <ModalSalesHistory idVenda={idVenda} />,
+        html: <ModalSalesHistory idVenda={idVenda} funcaoUpdateTable={updateTable} />,
         showConfirmButton: false,
         heightAuto: true,
     });

@@ -114,7 +114,7 @@ export class Alert {
             if (result.isConfirmed) {
                 async function confirmar() {
                     await funcao();
-                    MySwal.fire('Cancelada!', 'Cancelada com sucesso.', 'success');
+                    // MySwal.fire('Cancelada!', 'Cancelada com sucesso.', 'success');
                     if (callBack) {
                         await callBack();
                     }
@@ -141,6 +141,18 @@ export class Alert {
             icon: !iconeErro ? "success" : "error",
             title: mensagem
           });
+    }
+
+    static alertSuccess(titulo, mensagem, funcao){
+        Swal.fire({
+            icon: 'success',
+            title: titulo,
+            text: mensagem,
+            confirmButtonColor: "#355070"
+        });
+        if(funcao){
+            funcao();
+        }
     }
 
 
