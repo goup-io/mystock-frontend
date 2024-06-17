@@ -8,6 +8,8 @@ import React, { useState, useEffect } from 'react';
 import TabelaModal from "../tables/tableModal";
 import ApiRequest from "../../connections/ApiRequest.js";
 
+import AbrirModalPaymentHistory from "./modals-pagamento/modalPaymentHistory";
+
 function ModalSalesHistory({idVenda}) {
 
     const [infosVenda, setInfosVenda] = useState([]);
@@ -40,6 +42,10 @@ function ModalSalesHistory({idVenda}) {
     useEffect(() => {
         fetchData();
     }, []);
+
+    const hanbleAbrirModalPaymentHistory = () => {
+        AbrirModalPaymentHistory(idVenda);
+    }
 
     return (
         <>
@@ -110,7 +116,7 @@ function ModalSalesHistory({idVenda}) {
 
                 </div>
                 <div className="w-[42rem] flex justify-between h-6 ">
-                    <ButtonModal cor="#6A8ACF">Histórico de pagamento</ButtonModal>
+                    <ButtonModal cor="#6A8ACF" funcao={hanbleAbrirModalPaymentHistory}>Histórico de pagamento</ButtonModal>
                     <div className="w-5/12 flex justify-between">
                         <ButtonModal cor="#919191">Cancelar Venda</ButtonModal>
                         <ButtonModal>Trocar Itens</ButtonModal>
@@ -126,8 +132,6 @@ function AbrirModalSalesHistory(idVenda) {
     const MySwal = withReactContent(Swal);
     MySwal.fire({
         html: <ModalSalesHistory idVenda={idVenda} />,
-        // width: "auto",
-        // heigth: "60rem",
         showConfirmButton: false,
         heightAuto: true,
     });

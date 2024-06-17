@@ -5,10 +5,10 @@ import { ContextAdicionar } from '../modals/modals-produto/modalCadastreProdPreC
 
 function TabelaModal({ colunas, dados, edit, remove, iptQuantidade, onQuantityChange, id }) {
   const getInitialValues = () => {
-    return id.reduce((acc, item) => {
+    return id ? id.reduce((acc, item) => {
       acc[item.id] = 0; // Inicializa as quantidades como 0
       return acc;
-    }, {});
+    }, {}) : {};
   };
 
   const [inputValues, setInputValues] = useState(getInitialValues ? getInitialValues : ['', '']);
