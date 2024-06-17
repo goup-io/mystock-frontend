@@ -2020,6 +2020,98 @@ export class ApiRequest {
         }
     }
 
+
+    
+      // ***************************************************************************
+    // *  DASHBOARDS func
+    // ***************************************************************************
+
+    static async kpisGetAllDashFunc(idUser){
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-funcionario/${idUser}/kpis`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+
+    static async faturamentoPorLojaDashFunc(idUser){
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-funcionario/${idUser}/faturamento`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async faturamentoPorLojamesAtualDashFunc(idUser){
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-funcionario/${idUser}/faturamento-mes-atual`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async GraficomodelosMaisVendidosDashFunc(idUser){
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-funcionario/${idUser}/modelos-mais-vendido`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+
+    static async GraficoItensVendidosDashFunc(idUser){
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-funcionario/${idUser}/totais-de-itens-vendidos`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async GraficoItensVendidosMesAtualDashFunc(idUser){
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-funcionario/${idUser}/totais-de-itens-vendidos/mes-atual`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
 }
 
 
