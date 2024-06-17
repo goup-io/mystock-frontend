@@ -1740,11 +1740,26 @@ export class ApiRequest {
         }
     }
 
-    static async transferenciaAprovar(idTransferencia) {
+    static async transferenciaAprovar(idTransferencia, requestBody) {
 
         try {
 
-            const resposta = await axios.post(springEndPoint + `/transferencias/${idTransferencia}/aprovar`, {
+            const resposta = await axios.post(springEndPoint + `/transferencias/${idTransferencia}/aprovar`, requestBody, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async transferenciaRejeitar(idTransferencia, requestBody) {
+
+        try {
+
+            const resposta = await axios.post(springEndPoint + `/transferencias/${idTransferencia}/rejeitar`, requestBody, {
                 headers: header
             });
 

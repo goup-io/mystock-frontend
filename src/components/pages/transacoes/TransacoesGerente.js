@@ -18,6 +18,7 @@ function HistoricoVendasGerente() {
 
     const [colunas, setColunas] = useState([]);
     const [dados, setDados] = useState([]);
+    const [idsDadosPendentes, setIdsDadosPendentes] = useState([]);
     const [isHistoricoSelected, setIsHistoricoSelected] = useState(true);
 
     const handleHistoricoButtonClick = () => {
@@ -54,6 +55,9 @@ function HistoricoVendasGerente() {
                     status: item.status.status,
                 }));
                 setDados(dados);
+
+                const idsPendentes = response.data.filter(item => item.status.status === 'PENDENTE').map(item => item.id);
+                setIdsDadosPendentes(idsPendentes);
             }
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
@@ -123,6 +127,35 @@ function HistoricoVendasGerente() {
     }, []);
 
     const qtdTransferenciasPendente = dados.filter(dado => dado.status == 'PENDENTE').length;
+
+    async function aceitarTransferencia(id, requestBody) {
+        console.log(idsDadosPendentes)
+        console.log("Aceitar transferencia", id);
+        try {
+            const response = await ApiRequest.transferenciaAprovar(id, requestBody);
+            if (response.status === 200) {
+                fetchData();
+                Alert.alertTop(false, "Transferência aceita com sucesso!");
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+    }
+
+    async function negarTransferencia(id, requestBody) {
+        console.log("negar transferencia", id);
+        try {
+            const response = await ApiRequest.transferenciaRejeitar(id, requestBody);
+            if (response.status === 200) {
+                fetchData();
+                Alert.alertTop(false, "Transferência rejeitada com sucesso!");
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+    }
+
+
 
     async function csvTransferencias() {
         try { 
@@ -198,7 +231,7 @@ function HistoricoVendasGerente() {
                                 {isHistoricoSelected ? (
                                     <TabelaPage colunas={colunas} dados={dados.filter(dado => dado.status !== 'PENDENTE')} />
                                 ) : (
-                                    <TabelaPage colunas={colunas} dados={dados.filter(dado => dado.status === 'PENDENTE')} negar aceitar />
+                                    <TabelaPage colunas={colunas} dados={dados.filter(dado => dado.status === 'PENDENTE')} negar={negarTransferencia} aceitar={aceitarTransferencia} id={idsDadosPendentes} />
                                 )}
                             </div>
                         </div>
