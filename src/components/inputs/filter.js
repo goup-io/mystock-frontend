@@ -7,7 +7,7 @@ import ApiRequest from '../../connections/ApiRequest';
 import Alert from '../alerts/Alert';
 
 function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVenda, horario, tipoAlerta, produto, funcaoFilter, funcaoOriginal }) {
-    const [selectedValue, setSelectedValue] = useState('todos');
+    const [selectedValue, setSelectedValue] = useState('estoque');
 
     const handleChange = (event) => {
         setSelectedValue(event.target.value);
@@ -58,7 +58,7 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
         setInputHorarioFimSelecionado('');
         setInputPrecoInicioSelecionado('');
         setInputPrecoFimSelecionado('');
-        setSelectedValue('todos');
+        setSelectedValue('estoque');
 
         funcaoOriginal();
     };
@@ -257,16 +257,6 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
                     <div className="flex items-center">
                         <label className="text-[1rem] text-black font-normal mr-3">Tipo:</label>
                         <div className="flex gap-5 mt-1">
-                            <div className="flex items-center gap-1">
-                                <input
-                                    type="radio"
-                                    name="tpAlerta"
-                                    value="todos"
-                                    checked={selectedValue === 'todos'}
-                                    onChange={handleChange}
-                                /> 
-                                Todos
-                            </div>
                             <div className="flex items-center gap-1">
                                 <input
                                     type="radio"

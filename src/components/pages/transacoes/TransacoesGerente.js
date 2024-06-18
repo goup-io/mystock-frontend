@@ -71,10 +71,11 @@ function HistoricoVendasGerente() {
         try {
             let response;
             if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
-                response = await ApiRequest.transferenciaGetByFilter(filterData.dataInicio, filterData.dataFim, filterData.modelo, filterData.produto, filterData.tamanho, filterData.cor, filterData.status, '');
+                response = await ApiRequest.transferenciaGetByFilter(filterData.dataInicio, filterData.dataFim, filterData.horaInicio, filterData.horaFim, filterData.modelo, filterData.produto, filterData.tamanho, filterData.cor, filterData.status, '');
             } else {
-                response = await ApiRequest.transferenciaGetByFilter(filterData.dataInicio, filterData.dataFim, filterData.modelo, filterData.produto, filterData.tamanho, filterData.cor, filterData.status, localStorage.getItem('visao_loja'));
+                response = await ApiRequest.transferenciaGetByFilter(filterData.dataInicio, filterData.dataFim, filterData.horaInicio, filterData.horaFim, filterData.modelo, filterData.produto, filterData.tamanho, filterData.cor, filterData.status, localStorage.getItem('visao_loja'));
             }
+            console.log(response);
 
             if (response.status === 200) {
                 const dados = response.data.map(item => ({
