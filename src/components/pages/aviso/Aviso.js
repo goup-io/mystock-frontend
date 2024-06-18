@@ -64,6 +64,39 @@ function Aviso() {
         }
     }
 
+    async function fetchDataFilterSearchAlertas(filterData) {
+        if (filterData === "") {
+            fetchData();
+        } else {
+            const lowerCaseFilter = filterData.toLowerCase();
+            const searchData = dadosDoBanco.filter((item) => {
+                return (
+                    (item.titulo?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                    (item.descricao?.toLowerCase() || '').includes(lowerCaseFilter)
+                );
+            });
+            setDadosDoBanco(searchData);
+        }
+    }
+
+    async function fetchDataFilterSearchTranferencias(filterData) {
+        if (filterData === "") {
+            fetchDataFilter({dataInicio: '', dataFim: '', horaInicio: '', horaFim: '', modelo: '', produto: '', tamanho: '', cor: '', status: '', tipoAlerta: 'transferencia'});
+        } else {
+            const lowerCaseFilter = filterData.toLowerCase();
+            const searchData = dadosDoBanco.filter((item) => {
+                return (
+                    (item.loja_coletora?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                    (item.loja_liberadora?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                    (item.etp.nome?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                    (`${item.etp.tamanho}`?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                    (`${item.quantidadeSolicitada}`?.toLowerCase() || '').includes(lowerCaseFilter)
+                );
+            });
+            setDadosDoBanco(searchData);
+        }
+    }
+
     useEffect(() => {
         fetchData();
     }, []);
@@ -78,7 +111,7 @@ function Aviso() {
                 <ChartBox>
                     <div className='p-2 px-3 flex justify-between'>
                         <h2 className='font-medium text-lg'>AVISOS</h2>
-                        <InputSearcModal props="text">Pesquisar</InputSearcModal>
+                        <InputSearcModal props="text" funcao={isEstoqueSelecionado ? fetchDataFilterSearchAlertas : fetchDataFilterSearchTranferencias}>Pesquisar</InputSearcModal>
                     </div>
                     <div className='h-[50vh] flex flex-col gap-2 px-3 mt-2 mb-5 overflow-y-auto'>
                         {dadosDoBanco.map((aviso, index) => (
