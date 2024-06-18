@@ -8,14 +8,17 @@ import React, { useState, useEffect } from 'react';
 import TabelaModal from "../tables/tableModal";
 import ApiRequest from "../../connections/ApiRequest.js";
 
-function ModalSalesHistory({idVenda}) {
+import AbrirModalPaymentHistory from "./modals-pagamento/modalPaymentHistory";
+import Alert from "../alerts/Alert.js";
+
+function ModalSalesHistory({idVenda, funcaoUpdateTable}) {
 
     const [infosVenda, setInfosVenda] = useState([]);
     const [colunasItens, setColunasItens] = useState([]);
     const [dadosItens, setDadosItens] = useState([]);
 
     async function fetchData() {
-        const colunas = ['Código', 'Descrição ', 'Preço Un.', 'Quantidade', 'Desconto Un.', 'Preço Líquido', 'Subtotal'];
+        const colunas = ['Código', 'Descrição ', 'Preço Un.', 'Quantidade', 'Desconto Un.', 'Preço Líquido', 'Total bruto', 'Subtotal'];
 
         try{
             const response = await ApiRequest.vendaDetalhamentoGetById(idVenda);
@@ -23,11 +26,19 @@ function ModalSalesHistory({idVenda}) {
             if (response.status === 200) {
                 const dados = response.data;
 
-                const filtrarProdutosVenda = dados.produtosVenda
+                const filtrarProdutosVenda = dados.produtosVenda.map(obj => ({
+                    codigo: obj.codigo,
+                    descricao: obj.descricao,
+                    precoUnitario: obj.precoUnitario,
+                    quantidade: obj.qtd,
+                    descontoUnitario: obj.desconto,
+                    precoLiquido: obj.precoLiquidoUnitario,
+                    totalBruto: obj.totalBruto,
+                    subtotal: obj.subtotal
+                }));
 
-                setInfosVenda(dados)
+                setInfosVenda(dados);
                 setDadosItens(filtrarProdutosVenda);
-                console.log(infosVenda, dadosItens);
             }
 
         } catch (error) {
@@ -40,6 +51,30 @@ function ModalSalesHistory({idVenda}) {
     useEffect(() => {
         fetchData();
     }, []);
+
+    const updateTable = () => {
+        fetchData();
+    };
+
+    const hanbleAbrirModalPaymentHistory = () => {
+        AbrirModalPaymentHistory(idVenda);
+    }
+
+    const handleCancelarVenda = () => {
+        Alert.alertQuestionCancelar("Deseja mesmo cancelar essa venda? Essa ação é irreversível.", "Sim", "Cancelar", () => cancelarVenda(idVenda), () => updateTable())
+    }
+
+    async function cancelarVenda(idVenda) {
+        try {
+            const response = await ApiRequest.pagamentoCancelar(idVenda);
+
+            if (response.status === 200) {
+                Alert.alertSuccess("Cancelada!", "A venda foi cancelada com sucesso", funcaoUpdateTable);
+            }
+        } catch (error) {
+            console.log("Erro ao cancelar a venda", error);
+        }
+    }
 
     return (
         <>
@@ -110,9 +145,9 @@ function ModalSalesHistory({idVenda}) {
 
                 </div>
                 <div className="w-[42rem] flex justify-between h-6 ">
-                    <ButtonModal cor="#6A8ACF">Histórico de pagamento</ButtonModal>
+                    <ButtonModal cor="#6A8ACF" funcao={hanbleAbrirModalPaymentHistory}>Histórico de pagamento</ButtonModal>
                     <div className="w-5/12 flex justify-between">
-                        <ButtonModal cor="#919191">Cancelar Venda</ButtonModal>
+                        <ButtonModal cor="#919191" funcao={handleCancelarVenda} >Cancelar Venda</ButtonModal>
                         <ButtonModal>Trocar Itens</ButtonModal>
                     </div>
 
@@ -122,12 +157,10 @@ function ModalSalesHistory({idVenda}) {
     );
 }
 
-function AbrirModalSalesHistory(idVenda) {
+function AbrirModalSalesHistory(idVenda, updateTable) {
     const MySwal = withReactContent(Swal);
     MySwal.fire({
-        html: <ModalSalesHistory idVenda={idVenda} />,
-        // width: "auto",
-        // heigth: "60rem",
+        html: <ModalSalesHistory idVenda={idVenda} funcaoUpdateTable={updateTable} />,
         showConfirmButton: false,
         heightAuto: true,
     });

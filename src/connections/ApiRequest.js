@@ -1304,6 +1304,60 @@ export class ApiRequest {
         return resposta;
     }
 
+    static async getCsvModelos() {
+        const resposta = await axios.get(springEndPoint + "/csv/modelos", {
+            headers: header,
+            responseType: 'arraybuffer', // Add this line
+        });
+
+        return resposta;
+    }
+
+    static async getCsvModelosByLoja(idLoja) {
+        const resposta = await axios.get(springEndPoint + `/csv/modelos/${idLoja}`, {
+            headers: header,
+            responseType: 'arraybuffer', // Add this line
+        });
+
+        return resposta;
+    }
+
+    static async getCsvTransferencias() {
+        const resposta = await axios.get(springEndPoint + "/csv/transferencias", {
+            headers: header,
+            responseType: 'arraybuffer', // Add this line
+        });
+
+        return resposta;
+    }
+
+    static async getCsvTransferenciasByLoja(idLoja) {
+        const resposta = await axios.get(springEndPoint + `/csv/transferencias-por-loja/${idLoja}`, {
+            headers: header,
+            responseType: 'arraybuffer', // Add this line
+        });
+
+        return resposta;
+    }
+
+    static async getCsvHistoricoVendas() {
+        const resposta = await axios.get(springEndPoint + "/csv/historico-vendas", {
+            headers: header,
+            responseType: 'arraybuffer', // Add this line
+        });
+
+        return resposta;
+    }
+
+    static async getCsvHistoricoVendasByLoja(idLoja) {
+        const resposta = await axios.get(springEndPoint + `/csv/historico-vendas/${idLoja}`, {
+            headers: header,
+            responseType: 'arraybuffer', // Add this line
+        });
+
+        return resposta;
+    }
+
 
 
 
@@ -1622,6 +1676,43 @@ export class ApiRequest {
         }
     }
 
+    static async vendaGetByFilter(dataInicio, dataFim, horaInicio, horaFim, vendedor, tipoVenda, status, lojaId) {
+        let queryParams = [];
+
+        if (dataInicio !== '') {
+            queryParams.push(`dataHoraInicio=${dataInicio}T${horaInicio === '' ? '00:00:00' : horaInicio}`);
+        }
+        if (dataFim !== '') {
+            queryParams.push(`dataHoraFim=${dataFim}T${horaFim === '' ? '23:59:59' : horaFim}`);
+        }
+        if (vendedor !== '') {
+            queryParams.push(`id_vendedor=${vendedor}`);
+        }
+        if (tipoVenda !== '') {
+            queryParams.push(`id_tipo_venda=${tipoVenda}`);
+        }
+        if (status !== '') {
+            queryParams.push(`id_status=${status}`);
+        }
+        if (lojaId !== '') {
+            queryParams.push(`id_loja=${lojaId}`);
+        }
+
+        const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
+
+        try {
+            const resposta = await axios.get(springEndPoint + `/vendas/filtro${queryString}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+
     // ***************************************************************************
     // *  TRANSFERENCIA
     // ***************************************************************************
@@ -1641,45 +1732,38 @@ export class ApiRequest {
         }
     }
 
-    static async transferenciaGetByFilter(dataInicio, dataFim, modelo, cor, tamanho) {
+    static async transferenciaGetByFilter(dataInicio, dataFim, modelo, produto, tamanho, cor, status, lojaId) {
+        let queryParams = [];
 
-        var query = "";
-
-        if (dataInicio != undefined) {
-            query += `dataInicio=${dataInicio}`;
+        if (dataInicio !== '') {
+            queryParams.push(`dataInicio=${dataInicio}T00:00:00`);
+        }
+        if (dataFim !== '') {
+            queryParams.push(`dataFim=${dataFim}T23:59:59`);
+        }
+        if (modelo !== '') {
+            queryParams.push(`modelo=${modelo}`);
+        }
+        if (produto !== '') {
+            queryParams.push(`produto=${produto}`);
+        }
+        if (status !== '') {
+            queryParams.push(`status=${status}`);
+        }
+        if (tamanho !== '') {
+            queryParams.push(`tamanho=${tamanho}`);
+        }
+        if (cor !== '') {
+            queryParams.push(`cor=${cor}`);
+        }
+        if (lojaId !== '') {
+            queryParams.push(`id_loja=${lojaId}`);
         }
 
-        if (dataFim != undefined) {
-            if (query != "") {
-                query += "&"
-            }
-            query += `dataFim=${dataFim}`;
-        }
-
-        if (modelo != undefined) {
-            if (query != "") {
-                query += "&"
-            }
-            query += `modelo=${modelo}`;
-        }
-
-        if (cor != undefined) {
-            if (query != "") {
-                query += "&"
-            }
-            query += `cor=${cor}`;
-        }
-
-        if (tamanho != undefined) {
-            if (query != "") {
-                query += "&"
-            }
-            query += `tamanho=${tamanho}`;
-        }
+        const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
 
         try {
-
-            const resposta = await axios.get(springEndPoint + `/transferencias/filtro?${query}`, {
+            const resposta = await axios.get(springEndPoint + `/transferencias/filtro${queryString}`, {
                 headers: header
             });
 
@@ -1711,11 +1795,25 @@ export class ApiRequest {
         }
     }
 
-    static async transferenciaAprovar(idTransferencia) {
+    static async transferenciaAprovar(idTransferencia, requestBody) {
+
+        try {
+            const resposta = await axios.post(springEndPoint + `/transferencias/${idTransferencia}/aprovar`, requestBody, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async transferenciaRejeitar(idTransferencia, requestBody) {
 
         try {
 
-            const resposta = await axios.post(springEndPoint + `/transferencias/${idTransferencia}/aprovar`, {
+            const resposta = await axios.post(springEndPoint + `/transferencias/${idTransferencia}/rejeitar`, requestBody, {
                 headers: header
             });
 

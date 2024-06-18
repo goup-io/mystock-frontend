@@ -5,10 +5,10 @@ import { ContextAdicionar } from '../modals/modals-produto/modalCadastreProdPreC
 
 function TabelaModal({ colunas, dados, edit, remove, iptQuantidade, onQuantityChange, id }) {
   const getInitialValues = () => {
-    return id.reduce((acc, item) => {
+    return id ? id.reduce((acc, item) => {
       acc[item.id] = 0; // Inicializa as quantidades como 0
       return acc;
-    }, {});
+    }, {}) : {};
   };
 
   const [inputValues, setInputValues] = useState(getInitialValues ? getInitialValues : ['', '']);
@@ -46,7 +46,7 @@ function TabelaModal({ colunas, dados, edit, remove, iptQuantidade, onQuantityCh
           ))}
           {edit && <th>Editar</th>}
           {remove && <th>Remover</th>}
-          {iptQuantidade && <th>Quantidade</th>}
+          {iptQuantidade && <th>Quant.</th>}
         </tr>
       </thead>
       <tbody className='text-xs'>
@@ -69,7 +69,7 @@ function TabelaModal({ colunas, dados, edit, remove, iptQuantidade, onQuantityCh
             )}
             {iptQuantidade && (
               <td>
-                <div className='flex items-center justify-around'>
+                <div className='flex items-center justify-around gap-[2px]'>
                   <button className='text-xl font-medium' onClick={() => handleTirar(`${id[index].id}`)}>-</button>
                   <input
                     type="text"

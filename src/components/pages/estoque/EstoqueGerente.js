@@ -126,7 +126,8 @@ function EstoqueGerente() {
                     item.nome.toLowerCase().includes(lowerCaseFilter) ||
                     item.modelo.toLowerCase().includes(lowerCaseFilter) ||
                     item.cor.toLowerCase().includes(lowerCaseFilter) ||
-                    item.loja.toLowerCase().includes(lowerCaseFilter) 
+                    item.loja.toLowerCase().includes(lowerCaseFilter) ||
+                    item.itemPromocional.toLowerCase().includes(lowerCaseFilter)
                 );
             });
             setDadosDoBancoETP(searchData);
@@ -243,7 +244,35 @@ function EstoqueGerente() {
     }
 
     async function csvModelos() {
-        alert("Implementar lógica csv modelos!")
+        try { 
+            let response;
+            if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
+                response = await ApiRequest.getCsvModelos();
+            } else {
+                response = await ApiRequest.getCsvModelosByLoja(localStorage.getItem('visao_loja'));
+            }
+    
+            if (response.status === 200) {
+                const csvData = new TextDecoder('utf-8').decode(new Uint8Array(response.data));
+                const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+    
+                // Get current date and format it as YY_mm_dd
+                const date = new Date();
+                const formattedDate = `${date.getFullYear()}_${date.getMonth() + 1}_${date.getDate()}`;
+    
+                link.setAttribute('download', `Estoque_Modelos_${formattedDate}.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+    
+            } 
+
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
     }
 
     return (
