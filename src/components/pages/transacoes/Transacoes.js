@@ -5,10 +5,16 @@ import TabelaPage from '../../tables/tablePage.js';
 
 import React, { useState, useEffect } from 'react';
 import Filter from '../../inputs/filter.js';
+import ApiRequest from '../../../connections/ApiRequest.js';
+import Alert from '../../alerts/Alert.js';
+
+import AbrirModalLiberarTransferencia from '../../modals/modalLiberarTransferencia.js';
+import AbrirModalRejeitarTransferencia from '../../modals/modalRejeitarTransferencia.js';
 
 function Transacoes() {
     const [colunas, setColunas] = useState([]);
     const [dados, setDados] = useState([]);
+    const [idsDadosPendentes, setIdsDadosPendentes] = useState([]);
     const [isHistoricoSelected, setIsHistoricoSelected] = useState(true);
 
     const handleHistoricoButtonClick = () => {
@@ -19,35 +25,117 @@ function Transacoes() {
         setIsHistoricoSelected(false);
     };
 
-    useEffect(() => {
-        const colunasDoBanco = ['Data', 'Solicitante', 'Destinatário', 'Cod.Modelo', 'Cor', 'Tamanho', 'N.Solic.', 'N.Lib.', 'Liberador', 'Coletor', 'Status'];
+    async function fetchData() {
+        const colunasDoBanco = ['Data', 'Solicitante', 'Liberadora', 'Cod.Modelo', 'Cor', 'Tamanho', 'N.Solic.', 'N.Lib.', 'Liberador', 'Coletor', 'Status'];
 
-        const dadosDoBancoHistoricoCompleto = [
-            { id: 1, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9: 'Emilly', coluna10: 'José', status: 'Aceito' },
-            { id: 2, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9: 'Emilly', coluna10: 'José', status: 'Pendente' },
-            { id: 3, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9: 'Emilly', coluna10: 'José', status: 'Aceito' },
-            { id: 4, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9: 'Emilly', coluna10: 'José', status: 'Negado' },
-            { id: 5, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9: 'Emilly', coluna10: 'José', status: 'Aceito' },
-            { id: 6, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9: 'Emilly', coluna10: 'José', status: 'Negado' },
-            { id: 7, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9: 'Emilly', coluna10: 'José', status: 'Aceito' },
-            { id: 8, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9: 'Emilly', coluna10: 'José', status: 'Aceito' },
-            { id: 9, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9: 'Emilly', coluna10: 'José', status: 'Aceito' },
-            { id: 10, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9: 'Emilly', coluna10: 'José', status: 'Pendente' },
-            { id: 11, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9: 'Emilly', coluna10: 'José', status: 'Aceito' },
-            { id: 12, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9: 'Emilly', coluna10: 'José', status: 'Aceito' },
-            { id: 13, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9: 'Emilly', coluna10: 'José', status: 'Aceito' },
-            { id: 14, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9: 'Emilly', coluna10: 'José', status: 'Aceito' },
-            { id: 15, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9: 'Emilly', coluna10: 'José', status: 'Aceito' },
-            { id: 16, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9: 'Emilly', coluna10: 'José', status: 'Aceito' },
-            { id: 17, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9: 'Emilly', coluna10: 'José', status: 'Aceito' },
-            { id: 18, data: '24/02/2024', coluna1: 'Pérola Vip', coluna2: 'Universo', coluna4: 'triple Black', coluna5: 'Air Force', coluna6: 39, coluna7: 20, coluna8: 20, coluna9: 'Emilly', coluna10: 'José', status: 'Aceito' },
-        ];
+        try {
+            let response;
+            if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
+                response = await ApiRequest.transferenciaGetAll();
+            } else {
+                response = await ApiRequest.getTransferenciaLoja(localStorage.getItem('visao_loja'));
+            }
 
+            if (response.status === 200) {
+                const dados = response.data.map(item => ({
+                    data: (item.dataHora).replace('T', ' '),
+                    solicitante: item.loja_coletora,
+                    liberadora: item.loja_liberadora,
+                    codModelo: item.etp.codigo,
+                    cor: item.etp.cor,
+                    tamanho: item.etp.tamanho,
+                    nSolic: item.quantidadeSolicitada,
+                    nLib: item.quantidadeLiberada != null ? item.quantidadeLiberada : '---',
+                    liberador: item.liberador != null ? item.liberador : '---',
+                    coletor: item.coletor,
+                    status: item.status.status,
+                }));
+                setDados(dados);
+
+                const idsPendentes = response.data.filter(item => item.status.status === 'PENDENTE').map(item => item.id);
+                setIdsDadosPendentes(idsPendentes);
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
         setColunas(colunasDoBanco);
-        setDados(dadosDoBancoHistoricoCompleto);
+    }
+
+    async function fetchDataFilter(filterData) {
+        try {
+            let response;
+            if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
+                response = await ApiRequest.transferenciaGetByFilter(filterData.dataInicio, filterData.dataFim, filterData.horaInicio, filterData.horaFim, filterData.modelo, filterData.produto, filterData.tamanho, filterData.cor, filterData.status, '');
+            } else {
+                response = await ApiRequest.transferenciaGetByFilter(filterData.dataInicio, filterData.dataFim, filterData.horaInicio, filterData.horaFim, filterData.modelo, filterData.produto, filterData.tamanho, filterData.cor, filterData.status, localStorage.getItem('visao_loja'));
+            }
+            console.log(response);
+
+            if (response.status === 200) {
+                const dados = response.data.map(item => ({
+                    data: (item.dataHora).replace('T', ' '),
+                    solicitante: item.loja_liberadora,
+                    destinatario: item.loja_coletora,
+                    codModelo: item.etp.codigo,
+                    cor: item.etp.cor,
+                    tamanho: item.etp.tamanho,
+                    nSolic: item.quantidadeSolicitada,
+                    nLib: item.quantidadeLiberada,
+                    liberador: item.liberador,
+                    coletor: item.coletor,
+                    status: item.status.status,
+                }));
+
+                setDados(dados);
+                Alert.alertTop(false, "Filtro aplicado com sucesso!");
+
+            } else if (response.status === 204) {
+                Alert.alertTop(true, "Nenhum dado encontrado com os filtros aplicados!");
+                fetchData();
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+    }
+
+    async function fetchDataFilterSearch(filterData) {
+        if (filterData === "") {
+            fetchData();
+        } else {
+            const lowerCaseFilter = filterData.toLowerCase();
+            const searchData = dados.filter((item) => {
+                return (
+                    (item.solicitante?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                    (item.destinatario?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                    (item.codModelo?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                    (item.cor?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                    (item.liberador?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                    (item.coletor?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                    (item.status?.toLowerCase() || '').includes(lowerCaseFilter)
+                );
+            });
+            setDados(searchData);
+        }
+    }
+
+
+    useEffect(() => {
+        fetchData();
     }, []);
 
-    const qtdTransferenciasPendente = dados.filter(dado => dado.status === 'Pendente').length;
+    const updateTable = () => {
+        fetchData();
+    };
+
+    const qtdTransferenciasPendente = dados.filter(dado => dado.status == 'PENDENTE').length;
+
+    const handleAceitarTransferencia = (id, qtdSolicitadaTransf) => {
+        AbrirModalLiberarTransferencia(id, qtdSolicitadaTransf, updateTable);
+    }
+
+    const handleNegarTransferencia = (id) => {
+        AbrirModalRejeitarTransferencia(id, updateTable);
+    }
 
     return (
         <>
@@ -55,7 +143,7 @@ function Transacoes() {
                 <Header telaAtual="Área de Transferência"></Header>
 
                 <div className='w-full flex md:flex-row md:justify-center rounded-md mt-4 py-4 px-10 shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] items-center text-sm bg-white'>
-                    <Filter modelo produto tamanho status data ></Filter>
+                    <Filter data modelo produto tamanho status funcaoOriginal={fetchData} funcaoFilter={fetchDataFilter} ></Filter>
                 </div>
 
                 <div className='bg-white mt-4 h-[74%] flex flex-col justify-start pl-10 pr-10 pt-2 pb-2 items-center shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] rounded-md'>
@@ -80,14 +168,14 @@ function Transacoes() {
                             </div>
                         </div>
 
-                        <InputSearcModal props="text">Pesquisar</InputSearcModal>
+                        <InputSearcModal props="text" funcao={fetchDataFilterSearch}>Pesquisar</InputSearcModal>
                     </div>
                     <div className='w-full h-[85%] mt-2 flex justify-center items-center '>
                         <div className='w-full h-full border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto rounded'>
                             {isHistoricoSelected ? (
-                                <TabelaPage colunas={colunas} dados={dados.filter(dado => dado.status !== 'Pendente').map(({ id, ...dados }) => dados)} />
+                                <TabelaPage colunas={colunas} dados={dados.filter(dado => dado.status !== 'PENDENTE')} />
                             ) : (
-                                <TabelaPage colunas={colunas} dados={dados.filter(dado => dado.status === 'Pendente').map(({ id, ...dados }) => dados)} negar aceitar />
+                                <TabelaPage colunas={colunas} dados={dados.filter(dado => dado.status === 'PENDENTE')} aceitar={handleAceitarTransferencia} negar={handleNegarTransferencia} id={idsDadosPendentes} />
                             )}
                         </div>
                     </div>
