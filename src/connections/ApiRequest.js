@@ -2000,7 +2000,7 @@ export class ApiRequest {
     static async faturamentoPorLojamesAtualDashLoja(idLoja) {
         try {
 
-            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-loja/faturamento-por-loja/${idLoja}/mes-atual`, {
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-loja/${idLoja}/faturamento-por-loja/mes-atual`, {
                 headers: header
             });
 

@@ -13,7 +13,7 @@ import ButtonSelectMeses from '../../buttons/ButtonSelectMeses.js';
 import ApiRequest from "../../../connections/ApiRequest";
 
 function DashboardGeral() {
-    const idLoja = localStorage.getItem("loja_id");
+    
 
     const [dadosKpi, setDadosKpi] = useState({
         faturamentoMes: 0,
@@ -32,12 +32,13 @@ function DashboardGeral() {
     const [rankingFuncionarios, setRankingFuncionarios] = useState([]);
 
     useEffect(() => {
-        fetchDados();
-    }, []);
+        fetchDados(localStorage.getItem("visao_loja"));     
+        console.log(serieRanking);
+    }, [localStorage.getItem("visao_loja")]);
 
-    async function fetchDados() {
+    async function fetchDados(idLoja) {
         try {
-            const responseKpi = await ApiRequest.kpisGetAll(idLoja);
+            const responseKpi = await ApiRequest.kpisGetAllDashLoja(idLoja);
             console.log("KPI response:", responseKpi);
             if (responseKpi.status === 200) {
                 setDadosKpi(responseKpi.data);
@@ -47,7 +48,7 @@ function DashboardGeral() {
         }
 
         try {
-            const responseFaturamento = await ApiRequest.faturamentoPorLoja(idLoja);
+            const responseFaturamento = await ApiRequest.faturamentoPorLojaDashLoja(idLoja);
             console.log("Faturamento response:", responseFaturamento);
             if (responseFaturamento.status === 200) {
                 setDadosGraficoFaturamento(transformaDadosFaturamento(responseFaturamento.data));
@@ -57,7 +58,7 @@ function DashboardGeral() {
         }
 
         try {
-            const responseFaturamentoMesAtual = await ApiRequest.faturamentoPorLojaMesAtual(idLoja);
+            const responseFaturamentoMesAtual = await ApiRequest.faturamentoPorLojamesAtualDashLoja(idLoja);
             console.log("Faturamento mês atual response:", responseFaturamentoMesAtual);
             if (responseFaturamentoMesAtual.status === 200) {
                 setDadosGraficoFaturamentoMesAtual(transformaDadosFaturamentoMesAtual(responseFaturamentoMesAtual.data));
@@ -67,7 +68,7 @@ function DashboardGeral() {
         }
 
         try {
-            const responseModelosMaisVendidos = await ApiRequest.GraficomodelosMaisVendidos(idLoja);
+            const responseModelosMaisVendidos = await ApiRequest.GraficomodelosMaisVendidosDashLoja(idLoja);
             console.log("Modelos mais vendidos response:", responseModelosMaisVendidos);
             if (responseModelosMaisVendidos.status === 200) {
                 setDadosGraficoModelosMaisVendidos(transformaDadosModelosMaisVendidos(responseModelosMaisVendidos.data));
@@ -101,7 +102,7 @@ function DashboardGeral() {
         if (!dados || !Array.isArray(dados) || dados.length === 0) return [];
         console.log("Transforma dados faturamento:", dados);
         return [{
-            name: dados[0][0], // Nome da loja
+    
             data: dados[0].slice(1) // Valores de faturamento
         }];
     }
@@ -110,7 +111,7 @@ function DashboardGeral() {
         if (!dados || !Array.isArray(dados) || dados.length === 0) return [];
         console.log("Transforma dados faturamento mês atual:", dados);
         return [{
-            name: dados[0][0], // Nome da loja
+ 
             data: dados[0].slice(1, -1) // Valores de faturamento para os dias do mês, excluindo o último item que é null
         }];
     }
@@ -165,7 +166,8 @@ function DashboardGeral() {
     const serieRanking = rankingFuncionarios.map((funcionario, index) => ({
         posicao: index + 1,
         funcionario: funcionario.nomeFuncionario,
-        faturamento: funcionario.valorVendido
+        faturamento: funcionario.valorVendido,
+        id: funcionario.idFuncionario
     }));
 
     return (

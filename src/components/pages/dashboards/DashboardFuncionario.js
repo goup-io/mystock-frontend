@@ -11,11 +11,17 @@ import ButtonTwoOption from '../../buttons/ButtonTwoOption.js'
 import ButtonSelectMeses from '../../buttons/ButtonSelectMeses.js'
 import ApiRequest from "../../../connections/ApiRequest";
 import { useEffect, useState } from "react";
+import { useParams, useLocation } from 'react-router-dom'
 
-function DashboardGeral(idUser) {
+function DashboardGeral() {
 
-    const funcionario = "Fabio Oliveira"
-    idUser = 1;
+    const { idFuncionario } = useParams();
+    const location = useLocation();
+    const { state } = location;
+    const userId = state ? state.idFuncionario : null;
+
+    const funcionario = "Funcionario"
+
 
     const [dadosKpi, setDadosKpi] = useState({
         faturamentoMes: 0,
@@ -28,6 +34,14 @@ function DashboardGeral(idUser) {
     const [dadosGraficoFaturamentoMesAtual, setDadosGraficoFaturamentoMesAtual] = useState([]);
     const [mostrarFaturamentoMesAtual, setMostrarFaturamentoMesAtual] = useState(false);
 
+    const [categoriesItensVendidos, setCategoriesItensVendidos] = useState([]);
+    const [seriesItensVendidos, setSeriesItensVendidos] = useState([]);
+    const [categoriesItensVendidosMesAtual, setCategoriesItensVendidosMesAtual] = useState([]);
+    const [seriesItensVendidosMesAtual, setSeriesItensVendidosMesAtual] = useState([]);
+
+    const [categoriesExibido, setCategoriesExibido] = useState([]);
+    const [seriesExibido, setSeriesExibido] = useState([]);
+
     const [dadosGraficoModelosMaisVendidos, setDadosGraficoModelosMaisVendidos] = useState({ series: [], labels: [] });
     useEffect(() => {
         fetchDados();
@@ -35,7 +49,7 @@ function DashboardGeral(idUser) {
 
     async function fetchDados() {
         try {
-            const responseKpi = await ApiRequest.kpisGetAllDashFunc(idUser);
+            const responseKpi = await ApiRequest.kpisGetAllDashFunc(idFuncionario);
             if (responseKpi.status === 200) {
                 setDadosKpi(responseKpi.data);
             }
@@ -44,7 +58,7 @@ function DashboardGeral(idUser) {
         }
 
         try {
-            const responseFaturamento = await ApiRequest.faturamentoPorLojaDashFunc(idUser);
+            const responseFaturamento = await ApiRequest.faturamentoPorLojaDashFunc(idFuncionario);
             if (responseFaturamento.status === 200) {
                 setDadosGraficoFaturamento(transformaDadosFaturamento(responseFaturamento.data));
            
@@ -54,7 +68,7 @@ function DashboardGeral(idUser) {
         }
 
         try {
-            const responseFaturamentoMesAtual = await ApiRequest.faturamentoPorLojamesAtualDashFunc(idUser);
+            const responseFaturamentoMesAtual = await ApiRequest.faturamentoPorLojamesAtualDashFunc(idFuncionario);
             if (responseFaturamentoMesAtual.status === 200) {
                 setDadosGraficoFaturamentoMesAtual(transformaDadosFaturamentoMesAtual(responseFaturamentoMesAtual.data));
             }
@@ -63,7 +77,7 @@ function DashboardGeral(idUser) {
         }
 
         try {
-            const responseModelosMaisVendidos = await ApiRequest.GraficomodelosMaisVendidosDashFunc(idUser);
+            const responseModelosMaisVendidos = await ApiRequest.GraficomodelosMaisVendidosDashFunc(idFuncionario);
             if (responseModelosMaisVendidos.status === 200) {
                 setDadosGraficoModelosMaisVendidos(transformaDadosModelosMaisVendidos(responseModelosMaisVendidos.data));
             }
@@ -71,23 +85,27 @@ function DashboardGeral(idUser) {
             console.log("Erro ao buscar os dados de modelos mais vendidos", error);
         }
 
-        // try {
-        //     const responseFluxoEstoque = await ApiRequest.GraficoItensVendidosDashFunc(idUser);
-        //     if (responseFluxoEstoque.status === 200) {
-        //         setDadosGraficoFluxoEstoque(transformaDadosFluxoEstoque(responseFluxoEstoque.data));
-        //     }
-        // } catch (error) {
-        //     console.log("Erro ao buscar os dados de fluxo de estoque", error);
-        // }
+        try {
+            const responseItensVendidos = await ApiRequest.GraficoItensVendidosDashFunc(idFuncionario);
+            if (responseItensVendidos.status === 200) {
+                const dadosTransformados = transformaDadosItensVendidos(responseItensVendidos.data);
+                setCategoriesItensVendidos(dadosTransformados.categories);
+                setSeriesItensVendidos(dadosTransformados.series);
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados itens vendidos", error);
+        }
 
-        // try {
-        //     const responseFluxoEstoque = await ApiRequest.GraficoItensVendidosMesAtualDashFunc(idUser);
-        //     if (responseFluxoEstoque.status === 200) {
-        //         setDadosGraficoFluxoEstoque(transformaDadosFluxoEstoque(responseFluxoEstoque.data));
-        //     }
-        // } catch (error) {
-        //     console.log("Erro ao buscar os dados de fluxo de estoque", error);
-        // }
+        try {
+            const responseItensVendidosMesAtual = await ApiRequest.GraficoItensVendidosMesAtualDashFunc(idFuncionario);
+            if (responseItensVendidosMesAtual.status === 200) {
+                const dadosTransformados = transformaDadosItensVendidosMesAtual(responseItensVendidosMesAtual.data);
+                setCategoriesItensVendidosMesAtual(dadosTransformados.categories);
+                setSeriesItensVendidosMesAtual(dadosTransformados.series);
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados itens vendidos  mes atual", error);
+        }
 
     
     }
@@ -128,6 +146,29 @@ function DashboardGeral(idUser) {
         return { series, labels };
     }
 
+    function transformaDadosItensVendidos(dados) {
+        if (!dados || !Array.isArray(dados) || dados.length === 0) return { categories: [], series: [] };
+
+            const categories =  ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const series = [
+                { name: 'qtdTotalItensVendidos', data: dados.map(item => item.qtdTotalItensVendidos) },
+                { name: 'qtdTotalItensPromocao', data: dados.map(item => item.qtdTotalItensPromocao) }
+            ];
+            return { categories, series };
+        
+    }
+    
+
+    function transformaDadosItensVendidosMesAtual(dados) {
+        const categories = ['Mês Atual']; // Defina a categoria conforme necessário
+        const series = [
+            { name: 'qtdTotalItensVendidos', data: [dados.qtdTotalItensVendidos] },
+            { name: 'qtdTotalItensPromocao', data: [dados.qtdTotalItensPromocao] }
+        ];
+    
+        return { categories, series };
+    }
+
     const kpis = [
         { info: `R$ ${dadosKpi.faturamentoMes.toFixed(2)}`, descricao: "Faturamento do mês vigente" },
         { info: `R$ ${dadosKpi.faturamentoDia.toFixed(2)}`, descricao: "Faturamento do dia vigente" },
@@ -144,6 +185,7 @@ function DashboardGeral(idUser) {
     const labelsGraficoFaturamento = mostrarFaturamentoMesAtual ? labelsGraficoFaturamentoMesAtual : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const seriesGraficoFaturamento = mostrarFaturamentoMesAtual ? dadosGraficoFaturamentoMesAtual : dadosGraficoFaturamento;
 
+    
     const handleSelectOpcao1 = () => {
         setMostrarFaturamentoMesAtual(false);
     };
@@ -154,18 +196,15 @@ function DashboardGeral(idUser) {
 
 
 
-    const categoriesFluxoEstoque = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-    const seriesFluxoEstoque = [
-        {
-            name: 'Qtd. Total itens Vendidos ',
-            data: [76, 85, 101, 98, 76, 85, 101, 98, 76, 85, 101, 98]
-        },
-        {
-            name: 'Qtd. de Itens Vendidos em Promoção ',
-            data: [44, 55, 57, 56, 44, 55, 57, 56, 44, 55, 57, 56]
-        }
-    ];
+    const handleSelectOpcao3 = () => {
+        setCategoriesExibido(categoriesItensVendidos)
+        setSeriesExibido(seriesItensVendidos)
+    };
 
+    const handleSelectOpcao4 = () => {
+        setCategoriesExibido(categoriesItensVendidosMesAtual)
+        setSeriesExibido(seriesItensVendidosMesAtual)
+    };
     return(
         <>
             <PageLayout>
@@ -195,11 +234,11 @@ function DashboardGeral(idUser) {
                         <ButtonTwoOption 
                             opcao1="Último 12 Meses" 
                             opcao2="Mês Atual" 
-                            onSelectOpcao1={handleSelectOpcao1} 
-                            onSelectOpcao2={handleSelectOpcao2}
+                            onSelectOpcao1={handleSelectOpcao3} 
+                            onSelectOpcao2={handleSelectOpcao4}
                         />
                     </div>
-                    <BarChart categories={categoriesFluxoEstoque} series={seriesFluxoEstoque}></BarChart>
+                    <BarChart categories={categoriesExibido} series={seriesExibido}></BarChart>
                     <ButtonInfo mensagem={"O gráfico mostra a quantidade de vendas pelo funcionário no determinado período, ou seja, o quanto itens ele vendeu em cada um dos meses exibidos."}></ButtonInfo>
                 </ChartBox>
             </PageLayout>
