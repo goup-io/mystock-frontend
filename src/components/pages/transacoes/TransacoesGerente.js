@@ -92,6 +92,9 @@ function HistoricoVendasGerente() {
                     status: item.status.status,
                 }));
 
+                const idsPendentes = response.data.filter(item => item.status.status === 'PENDENTE').map(item => item.id);
+                setIdsDadosPendentes(idsPendentes);
+
                 setDados(dados);
                 Alert.alertTop(false, "Filtro aplicado com sucesso!");
 

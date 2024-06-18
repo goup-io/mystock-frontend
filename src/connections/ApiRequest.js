@@ -1036,7 +1036,7 @@ export class ApiRequest {
         const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
 
         try {
-            const resposta = await axios.get(springEndPoint + `/modelos/filtro${queryString}`, {
+            const resposta = await axios.get(springEndPoint + `/modelos${queryString}`, {
                 headers: header
             });
 

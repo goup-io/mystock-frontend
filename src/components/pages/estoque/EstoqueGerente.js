@@ -103,6 +103,9 @@ function EstoqueGerente() {
                         }
                     ));
 
+                const filtrarIdsEtps = dados.map(obj => ({id: obj.id}));
+                setEtpsIds(filtrarIdsEtps);
+
                 setDadosDoBancoETP(filtrarDados);
                 Alert.alertTop(false, "Filtro aplicado com sucesso!");
 
@@ -121,24 +124,20 @@ function EstoqueGerente() {
             if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
                 response = await ApiRequest.modeloGetByFilter(filterData.modelo, filterData.categoriaModelo, filterData.tipoModelo, '');
             } else {
-                response = await ApiRequest.modeloGetByFilter(filterData.modelo, filterData.categoriaModelo, fetchData.tipoModelo, localStorage.getItem('visao_loja'));
+                response = await ApiRequest.modeloGetByFilter(filterData.modelo, filterData.categoriaModelo, filterData.tipoModelo, localStorage.getItem('visao_loja'));
             }
 
             if (response.status === 200) {
                 const dados = response.data;
+                setDadosDoBancoModel(dados);;
 
-                const filtrarDados = dados
-                    .map(obj => (
-                        {
-                            codigo: obj.codigo, nome: obj.nome, modelo: obj.modelo, tamanho: obj.tamanho, cor: obj.cor, preco: obj.preco, loja: obj.loja, itemPromocional: obj.itemPromocional == 'SIM' ? 'Sim' : 'Não', quantidade: obj.quantidade
-                        }
-                    ));
+                const filtrarIdsModels = dados.map(obj => ({id: obj.id}));
+                setModelsIds(filtrarIdsModels);
 
-                setDadosDoBancoETP(filtrarDados);
                 Alert.alertTop(false, "Filtro aplicado com sucesso!");
 
             } else if (response.status === 204) {
-                Alert.alertTop(true, "Nenhum produto encontrado com os filtros aplicados!");
+                Alert.alertTop(true, "Nenhum dados encontrado com os filtros aplicados!");
                 fetchData();
             }
         } catch (error) {
