@@ -21,7 +21,7 @@ function ComboBoxFilter(props) {
             <select value={selecionado} onChange={handleChange} className="w-[6rem] h-[1.2rem] rounded bg-[#F5F3F4] pl-2 ml-2 text-[0.7rem] font-[300] text-[#555] form-control border border-1 border-slate-600" name={props.name}>
                 <option value="" disabled>Selecione...</option>
                 {(props.opcoes || []).map((opcao, index) => (
-                    <option key={index} value={opcao.nome}>{opcao.nome}</option>
+                    <option key={index} value={props.valueNome ? opcao.nome : opcao.id}>{opcao.nome}</option>
                 ))}
             </select>
         </div>

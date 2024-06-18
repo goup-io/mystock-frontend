@@ -51,6 +51,36 @@ function HistoricoVendasGerente() {
         setColunas(colunas);
     }
 
+    async function fetchDataFilter(filterData) {
+        console.log(filterData);
+        try {
+            let response;
+            if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
+                response = await ApiRequest.vendaGetByFilter(filterData.dataInicio, filterData.dataFim, filterData.horaInicio, filterData.horaFim, filterData.vendedor, filterData.tipoVenda, filterData.status, '');
+            } else {
+                response = await ApiRequest.vendaGetByFilter(filterData.dataInicio, filterData.dataFim, filterData.horaInicio, filterData.horaFim, filterData.vendedor, filterData.tipoVenda, filterData.status, localStorage.getItem('visao_loja'));
+            }
+
+            console.log(response);
+            if (response.status === 200) {
+                const dados = response.data.map(obj => (
+                    {
+                        data: obj.data, horario: obj.hora, vendedor: obj.nomeVendedor, tipoVenda: obj.tipoVenda.tipo, qtdItens: obj.qtdItens, valor: obj.valor, status: obj.statusVenda
+                    }
+                ));
+
+                setDadosDoBanco(dados);
+                Alert.alertTop(false, "Filtro aplicado com sucesso!");
+
+            } else if (response.status === 204) {
+                Alert.alertTop(true, "Nenhum produto encontrado com os filtros aplicados!");
+                fetchData();
+            } 
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+    }
+
     async function fetchDataFilterSearch(filterData) {
         if (filterData === "") {
             fetchData();
@@ -133,7 +163,7 @@ function HistoricoVendasGerente() {
                 <TitleBox title="Histórico de Vendas"></TitleBox>
 
                 <div className='w-full flex md:flex-row md:justify-center rounded-md py-4 px-6  shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] items-center text-sm bg-white'>
-                    <Filter data horario vendedor tipoVenda statusVenda></Filter>
+                    <Filter data horario vendedor tipoVenda statusVenda funcaoOriginal={fetchData} funcaoFilter={fetchDataFilter}></Filter>
                 </div>
 
                 <ChartBox>

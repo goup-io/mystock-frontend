@@ -44,7 +44,7 @@ function HistoricoVendasGerente() {
 
             if (response.status === 200) {
                 const dados = response.data.map(item => ({
-                    data: item.dataHora,
+                    data: (item.dataHora).replace('T', ' '),
                     solicitante: item.loja_coletora,
                     liberadora: item.loja_liberadora,
                     codModelo: item.etp.codigo,
@@ -78,7 +78,7 @@ function HistoricoVendasGerente() {
 
             if (response.status === 200) {
                 const dados = response.data.map(item => ({
-                    data: item.dataHora,
+                    data: (item.dataHora).replace('T', ' '),
                     solicitante: item.loja_liberadora,
                     destinatario: item.loja_coletora,
                     codModelo: item.etp.codigo,

@@ -183,8 +183,8 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
             produto: inputProdutoSelecionado,
             dataInicio: inputDataInicioSelecionada,
             dataFim: inputDataFimSelecionada,
-            horarioInicio: inputHorarioInicioSelecionado,
-            horarioFim: inputHorarioFimSelecionado,
+            horaInicio: inputHorarioInicioSelecionado,
+            horaFim: inputHorarioFimSelecionado,
             precoInicio: inputPrecoInicioSelecionado,
             precoFim: inputPrecoFimSelecionado,
             tipoAlerta: selectedValue,
@@ -233,11 +233,11 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
                 )}
                 {vendedor && <ComboBoxFilter name="select_vendedor" opcoes={vendedores} value={inputVendedorSelecionado} handleInput={handleInput} handleAtribute={setInputVendedorSelecionado}>Vendedor</ComboBoxFilter>}
                 {tipoVenda && <ComboBoxFilter name="select_tipo" opcoes={tiposVenda} value={inputTipoVendaSelecionado} handleInput={handleInput} handleAtribute={setInputTipoVendaSelecionado}>Tipo</ComboBoxFilter>}
-                {cor && <ComboBoxFilter name="select_cor" opcoes={cores} value={inputCorSelecionada} handleInput={handleInput} handleAtribute={setInputCorSelecionada}>Cor</ComboBoxFilter>}
-                {modelo && <ComboBoxFilter name="select_modelo" opcoes={modelos} value={inputModeloSelecionado} handleInput={handleInput} handleAtribute={setInputModeloSelecionado}>Modelo</ComboBoxFilter>}
-                {produto && <ComboBoxFilter name="select_produto" opcoes={produtos} value={inputProdutoSelecionado} handleInput={handleInput} handleAtribute={setInputProdutoSelecionado}>Produto</ComboBoxFilter>}
-                {tamanho && <ComboBoxFilter name="select_tamanho" opcoes={tamanhos} value={inputTamanhoSelecionado} handleInput={handleInput} handleAtribute={setInputTamanhoSelecionado}>Tamanho</ComboBoxFilter>}
-                {status && <ComboBoxFilter name="select_status" opcoes={statusTransferencia} value={inputStatusSelecionado} handleInput={handleInput} handleAtribute={setInputStatusSelecionado}>Status</ComboBoxFilter>}
+                {cor && <ComboBoxFilter name="select_cor" opcoes={cores} value={inputCorSelecionada} handleInput={handleInput} handleAtribute={setInputCorSelecionada} valueNome>Cor</ComboBoxFilter>}
+                {modelo && <ComboBoxFilter name="select_modelo" opcoes={modelos} value={inputModeloSelecionado} handleInput={handleInput} handleAtribute={setInputModeloSelecionado} valueNome>Modelo</ComboBoxFilter>}
+                {produto && <ComboBoxFilter name="select_produto" opcoes={produtos} value={inputProdutoSelecionado} handleInput={handleInput} handleAtribute={setInputProdutoSelecionado} valueNome>Produto</ComboBoxFilter>}
+                {tamanho && <ComboBoxFilter name="select_tamanho" opcoes={tamanhos} value={inputTamanhoSelecionado} handleInput={handleInput} handleAtribute={setInputTamanhoSelecionado} valueNome>Tamanho</ComboBoxFilter>}
+                {status && <ComboBoxFilter name="select_status" opcoes={statusTransferencia} value={inputStatusSelecionado} handleInput={handleInput} handleAtribute={setInputStatusSelecionado} valueNome>Status</ComboBoxFilter>}
                 {preço && (
                     <div>
                         <InputFilterDate

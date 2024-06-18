@@ -1680,26 +1680,19 @@ export class ApiRequest {
         let queryParams = [];
 
         if (dataInicio !== '') {
-            queryParams.push(`dataInicio=${dataInicio}`);
+            queryParams.push(`dataHoraInicio=${dataInicio}T${horaInicio === '' ? '00:00:00' : horaInicio}`);
         }
         if (dataFim !== '') {
-            queryParams.push(`dataFim=${dataFim}`);
-        }
-
-        if (horaInicio !== '') {
-            queryParams.push(`horaInicio=${horaInicio}`);
-        }
-        if (horaFim !== '') {
-            queryParams.push(`horaFim=${horaFim}`);
+            queryParams.push(`dataHoraFim=${dataFim}T${horaFim === '' ? '23:59:59' : horaFim}`);
         }
         if (vendedor !== '') {
             queryParams.push(`id_vendedor=${vendedor}`);
         }
         if (tipoVenda !== '') {
-            queryParams.push(`tipoVenda=${tipoVenda}`);
+            queryParams.push(`id_tipo_venda=${tipoVenda}`);
         }
         if (status !== '') {
-            queryParams.push(`status=${status}`);
+            queryParams.push(`id_status=${status}`);
         }
         if (lojaId !== '') {
             queryParams.push(`id_loja=${lojaId}`);
@@ -1708,7 +1701,7 @@ export class ApiRequest {
         const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
 
         try {
-            const resposta = await axios.get(springEndPoint + `/transferencias/filtro${queryString}`, {
+            const resposta = await axios.get(springEndPoint + `/vendas/filtro${queryString}`, {
                 headers: header
             });
 
