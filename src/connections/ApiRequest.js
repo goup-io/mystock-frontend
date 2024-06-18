@@ -1017,6 +1017,36 @@ export class ApiRequest {
 
     }
 
+    static async modeloGetByFilter(modelo, categoria, tipo, lojaId) {
+        let queryParams = [];
+
+        if (modelo !== '') {
+            queryParams.push(`modelo=${modelo}`);
+        }
+        if (categoria !== '') {
+            queryParams.push(`categoria=${categoria}`);
+        }
+        if (tipo !== '') {
+            queryParams.push(`tipo=${tipo}`);
+        }
+        if (lojaId !== '') {
+            queryParams.push(`id_loja=${lojaId}`);
+        }
+
+        const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
+
+        try {
+            const resposta = await axios.get(springEndPoint + `/modelos/filtro${queryString}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
 
     // ***************************************************************************
     // *  TAMANHO
@@ -1768,12 +1798,6 @@ export class ApiRequest {
     static async transferenciaGetByFilter(dataInicio, dataFim, horaInicio, horaFim, modelo, produto, tamanho, cor, status, lojaId) {
         let queryParams = [];
 
-        // if (dataInicio !== '') {
-        //     queryParams.push(`dataInicio=${dataInicio}T00:00:00`);
-        // }
-        // if (dataFim !== '') {
-        //     queryParams.push(`dataFim=${dataFim}T23:59:59`);
-        // }
         if (dataInicio !== '') {
             queryParams.push(`dataInicio=${dataInicio}T${horaInicio === '' ? '00:00:00' : horaInicio}`);
         }

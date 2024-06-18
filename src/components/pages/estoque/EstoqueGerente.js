@@ -84,13 +84,44 @@ function EstoqueGerente() {
         setColunasModel(colunasDoBancoModel);
     }
 
-    async function fetchDataFilter(filterData) { 
+    async function fetchDataFilterProduto(filterData) { 
         try {
             let response;
             if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
                 response = await ApiRequest.etpsGetFiltrados(filterData.modelo, filterData.tamanho, filterData.cor, filterData.precoInicio, filterData.precoFim, '');
             } else {
                 response = await ApiRequest.etpsGetFiltrados(filterData.modelo, filterData.tamanho, filterData.cor, filterData.precoInicio, filterData.precoFim, localStorage.getItem('visao_loja'));
+            }
+
+            if (response.status === 200) {
+                const dados = response.data;
+
+                const filtrarDados = dados
+                    .map(obj => (
+                        {
+                            codigo: obj.codigo, nome: obj.nome, modelo: obj.modelo, tamanho: obj.tamanho, cor: obj.cor, preco: obj.preco, loja: obj.loja, itemPromocional: obj.itemPromocional == 'SIM' ? 'Sim' : 'Não', quantidade: obj.quantidade
+                        }
+                    ));
+
+                setDadosDoBancoETP(filtrarDados);
+                Alert.alertTop(false, "Filtro aplicado com sucesso!");
+
+            } else if (response.status === 204) {
+                Alert.alertTop(true, "Nenhum produto encontrado com os filtros aplicados!");
+                fetchData();
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+    }
+
+    async function fetchDataFilterModelo(filterData) { 
+        try {
+            let response;
+            if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
+                response = await ApiRequest.modeloGetByFilter(filterData.modelo, filterData.categoriaModelo, filterData.tipoModelo, '');
+            } else {
+                response = await ApiRequest.modeloGetByFilter(filterData.modelo, filterData.categoriaModelo, fetchData.tipoModelo, localStorage.getItem('visao_loja'));
             }
 
             if (response.status === 200) {
@@ -161,10 +192,12 @@ function EstoqueGerente() {
 
     const handleProdutoButtonClick = () => {
         setIsProdutoSelected(true);
+        updateTable();
     };
 
     const handleModeloButtonClick = () => {
         setIsProdutoSelected(false);
+        updateTable();
     };
 
     const handleEditarEtp = (etpId) => {
@@ -284,7 +317,13 @@ function EstoqueGerente() {
                 <TitleBox title="Estoque" buttons={buttons}></TitleBox>
 
                 <div className='w-full flex md:flex-row md:justify-center rounded-md py-4 px-6  shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] items-center text-sm bg-white'>
-                    <Filter modelo cor tamanho preço funcaoFilter={fetchDataFilter} funcaoOriginal={fetchData}></Filter>
+                    {
+                        isProdutoSelected ? (
+                            <Filter modelo cor tamanho preço funcaoFilter={fetchDataFilterProduto} funcaoOriginal={fetchData}></Filter>
+                        ) : (
+                            <Filter modelo categoriaModelo tipoModelo funcaoFilter={fetchDataFilterModelo} funcaoOriginal={fetchData}></Filter>
+                        )
+                    }
                 </div>
 
                 <ChartBox>
