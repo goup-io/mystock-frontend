@@ -12,7 +12,6 @@ import ButtonSelectMeses from '../../buttons/ButtonSelectMeses.js';
 import ApiRequest from "../../../connections/ApiRequest";
 
 function DashboardGeral() {
-
     const [dadosKpi, setDadosKpi] = useState({
         faturamentoMes: 0,
         faturamentoDia: 0,
@@ -22,8 +21,16 @@ function DashboardGeral() {
     });
 
     const [dadosGraficoFaturamentoPorLoja, setDadosGraficoFaturamentoPorLoja] = useState([]);
+    const [dadosGraficoFaturamentoPorLojaMesAtual, setDadosGraficoFaturamentoPorLojaMesAtual] = useState([]);
+    const [mostrarFaturamentoMesAtual, setMostrarFaturamentoMesAtual] = useState(false);
 
-    async function fetchDados() {
+    const [seriesModelosMaisVendidos, setSeriesModelosMaisVendidos] = useState([]);
+    const [labelsModelosMaisVendidos, setLabelsModelosMaisVendidos] = useState([]);
+
+    const [categoriesFluxoEstoque, setCategoriesFluxoEstoque] = useState([]);
+    const [seriesFluxoEstoque, setSeriesFluxoEstoque] = useState([]);
+
+    async function fetchDadosKpi() {
         try {
             const response = await ApiRequest.kpisGetAll();
             if (response.status === 200) {
@@ -32,6 +39,10 @@ function DashboardGeral() {
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
         }
+
+    }
+
+    async function fetchDadosFaturametoLoja() {
 
         try {
             const response = await ApiRequest.faturamentoPorLoja();
@@ -42,19 +53,98 @@ function DashboardGeral() {
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
         }
+
+    }
+
+    async function fetchDadosFaturametoLojaMesAtual() {
+
+        try {
+            const response = await ApiRequest.faturamentoPorLojamesAtual();
+            if (response.status === 200) {
+                const dadosTransformados = transformaDadosFaturamento(response.data);
+                setDadosGraficoFaturamentoPorLojaMesAtual(dadosTransformados);
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+
+    }
+
+    async function fetchDadosModeloMaisVendido() {
+
+        try {
+            const response = await ApiRequest.GraficomodelosMaisVendidos();
+            if (response.status === 200) {
+                const dadosTransformados = transformaDadosModelosMaisVendidos(response.data);
+                setSeriesModelosMaisVendidos(dadosTransformados.series);
+                setLabelsModelosMaisVendidos(dadosTransformados.labels);
+                console.log(dadosTransformados.series);
+                console.log(dadosTransformados.labels);
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+
+    }
+
+    async function fetchDadosFluxoEstoque() {
+        try {
+            const response = await ApiRequest.GraficoFluxoEstoque();
+            if (response.status === 200) {
+                const dadosTransformados = transformaDadosFluxoEstoque(response.data);
+                setCategoriesFluxoEstoque(dadosTransformados.categories);
+                setSeriesFluxoEstoque(dadosTransformados.series);
+                console.log(dadosTransformados.categories);
+                console.log(dadosTransformados.series);
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
     }
 
     useEffect(() => {
-        fetchDados();
+        fetchDadosKpi();
+        fetchDadosFaturametoLoja();
+        fetchDadosFaturametoLojaMesAtual();
+        fetchDadosModeloMaisVendido();
+        fetchDadosFluxoEstoque();
     }, []);
 
     function transformaDadosFaturamento(dados) {
         const series = dados.map(loja => ({
             name: loja[0],
-            data: loja.slice(1)
+            data: loja.slice(1, loja.length - 1)  // Remove o último elemento null
         }));
 
         return series;
+    }
+
+    function transformaDadosModelosMaisVendidos(dados) {
+        const series = dados.map(item => item.valorVendido);
+        const labels = dados.map(item => item.modelo.nome);
+
+        console.log(series);
+        console.log(labels);
+
+        return { series, labels };
+    }
+
+    function transformaDadosFluxoEstoque(dados) {
+        const categories = dados.map(item => item.nomeLoja);
+        const series = [
+            { name: 'Estoque', data: dados.map(item => item.qtdAtual) },
+            { name: 'Vendidos', data: dados.map(item => item.qtdVendida) },
+            { name: 'Transferidos', data: dados.map(item => item.qtdTransferida) }
+        ];
+
+        console.log(categories);
+        console.log(series);
+
+        return { categories, series };
+    }
+
+    function getDaysInMonth(year, month) {
+        return new Date(year, month + 1, 0).getDate();
     }
 
     const kpis = [
@@ -65,26 +155,20 @@ function DashboardGeral() {
         { info: dadosKpi.produtosEmEstoque.toString(), descricao: "Produtos em estoque" }
     ];
 
-    const labelsGraficoFaturamento = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth();
+    const daysInCurrentMonth = getDaysInMonth(currentYear, currentMonth);
+    const labelsGraficoFaturamentoMesAtual = Array.from({ length: daysInCurrentMonth }, (_, i) => (i + 1).toString());
 
-    const seriesGraficoFaturamento = dadosGraficoFaturamentoPorLoja;
-
-    const seriesModelosMaisVendidos = [25, 15, 44, 55, 41, 17];
-    const labelsModelosMaisVendidos = ["Air Max 100", "Air Max 200", "Air Max 300", "Air Max 400", "Air Max 500", "Air Max 600"];
-
-    const categoriesFluxoEstoque = ['Loja 1', 'Loja 2', 'Loja 3', 'Loja 4'];
-    const seriesFluxoEstoque = [
-        { name: 'Estoque', data: [44, 55, 57, 56] },
-        { name: 'Vendidos', data: [76, 85, 101, 98] },
-        { name: 'Transferidos', data: [35, 41, 36, 26] }
-    ];
+    const labelsGraficoFaturamento = mostrarFaturamentoMesAtual ? labelsGraficoFaturamentoMesAtual : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const seriesGraficoFaturamento = mostrarFaturamentoMesAtual ? dadosGraficoFaturamentoPorLojaMesAtual : dadosGraficoFaturamentoPorLoja;
 
     const handleSelectOpcao1 = () => {
-        alert("Função da opção 1 executada!");
+        setMostrarFaturamentoMesAtual(false);
     };
 
     const handleSelectOpcao2 = () => {
-        alert("Função da opção 2 executada!");
+        setMostrarFaturamentoMesAtual(true);
     };
 
     return (
@@ -94,10 +178,10 @@ function DashboardGeral() {
                 <Kpis kpis={kpis} />
                 <ChartBox title="Gráfico de Faturamento por Loja" size="long">
                     <div className="absolute top-2 right-3">
-                        <ButtonTwoOption 
-                            opcao1="Último 12 Meses" 
-                            opcao2="Mês Atual" 
-                            onSelectOpcao1={handleSelectOpcao1} 
+                        <ButtonTwoOption
+                            opcao1="Último 12 Meses"
+                            opcao2="Mês Atual"
+                            onSelectOpcao1={handleSelectOpcao1}
                             onSelectOpcao2={handleSelectOpcao2}
                         />
                     </div>

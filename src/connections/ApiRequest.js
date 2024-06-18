@@ -35,6 +35,26 @@ export class ApiRequest {
 
     }
 
+    static async loginUpdate(idUsuario, username, novaSenha) {
+
+        try {
+            const login = {
+                "username": username,
+                "senha": novaSenha
+            }
+
+            const resposta = await axios.put(springEndPoint + `/auth/atualizar-login/${idUsuario}`, login, {
+                headers: header,
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+
+    }
+
     static async userLogout() {
 
         try {
@@ -184,7 +204,6 @@ export class ApiRequest {
             };
         }
 
-
     }
 
     static async userDelete(id) {
@@ -203,15 +222,15 @@ export class ApiRequest {
 
     }
 
-    static async userUpdate(id, nome, idCargo, email, telefone, idLoja) {
+    static async userUpdate(id, objetoAdicionado) {
 
         try {
             const funcionario = {
-                "nome": nome,
-                "email": email,
-                "telefone": telefone,
-                "idCargo": idCargo,
-                "idLoja": idLoja
+                "nome": objetoAdicionado.nome,
+                "email": objetoAdicionado.email,
+                "telefone": objetoAdicionado.celular,
+                "idCargo": objetoAdicionado.idCargo,
+                "idLoja": objetoAdicionado.idLoja
             }
 
             const resposta = await axios.put(springEndPoint + `/usuarios/${id}`, funcionario, {
@@ -221,7 +240,7 @@ export class ApiRequest {
             return resposta;
 
         } catch (erro) {
-            return erro
+            return erro;
         }
 
     }
@@ -240,6 +259,22 @@ export class ApiRequest {
         }
 
     }
+
+    static async userGetById(id) {
+        try {
+            const resposta = await axios.get(springEndPoint + `/usuarios/${id}`, {
+                headers: header,
+            });
+            return resposta;
+        } catch (erro) {
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
+        }
+
+    }
+
 
     static async userGetAllByLoja(idLoja) {
         try {
@@ -378,7 +413,6 @@ export class ApiRequest {
                 headers: header,
             });
 
-            console.log("olha a res ", resposta);
             return resposta;
 
         } catch (erro) {
@@ -546,7 +580,6 @@ export class ApiRequest {
                 headers: header,
             });
 
-            console.log("olha a res ", resposta);
             return resposta;
 
         } catch (erro) {
@@ -583,8 +616,8 @@ export class ApiRequest {
 
             const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
 
-            const resposta = await axios.get(springEndPoint + `/etps/filtro${queryString}`, { 
-                headers: header 
+            const resposta = await axios.get(springEndPoint + `/etps/filtro${queryString}`, {
+                headers: header
             });
 
             return resposta;
@@ -1187,16 +1220,16 @@ export class ApiRequest {
     // *  TIPO-PAGAMENTO
     // ***************************************************************************
     static async getTipoPagamento() {
-            
-            try {
-                const resposta = await axios.get(springEndPoint + "/tiposPagamento", {
-                    headers: header
-                });
-    
-                return resposta;
-            } catch (erro) {
-                return erro
-            }
+
+        try {
+            const resposta = await axios.get(springEndPoint + "/tiposPagamento", {
+                headers: header
+            });
+
+            return resposta;
+        } catch (erro) {
+            return erro
+        }
     }
 
     static async getTipoPagamentoById(idPagamento) {
@@ -1211,7 +1244,7 @@ export class ApiRequest {
         }
     }
 
- 
+
     // ***************************************************************************
     // *  HISTORICO-PAGAMENTO
     // ***************************************************************************
@@ -1471,7 +1504,7 @@ export class ApiRequest {
     static async getPagamentoFluxoCaixa(idVenda) {
 
         try {
-            const resposta = await axios.get(springEndPoint + `/pagamentos/fluxo-pagamento/${idVenda}`,{
+            const resposta = await axios.get(springEndPoint + `/pagamentos/fluxo-pagamento/${idVenda}`, {
                 headers: header
             });
 
@@ -1537,7 +1570,7 @@ export class ApiRequest {
             return erro
         }
     }
- 
+
 
     // ***************************************************************************
     // *  VENDA
@@ -1631,18 +1664,18 @@ export class ApiRequest {
 
 
     static async detalhamentosVendas(idVenda) {
-            
-            try {
-    
-                const resposta = await axios.get(springEndPoint + `/vendas/detalhamento/${idVenda}`, {
-                    headers: header
-                });
-    
-                return resposta;
-    
-            } catch (erro) {
-                return erro
-            }
+
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/vendas/detalhamento/${idVenda}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
     }
 
 
@@ -1912,7 +1945,7 @@ export class ApiRequest {
     // *  AVISOS / ALERTAS
     // ***************************************************************************
 
-    static async alertasGetAll(){
+    static async alertasGetAll() {
         try {
 
             const resposta = await axios.get(springEndPoint + "/alertas", {
@@ -1926,9 +1959,9 @@ export class ApiRequest {
         }
     }
 
-    static async alertasGetAllByLoja(idLoja){
+    static async alertasGetAllByLoja(idLoja) {
         try {
-            
+
             const resposta = await axios.get(springEndPoint + `/alertas/loja/${idLoja}`, {
                 headers: header
             });
@@ -1940,12 +1973,12 @@ export class ApiRequest {
         }
     }
 
-    
+
     // ***************************************************************************
-    // *  DASHBOARDS KPIS
+    // *  DASHBOARDS Geral
     // ***************************************************************************
 
-    static async kpisGetAll(){
+    static async kpisGetAll() {
         try {
 
             const resposta = await axios.get(springEndPoint + "/dashboards/dashboard-geral/kpis", {
@@ -1960,7 +1993,7 @@ export class ApiRequest {
     }
 
 
-    static async faturamentoPorLoja(){
+    static async faturamentoPorLoja() {
         try {
 
             const resposta = await axios.get(springEndPoint + "/dashboards/dashboard-geral/faturamento-por-loja", {
@@ -1974,10 +2007,232 @@ export class ApiRequest {
         }
     }
 
-    static async faturamentoMesVigenteFuncionario(idFuncionario){
+    static async faturamentoPorLojamesAtual() {
+        try {
+
+            const resposta = await axios.get(springEndPoint + "/dashboards/dashboard-geral/faturamento-por-loja/mes-atual", {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async GraficomodelosMaisVendidos() {
+        try {
+
+            const resposta = await axios.get(springEndPoint + "/dashboards/dashboard-geral/modelos-mais-vendido", {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async GraficoFluxoEstoque() {
+        try {
+
+            const resposta = await axios.get(springEndPoint + "/dashboards/dashboard-geral/fluxo-estoque", {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+    static async faturamentoMesVigenteFuncionario(idFuncionario) {
         try {
 
             const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-funcionario/${idFuncionario}/faturamento-mes-atual`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    // ***************************************************************************
+    // *  DASHBOARDS Loja
+    // ***************************************************************************
+
+    static async kpisGetAllDashLoja(idLoja) {
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-loja/${idLoja}/kpis`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+
+    static async faturamentoPorLojaDashLoja(idLoja) {
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-loja/${idLoja}/faturamento-por-loja`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async faturamentoPorLojamesAtualDashLoja(idLoja) {
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-loja/${idLoja}/faturamento-por-loja/mes-atual`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async GraficomodelosMaisVendidosDashLoja(idLoja) {
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-loja/${idLoja}/modelos-mais-vendido`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async GraficoFluxoEstoqueDashLoja(idLoja) {
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-loja/${idLoja}/fluxo-estoque`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async rankingFuncionarios(idLoja) {
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-loja/${idLoja}/ranking-funcionarios`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+
+    
+      // ***************************************************************************
+    // *  DASHBOARDS func
+    // ***************************************************************************
+
+    static async kpisGetAllDashFunc(idUser){
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-funcionario/${idUser}/kpis`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+
+    static async faturamentoPorLojaDashFunc(idUser){
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-funcionario/${idUser}/faturamento`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async faturamentoPorLojamesAtualDashFunc(idUser){
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-funcionario/${idUser}/faturamento-mes-atual`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async GraficomodelosMaisVendidosDashFunc(idUser){
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-funcionario/${idUser}/modelos-mais-vendido`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+
+    static async GraficoItensVendidosDashFunc(idUser){
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-funcionario/${idUser}/totais-de-itens-vendidos`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async GraficoItensVendidosMesAtualDashFunc(idUser){
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-funcionario/${idUser}/totais-de-itens-vendidos/mes-atual`, {
                 headers: header
             });
 
