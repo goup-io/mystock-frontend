@@ -13,7 +13,10 @@ function ModalLiberarTransferencia({idTransferencia, qtdSolicitadaTransf, funcao
     const [usuario, setUsuario] = useState('');
     const [qtdLiberada, setQtdLiberada] = useState(qtdSolicitadaTransf);
 
-    const setters = [setUsuario, setQtdLiberada];
+    const clearFields = () => {
+        setUsuario('');
+        setQtdLiberada(qtdSolicitadaTransf);
+    }
 
     function handleInputChange(event, setStateFunction) {
         setStateFunction(event.target.value);
@@ -53,7 +56,7 @@ function ModalLiberarTransferencia({idTransferencia, qtdSolicitadaTransf, funcao
                             value={usuario}
                             handleInput={handleInputChange}
                             handlerAtributeChanger={setUsuario}
-                        >Código de Usuário:</InputAndLabelModal>
+                        >Código de usuário:</InputAndLabelModal>
 
                         <InputAndLabelModal
                             type="number"
@@ -65,7 +68,7 @@ function ModalLiberarTransferencia({idTransferencia, qtdSolicitadaTransf, funcao
                     </div>
                 </div>
                 <div className="w-[43rem] flex justify-end h-6 gap-2">
-                    <ButtonModal cor="#919191" setters={setters}>Limpar</ButtonModal>
+                    <ButtonModal cor="#919191" funcao={clearFields}>Limpar</ButtonModal>
                     <ButtonModal funcao={aceitarTransferencia}>Aprovar transferência</ButtonModal>
                 </div>
             </div>

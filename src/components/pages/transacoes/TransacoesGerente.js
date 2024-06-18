@@ -10,6 +10,7 @@ import Filter from '../../inputs/filter.js';
 
 import AbrirModalRequestProd from '../../modals/modalRequestProd.js';
 import AbrirModalLiberarTransferencia from '../../modals/modalLiberarTransferencia.js';
+import AbrirModalRejeitarTransferencia from '../../modals/modalRejeitarTransferencia.js';
 import Alert from '../../alerts/Alert.js';
 
 function HistoricoVendasGerente() {
@@ -106,21 +107,22 @@ function HistoricoVendasGerente() {
         if (filterData === "") {
             fetchData();
         } else {
+            const lowerCaseFilter = filterData.toLowerCase();
             const searchData = dados.filter((item) => {
-                const lowerCaseFilter = filterData.toLowerCase();
                 return (
-                    item.solicitante.toLowerCase().includes(lowerCaseFilter) ||
-                    item.destinatario.toLowerCase().includes(lowerCaseFilter) ||
-                    item.codModelo.toLowerCase().includes(lowerCaseFilter) ||
-                    item.cor.toLowerCase().includes(lowerCaseFilter) ||
-                    item.liberador.toLowerCase().includes(lowerCaseFilter) ||
-                    item.coletor.toLowerCase().includes(lowerCaseFilter) ||
-                    item.status.toLowerCase().includes(lowerCaseFilter)
+                    (item.solicitante?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                    (item.destinatario?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                    (item.codModelo?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                    (item.cor?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                    (item.liberador?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                    (item.coletor?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                    (item.status?.toLowerCase() || '').includes(lowerCaseFilter)
                 );
             });
             setDados(searchData);
         }
     }
+    
 
     useEffect(() => {
         fetchData();
@@ -136,17 +138,8 @@ function HistoricoVendasGerente() {
         AbrirModalLiberarTransferencia(id, qtdSolicitadaTransf, updateTable);
     }
 
-    async function negarTransferencia(id, requestBody) {
-        console.log("negar transferencia", id);
-        try {
-            const response = await ApiRequest.transferenciaRejeitar(id, requestBody);
-            if (response.status === 200) {
-                fetchData();
-                Alert.alertTop(false, "Transferência rejeitada com sucesso!");
-            }
-        } catch (error) {
-            console.log("Erro ao buscar os dados", error);
-        }
+    const handleNegarTransferencia = (id) => {
+        AbrirModalRejeitarTransferencia(id, updateTable);
     }
 
     async function csvTransferencias() {
@@ -223,7 +216,7 @@ function HistoricoVendasGerente() {
                                 {isHistoricoSelected ? (
                                     <TabelaPage colunas={colunas} dados={dados.filter(dado => dado.status !== 'PENDENTE')} />
                                 ) : (
-                                    <TabelaPage colunas={colunas} dados={dados.filter(dado => dado.status === 'PENDENTE')} aceitar={handleAceitarTransferencia} negar id={idsDadosPendentes} />
+                                    <TabelaPage colunas={colunas} dados={dados.filter(dado => dado.status === 'PENDENTE')} aceitar={handleAceitarTransferencia} negar={handleNegarTransferencia} id={idsDadosPendentes} />
                                 )}
                             </div>
                         </div>
