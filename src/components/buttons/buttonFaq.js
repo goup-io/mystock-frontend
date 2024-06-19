@@ -17,17 +17,44 @@ function ButtonFaq(props) {
     };
 
     const infosFaq = [
-        { topico: 'Como entrar em contato com o MyStock?', descricao: 'Você pode entrar em contato conosco através do nosso email (goup.contactus@gmail.com) ou telefone (11 96300-6941).' },
-        { topico: 'Como faço para cadastrar um novo usuário (gerente ou vendedor) no sistema?', descricao: 'Logue no sistema como gerente, acesse a pagina de "Usuários" no menu lateral da pagina, clique em "NOVO USUÁRIO" no canto superior direito da tela e pronto só cadastrar o novo usuário do sistema.' },
-        { topico: 'Está buscando compreender a utilidade de um gráfico específico?', descricao: 'No canto inferior direito abaixo dos gráficos existem um ícone de informação "i" que ao ser clicado exibe uma breve descrição do que aquele gráfico representa.' },
-        { topico: 'Topico 4', descricao: 'Descrição...' },
-        { topico: 'Topico 5', descricao: 'Descrição...' },
-        { topico: 'Topico 6', descricao: 'Descrição...' },
-        { topico: 'Topico 7', descricao: 'Descrição...' },
-        { topico: 'Topico 8', descricao: 'Descrição...' },
-        { topico: 'Topico 9', descricao: 'Descrição...' },
-        { topico: 'Topico 10', descricao: 'Descrição...' },
-    ]
+        {
+            topico: 'Como entrar em contato com o MyStock?',
+            descricao: 'Você pode entrar em contato conosco através do nosso email (goup.contactus@gmail.com) ou telefone (11 96300-6941).'
+        },
+        {
+            topico: 'Como faço para cadastrar um novo usuário (gerente ou vendedor) no sistema?',
+            descricao: 'Logue no sistema como gerente, acesse a página de "Usuários" no menu lateral da página, clique em "NOVO USUÁRIO" no canto superior direito da tela e pronto, só cadastrar o novo usuário do sistema.'
+        },
+        {
+            topico: 'Está buscando compreender a utilidade de um gráfico específico?',
+            descricao: 'No canto inferior direito abaixo dos gráficos, existe um ícone de informação "i" que, ao ser clicado, exibe uma breve descrição do que aquele gráfico representa.'
+        },
+        {
+            topico: 'Como faço para navegar pelo sistema?',
+            descricao: 'Caso esteja acessando como gerente ou administrador, você poderá navegar pelo menu lateral esquerdo mostrado na tela. Caso contrário, você poderá acessar o menu clicando no ícone no canto superior esquerdo da tela (localizado ao lado do nome da página em que está) onde será redirecionado ao menu principal.'
+        },
+        {
+            topico: 'Como adiciono um novo produto ao estoque?',
+            descricao: 'Acesse a página "Estoque" no menu, clique em "NOVO PRODUTO" no canto superior direito da tela e preencha as informações necessárias do produto.'
+        },
+        {
+            topico: 'Como faço para atualizar a quantidade de um produto no estoque?',
+            descricao: 'Na página "Estoque", localize o produto que deseja atualizar, clique no ícone de edição ao lado do produto, ajuste a quantidade conforme necessário e salve as alterações.'
+        },
+        {
+            topico: 'Como posso visualizar o histórico de movimentações de estoque entre as lojas?',
+            descricao: 'Acesse a página "Área de Transferências" no menu. Lá você encontrará um registro detalhado de todas as movimentações de estoque entre as lojas, incluindo as quantidades solicitadas e liberadas.'
+        },
+        {
+            topico: 'Como gerar relatórios?',
+            descricao: 'Logado como gerente ou admin vá até a página "Relatórios" no menu lateral, selecione o tipo de relatório que deseja gerar e clique em "GERAR RELATÓRIO".'
+        },
+        {
+            topico: 'O que fazer se eu esquecer minha senha?',
+            descricao: 'Na tela de login, clique em "Esqueci a senha" e siga as instruções para redefinir sua senha através do email.'
+        }
+    ];
+
 
     return (
         <>
@@ -47,9 +74,9 @@ function ButtonFaq(props) {
                                     <div className=' flex items-center py-2 px-1'>
                                         <button onClick={() => toggleDescricao(index)}>
                                             <svg className="w-4 h-4 fill-current transform transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                                {descricaoAberta[index] ? 
-                                                (<path d="M10 5l5 5H5l5-5z" />) : 
-                                                (<path d="M10 12l-5-5v10l5-5z" />)}
+                                                {descricaoAberta[index] ?
+                                                    (<path d="M10 5l5 5H5l5-5z" />) :
+                                                    (<path d="M10 12l-5-5v10l5-5z" />)}
                                             </svg>
                                         </button>
                                         <span className="ml-2 text-left">{infoFaq.topico}</span>
@@ -63,7 +90,7 @@ function ButtonFaq(props) {
                             ))}
                         </ul>
                     </div>
-                    <hr/>
+                    <hr />
                 </div>
             )}
         </>

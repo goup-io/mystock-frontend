@@ -42,7 +42,7 @@ function ButtonMenu(props) {
                 </>
                 :
                 <>
-                    <a onClick={() => navigate("/menuCaixa")} className="cursor-pointer">
+                    <a onClick={() => navigate("/menu")} className="cursor-pointer">
                         <img src={icon}></img>
                     </a>
                 </>

@@ -42,6 +42,7 @@ export class Alert {
             // heightAuto: true,
         });
     }
+
     static alertQuestion(mensagem, opcaoPositiva, opcaoNegativa, funcao, callBack) {
         const MySwal = withReactContent(Swal);
         MySwal.fire({
@@ -80,6 +81,86 @@ export class Alert {
                 confirmar();
             } else if (result.dismiss === Swal.DismissReason.cancel) {
             }
+        });
+    }
+
+    static alertQuestionCancelar(mensagem, opcaoPositiva, opcaoNegativa, funcao, callBack) {
+        const MySwal = withReactContent(Swal);
+        MySwal.fire({
+            title: 'Você tem certeza?',
+            text: `${mensagem}`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: ' ', // Placeholder vazio
+            cancelButtonText: ' ', // Placeholder vazio
+            buttonsStyling: false,
+            didOpen: () => {
+                // Renderize os componentes personalizados depois que o modal estiver aberto
+                ReactDOM.render(
+                    <ButtonModal cor="#D93D3D" className="my-confirm-button" funcao={() => MySwal.clickConfirm()}>
+                        {opcaoPositiva}
+                    </ButtonModal>,
+                    document.querySelector('.swal2-confirm')
+                );
+
+                ReactDOM.render(
+                    <ButtonModal className="my-cancel-button" funcao={() => MySwal.clickCancel()}>
+                        {opcaoNegativa}
+                    </ButtonModal>,
+                    document.querySelector('.swal2-cancel')
+                );
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                async function confirmar() {
+                    await funcao();
+                    // MySwal.fire('Cancelada!', 'Cancelada com sucesso.', 'success');
+                    if (callBack) {
+                        await callBack();
+                    }
+                }
+                confirmar();
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+            }
+        });
+    }
+
+    static alertTop(iconeErro, mensagem){
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+          });
+          Toast.fire({
+            icon: !iconeErro ? "success" : "error",
+            title: mensagem
+          });
+    }
+
+    static alertSuccess(titulo, mensagem, funcao){
+        Swal.fire({
+            icon: 'success',
+            title: titulo,
+            text: mensagem,
+            confirmButtonColor: "#355070"
+        });
+        if(funcao){
+            funcao();
+        }
+    }
+
+    static alertError(titulo, mensagem){
+        Swal.fire({
+            icon: 'error',
+            title: titulo,
+            text: mensagem,
+            confirmButtonColor: "#355070"
         });
     }
 

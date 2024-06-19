@@ -151,7 +151,6 @@ function Venda() {
     const [tipoVenda, setTipoVenda] = useState("");
 
     const [tipoVendaLista, setTipoVendaLista] = useState([]);
-    const [tipoVendaListaNomes, setTipoVendaListaNomes] = useState([])
 
     const navigate = useNavigate();
 
@@ -235,18 +234,9 @@ function Venda() {
     }
 
     async function recuperarTipoVenda(){
-        // const tipoVendaListaResponse = await ApiRequest.tipoVendaGetAll()
-
-        // var arrayAux = [tipoVendaListaResponse.data]
-
-        // var arrayAux02 = [arrayAux.at(0)]
-        // var listaTipos = []
-        // console.log(listaTipos)
-
-        // // console.log(arrayAux02)
-        // setTipoVendaLista(arrayAux)
-
-
+        const tipoVendaListaResponse = await ApiRequest.tipoVendaGetAll()
+        console.log(tipoVendaListaResponse.data)
+        setTipoVendaLista(tipoVendaListaResponse.data)
         
     }
 
@@ -422,7 +412,7 @@ function Venda() {
                                 width="8rem"
                                 height="2rem"
                                 bold="500"
-                                dadosBanco={tipoVendaListaNomes}
+                                dadosBanco={tipoVendaLista}
                             />
                         </div>
                     </div>

@@ -66,6 +66,7 @@ function Login() {
                 localStorage.setItem("loja_id", respostaHTTP.data.idLoja);
                 localStorage.setItem("tipo_acesso", respostaHTTP.data.tipoLogin);
                 if (respostaHTTP.data.tipoLogin === "AREA_VENDA") {
+                    localStorage.setItem("visao_loja", respostaHTTP.data.idLoja)
                     Alert.alertTimer(SucessImage, "Seja bem-vindo!");
                     navigate("/menu");
                 } else {
