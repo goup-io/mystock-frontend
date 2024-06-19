@@ -7,34 +7,57 @@ import withReactContent from 'sweetalert2-react-content';
 import ItemSeparadoPorLinhaTracejada from '../../tables/ItemSeparadoPorLinhaTracejada';
 import React, { useState, useEffect } from 'react';
 import ButtonModalFull from "../../buttons/buttonModalFull";
+import ApiRequest from "../../../connections/ApiRequest.js"
 
-function ModalPaymentCash() {
-    const [valorAPagar, setValorAPagar] = useState('');
+function ModalPaymentCash({ idVenda, idTipoPagamento, qtdParcelas, valorPagoAteAgora, valorTotal, valorRestante, onFinalizar }) {
+    const [valorAPagar, setValorAPagar] = useState(0);
     const [valorRecebido, setValorRecebido] = useState('');
-    const [valorTotalCompra, setValorTotalCompra] = useState(10.00); // Exemplo de valor total da compra
-    const [valorPagoAteAgora, setValorPagoAteAgora] = useState(20.00); // Exemplo de valor pago até agora
+    const [valorTotalCompra, setValorTotalCompra] = useState(valorTotal ? valorTotal : 0);
+    const [valorPagoAteAgora2, setValorPagoAteAgora] = useState(valorPagoAteAgora ? valorPagoAteAgora : 0);
     const [troco, setTroco] = useState(0.00);
+    const [valorQueResta, setValorRestante] = useState(valorTotal - valorPagoAteAgora ? valorTotal - valorPagoAteAgora : 0);
 
     const handleValorAPagarChange = (e) => {
-        setValorAPagar(e.target.value);
+        setValorAPagar(Number(e.target.value));
+        console.log('Valor a pagar:', valorAPagar);
     };
 
     const handleValorRecebidoChange = (e) => {
-        const valor = parseFloat(e.target.value);
+        const valor = (Number(e.target.value));
         setValorRecebido(valor);
-        if (!isNaN(valor)) {
-            const valorRestante = valorTotalCompra - valorPagoAteAgora;
-            const trocoCalculado = valor - valorRestante;
-            setTroco(trocoCalculado > 0 ? trocoCalculado : 0.00);
-        } else {
-            setTroco(0.00);
-        }
+        const trocoCalculado = valor - valorAPagar;
+        setTroco(trocoCalculado > 0 ? trocoCalculado : 0.00);
+        console.log('Troco calculado:', trocoCalculado);
     };
 
-    const handleFinalizar = () => {
-        // Lógica para finalizar o pagamento
-        console.log('Pagamento finalizado');
-    };
+    function handleFinalizarPagamento() {
+        const novoValorRestante = valorRestante - valorAPagar;
+        setValorRestante(novoValorRestante);
+        realizarPagamento();
+    }
+
+
+    async function realizarPagamento() {
+        try {
+            const response = await ApiRequest.pagamentoCreate(idTipoPagamento, idVenda, valorAPagar, 1);
+            if (response.status === 201) {
+                const dados = response.data;
+                console.log("Dados do pagamento", dados)
+                setValorRestante(dados.valorRestante)
+                console.log("valor restante", dados.valorRestante)
+                Swal.fire({
+                    title: "Pagamento finalizado ",
+                    text: `Pagamento de ${valorRecebido} finalizado com sucesso, devolva um troco de ${troco}`,
+                    icon: "success",
+                    confirmButtonText: "OK",
+                });
+                onFinalizar();
+            }
+        } catch (error) {
+            console.log("Erro ao gerar pagamento", error);
+        }
+    }
+
 
     return (
         <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[42rem] h-[23rem] flex flex-col items-center justify-around bg-white p-2 rounded-lg border border-black">
@@ -47,7 +70,7 @@ function ModalPaymentCash() {
                         placeholder="Digite o valor aqui..."
                         text="number"
                         value={valorAPagar}
-                        onChange={handleValorAPagarChange}
+                        handleInput={handleValorAPagarChange}
                     >
                         Valor a Pagar:
                     </InputAndLabelModal>
@@ -55,7 +78,7 @@ function ModalPaymentCash() {
                         placeholder="Digite o valor aqui..."
                         text="number"
                         value={valorRecebido}
-                        onChange={handleValorRecebidoChange}
+                        handleInput={handleValorRecebidoChange}
                     >
                         Valor Recebido:
                     </InputAndLabelModal>
@@ -68,30 +91,38 @@ function ModalPaymentCash() {
                     />
                     <ItemSeparadoPorLinhaTracejada
                         infoEsquerda={"Valor pago (até agora):"}
-                        infoDireita={`R$ ${valorPagoAteAgora.toFixed(2)}`}
+                        infoDireita={`R$ ${valorPagoAteAgora2.toFixed(2)}`}
                     />
                     <ItemSeparadoPorLinhaTracejada
                         infoEsquerda={"Valor restante:"}
-                        infoDireita={`R$ ${(valorTotalCompra - valorPagoAteAgora).toFixed(2)}`}
+                        infoDireita={`R$ ${(valorTotalCompra - valorPagoAteAgora2).toFixed(2)}`}
                     />
                     <li className="flex flex-row justify-between">
                         <p className="text-sm font-bold">Troco em Dinheiro:</p>
-                        <p className="text-sm font-bold">{`R$ ${troco.toFixed(2)}`}</p>
+                        <p className="text-sm font-bold">{`R$ ${troco}`}</p>
                     </li>
                     <div className="w-full h-[0.1rem] bg-[#355070] mt-4"></div>
                 </div>
             </div>
             <div className="w-[40rem] flex justify-end h-6">
-                <ButtonModalFull onClick={handleFinalizar}>Finalizar</ButtonModalFull>
+                <ButtonModalFull funcao={handleFinalizarPagamento}>Finalizar</ButtonModalFull>
             </div>
         </div>
     );
 }
 
-function AbrirModalPaymentCash() {
+function AbrirModalPaymentCash(idVenda, idTipoPagamento, qtdParcelas, valorPagoAteAgora, valorTotal, valorRestante, onFinalizar) {
     const MySwal = withReactContent(Swal);
     MySwal.fire({
-        html: <ModalPaymentCash />,
+        html: <ModalPaymentCash
+            idVenda={idVenda}
+            idTipoPagamento={idTipoPagamento}
+            qtdParcelas={qtdParcelas}
+            valorPagoAteAgora={valorPagoAteAgora}
+            valorTotal={valorTotal}
+            valorRestante={valorRestante}
+            onFinalizar={onFinalizar}
+        />,
         showConfirmButton: false,
         heightAuto: true,
     });
