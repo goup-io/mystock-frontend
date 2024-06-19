@@ -33,7 +33,6 @@ function ModalPaymentCash() {
 
     const handleFinalizar = () => {
         // Lógica para finalizar o pagamento
-        console.log('Pagamento finalizado');
     };
 
     return (
