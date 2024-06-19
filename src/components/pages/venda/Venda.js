@@ -149,8 +149,7 @@ function Venda() {
 
     const [codigoVendedor, setCodigoVendedor] = useState("")
     const [tipoVenda, setTipoVenda] = useState("");
-
-    const [tipoVendaLista, setTipoVendaLista] = useState([]);
+    const [tipoVendaSelecionado, setTipoVendaSelecionado] = useState(1);
 
     const navigate = useNavigate();
 
@@ -164,7 +163,6 @@ function Venda() {
         let valorTotal = 0;
 
         itemsCarrinho.forEach(element => {
-
             subTotal1 += element.props.precoUnitario * element.props.quantidade;
             subTotal2 += (element.props.precoUnitario - element.props.descontoUnitario) * element.props.quantidade;
             descontoProdutos += element.props.descontoUnitario * element.props.quantidade;
@@ -234,10 +232,19 @@ function Venda() {
     }
 
     async function recuperarTipoVenda(){
-        const tipoVendaListaResponse = await ApiRequest.tipoVendaGetAll()
-        console.log(tipoVendaListaResponse.data)
-        setTipoVendaLista(tipoVendaListaResponse.data)
-        
+        const response = await ApiRequest.tipoVendaGetAll()
+
+        try {
+            if (response.status === 200){
+                const dados = response.data.map(item => ({
+                    id: item.id,
+                    nome: item.tipo
+                }));
+                setTipoVenda(dados)
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os tipos venda", error);
+        }
     }
 
     function removerItemCarrinho(id){
@@ -277,24 +284,24 @@ function Venda() {
     
     function ItemCarrinho(props) {
         return (
-            <tr class="bg-[#DEE2FF] h-24 rounded text-[1.2rem]" >
+            <tr className="bg-[#DEE2FF] h-24 rounded text-[1.2rem]" >
                 <td>
-                    <p class="font-medium">{props.codigoProduto}</p>
+                    <p className="font-medium">{props.codigoProduto}</p>
                 </td>
                 <td>
-                    <p class="font-medium">{props.descricaoProduto}</p>
+                    <p className="font-medium">{props.descricaoProduto}</p>
                 </td>
                 <td>
-                    <p class="font-medium">R$ {props.precoUnitario}</p>
+                    <p className="font-medium">R$ {props.precoUnitario}</p>
                 </td>
                 <td>
-                    <p class="font-medium">{props.quantidade}</p>
+                    <p className="font-medium">{props.quantidade}</p>
                 </td>
                 <td>
-                    <p class="font-medium">R$ {props.descontoUnitario}</p>
+                    <p className="font-medium">R$ {props.descontoUnitario}</p>
                 </td>
                 <td>
-                    <p class="font-medium">R$ {props.precoLiquido}</p>
+                    <p className="font-medium">R$ {props.precoLiquido}</p>
                 </td>
                 <td>
                     <div className="flex flex-row items-center gap-12 justify-center">
@@ -343,12 +350,12 @@ function Venda() {
         <PageLayout>
             <Header telaAtual="Área de Venda"/>
             <div style={divPai}>
-                <div style={divCarrinho} class="shadow flex flex-col items-start py-4 px-8">
-                    <div class="flex justify-between w-full text-2xl">
-                        <p class="font-semibold text-2xl">CARRINHO</p>
-                        <div class="flex flex-row-reverse w-2/3 gap-4 items-center">
+                <div style={divCarrinho} className="shadow flex flex-col items-start py-4 px-8">
+                    <div className="flex justify-between w-full text-2xl">
+                        <p className="font-semibold text-xl">CARRINHO</p>
+                        <div className="flex flex-row-reverse w-2/3 gap-4 items-center">
                             <Button funcao={() => AbrirModalAddProdCart(adicionarItemCarrinho)}>
-                                <p class="flex justify-between w-full text-2xl">Adicionar Produto</p>
+                                <p className="flex justify-between w-full text-2xl">Adicionar Produto</p>
                             </Button>
                             <Button funcao={() => AbrirModalAddKitCart()}>
                                 <p className="flex justify-between w-full text-xl">Adicionar Kit</p>
@@ -356,27 +363,27 @@ function Venda() {
                         </div>
                     </div>
 
-                    <div class="bg-[#F5F3F4] w-full h-full rounded-[5px] my-2 overflow-y-scroll px-4">
+                    <div className="bg-[#F5F3F4] w-full h-full rounded-[5px] my-2 overflow-y-scroll px-4">
                         <Tabela>
                             <thead>
-                                <tr class="flex-row gap-16 pl-6 table-row text-[1.2rem]">
+                                <tr className="flex-row gap-16 pl-6 table-row text-[1.2rem]">
                                     <th>
-                                        <p class="font-medium ">Código Prod.</p>
+                                        <p className="font-medium ">Código Prod.</p>
                                     </th>
                                     <th>
-                                        <p class="font-medium">Descrição Prod.</p>
+                                        <p className="font-medium">Descrição Prod.</p>
                                     </th>
                                     <th>
-                                        <p class="font-medium">Preço Un.</p>
+                                        <p className="font-medium">Preço Un.</p>
                                     </th>
                                     <th>
-                                        <p class="font-medium">Quanti.</p>
+                                        <p className="font-medium">Quanti.</p>
                                     </th>
                                     <th>
-                                        <p class="font-medium">Desconto Un.</p>
+                                        <p className="font-medium">Desconto Un.</p>
                                     </th>
                                     <th>
-                                        <p class="font-medium">Preço Líquido</p>
+                                        <p className="font-medium">Preço Líquido</p>
                                     </th>
                                 </tr>
                             </thead>
@@ -395,31 +402,33 @@ function Venda() {
                         
                     </div>
                 </div>
-                <div style={divDadosBasicosVenda} class="shadow flex flex-col items-start px-8 justify-evenly">
-                    <div class="flex flex-wrap flex-row items-center align-middle gap-6 p-2">
-                        <p class="font-semibold text-2xl">DADOS BÁSICOS DA VENDA:</p>
-                        <div class="flex flex-row items-center text-[1.45rem] gap-3">
+                <div style={divDadosBasicosVenda} className="shadow flex flex-col items-start px-8 justify-evenly">
+                    <div className="flex flex-wrap flex-row items-center align-middle gap-4 justify-between">
+                        <p className="font-semibold text-xl pr-">DADOS BÁSICOS DA VENDA:</p>
+                        <div className="flex flex-row items-center text-[1.2rem] gap-2">
                             <p>Cód. vendedor:</p>
-                            <Input
-                                handleInput={handleInput}
-                                handlerAtributeChanger={setCodigoVendedor}
-                                width="7rem"
-                            />
+                            <input
+                                type='number'
+                                value={codigoVendedor}
+                                onChange={(e) => {handleInput(e, setCodigoVendedor)}}
+                                className="w-[10rem] h-7 rounded bg-[F5F3F4] pl-2 text-[1rem] font-[300] capitalize text-[#555] form-control border border-[0.1rem] border-slate-600"
+                            ></input>
                         </div>
-                        <div class="flex flex-row items-center text-[1.45rem] gap-3 text-nowrap">
-                            <p>Tipo Venda:</p>
+                        <div className="flex flex-row items-center text-[1.2rem] gap-1 text-nowrap">
+                            <p>Tipo Venda</p>
                             <ComboBoxFilter
-                                width="8rem"
-                                height="2rem"
-                                bold="500"
-                                dadosBanco={tipoVendaLista}
+                                name="select_tipo"
+                                opcoes={tipoVenda}
+                                value={tipoVendaSelecionado} 
+                                handleInput={handleInput} 
+                                handleAtribute={setTipoVendaSelecionado}
                             />
                         </div>
                     </div>
                 </div>
-                <div style={divResumoVenda} class="shadow flex flex-col items-center">
-                    <p class="font-semibold text-2xl mt-4">RESUMO DA VENDA</p>
-                    <div class="bg-[#F5F3F4] w-11/12 h-full rounded-[8px] my-4 mb-3">
+                <div style={divResumoVenda} className="shadow flex flex-col items-center">
+                    <p className="font-semibold text-xl mt-4">RESUMO DA VENDA</p>
+                    <div className="bg-[#F5F3F4] w-11/12 h-full rounded-[8px] my-4 mb-3">
                         <ResumoVenda
                             codigoVenda={1}
                             totalItens={itemsCarrinho.length}
@@ -430,13 +439,13 @@ function Venda() {
                             valorTotal={valorTotal.toFixed(2)}
                         />
                     </div>
-                    <div class="flex flex-col w-full gap-2 my-2 px-5 flex-wrap text-[1.1rem] font-semibold">
+                    <div className="flex flex-col w-full gap-2 my-2 px-5 flex-wrap text-[1.1rem] font-semibold">
                         <Button cor={"#DEE2FF"} funcao={() => AbrirModalAddDiscount(adicionarDescontoVenda)}>
-                            <p class="p-2 text-black">ADICIONAR DESCONTO À VENDA</p>
+                            <p className="p-2 text-black">ADICIONAR DESCONTO À VENDA</p>
                         </Button>
                         <Button funcao={finalizarVenda}>
 
-                            <p class="p-2">FINALIZAR PRÉ-VENDA</p>
+                            <p className="p-2">FINALIZAR PRÉ-VENDA</p>
                         </Button>
                     </div>
                 </div>
