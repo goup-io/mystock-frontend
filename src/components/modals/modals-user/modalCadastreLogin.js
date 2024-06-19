@@ -9,7 +9,12 @@ import withReactContent from 'sweetalert2-react-content';
 import ApiRequest from "../../../connections/ApiRequest";
 
 
-function ModalCadastreLogin({dadosAdicionais}) {
+import Alert from '../../alerts/Alert.js'
+import ErrorImage from "../../../assets/icons/error.svg"
+import SucessImage from '../../../assets/icons/sucess.svg'
+
+
+function ModalCadastreLogin({ dadosAdicionais, editar, onUpdate }) {
 
     const [dadosUsuario, setDadosUsuario] = useState(dadosAdicionais);
     const [usuario, setUsuario] = useState("");
@@ -21,46 +26,71 @@ function ModalCadastreLogin({dadosAdicionais}) {
         setStateFunction(event.target.value);
     }
 
-    const handleSave = () => {
+    const handleSave = async () => {
 
         console.log(dadosUsuario)
-        
+
         // primeiramente é necessário validar os campos da criação de login(usuario, senha)
         if (!usuario || !senha) {
             //todo: mostrar modal de campos de login vazios
             console.log("campos de login não estão preenchidos")
             return;
-        } 
+        }
         const limiteTextoUsuario = 20;
         const limiteTextoSenha = 20;
-        console.log(usuario)
-        console.log(senha)
-        if (usuario.length >= limiteTextoUsuario || senha.length >= limiteTextoSenha){
+        if (usuario.length >= limiteTextoUsuario || senha.length >= limiteTextoSenha) {
             console.log("que isso amigo? mucho texto")
             return
         }
 
-        console.log(dadosAdicionais)
-
-        ApiRequest.userCreate(dadosAdicionais).then((response) => {
-            if (response.status === 201) {
-                alert("Usuário Cadastrado!!")
-                //todo: mostrar modal de sucesso ao cadastrar
-        
-                // pegando o ID que foi inserido, baseado no nosso DTO do backend.  
-                const idUsuario = response.data.id;
-                console.log("ID do usuário inserido:", idUsuario);
-                // momento da criação do login
-                ApiRequest.loginCreate(usuario, senha, idUsuario).then((response) =>{
-                    console.log("Login cadastrado: " + response)
-                }).catch((error) => {
-                    console.log("Erro ao cadastrar o login: ", error)
-                })
+        if (editar) {
+            try {
+                const response = await ApiRequest.userUpdate(dadosAdicionais.id, dadosAdicionais);
+                console.log(response);
+                if (response.status === 200) {
+                    Alert.alert(SucessImage, "Usuário atualizado!");
+                    onUpdate();
+                } else if (response.status === 400) {
+                    Alert.alert(ErrorImage, "Dados incorretos, não foi possível cadastrar!");
+                }
+            } catch (error) {
+                console.log("Erro ao atualizar um usuário: ", error);
             }
-        }).catch((error) => {
-            console.log("Erro ao cadastrar um usuário: ", error)
-            //todo: mostrar modal de erro ao cadastrar
-        });
+
+            ApiRequest.loginUpdate(dadosAdicionais.id, usuario, senha).then((response) => {
+                if (response.status === 200) {
+                    console.log("login atualizado")
+                    //todo: mostrar modal de sucesso ao cadastrar
+
+                    // pegando o ID que foi inserido, baseado no nosso DTO do backend.  
+                    const idUsuario = response.data.id;
+                    console.log("ID do usuário inserido:", idUsuario);
+                    // momento da criação do login
+
+                }
+            }).catch((error) => {
+                console.log("Erro ao cadastrar um usuário: ", error)
+                if (error.response.status === 400) {
+                    Alert.alert(ErrorImage, "Dados incorretos, não foi possível atualizar!");
+                }
+            });
+        } else {
+            ApiRequest.userCreate(dadosAdicionais).then((response) => {
+                if (response.status === 201) {
+                    alert("Usuário Cadastrado!!")
+                    const idUsuario = response.data.id;
+                    ApiRequest.loginCreate(usuario, senha, idUsuario).then((response) => {
+                        Alert.alert(SucessImage, "Login criado!")
+                        console.log("Login cadastrado: " + response)
+                    }).catch((error) => {
+                        console.log("Erro ao cadastrar o login: ", error)
+                    })
+                }
+            }).catch((error) => {
+                console.log("Erro ao cadastrar um usuário: ", error)
+                //todo: mostrar modal de erro ao cadastrar
+            });
+        }
     }
 
     return (
@@ -101,10 +131,10 @@ function ModalCadastreLogin({dadosAdicionais}) {
     );
 }
 
-function AbrirModalCadastreLogin(dadosUsuario) {
+function AbrirModalCadastreLogin(dadosUsuario, edit, onUpdate) {
     const MySwal = withReactContent(Swal);
     MySwal.fire({
-        html: <ModalCadastreLogin dadosAdicionais={dadosUsuario}/>,
+        html: <ModalCadastreLogin dadosAdicionais={dadosUsuario} editar={edit} onUpdate={onUpdate} />,
         // width: "60rem",
         // heigth: "170rem",
         showConfirmButton: false,

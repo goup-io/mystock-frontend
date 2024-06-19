@@ -10,11 +10,6 @@ import { useParams, useLocation } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom';
 
-
-
-
-
-
 //MODAIS
 import PaymentCashModal from '../../modals/modals-pagamento/modalPaymentCash.js'
 import PaymentCardModal from '../../modals/modals-pagamento/modalPaymentCard.js'

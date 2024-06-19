@@ -12,6 +12,8 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 import htmlToPdfmake from 'html-to-pdfmake';
 import ReactDOMServer from 'react-dom/server';
 
+import MyStockLogo from '../../../assets/icons/logologoMyStock-v1.jpg' 
+
 function Relatorio() {
     const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
     const mesAtual = new Date().getMonth();
@@ -43,31 +45,24 @@ function Relatorio() {
 
 
     const downloadFileFromResponseObjectPdf = (responseObject, fileName) => {
-        // const link = document.createElement("a");
-        // const url = window.URL.createObjectURL(
-        // new Blob([responseObject.data], { type: "application/pdf" })
-        // );
-        // link.href = url;
-        // link.setAttribute("download", fileName);
-        // document.body.appendChild(link);
-        // link.click();
-        // document.body.removeChild(link);
-
         pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
         const htmlString = ReactDOMServer.renderToStaticMarkup(responseObject);
         const pdfContent = htmlToPdfmake(htmlString);    
-        const docDefinition = { content: pdfContent };
+        const docDefinition = { 
+            content: [
+                // {
+                //     image: `${MyStockLogo}`,
+                //     width: 150
+                // },
+                pdfContent
+            ]};
         
         pdfMake.createPdf(docDefinition).download(fileName);
+        pdfMake.createPdf(docDefinition).open();
     };
     
     const handleFileDownload = () => {
-        // const simulatedResponse = {
-        // data: new Uint8Array([RelatorioGeral ])
-        // };
-        // downloadFileFromResponseObjectPdf(simulatedResponse, "Relatorio.pdf");
-    
         downloadFileFromResponseObjectPdf(<RelatorioGeral />, 'Relatorio.pdf');
     };
     
