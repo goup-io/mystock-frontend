@@ -4,7 +4,6 @@ function InputSearcModal(props) {
 
     const handleInput = (event) => {
         const inputValue = event.target.value;
-        console.log(inputValue); 
         props.funcao(inputValue);
     }
 

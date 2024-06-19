@@ -477,10 +477,11 @@ export class ApiRequest {
             const prod = {
                 "nome": produtoObj.nome,
                 "valorCusto": produtoObj.precoC,
-                "valorRevenda": produtoObj.precoR
+                "valorRevenda": produtoObj.precoR,
+                "itemPromocional": produtoObj.isPromocional,
             }
 
-            const resposta = await axios.put(springEndPoint + "/produtos/" + id, prod, {
+            const resposta = await axios.put(springEndPoint + "/etps/" + id, prod, {
                 headers: header,
             });
 
@@ -1837,17 +1838,12 @@ export class ApiRequest {
         }
     }
 
-    static async transferenciaCreate(quantidadeSolicitada, coletor_id, etp_id) {
+    static async transferenciaCreate(requestBodyEtps) {
+        console.log("requestBodyEtps na api request");
+        console.log(requestBodyEtps);
 
         try {
-
-            const transferencia = {
-                "quantidadeSolicitada": quantidadeSolicitada,
-                "coletor_id": coletor_id,
-                "etp_id": etp_id,
-            }
-
-            const resposta = await axios.post(springEndPoint + `/pagamentos`, transferencia, {
+            const resposta = await axios.post(springEndPoint + `/transferencias`, requestBodyEtps, {
                 headers: header
             });
 
