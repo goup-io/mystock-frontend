@@ -24,7 +24,7 @@ import ButtonCancel from '../../buttons/buttonCancel.js'
 import Button from '../../buttons/buttonsModal.js'
 
 //Hooks
-import { useEffect, useState } from 'react'
+import React,{ useEffect, useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { ApiRequest } from '../../../connections/ApiRequest.js'
 import AbrirModalCadastreProd from '../../modals/modals-produto/modalCadastreProd.js'
@@ -65,6 +65,7 @@ var divResumoVenda = {
 };
 
 var contadorId = 0
+
 
 function ResumoVenda(props) {
 
@@ -138,11 +139,16 @@ function ItemCarrinho(props) {
     )
 }
 
+export const SelectedItemsContext = React.createContext();
+
 function Venda() {
 
     const [subTotal1, setSubTotal1] = useState(0.00);
     const [subTotal2, setSubTotal2] = useState(0.00);
     const [itemsCarrinho, setItemsCarrinho] = useState([]);
+
+    const [itemsCarrinhoContext, setItemsCarrinhoContext] = useState([]);
+
     const [descontoVenda, setDescontoVenda] = useState(0.00);
     const [descontoProdutos, setDescontoProdutos] = useState(0.00);
     const [valorTotal, setValorTotal] = useState(0.00);
@@ -156,7 +162,11 @@ function Venda() {
     const navigate = useNavigate();
 
     useEffect(() => {
+    console.log(itemsCarrinhoContext);
+    },[itemsCarrinhoContext]);
 
+    useEffect(() => {
+        fetchData();
         recuperarTipoVenda();
 
         let subTotal1 = 0;
@@ -300,9 +310,7 @@ function Venda() {
                 <td>
                     <p class="font-medium">{props.quantidade}</p>
                 </td>
-                <td>
-                    <p class="font-medium">R$ {props.descontoUnitario}</p>
-                </td>
+             
                 <td>
                     <p class="font-medium">R$ {props.precoLiquido}</p>
                 </td>
@@ -349,7 +357,29 @@ function Venda() {
         stateFunction(evento.target.value);
     }
 
+  
+    const [idEtps, setIdEtps] = useState([]);
+
+    async function fetchData() {
+    
+        {itemsCarrinhoContext.map((item, index) => (
+            <ItemCarrinho
+                key={index} // Use um identificador único para a chave, como o índice neste caso
+                codigoProduto={item.codigoProduto}
+                descricaoProduto={item.descricaoProduto}
+                precoUnitario={item.precoUnitario}
+                quantidade={item.quantidade}
+                precoLiquido={item.precoUnitario *item.quantidade}
+                id={index} // Também use o índice como identificador único, se aplicável
+                removerItemCarrinho={() => removerItemCarrinho(index)} // Se precisar de uma função de remoção
+            />
+        ))}
+     
+        
+      }
+
     return (
+        <SelectedItemsContext.Provider value={[itemsCarrinhoContext,setItemsCarrinhoContext]}>
         <PageLayout>
             <Header telaAtual="Área de Venda"/>
             <div style={divPai}>
@@ -382,9 +412,7 @@ function Venda() {
                                     <th>
                                         <p class="font-medium">Quanti.</p>
                                     </th>
-                                    <th>
-                                        <p class="font-medium">Desconto Un.</p>
-                                    </th>
+                                   
                                     <th>
                                         <p class="font-medium">Preço Líquido</p>
                                     </th>
@@ -452,6 +480,7 @@ function Venda() {
                 </div>
             </div>
         </PageLayout>
+        </SelectedItemsContext.Provider>
     )
 }
 

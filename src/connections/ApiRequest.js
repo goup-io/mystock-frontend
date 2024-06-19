@@ -530,6 +530,21 @@ export class ApiRequest {
         }
     }
 
+    static async etpsGetById(id) {
+
+        try {
+            const resposta = await axios.get(springEndPoint + `/etps/${id}`, {
+                method: "GET",
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro;
+        }
+    }
+
     static async etpsGetAllByLoja(idLoja) {
 
         try {
