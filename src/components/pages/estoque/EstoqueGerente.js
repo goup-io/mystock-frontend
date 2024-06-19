@@ -84,7 +84,7 @@ function EstoqueGerente() {
         setColunasModel(colunasDoBancoModel);
     }
 
-    async function fetchDataFilter(filterData) { 
+    async function fetchDataFilterProduto(filterData) { 
         try {
             let response;
             if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
@@ -103,11 +103,41 @@ function EstoqueGerente() {
                         }
                     ));
 
+                const filtrarIdsEtps = dados.map(obj => ({id: obj.id}));
+                setEtpsIds(filtrarIdsEtps);
+
                 setDadosDoBancoETP(filtrarDados);
                 Alert.alertTop(false, "Filtro aplicado com sucesso!");
 
             } else if (response.status === 204) {
                 Alert.alertTop(true, "Nenhum produto encontrado com os filtros aplicados!");
+                fetchData();
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+    }
+
+    async function fetchDataFilterModelo(filterData) { 
+        try {
+            let response;
+            if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
+                response = await ApiRequest.modeloGetByFilter(filterData.modelo, filterData.categoriaModelo, filterData.tipoModelo, '');
+            } else {
+                response = await ApiRequest.modeloGetByFilter(filterData.modelo, filterData.categoriaModelo, filterData.tipoModelo, localStorage.getItem('visao_loja'));
+            }
+
+            if (response.status === 200) {
+                const dados = response.data;
+                setDadosDoBancoModel(dados);;
+
+                const filtrarIdsModels = dados.map(obj => ({id: obj.id}));
+                setModelsIds(filtrarIdsModels);
+
+                Alert.alertTop(false, "Filtro aplicado com sucesso!");
+
+            } else if (response.status === 204) {
+                Alert.alertTop(true, "Nenhum dados encontrado com os filtros aplicados!");
                 fetchData();
             }
         } catch (error) {
@@ -161,10 +191,12 @@ function EstoqueGerente() {
 
     const handleProdutoButtonClick = () => {
         setIsProdutoSelected(true);
+        updateTable();
     };
 
     const handleModeloButtonClick = () => {
         setIsProdutoSelected(false);
+        updateTable();
     };
 
     const handleEditarEtp = (etpId) => {
@@ -178,11 +210,13 @@ function EstoqueGerente() {
     async function excluirEtp(etpId) {
         try {
             const response = await ApiRequest.excluirETP(etpId.id);
-            if (response.status === 200) {
-                console.log("Produto deletado");
-            } else if (response.status === 409) {
-                Alert.alert(errorImage, "Este produto já foi excluido!");
-            }
+            if (response.status === 204) {
+                Alert.alertSuccess("Produto excluído com sucesso!");
+            } else if (response.response.status === 500) {
+                Alert.alertError("Erro ao excluir produto!", "Este produto está sendo utilizado em um produto!");
+            }else {
+                Alert.alertError("Erro ao excluir produto!", response.response.data.message);
+            } 
         } catch (error) {
             console.log("Erro ao excluir etp: ", error);
         }
@@ -191,12 +225,13 @@ function EstoqueGerente() {
     async function excluirModel(modelId) {
         try {
             const response = await ApiRequest.modeloDelete(modelId.id);
-            if (response.status === 200) {
-                console.log("Modelo deletado");
-            } else if (response.status === 409) {
-                Alert.alert(errorImage, "Este modelo já foi excluido!");
-            } else if (response.status === 500) {
-                Alert.alert(errorImage, "Este modelo não pode ser excluido pois está associado a um produto!");
+            console.log(response);
+            if (response.status === 204) {
+                Alert.alertSuccess("Modelo excluído com sucesso!");
+            } else if (response.response.status === 500) {
+                Alert.alertError("Erro ao excluir modelo!", "Este modelo está sendo utilizado em um produto!");
+            }else {
+                Alert.alertError("Erro ao excluir modelo!", response.response.data.message);
             }
         } catch (error) {
             console.log("Erro ao excluir um modelo: ", error);
@@ -204,11 +239,11 @@ function EstoqueGerente() {
     }
 
     const handleDeleteEtp = (etpId) => {
-        Alert.alertQuestion("Deseja excluir esse produto? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluirEtp(etpId), () => updateTable())
+        Alert.alertQuestionCancelar("Deseja excluir esse produto? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluirEtp(etpId), () => updateTable())
     }
 
     const handleDeleteModel = (modelId) => {
-        Alert.alertQuestion("Deseja excluir esse modelo? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluirModel(modelId), () => updateTable())
+        Alert.alertQuestionCancelar("Deseja excluir esse modelo? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluirModel(modelId), () => updateTable())
     }
 
     async function csvProdutos() {
@@ -281,7 +316,13 @@ function EstoqueGerente() {
                 <TitleBox title="Estoque" buttons={buttons}></TitleBox>
 
                 <div className='w-full flex md:flex-row md:justify-center rounded-md py-4 px-6  shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] items-center text-sm bg-white'>
-                    <Filter modelo cor tamanho preço funcaoFilter={fetchDataFilter} funcaoOriginal={fetchData}></Filter>
+                    {
+                        isProdutoSelected ? (
+                            <Filter modelo cor tamanho preço funcaoFilter={fetchDataFilterProduto} funcaoOriginal={fetchData}></Filter>
+                        ) : (
+                            <Filter modelo categoriaModelo tipoModelo funcaoFilter={fetchDataFilterModelo} funcaoOriginal={fetchData}></Filter>
+                        )
+                    }
                 </div>
 
                 <ChartBox>

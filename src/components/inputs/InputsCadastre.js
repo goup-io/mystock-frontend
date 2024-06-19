@@ -20,7 +20,7 @@ function InputCadastre(props) {
                value={props.value}
                onChange={(e) => {props.handleInput(e, props.handlerAtributeChanger)}}
                id={props.id} 
-               type={`${props.type}`} 
+               type={props.type === 'password' ? (passwordVisible ? 'text' : 'password') : props.type} 
                placeholder={props.placeholder == undefined ? "" : props.placeholder} 
                className="w-[16rem] h-7 rounded bg-[F5F3F4] pl-2 text-[1rem] font-[300] capitalize text-[#555] form-control border border-[0.1rem] border-slate-600"
             >{props.children}</input>

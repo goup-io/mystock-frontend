@@ -69,11 +69,14 @@ function HistoricoVendasGerente() {
                     }
                 ));
 
+                const filtrarIds = response.data.map(obj => ({id: obj.id}));
+                setIdsDados(filtrarIds);
+
                 setDadosDoBanco(dados);
                 Alert.alertTop(false, "Filtro aplicado com sucesso!");
 
             } else if (response.status === 204) {
-                Alert.alertTop(true, "Nenhum produto encontrado com os filtros aplicados!");
+                Alert.alertTop(true, "Nenhum dado encontrado com os filtros aplicados!");
                 fetchData();
             } 
         } catch (error) {
@@ -148,7 +151,7 @@ function HistoricoVendasGerente() {
     async function cancelarVenda(idVenda) {
         try {
             const response = await ApiRequest.pagamentoCancelar(idVenda);
-
+            console.log(response);
             if (response.status === 200) {
                 Alert.alertSuccess("Cancelada!", "A venda foi cancelada com sucesso", updateTable);
             }

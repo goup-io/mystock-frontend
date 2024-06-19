@@ -1017,6 +1017,36 @@ export class ApiRequest {
 
     }
 
+    static async modeloGetByFilter(modelo, categoria, tipo, lojaId) {
+        let queryParams = [];
+
+        if (modelo !== '') {
+            queryParams.push(`modelo=${modelo}`);
+        }
+        if (categoria !== '') {
+            queryParams.push(`categoria=${categoria}`);
+        }
+        if (tipo !== '') {
+            queryParams.push(`tipo=${tipo}`);
+        }
+        if (lojaId !== '') {
+            queryParams.push(`id_loja=${lojaId}`);
+        }
+
+        const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
+
+        try {
+            const resposta = await axios.get(springEndPoint + `/modelos${queryString}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
 
     // ***************************************************************************
     // *  TAMANHO
@@ -1765,14 +1795,14 @@ export class ApiRequest {
         }
     }
 
-    static async transferenciaGetByFilter(dataInicio, dataFim, modelo, produto, tamanho, cor, status, lojaId) {
+    static async transferenciaGetByFilter(dataInicio, dataFim, horaInicio, horaFim, modelo, produto, tamanho, cor, status, lojaId) {
         let queryParams = [];
 
         if (dataInicio !== '') {
-            queryParams.push(`dataInicio=${dataInicio}T00:00:00`);
+            queryParams.push(`dataInicio=${dataInicio}T${horaInicio === '' ? '00:00:00' : horaInicio}`);
         }
         if (dataFim !== '') {
-            queryParams.push(`dataFim=${dataFim}T23:59:59`);
+            queryParams.push(`dataFim=${dataFim}T${horaFim === '' ? '23:59:59' : horaFim}`);
         }
         if (modelo !== '') {
             queryParams.push(`modelo=${modelo}`);
@@ -1970,6 +2000,35 @@ export class ApiRequest {
 
         } catch (erro) {
             return erro
+        }
+    }
+
+    static async alertasGetByFilter(dataInicio, dataFim, horaInicio, horaFim, lojaId) {   
+        try {
+            let queryParams = [];
+
+            if (dataInicio !== '') {
+                queryParams.push(`dataHoraInicio=${dataInicio}T${horaInicio === '' ? '00:00:00' : horaInicio}`);
+            }
+            if (dataFim !== '') {
+                queryParams.push(`dataHoraFim=${dataFim}T${horaFim === '' ? '23:59:59' : horaFim}`);
+            }
+            if (lojaId !== '') {
+                queryParams.push(`id_loja=${lojaId}`);
+            }
+
+            const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
+
+            const resposta = await axios.get(springEndPoint + `/alertas/filtro${queryString}`, {
+                headers: header
+            });
+
+            return resposta;
+        } catch (erro) {
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
         }
     }
 
