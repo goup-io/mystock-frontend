@@ -1838,17 +1838,12 @@ export class ApiRequest {
         }
     }
 
-    static async transferenciaCreate(quantidadeSolicitada, coletor_id, etp_id) {
+    static async transferenciaCreate(requestBodyEtps) {
+        console.log("requestBodyEtps na api request");
+        console.log(requestBodyEtps);
 
         try {
-
-            const transferencia = {
-                "quantidadeSolicitada": quantidadeSolicitada,
-                "coletor_id": coletor_id,
-                "etp_id": etp_id,
-            }
-
-            const resposta = await axios.post(springEndPoint + `/pagamentos`, transferencia, {
+            const resposta = await axios.post(springEndPoint + `/transferencias`, requestBodyEtps, {
                 headers: header
             });
 
