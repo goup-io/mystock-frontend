@@ -264,7 +264,7 @@ function RelatorioGeral(){
                     </tr>
                 </table>
                 <Barra />                
-                <h6>Produtos:</h6>
+                <h6>Produtos acabando:</h6>
                 <table>
                     <tr>
                         <th>Nome</th>
