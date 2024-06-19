@@ -116,7 +116,6 @@ function ModalEditProd({ id, onUpdate }) {
 
         try {
             const response = await ApiRequest.editarProduto(idProduto, objetoAdicionado);
-            console.log(response);
             if (response.status === 200) {
                 Alert.alertSuccess("Produto atualizado com sucesso!");
                 onUpdate();
