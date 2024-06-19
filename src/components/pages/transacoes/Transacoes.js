@@ -143,7 +143,7 @@ function Transacoes() {
     return (
         <>
             <PageLayout>
-                <Header telaAtual="Área de Transferência"></Header>
+                <Header telaAtual="Área de Transferência" tipo=""></Header>
 
                 <div className='w-full flex md:flex-row md:justify-center rounded-md mt-4 py-4 px-10 shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] items-center text-sm bg-white'>
                     <Filter data modelo produto tamanho status funcaoOriginal={fetchData} funcaoFilter={fetchDataFilter} ></Filter>
