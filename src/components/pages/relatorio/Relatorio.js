@@ -6,7 +6,7 @@ import ButtonModal from '../../buttons/buttonsModal.js'
 import React, { useState } from 'react';
 
 //RELATORIO
-import RelatorioGeral from '../../pdf/relatorioGeral.js'
+import RelatorioGeral from '../../pdf/RelatorioGeral.js'
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import htmlToPdfmake from 'html-to-pdfmake';
@@ -46,7 +46,7 @@ function Relatorio() {
 
     const downloadFileFromResponseObjectPdf = (responseObject, fileName) => {
         pdfMake.vfs = pdfFonts.pdfMake.vfs;
-
+        
         const htmlString = ReactDOMServer.renderToStaticMarkup(responseObject);
         const pdfContent = htmlToPdfmake(htmlString);    
         const docDefinition = { 

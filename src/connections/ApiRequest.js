@@ -2153,7 +2153,7 @@ export class ApiRequest {
 
 
     
-      // ***************************************************************************
+    // ***************************************************************************
     // *  DASHBOARDS func
     // ***************************************************************************
 
@@ -2243,6 +2243,84 @@ export class ApiRequest {
         }
     }
 
+    // ***************************************************************************
+    // *  RELATORIO
+    // ***************************************************************************
+
+    static async relatorioGetModelosMaisVendidosByQtdDias(qtdDias) {
+
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/relatorios/secao-vendas/modelos-mais-vendidos?qtdDias=${qtdDias}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async relatorioGetResumoGeral(qtdDias) {
+
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/relatorios/secao-resumo/resumo-geral?qtdDias=${qtdDias}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+    
+    static async relatorioRankingVendas(qtdDias) {
+
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/relatorios/secao-funcionarios/ranking-vendas?qtdDias=${qtdDias}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async relatorioProdutosAcabando() {
+
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/relatorios/secao-estoque/produtos-acabando`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async relatorioFluxoEstoque(qtdDias) {
+
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/relatorios/secao-estoque/fluxo-estoque?qtdDias=${qtdDias}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
 }
 
 
