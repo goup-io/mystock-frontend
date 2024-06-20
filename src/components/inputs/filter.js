@@ -6,8 +6,8 @@ import ComboBoxFilter from "../inputs/comboBoxFilter";
 import ApiRequest from '../../connections/ApiRequest';
 import Alert from '../alerts/Alert';
 
-function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVenda, horario, tipoAlerta, produto, funcaoFilter, funcaoOriginal }) {
-    const [selectedValue, setSelectedValue] = useState('todos');
+function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVenda, horario, tipoAlerta, produto, funcaoFilter, funcaoOriginal, categoriaModelo, tipoModelo }) {
+    const [selectedValue, setSelectedValue] = useState('estoque');
 
     const handleChange = (event) => {
         setSelectedValue(event.target.value);
@@ -15,19 +15,23 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
 
     const [cores, setCores] = useState([]);
     const [modelos, setModelos] = useState([]);
+    const [tiposModelo, setTiposModelo] = useState([]);
+    const [categoriasModelo, setCategoriasModelo] = useState([]);
     const [tamanhos, setTamanhos] = useState([]);
     const [tiposVenda, setTiposVenda] = useState([]);
     const [vendedores, setVendedores] = useState([]);
     const [produtos, setProdutos] = useState([]);
 
     const [statusTransferencia, setStatusTransferencia] = useState([
-        { id: 'ACEITO', nome: 'Aceito' },
-        { id: 'NEGADO', nome: 'Negado' },
-        { id: 'PENDENTE', nome: 'Pendente' }
+        { nome: 'ACEITO'},
+        { nome: 'NEGADO'},
+        { nome: 'PENDENTE'}
     ]);
 
     const [inputCorSelecionada, setInputCorSelecionada] = useState('');
     const [inputModeloSelecionado, setInputModeloSelecionado] = useState('');
+    const [inputCategoriaModeloSelecionado, setInputCategoriaModeloSelecionado] = useState('');
+    const [inputTipoModeloSelecionado, setInputTipoModeloSelecionado] = useState('');
     const [inputTipoVendaSelecionado, setInputTipoVendaSelecionado] = useState('');
     const [inputTamanhoSelecionado, setInputTamanhoSelecionado] = useState('');
     const [inputStatusSelecionado, setInputStatusSelecionado] = useState('');
@@ -58,7 +62,9 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
         setInputHorarioFimSelecionado('');
         setInputPrecoInicioSelecionado('');
         setInputPrecoFimSelecionado('');
-        setSelectedValue('todos');
+        setSelectedValue('estoque');
+        setInputCategoriaModeloSelecionado('');
+        setInputTipoModeloSelecionado('');
 
         funcaoOriginal();
     };
@@ -83,12 +89,28 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
 
                 if (response.status === 200) {
                     const dados = response.data;
-
+                
                     const filtrarDados = dados.map(obj => (
                         { id: obj.id, nome: obj.nome }
                     ));
-
+                
+                    const filtrarCategoriaDados = dados.reduce((acc, obj) => {
+                        if (!acc.some(accObj => accObj.nome === obj.categoria)) {
+                            acc.push({ nome: obj.categoria });
+                        }
+                        return acc;
+                    }, []);
+                
+                    const filtrarTipoDados = dados.reduce((acc, obj) => {
+                        if (!acc.some(accObj => accObj.nome === obj.tipo)) {
+                            acc.push({ nome: obj.tipo });
+                        }
+                        return acc;
+                    }, []);
+                
                     setModelos(filtrarDados);
+                    setCategoriasModelo(filtrarCategoriaDados);
+                    setTiposModelo(filtrarTipoDados);
                 }
             } catch (error) {
                 console.log("Erro ao buscar os dados", error);
@@ -183,14 +205,16 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
             produto: inputProdutoSelecionado,
             dataInicio: inputDataInicioSelecionada,
             dataFim: inputDataFimSelecionada,
-            horarioInicio: inputHorarioInicioSelecionado,
-            horarioFim: inputHorarioFimSelecionado,
+            horaInicio: inputHorarioInicioSelecionado,
+            horaFim: inputHorarioFimSelecionado,
             precoInicio: inputPrecoInicioSelecionado,
             precoFim: inputPrecoFimSelecionado,
             tipoAlerta: selectedValue,
+            categoriaModelo: inputCategoriaModeloSelecionado,
+            tipoModelo: inputTipoModeloSelecionado
         };
 
-        if (filterData.cor !== '' || filterData.modelo !== '' || filterData.tamanho !== '' || filterData.status !== '' || filterData.tipoVenda !== '' || filterData.vendedor !== '' || filterData.produto !== '' || filterData.dataInicio !== '' || filterData.dataFim !== '' || filterData.horarioInicio !== '' || filterData.horarioFim !== '' || filterData.precoInicio !== '' || filterData.precoFim !== '') {
+        if (filterData.cor !== '' || filterData.modelo !== '' || filterData.tamanho !== '' || filterData.status !== '' || filterData.tipoVenda !== '' || filterData.vendedor !== '' || filterData.produto !== '' || filterData.dataInicio !== '' || filterData.dataFim !== '' || filterData.horaInicio !== '' || filterData.horaFim !== '' || filterData.precoInicio !== '' || filterData.precoFim !== '' || filterData.categoriaModelo !== '' || filterData.tipoModelo !== '') {
             funcaoFilter(filterData);
         } else {
             Alert.alertTop(true, 'Nenhum campo preenchido!');
@@ -198,7 +222,7 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
     };
 
     return (
-        <div className="w-full flex flex-wrap justify-between items-center text-center">
+        <div className="w-full flex flex-wrap justify-between items-center text-center gap-[5px]">
             {/* Seção dos filtros */}
             <div className="md:flex md:space-x-4 md:w-auto md:mb-0">
                 {data && (
@@ -233,11 +257,13 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
                 )}
                 {vendedor && <ComboBoxFilter name="select_vendedor" opcoes={vendedores} value={inputVendedorSelecionado} handleInput={handleInput} handleAtribute={setInputVendedorSelecionado}>Vendedor</ComboBoxFilter>}
                 {tipoVenda && <ComboBoxFilter name="select_tipo" opcoes={tiposVenda} value={inputTipoVendaSelecionado} handleInput={handleInput} handleAtribute={setInputTipoVendaSelecionado}>Tipo</ComboBoxFilter>}
-                {cor && <ComboBoxFilter name="select_cor" opcoes={cores} value={inputCorSelecionada} handleInput={handleInput} handleAtribute={setInputCorSelecionada}>Cor</ComboBoxFilter>}
-                {modelo && <ComboBoxFilter name="select_modelo" opcoes={modelos} value={inputModeloSelecionado} handleInput={handleInput} handleAtribute={setInputModeloSelecionado}>Modelo</ComboBoxFilter>}
-                {produto && <ComboBoxFilter name="select_produto" opcoes={produtos} value={inputProdutoSelecionado} handleInput={handleInput} handleAtribute={setInputProdutoSelecionado}>Produto</ComboBoxFilter>}
-                {tamanho && <ComboBoxFilter name="select_tamanho" opcoes={tamanhos} value={inputTamanhoSelecionado} handleInput={handleInput} handleAtribute={setInputTamanhoSelecionado}>Tamanho</ComboBoxFilter>}
-                {status && <ComboBoxFilter name="select_status" opcoes={statusTransferencia} value={inputStatusSelecionado} handleInput={handleInput} handleAtribute={setInputStatusSelecionado}>Status</ComboBoxFilter>}
+                {cor && <ComboBoxFilter name="select_cor" opcoes={cores} value={inputCorSelecionada} handleInput={handleInput} handleAtribute={setInputCorSelecionada} valueNome>Cor</ComboBoxFilter>}
+                {modelo && <ComboBoxFilter name="select_modelo" opcoes={modelos} value={inputModeloSelecionado} handleInput={handleInput} handleAtribute={setInputModeloSelecionado} valueNome>Modelo</ComboBoxFilter>}
+                {categoriaModelo && <ComboBoxFilter name="select_categoria_modelo" opcoes={categoriasModelo} value={inputCategoriaModeloSelecionado} handleInput={handleInput} handleAtribute={setInputCategoriaModeloSelecionado} valueNome>Categoria</ComboBoxFilter>}
+                {tipoModelo && <ComboBoxFilter name="select_tipo_modelo" opcoes={tiposModelo} value={inputTipoModeloSelecionado} handleInput={handleInput} handleAtribute={setInputTipoModeloSelecionado} valueNome>Tipo</ComboBoxFilter>}
+                {produto && <ComboBoxFilter name="select_produto" opcoes={produtos} value={inputProdutoSelecionado} handleInput={handleInput} handleAtribute={setInputProdutoSelecionado} valueNome>Produto</ComboBoxFilter>}
+                {tamanho && <ComboBoxFilter name="select_tamanho" opcoes={tamanhos} value={inputTamanhoSelecionado} handleInput={handleInput} handleAtribute={setInputTamanhoSelecionado} valueNome>Tamanho</ComboBoxFilter>}
+                {status && <ComboBoxFilter name="select_status" opcoes={statusTransferencia} value={inputStatusSelecionado} handleInput={handleInput} handleAtribute={setInputStatusSelecionado} valueNome>Status</ComboBoxFilter>}
                 {preço && (
                     <div>
                         <InputFilterDate
@@ -257,16 +283,6 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
                     <div className="flex items-center">
                         <label className="text-[1rem] text-black font-normal mr-3">Tipo:</label>
                         <div className="flex gap-5 mt-1">
-                            <div className="flex items-center gap-1">
-                                <input
-                                    type="radio"
-                                    name="tpAlerta"
-                                    value="todos"
-                                    checked={selectedValue === 'todos'}
-                                    onChange={handleChange}
-                                /> 
-                                Todos
-                            </div>
                             <div className="flex items-center gap-1">
                                 <input
                                     type="radio"

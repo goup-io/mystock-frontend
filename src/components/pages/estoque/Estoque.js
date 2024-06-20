@@ -20,54 +20,55 @@ import AbrirModalEditModel from '../../modals/modals-model/modalEditModel.js'
 
 function Estoque() {
 
+
     const [colunasETP, setColunasETP] = useState([]);
     const [colunasModel, setColunasModel] = useState([]);
     const [dadosDoBancoETP, setDadosDoBancoETP] = useState([]);
     const [dadosDoBancoModel, setDadosDoBancoModel] = useState([]);
     const [isProdutoSelected, setIsProdutoSelected] = useState(true);
-    const [dadosFiltradosETP, setDadosFiltradosETP] = useState([]);
-    const [dadosFiltradosModel, setDadosFiltradosModel] = useState([]);
-
+    const [etpsIds, setEtpsIds] = useState([]);
+    const [modelsIds, setModelsIds] = useState([]);
 
     async function fetchData() {
         const colunasDoBancoETP = ['Código', 'Nome', 'Modelo', 'Tamanho', 'Cor', 'Preço', 'Loja', 'Item Promo.', 'N.Itens'];
         const colunasDoBancoModel = ['Código', 'Nome', 'Categoria', 'Tipo'];
 
         try {
-            const response = await ApiRequest.etpsGetAll();
+            let response;
+            if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
+                response = await ApiRequest.etpsGetAll();
+            } else {
+                response = await ApiRequest.etpsGetAllByLoja(localStorage.getItem('visao_loja'));
+            }
 
             if (response.status === 200) {
                 const dados = response.data;
-                setDadosDoBancoETP(dados);
 
-                const filtrarDadosETP = dados
+                const filtrarDados = dados
                     .map(obj => (
                         {
                             codigo: obj.codigo, nome: obj.nome, modelo: obj.modelo, tamanho: obj.tamanho, cor: obj.cor, preco: obj.preco, loja: obj.loja, itemPromocional: obj.itemPromocional == 'SIM' ? 'Sim' : 'Não', quantidade: obj.quantidade
                         }
                     ));
 
-                setDadosFiltradosETP(filtrarDadosETP);
+                const filtrarIdsEtps = dados.map(obj => ({ id: obj.id }));
+                setEtpsIds(filtrarIdsEtps);
+
+                setDadosDoBancoETP(filtrarDados);
             }
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
         }
 
         try {
-            const response = await ApiRequest.modeloGetAll();
+            const responseModel = await ApiRequest.modeloGetAll();
 
-            if (response.status === 200) {
-                const dados = response.data;
+            if (responseModel.status === 200) {
+                const dados = responseModel.data;
                 setDadosDoBancoModel(dados);
 
-                const filtrarDadosModel = dados
-                    .map(obj => (
-                        {
-                            codigo: obj.codigo, nome: obj.nome, categoria: obj.categoria, tipo: obj.tipo
-                        }
-                    ));
-
-                setDadosFiltradosModel(filtrarDadosModel);
+                const filtrarIdsModels = dados.map(obj => ({ id: obj.id }));
+                setModelsIds(filtrarIdsModels);
             }
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
@@ -77,16 +78,119 @@ function Estoque() {
         setColunasModel(colunasDoBancoModel);
     }
 
+    async function fetchDataFilterProduto(filterData) {
+        try {
+            let response;
+            if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
+                response = await ApiRequest.etpsGetFiltrados(filterData.modelo, filterData.tamanho, filterData.cor, filterData.precoInicio, filterData.precoFim, '');
+            } else {
+                response = await ApiRequest.etpsGetFiltrados(filterData.modelo, filterData.tamanho, filterData.cor, filterData.precoInicio, filterData.precoFim, localStorage.getItem('visao_loja'));
+            }
+
+            if (response.status === 200) {
+                const dados = response.data;
+
+                const filtrarDados = dados
+                    .map(obj => (
+                        {
+                            codigo: obj.codigo, nome: obj.nome, modelo: obj.modelo, tamanho: obj.tamanho, cor: obj.cor, preco: obj.preco, loja: obj.loja, itemPromocional: obj.itemPromocional == 'SIM' ? 'Sim' : 'Não', quantidade: obj.quantidade
+                        }
+                    ));
+
+                const filtrarIdsEtps = dados.map(obj => ({ id: obj.id }));
+                setEtpsIds(filtrarIdsEtps);
+
+                setDadosDoBancoETP(filtrarDados);
+                Alert.alertTop(false, "Filtro aplicado com sucesso!");
+
+            } else if (response.status === 204) {
+                Alert.alertTop(true, "Nenhum produto encontrado com os filtros aplicados!");
+                fetchData();
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+    }
+
+    async function fetchDataFilterModelo(filterData) {
+        try {
+            let response;
+            if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
+                response = await ApiRequest.modeloGetByFilter(filterData.modelo, filterData.categoriaModelo, filterData.tipoModelo, '');
+            } else {
+                response = await ApiRequest.modeloGetByFilter(filterData.modelo, filterData.categoriaModelo, filterData.tipoModelo, localStorage.getItem('visao_loja'));
+            }
+
+            if (response.status === 200) {
+                const dados = response.data;
+                setDadosDoBancoModel(dados);;
+
+                const filtrarIdsModels = dados.map(obj => ({ id: obj.id }));
+                setModelsIds(filtrarIdsModels);
+
+                Alert.alertTop(false, "Filtro aplicado com sucesso!");
+
+            } else if (response.status === 204) {
+                Alert.alertTop(true, "Nenhum dados encontrado com os filtros aplicados!");
+                fetchData();
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+    }
+
+    async function fetchDataFilterSearchProduto(filterData) {
+        if (filterData === "") {
+            fetchData();
+        } else {
+            const searchData = dadosDoBancoETP.filter((item) => {
+                const lowerCaseFilter = filterData.toLowerCase();
+                return (
+                    item.codigo.toLowerCase().includes(lowerCaseFilter) ||
+                    item.nome.toLowerCase().includes(lowerCaseFilter) ||
+                    item.modelo.toLowerCase().includes(lowerCaseFilter) ||
+                    item.cor.toLowerCase().includes(lowerCaseFilter) ||
+                    item.loja.toLowerCase().includes(lowerCaseFilter) ||
+                    item.itemPromocional.toLowerCase().includes(lowerCaseFilter)
+                );
+            });
+            setDadosDoBancoETP(searchData);
+        }
+    }
+
+    async function fetchDataFilterSearchModel(filterData) {
+        if (filterData === "") {
+            fetchData();
+        } else {
+            const searchData = dadosDoBancoModel.filter((item) => {
+                const lowerCaseFilter = filterData.toLowerCase();
+                return (
+                    item.codigo.toLowerCase().includes(lowerCaseFilter) ||
+                    item.nome.toLowerCase().includes(lowerCaseFilter) ||
+                    item.categoria.toLowerCase().includes(lowerCaseFilter) ||
+                    item.tipo.toLowerCase().includes(lowerCaseFilter)
+                );
+            });
+            setDadosDoBancoModel(searchData);
+        }
+    }
+
     useEffect(() => {
         fetchData();
     }, []);
 
+    const updateTable = () => {
+        fetchData();
+    };
+
     const handleProdutoButtonClick = () => {
         setIsProdutoSelected(true);
+        updateTable();
     };
 
     const handleModeloButtonClick = () => {
         setIsProdutoSelected(false);
+        updateTable();
     };
 
     const handleEditarEtp = (etpId) => {
@@ -94,33 +198,34 @@ function Estoque() {
     };
 
     const handleEditarModel = (modelId) => {
-        console.log(modelId);
         AbrirModalEditModel(modelId.id, updateTable);
     };
 
     async function excluirEtp(etpId) {
-        const idEtp = etpId.id
-
         try {
-            const response = await ApiRequest.excluirETP(idEtp);
-            if (response.status === 200) {
-                console.log("Produto deletado");
-            } else if (response.status === 409) {
-                Alert.alert(errorImage, "Este produto já foi excluido!");
+            const response = await ApiRequest.excluirETP(etpId.id);
+            if (response.status === 204) {
+                Alert.alertSuccess("Produto excluído com sucesso!");
+            } else if (response.response.status === 500) {
+                Alert.alertError("Erro ao excluir produto!", "Este produto está sendo utilizado em um produto!");
+            } else {
+                Alert.alertError("Erro ao excluir produto!", response.response.data.message);
             }
         } catch (error) {
-            console.log("Erro ao excluir um produto: ", error);
+            console.log("Erro ao excluir etp: ", error);
         }
     }
 
     async function excluirModel(modelId) {
-        const idModelo = modelId.idModelo
         try {
-            const response = await ApiRequest.modeloDelete(idModelo);
-            if (response.status === 200) {
-                console.log("Modelo deletado");
-            } else if (response.status === 409) {
-                Alert.alert(errorImage, "Este modelo já foi excluido!");
+            const response = await ApiRequest.modeloDelete(modelId.id);
+            console.log(response);
+            if (response.status === 204) {
+                Alert.alertSuccess("Modelo excluído com sucesso!");
+            } else if (response.response.status === 500) {
+                Alert.alertError("Erro ao excluir modelo!", "Este modelo está sendo utilizado em um produto!");
+            } else {
+                Alert.alertError("Erro ao excluir modelo!", response.response.data.message);
             }
         } catch (error) {
             console.log("Erro ao excluir um modelo: ", error);
@@ -128,16 +233,12 @@ function Estoque() {
     }
 
     const handleDeleteEtp = (etpId) => {
-        Alert.alertQuestion("Deseja excluir esse produto? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluirEtp(etpId), () => updateTable())
+        Alert.alertQuestionCancelar("Deseja excluir esse produto? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluirEtp(etpId), () => updateTable())
     }
 
     const handleDeleteModel = (modelId) => {
-        Alert.alertQuestion("Deseja excluir esse modelo? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluirModel(modelId), () => updateTable())
+        Alert.alertQuestionCancelar("Deseja excluir esse modelo? Essa ação é irreversível.", "Excluir", "Cancelar", () => excluirModel(modelId), () => updateTable())
     }
-
-    const updateTable = () => {
-        fetchData();
-    };
 
     return (
         <>
@@ -145,7 +246,13 @@ function Estoque() {
                 <Header telaAtual="Estoque"></Header>
 
                 <div className='w-full flex md:flex-row md:justify-center rounded-md mt-4 py-4 px-10  shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] items-center text-sm bg-white'>
-                    <Filter modelo cor tamanho preço></Filter>
+                    {
+                        isProdutoSelected ? (
+                            <Filter modelo cor tamanho preço funcaoFilter={fetchDataFilterProduto} funcaoOriginal={fetchData}></Filter>
+                        ) : (
+                            <Filter modelo categoriaModelo tipoModelo funcaoFilter={fetchDataFilterModelo} funcaoOriginal={fetchData}></Filter>
+                        )
+                    }
                 </div>
 
                 <div className='bg-white mt-4 h-[74%] flex flex-col justify-start pl-10 pr-10 pt-2 pb-2 items-center shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] rounded-md'>
@@ -166,16 +273,14 @@ function Estoque() {
 
                         </div>
 
-                        <InputSearcModal
-                            props="text"
-                        >Pesquisar</InputSearcModal>
+                        <InputSearcModal props="text" funcao={isProdutoSelected ? fetchDataFilterSearchProduto : fetchDataFilterSearchModel}>Pesquisar</InputSearcModal>
                     </div>
                     <div className='w-full h-[78%] mt-2 flex justify-center items-center '>
                         <div className=' w-full h-[100%] border-solid border-[1px] border-slate-700  bg-slate-700 overflow-y-auto rounded-md'>
                             {isProdutoSelected ? (
-                                <TabelaPage colunas={colunasETP} dados={dadosFiltradosETP.map(({ ...dados }) => dados)} edit={handleEditarEtp} remove={handleDeleteEtp} id={dadosDoBancoETP.map(({ ...dadosDoBancoETP }) => dadosDoBancoETP)} />
+                                <TabelaPage colunas={colunasETP} dados={dadosDoBancoETP.map(({ ...dados }) => dados)} edit={handleEditarEtp} remove={handleDeleteEtp} id={etpsIds} />
                             ) : (
-                                <TabelaPage colunas={colunasModel} dados={dadosFiltradosModel.map(({ ...dados }) => dados)} edit={handleEditarModel} remove={handleDeleteModel} id={dadosDoBancoModel.map(({ ...dadosDoBancoModel }) => dadosDoBancoModel)} />
+                                <TabelaPage colunas={colunasModel} dados={dadosDoBancoModel.map(({ id, ...dados }) => dados)} edit={handleEditarModel} remove={handleDeleteModel} id={modelsIds} />
                             )}
                         </div>
                     </div>

@@ -155,9 +155,7 @@ function Venda() {
 
     const [codigoVendedor, setCodigoVendedor] = useState("")
     const [tipoVenda, setTipoVenda] = useState("");
-
-    const [tipoVendaLista, setTipoVendaLista] = useState([]);
-    const [tipoVendaListaNomes, setTipoVendaListaNomes] = useState([])
+    const [tipoVendaSelecionado, setTipoVendaSelecionado] = useState(1);
 
     const navigate = useNavigate();
 
@@ -175,7 +173,6 @@ function Venda() {
         let valorTotal = 0;
 
         itemsCarrinho.forEach(element => {
-
             subTotal1 += element.props.precoUnitario * element.props.quantidade;
             subTotal2 += (element.props.precoUnitario - element.props.descontoUnitario) * element.props.quantidade;
             descontoProdutos += element.props.descontoUnitario * element.props.quantidade;
@@ -256,20 +253,20 @@ function Venda() {
         contadorId++;
     }
 
-    async function recuperarTipoVenda() {
-        // const tipoVendaListaResponse = await ApiRequest.tipoVendaGetAll()
+    async function recuperarTipoVenda(){
+        const response = await ApiRequest.tipoVendaGetAll()
 
-        // var arrayAux = [tipoVendaListaResponse.data]
-
-        // var arrayAux02 = [arrayAux.at(0)]
-        // var listaTipos = []
-        // console.log(listaTipos)
-
-        // // console.log(arrayAux02)
-        // setTipoVendaLista(arrayAux)
-
-
-
+        try {
+            if (response.status === 200){
+                const dados = response.data.map(item => ({
+                    id: item.id,
+                    nome: item.tipo
+                }));
+                setTipoVenda(dados)
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os tipos venda", error);
+        }
     }
 
     function removerItemCarrinho(id) {
@@ -309,22 +306,21 @@ function Venda() {
 
     function ItemCarrinho(props) {
         return (
-            <tr class="bg-[#DEE2FF] h-24 rounded text-[1.2rem]" >
+            <tr className="bg-[#DEE2FF] h-24 rounded text-[1.2rem]" >
                 <td>
-                    <p class="font-medium">{props.codigoProduto}</p>
+                    <p className="font-medium">{props.codigoProduto}</p>
                 </td>
                 <td>
-                    <p class="font-medium">{props.descricaoProduto}</p>
+                    <p className="font-medium">{props.descricaoProduto}</p>
                 </td>
                 <td>
-                    <p class="font-medium">R$ {props.precoUnitario}</p>
+                    <p className="font-medium">R$ {props.precoUnitario}</p>
                 </td>
                 <td>
-                    <p class="font-medium">{props.quantidade}</p>
+                    <p className="font-medium">{props.quantidade}</p>
                 </td>
-
                 <td>
-                    <p class="font-medium">R$ {props.precoLiquido}</p>
+                    <p className="font-medium">R$ {props.precoLiquido}</p>
                 </td>
                 <td>
                     <div className="flex flex-row items-center gap-12 justify-center">

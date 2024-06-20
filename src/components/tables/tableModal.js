@@ -1,28 +1,34 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import ButEdit from '../buttons/buttonEdit';
-import { ContextAdicionar } from '../modals/modals-produto/modalCadastreProdPreConfig';
 
-
-function TabelaModal({ colunas, dados, edit, remove, iptQuantidade, onQuantityChange, id }) {
+const TabelaModal = forwardRef(({ colunas, dados, edit, remove, iptQuantidade, onQuantityChange, id }, ref) => {
   const getInitialValues = () => {
-    return id.reduce((acc, item) => {
+    return id ? id.reduce((acc, item) => {
       acc[item.id] = 0; // Inicializa as quantidades como 0
       return acc;
-    }, {});
+    }, {}) : {};
   };
 
-  const [inputValues, setInputValues] = useState(getInitialValues ? getInitialValues : ['', '']);
+  const [inputValues, setInputValues] = useState(getInitialValues());
 
   useEffect(() => {
     if (onQuantityChange) {
-      onQuantityChange(inputValues);
+      // Transforma o objeto inputValues em um array de objetos
+      const items = Object.entries(inputValues).map(([etp_id, quantidadeSolicitada]) => ({ etp_id: parseInt(etp_id), quantidadeSolicitada }));
+      onQuantityChange(items);
     }
   }, [inputValues, onQuantityChange]);
+
+  useImperativeHandle(ref, () => ({
+    limparQuantidades() {
+      setInputValues(getInitialValues());
+    }
+  }));
 
   const handleAdicionar = (idEtp) => {
     setInputValues((prevValues) => {
       const newValues = { ...prevValues };
-      newValues[`${idEtp}`] = (newValues[`${idEtp}`] || 0) + 1;
+      newValues[idEtp] = (newValues[idEtp] || 0) + 1;
       return newValues;
     });
   };
@@ -30,8 +36,8 @@ function TabelaModal({ colunas, dados, edit, remove, iptQuantidade, onQuantityCh
   const handleTirar = (idEtp) => {
     setInputValues((prevValues) => {
       const newValues = { ...prevValues };
-      if ((newValues[`${idEtp}`] || 0) > 0) {
-        newValues[`${idEtp}`] = (newValues[`${idEtp}`] || 0) - 1;
+      if ((newValues[idEtp] || 0) > 0) {
+        newValues[idEtp] = (newValues[idEtp] || 0) - 1;
       }
       return newValues;
     });
@@ -46,7 +52,7 @@ function TabelaModal({ colunas, dados, edit, remove, iptQuantidade, onQuantityCh
           ))}
           {edit && <th>Editar</th>}
           {remove && <th>Remover</th>}
-          {iptQuantidade && <th>Quantidade</th>}
+          {iptQuantidade && <th>Quant.</th>}
         </tr>
       </thead>
       <tbody className='text-xs'>
@@ -69,15 +75,15 @@ function TabelaModal({ colunas, dados, edit, remove, iptQuantidade, onQuantityCh
             )}
             {iptQuantidade && (
               <td>
-                <div className='flex items-center justify-around'>
-                  <button className='text-xl font-medium' onClick={() => handleTirar(`${id[index].id}`)}>-</button>
+                <div className='flex items-center justify-around gap-[2px]'>
+                  <button className='text-xl font-medium' onClick={() => handleTirar(id[index].id)}>-</button>
                   <input
                     type="text"
                     className='w-5 h-5 border border-slate-700 rounded text-center'
                     value={inputValues[id[index].id] ? Number(inputValues[id[index].id]) : 0}
                     readOnly
                   />
-                  <button className='text-xl font-medium' onClick={() => handleAdicionar(`${id[index].id}`)}>+</button>
+                  <button className='text-xl font-medium' onClick={() => handleAdicionar(id[index].id)}>+</button>
                 </div>
               </td>
             )}
@@ -86,6 +92,6 @@ function TabelaModal({ colunas, dados, edit, remove, iptQuantidade, onQuantityCh
       </tbody>
     </table>
   );
-}
+});
 
 export default TabelaModal;

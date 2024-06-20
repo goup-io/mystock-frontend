@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ButEdit from '../buttons/buttonEdit';
 import ButtonModal from '../buttons/buttonsModal';
 import ImgNegar from '../../assets/negate.png';
@@ -19,7 +19,7 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, nega
       case 'EM ANDAMENTO':
         return 'bg-[#C1C1C1] border-[#5E6977]';
       case 'Negado':
-      case 'Cancelado':
+      case 'Cancelada':
       case 'NEGADO':
       case 'CANCELADO':
         return 'bg-[#F47D8B] border-[#EF233C]';
@@ -27,6 +27,8 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, nega
         return 'bg-slate-500 border-slate-700';
     }
   };
+
+  const [qtdSolicitadaTransf, setQtdSolicitadaTransf] = useState(0);
 
   return (
     <table className='w-full'>
@@ -69,14 +71,14 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, nega
             )}
             {negar && (
               <td>
-                <button className=' h-4 w-4 duration-150 ease-in-out hover:scale-[1.05]'>
+                <button onClick={() => negar(id[index])} className=' h-4 w-4 duration-150 ease-in-out hover:scale-[1.05]'>
                   <img src={ImgNegar}></img>
                 </button>
               </td>
             )}
             {aceitar && (
               <td>
-                <button className='h-5 w-5 duration-150 ease-in-out hover:scale-[1.05]'>
+                <button onClick={() => aceitar(id[index], dados[index].nSolic)} className='h-5 w-5 duration-150 ease-in-out hover:scale-[1.05]'>
                   <img src={ImgAceitar}></img>
                 </button>
               </td>
@@ -93,7 +95,7 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, nega
             )}
             {cancel && (
               <td >
-                <ButtonModal cor="#919191">Cancelar</ButtonModal>
+                <ButtonModal cor="#919191" funcao={() => cancel(id[index].id)}>Cancelar</ButtonModal>
               </td>
             )}
           </tr>

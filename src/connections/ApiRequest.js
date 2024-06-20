@@ -477,10 +477,11 @@ export class ApiRequest {
             const prod = {
                 "nome": produtoObj.nome,
                 "valorCusto": produtoObj.precoC,
-                "valorRevenda": produtoObj.precoR
+                "valorRevenda": produtoObj.precoR,
+                "itemPromocional": produtoObj.isPromocional,
             }
 
-            const resposta = await axios.put(springEndPoint + "/produtos/" + id, prod, {
+            const resposta = await axios.put(springEndPoint + "/etps/" + id, prod, {
                 headers: header,
             });
 
@@ -1032,6 +1033,36 @@ export class ApiRequest {
 
     }
 
+    static async modeloGetByFilter(modelo, categoria, tipo, lojaId) {
+        let queryParams = [];
+
+        if (modelo !== '') {
+            queryParams.push(`modelo=${modelo}`);
+        }
+        if (categoria !== '') {
+            queryParams.push(`categoria=${categoria}`);
+        }
+        if (tipo !== '') {
+            queryParams.push(`tipo=${tipo}`);
+        }
+        if (lojaId !== '') {
+            queryParams.push(`id_loja=${lojaId}`);
+        }
+
+        const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
+
+        try {
+            const resposta = await axios.get(springEndPoint + `/modelos${queryString}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
 
     // ***************************************************************************
     // *  TAMANHO
@@ -1345,6 +1376,60 @@ export class ApiRequest {
 
     static async getCsvEstoqueByLoja(idLoja) {
         const resposta = await axios.get(springEndPoint + `/csv/etp/estoque-por-loja/${idLoja}`, {
+            headers: header,
+            responseType: 'arraybuffer', // Add this line
+        });
+
+        return resposta;
+    }
+
+    static async getCsvModelos() {
+        const resposta = await axios.get(springEndPoint + "/csv/modelos", {
+            headers: header,
+            responseType: 'arraybuffer', // Add this line
+        });
+
+        return resposta;
+    }
+
+    static async getCsvModelosByLoja(idLoja) {
+        const resposta = await axios.get(springEndPoint + `/csv/modelos/${idLoja}`, {
+            headers: header,
+            responseType: 'arraybuffer', // Add this line
+        });
+
+        return resposta;
+    }
+
+    static async getCsvTransferencias() {
+        const resposta = await axios.get(springEndPoint + "/csv/transferencias", {
+            headers: header,
+            responseType: 'arraybuffer', // Add this line
+        });
+
+        return resposta;
+    }
+
+    static async getCsvTransferenciasByLoja(idLoja) {
+        const resposta = await axios.get(springEndPoint + `/csv/transferencias-por-loja/${idLoja}`, {
+            headers: header,
+            responseType: 'arraybuffer', // Add this line
+        });
+
+        return resposta;
+    }
+
+    static async getCsvHistoricoVendas() {
+        const resposta = await axios.get(springEndPoint + "/csv/historico-vendas", {
+            headers: header,
+            responseType: 'arraybuffer', // Add this line
+        });
+
+        return resposta;
+    }
+
+    static async getCsvHistoricoVendasByLoja(idLoja) {
+        const resposta = await axios.get(springEndPoint + `/csv/historico-vendas/${idLoja}`, {
             headers: header,
             responseType: 'arraybuffer', // Add this line
         });
@@ -1670,6 +1755,43 @@ export class ApiRequest {
         }
     }
 
+    static async vendaGetByFilter(dataInicio, dataFim, horaInicio, horaFim, vendedor, tipoVenda, status, lojaId) {
+        let queryParams = [];
+
+        if (dataInicio !== '') {
+            queryParams.push(`dataHoraInicio=${dataInicio}T${horaInicio === '' ? '00:00:00' : horaInicio}`);
+        }
+        if (dataFim !== '') {
+            queryParams.push(`dataHoraFim=${dataFim}T${horaFim === '' ? '23:59:59' : horaFim}`);
+        }
+        if (vendedor !== '') {
+            queryParams.push(`id_vendedor=${vendedor}`);
+        }
+        if (tipoVenda !== '') {
+            queryParams.push(`id_tipo_venda=${tipoVenda}`);
+        }
+        if (status !== '') {
+            queryParams.push(`id_status=${status}`);
+        }
+        if (lojaId !== '') {
+            queryParams.push(`id_loja=${lojaId}`);
+        }
+
+        const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
+
+        try {
+            const resposta = await axios.get(springEndPoint + `/vendas/filtro${queryString}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+
     // ***************************************************************************
     // *  TRANSFERENCIA
     // ***************************************************************************
@@ -1689,45 +1811,38 @@ export class ApiRequest {
         }
     }
 
-    static async transferenciaGetByFilter(dataInicio, dataFim, modelo, cor, tamanho) {
+    static async transferenciaGetByFilter(dataInicio, dataFim, horaInicio, horaFim, modelo, produto, tamanho, cor, status, lojaId) {
+        let queryParams = [];
 
-        var query = "";
-
-        if (dataInicio != undefined) {
-            query += `dataInicio=${dataInicio}`;
+        if (dataInicio !== '') {
+            queryParams.push(`dataInicio=${dataInicio}T${horaInicio === '' ? '00:00:00' : horaInicio}`);
+        }
+        if (dataFim !== '') {
+            queryParams.push(`dataFim=${dataFim}T${horaFim === '' ? '23:59:59' : horaFim}`);
+        }
+        if (modelo !== '') {
+            queryParams.push(`modelo=${modelo}`);
+        }
+        if (produto !== '') {
+            queryParams.push(`produto=${produto}`);
+        }
+        if (status !== '') {
+            queryParams.push(`status=${status}`);
+        }
+        if (tamanho !== '') {
+            queryParams.push(`tamanho=${tamanho}`);
+        }
+        if (cor !== '') {
+            queryParams.push(`cor=${cor}`);
+        }
+        if (lojaId !== '') {
+            queryParams.push(`id_loja=${lojaId}`);
         }
 
-        if (dataFim != undefined) {
-            if (query != "") {
-                query += "&"
-            }
-            query += `dataFim=${dataFim}`;
-        }
-
-        if (modelo != undefined) {
-            if (query != "") {
-                query += "&"
-            }
-            query += `modelo=${modelo}`;
-        }
-
-        if (cor != undefined) {
-            if (query != "") {
-                query += "&"
-            }
-            query += `cor=${cor}`;
-        }
-
-        if (tamanho != undefined) {
-            if (query != "") {
-                query += "&"
-            }
-            query += `tamanho=${tamanho}`;
-        }
+        const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
 
         try {
-
-            const resposta = await axios.get(springEndPoint + `/transferencias/filtro?${query}`, {
+            const resposta = await axios.get(springEndPoint + `/transferencias/filtro${queryString}`, {
                 headers: header
             });
 
@@ -1738,17 +1853,38 @@ export class ApiRequest {
         }
     }
 
-    static async transferenciaCreate(quantidadeSolicitada, coletor_id, etp_id) {
+    static async transferenciaGetByFilterLiberador(dataInicio, dataFim, horaInicio, horaFim, modelo, produto, tamanho, cor, status, lojaId) {
+        let queryParams = [];
+
+        if (dataInicio !== '') {
+            queryParams.push(`dataInicio=${dataInicio}T${horaInicio === '' ? '00:00:00' : horaInicio}`);
+        }
+        if (dataFim !== '') {
+            queryParams.push(`dataFim=${dataFim}T${horaFim === '' ? '23:59:59' : horaFim}`);
+        }
+        if (modelo !== '') {
+            queryParams.push(`modelo=${modelo}`);
+        }
+        if (produto !== '') {
+            queryParams.push(`produto=${produto}`);
+        }
+        if (status !== '') {
+            queryParams.push(`status=${status}`);
+        }
+        if (tamanho !== '') {
+            queryParams.push(`tamanho=${tamanho}`);
+        }
+        if (cor !== '') {
+            queryParams.push(`cor=${cor}`);
+        }
+        if (lojaId !== '') {
+            queryParams.push(`id_loja=${lojaId}`);
+        }
+
+        const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
 
         try {
-
-            const transferencia = {
-                "quantidadeSolicitada": quantidadeSolicitada,
-                "coletor_id": coletor_id,
-                "etp_id": etp_id,
-            }
-
-            const resposta = await axios.post(springEndPoint + `/pagamentos`, transferencia, {
+            const resposta = await axios.get(springEndPoint + `/transferencias/filtro/liberador${queryString}`, {
                 headers: header
             });
 
@@ -1759,11 +1895,41 @@ export class ApiRequest {
         }
     }
 
-    static async transferenciaAprovar(idTransferencia) {
+    static async transferenciaCreate(requestBodyEtps) {
+        console.log("requestBodyEtps na api request");
+        console.log(requestBodyEtps);
+
+        try {
+            const resposta = await axios.post(springEndPoint + `/transferencias`, requestBodyEtps, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async transferenciaAprovar(idTransferencia, requestBody) {
+
+        try {
+            const resposta = await axios.post(springEndPoint + `/transferencias/${idTransferencia}/aprovar`, requestBody, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async transferenciaRejeitar(idTransferencia, requestBody) {
 
         try {
 
-            const resposta = await axios.post(springEndPoint + `/transferencias/${idTransferencia}/aprovar`, {
+            const resposta = await axios.post(springEndPoint + `/transferencias/${idTransferencia}/rejeitar`, requestBody, {
                 headers: header
             });
 
@@ -1777,6 +1943,20 @@ export class ApiRequest {
     static async getTransferenciaLoja(idLoja) {
         try {
             const resposta = await axios.get(springEndPoint + `/transferencias/filtro?id_loja=${idLoja}`, {
+                headers: header
+            });
+
+            return resposta;
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async getTransferenciaLojaLiberador(idLoja) {
+        const filtro = idLoja === 0 ? '' : `?id_loja=${idLoja}`
+
+        try {
+            const resposta = await axios.get(springEndPoint + `/transferencias/filtro/liberador${filtro}`, {
                 headers: header
             });
 
@@ -1887,6 +2067,35 @@ export class ApiRequest {
 
         } catch (erro) {
             return erro
+        }
+    }
+
+    static async alertasGetByFilter(dataInicio, dataFim, horaInicio, horaFim, lojaId) {   
+        try {
+            let queryParams = [];
+
+            if (dataInicio !== '') {
+                queryParams.push(`dataHoraInicio=${dataInicio}T${horaInicio === '' ? '00:00:00' : horaInicio}`);
+            }
+            if (dataFim !== '') {
+                queryParams.push(`dataHoraFim=${dataFim}T${horaFim === '' ? '23:59:59' : horaFim}`);
+            }
+            if (lojaId !== '') {
+                queryParams.push(`id_loja=${lojaId}`);
+            }
+
+            const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
+
+            const resposta = await axios.get(springEndPoint + `/alertas/filtro${queryString}`, {
+                headers: header
+            });
+
+            return resposta;
+        } catch (erro) {
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
         }
     }
 
@@ -2070,7 +2279,7 @@ export class ApiRequest {
 
 
     
-      // ***************************************************************************
+    // ***************************************************************************
     // *  DASHBOARDS func
     // ***************************************************************************
 
@@ -2160,6 +2369,84 @@ export class ApiRequest {
         }
     }
 
+    // ***************************************************************************
+    // *  RELATORIO
+    // ***************************************************************************
+
+    static async relatorioGetModelosMaisVendidosByQtdDias(qtdDias) {
+
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/relatorios/secao-vendas/modelos-mais-vendidos?qtdDias=${qtdDias}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async relatorioGetResumoGeral(qtdDias) {
+        
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/relatorios/secao-resumo/resumo-geral?qtdDias=${qtdDias}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+    
+    static async relatorioRankingVendas(qtdDias) {
+
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/relatorios/secao-funcionarios/ranking-vendas?qtdDias=${qtdDias}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async relatorioProdutosAcabando() {
+
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/relatorios/secao-estoque/produtos-acabando`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async relatorioFluxoEstoque(qtdDias) {
+
+        try {
+
+            const resposta = await axios.get(springEndPoint + `/relatorios/secao-estoque/fluxo-estoque?qtdDias=${qtdDias}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
 }
 
 

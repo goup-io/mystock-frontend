@@ -25,8 +25,9 @@ function ModalEditProd({ id, onUpdate }) {
     const [tamanho, setTamanho] = useState("");
     const [cor, setCor] = useState("");
     const [idProduto, setIdProduto] = useState("");
+    const [itemPromocional, setItemPromocional] = useState(false);
 
-    const setters = [setNome, setPrecoCusto, setPrecoRevenda, setModelo, setTamanho, setCor];
+    const setters = [setNome, setPrecoCusto, setPrecoRevenda, setModelo, setTamanho, setCor, setIdProduto, setItemPromocional];
 
     function handleInputChange(event, setStateFunction) {
         setStateFunction(event.target.value);
@@ -42,6 +43,10 @@ function ModalEditProd({ id, onUpdate }) {
 
     const handleChangeCor = (event) => {
         setCor(event.target.value);
+    };
+
+    const handleCheckboxChange = (event) => {
+        setItemPromocional(event.target.checked);
     };
 
     async function fetchDadosModeloCorTamanho() {
@@ -76,6 +81,11 @@ function ModalEditProd({ id, onUpdate }) {
                 setPrecoCusto(response.data.precoCusto);
                 setPrecoRevenda(response.data.precoRevenda);
                 setIdProduto(response.data.idProduto);
+                if (response.data.itemPromocional === 'SIM') {
+                    setItemPromocional(true);
+                } else {
+                    setItemPromocional(false);
+                }
             }
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
@@ -95,24 +105,25 @@ function ModalEditProd({ id, onUpdate }) {
 
         const precoC = parseFloat(precoCusto);
         const precoR = parseFloat(precoRevenda);
+        const isPromocional = itemPromocional ? 'SIM' : 'NAO';
 
         const objetoAdicionado = {
             nome,
             precoC,
-            precoR
+            precoR,
+            isPromocional
         };
 
         try {
             const response = await ApiRequest.editarProduto(idProduto, objetoAdicionado);
-            console.log(response);
             if (response.status === 200) {
-                Alert.alert(SucessImage, "Produto atualizado!");
+                Alert.alertSuccess("Produto atualizado com sucesso!");
                 onUpdate();
-            } else if (response.status === 409) {
-                Alert.alert(ErrorImage, "Este produto já está cadastrado!");
+            } else {
+                Alert.alertError("Erro ao atualizar!", response.response.data.message);
             }
         } catch (error) {
-            console.log("Erro ao cadastrar um produto: ", error);
+            console.log("Erro ao atualizar um produto: ", error);
         }
     };
 
@@ -171,7 +182,7 @@ function ModalEditProd({ id, onUpdate }) {
                     </div>
 
                     <div className="mt-2 flex justify-start items-center">
-                    <input type="checkbox" className="w-6 h-6 ml-6"></input>
+                    <input type="checkbox" className="w-6 h-6 ml-6" checked={itemPromocional} onChange={handleCheckboxChange}></input>
                        <p className="form-floating text-lg text-black font-normal ml-4">Item Promocional</p>
                     </div>
 
