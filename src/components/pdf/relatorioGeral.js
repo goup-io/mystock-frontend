@@ -2,6 +2,8 @@ import './relatorio.css'
 import CircleItemList from '../../assets/icons/Ellipse 27.svg'
 import MyStockLogo from '../../assets/icons/logoMyStock.svg'
 import React, { useEffect } from 'react';
+import ApiRequest from '../../connections/ApiRequest';
+
 
 function Barra(){
     return(
@@ -22,10 +24,11 @@ function Modulo(props){
     )
 }
 
-function RelatorioGeral(){
+function RelatorioGeral(props){
 
     var listaFuncionarios = [];
-    var listaEstoque = [];
+    var listaEstoque = [props.listaEstoque];
+    console.log("Lista estoque: ", listaEstoque);
     var listaMaisVendidos = [];
 
     var entrada = 0;
@@ -37,89 +40,54 @@ function RelatorioGeral(){
     var qtdProdutosVendidos = 0;
     var qtdProdutosTransferidos = 0;
 
-    listarFuncionarios();
-    listarEstoque();
-    listarEntrada();
-    listarModelosMaisVendidos();
-    listarEstoqueResumo();
+    useEffect(()=>{
+        listarFuncionarios();
+        // listarEstoque();
+        listarEntrada();
+        listarModelosMaisVendidos();
+        listarEstoqueResumo();
+    })
 
-    function listarFuncionarios(){
+    async function listarFuncionarios(){
 
         listaFuncionarios = [];
 
-        var funcionario01 = {
-            "colocacao": 1,
-            "nome": "Cleyton", 
-            "qtdVendas": 520,
-            "qtdVendido": 420,
-            "qtdPromocoes": 20,
+        try{
+
+            const response = await ApiRequest.relatorioRankingVendas(props.dias);
+            if(response.status === 200){
+                response.data.forEach(funcionario => {
+                    listaFuncionarios.push(funcionario);
+                })
+            }
+            
+
+        }catch (error){
+            console.log("Erro ao buscar os funcionarios");
         }
 
-        var funcionario02 = {
-            "colocacao": 2,
-            "nome": "Cleyton", 
-            "qtdVendas": 200,
-            "qtdVendido": 5000,
-            "qtdPromocoes": 300,
-        }
-
-        var funcionario03 = {
-            "colocacao": 3,
-            "nome": "Inácio Figueiredo Oliveira", 
-            "qtdVendas": 2400,
-            "qtdVendido": 5000,
-            "qtdPromocoes": 300,
-        }
-
-        var funcionario04 = {
-            "colocacao": 4,
-            "nome": "Jorge", 
-            "qtdVendas": 200,
-            "qtdVendido": 5210,
-            "qtdPromocoes": 4720,
-        }
-
-        listaFuncionarios.push(funcionario01);
-        listaFuncionarios.push(funcionario02);
-        listaFuncionarios.push(funcionario03);
-        listaFuncionarios.push(funcionario04);
     }
 
-    function listarEstoque(){
+    // async function listarEstoque(){
+    //     listaEstoque = [];
+    //     try{
 
-        listaEstoque = [];
+    //         const response = await ApiRequest.relatorioProdutosAcabando(props.dias);
 
-        var estoque01 = {
-            "nome": "Sandália", 
-            "qtdEstoque": 520,
-            "lojaNome": "Filial 01",         
-        }
+    //         if(response.status === 200){
+    //             response.data.forEach(estoque => {
+    //                 listaEstoque.push(estoque);
+    //             })
+    //         }
 
-        var estoque02 = {
-            "nome": "AirJordan", 
-            "qtdEstoque": 200,
-            "lojaNome": "Filial 02",      
-        }
+    //         alert("Deveria vir primeiro")
 
-        var estoque03 = {
-            "nome": "Papete", 
-            "qtdEstoque": 2400,
-            "lojaNome": "Filial 01",      
-        }
+    //     }catch (error){
+    //         console.log("Erro ao buscar a lista do estoque");
+    //     }
+    // }
 
-        var estoque04 = {
-            "nome": "Jorge", 
-            "qtdEstoque": 200,
-            "lojaNome": "Filial 04",      
-        }
-
-        listaEstoque.push(estoque01);
-        listaEstoque.push(estoque02);
-        listaEstoque.push(estoque03);
-        listaEstoque.push(estoque04);
-    }
-
-    function listarEntrada(){
+    async function listarEntrada(){
        
         entrada = 1242;
         saida = 125234;
@@ -127,7 +95,7 @@ function RelatorioGeral(){
         porcentagemLucro = 23;
     }
 
-    function listarModelosMaisVendidos(){
+    async function listarModelosMaisVendidos(){
         
         listaMaisVendidos = [];
 
@@ -178,17 +146,18 @@ function RelatorioGeral(){
         listaMaisVendidos.push(produto05);
     }
 
-    function listarEstoqueResumo(){
+    async function listarEstoqueResumo(){
         qtdEstoqueAtual = 4124;
         qtdProdutosVendidos = 124124;
         qtdProdutosTransferidos = 1231;
     }
-
+    
     return (
+        listaEstoque &&
         <>
             {/* <img src={MyStockLogo}></img> */}
             <Modulo titulo={"Resumo"}>
-                <h4>Últimos 7 dias:</h4>
+                <h4>Últimos {props.dias} dias:</h4>
                 <div className="barraSubTitulo" />
                 <table>
                     <tr>
@@ -241,10 +210,10 @@ function RelatorioGeral(){
                     {listaFuncionarios.map((funcionario, index) => (
                         <tr key={index}>
                             <td>{funcionario.colocacao}</td>
-                            <td>{funcionario.nome}</td>
-                            <td>{funcionario.qtdVendas}</td>
+                            <td>{funcionario.nomeFuncionario}</td>
+                            <td>{funcionario.qtdVendidasPromocao}</td>
                             <td>{funcionario.qtdPromocoes}</td>
-                            <td>R$ {funcionario.qtdVendido.toFixed(2)}</td>
+                            <td>R${funcionario.valorVendido.toFixed(2)}</td>
                         </tr>
                     ))}
                 </table>
@@ -271,13 +240,14 @@ function RelatorioGeral(){
                         <th>Qntd. no estoque</th>
                         <th>Nome da Loja</th>
                     </tr>
-                    {listaEstoque.map((estoque, index) => (
+            
+                    {listaEstoque ? listaEstoque.map((estoque, index) => (
                         <tr key={index}>
                             <td>{estoque.nome}</td>
                             <td>{estoque.qtdEstoque}</td>
                             <td>{estoque.lojaNome}</td>
                         </tr>
-                    ))}
+                    )) : <tr><td>Carregando...</td></tr>}
                 </table>
             </Modulo>
         </>

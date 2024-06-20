@@ -2318,7 +2318,7 @@ export class ApiRequest {
     }
 
     static async relatorioGetResumoGeral(qtdDias) {
-
+        
         try {
 
             const resposta = await axios.get(springEndPoint + `/relatorios/secao-resumo/resumo-geral?qtdDias=${qtdDias}`, {
