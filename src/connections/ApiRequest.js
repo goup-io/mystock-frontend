@@ -1838,6 +1838,48 @@ export class ApiRequest {
         }
     }
 
+    static async transferenciaGetByFilterLiberador(dataInicio, dataFim, horaInicio, horaFim, modelo, produto, tamanho, cor, status, lojaId) {
+        let queryParams = [];
+
+        if (dataInicio !== '') {
+            queryParams.push(`dataInicio=${dataInicio}T${horaInicio === '' ? '00:00:00' : horaInicio}`);
+        }
+        if (dataFim !== '') {
+            queryParams.push(`dataFim=${dataFim}T${horaFim === '' ? '23:59:59' : horaFim}`);
+        }
+        if (modelo !== '') {
+            queryParams.push(`modelo=${modelo}`);
+        }
+        if (produto !== '') {
+            queryParams.push(`produto=${produto}`);
+        }
+        if (status !== '') {
+            queryParams.push(`status=${status}`);
+        }
+        if (tamanho !== '') {
+            queryParams.push(`tamanho=${tamanho}`);
+        }
+        if (cor !== '') {
+            queryParams.push(`cor=${cor}`);
+        }
+        if (lojaId !== '') {
+            queryParams.push(`id_loja=${lojaId}`);
+        }
+
+        const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
+
+        try {
+            const resposta = await axios.get(springEndPoint + `/transferencias/filtro/liberador${queryString}`, {
+                headers: header
+            });
+
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
     static async transferenciaCreate(requestBodyEtps) {
         console.log("requestBodyEtps na api request");
         console.log(requestBodyEtps);
@@ -1886,6 +1928,20 @@ export class ApiRequest {
     static async getTransferenciaLoja(idLoja) {
         try {
             const resposta = await axios.get(springEndPoint + `/transferencias/filtro?id_loja=${idLoja}`, {
+                headers: header
+            });
+
+            return resposta;
+        } catch (erro) {
+            return erro
+        }
+    }
+
+    static async getTransferenciaLojaLiberador(idLoja) {
+        const filtro = idLoja === 0 ? '' : `?id_loja=${idLoja}`
+
+        try {
+            const resposta = await axios.get(springEndPoint + `/transferencias/filtro/liberador${filtro}`, {
                 headers: header
             });
 
