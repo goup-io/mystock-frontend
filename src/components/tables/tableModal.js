@@ -56,10 +56,10 @@ const TabelaModal = forwardRef(({ colunas, dados, edit, remove, iptQuantidade, o
         </tr>
       </thead>
       <tbody className='text-xs'>
-        {dados.map((linha, index) => (
-          <tr key={index} style={{ backgroundColor: index % 2 === 0 ? '#D0D4F0' : '#E7E7E7' }}>
-            {Object.values(linha).map((valor, index) => (
-              <td key={index}>{valor}</td>
+        {dados.map((linha, linhaIndex) => (
+          <tr key={linhaIndex} style={{ backgroundColor: linhaIndex % 2 === 0 ? '#D0D4F0' : '#E7E7E7' }}>
+            {Object.entries(linha).map(([chave, valor], colIndex) => (
+              chave !== 'id' && <td key={colIndex}>{valor}</td> 
             ))}
             {edit && (
               <td className='flex justify-center items-center'>
@@ -76,14 +76,14 @@ const TabelaModal = forwardRef(({ colunas, dados, edit, remove, iptQuantidade, o
             {iptQuantidade && (
               <td>
                 <div className='flex items-center justify-around gap-[2px]'>
-                  <button className='text-xl font-medium' onClick={() => handleTirar(id[index].id)}>-</button>
+                  <button className='text-xl font-medium' onClick={() => handleTirar(linha.id)}>-</button>
                   <input
                     type="text"
                     className='w-5 h-5 border border-slate-700 rounded text-center'
-                    value={inputValues[id[index].id] ? Number(inputValues[id[index].id]) : 0}
+                    value={inputValues[linha.id] ? Number(inputValues[linha.id]) : 0}
                     readOnly
                   />
-                  <button className='text-xl font-medium' onClick={() => handleAdicionar(id[index].id)}>+</button>
+                  <button className='text-xl font-medium' onClick={() => handleAdicionar(linha.id)}>+</button>
                 </div>
               </td>
             )}

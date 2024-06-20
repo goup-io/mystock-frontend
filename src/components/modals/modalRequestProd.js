@@ -26,6 +26,7 @@ function ModalRequestProd() {
                 const dados = response.data;
 
                 const filtrarDados = dados.map(obj => ({
+                    id: obj.id,  // Adiciona o id aqui
                     codigo: obj.codigo,
                     nome: obj.nome,
                     modelo: obj.modelo,
@@ -34,7 +35,7 @@ function ModalRequestProd() {
                     preco: obj.preco,
                     loja: obj.loja,
                     itemPromocional: obj.itemPromocional === 'SIM' ? 'Sim' : 'Não',
-                    quantidade: obj.quantidade
+                    quantidade: obj.quantidade,
                 }));
 
                 const filtrarIdsEtps = dados.map(obj => ({ id: obj.id }));
@@ -83,6 +84,7 @@ function ModalRequestProd() {
                 const response = await ApiRequest.transferenciaCreate(requestBodyProdutos);
                 if (response.status === 201) {
                     Alert.alertSuccess("Solicitação de produto realizada com sucesso!");
+                    limparCampos();  // Adiciona a função de limpar campos após a solicitação ser realizada com sucesso
                 } else {
                     Alert.alertError("Erro ao solicitar produto!", response.response.data.message);
                 }

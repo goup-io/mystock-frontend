@@ -140,7 +140,7 @@ function Historico() {
                     </div>
                     <div className='w-full h-[85%] mt-2 flex justify-center items-center '>
                         <div className=' w-full h-full border-solid border-[1px] border-slate-700  bg-slate-700 overflow-y-auto rounded'>
-                            <TabelaPage colunas={colunas} dados={dadosDoBanco.map(({ ...dados }) => dados)} status verMais={handleDetailsVenda} troca cancel={handleCancelarVenda} id={idsDados} />
+                            <TabelaPage colunas={colunas} dados={dadosDoBanco.map(({ ...dados }) => dados)} status verMais={handleDetailsVenda} cancel={handleCancelarVenda} id={idsDados} />
                         </div>
                     </div>
                 </div>
