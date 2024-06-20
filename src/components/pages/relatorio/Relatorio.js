@@ -13,7 +13,11 @@ import htmlToPdfmake from 'html-to-pdfmake';
 import ReactDOMServer from 'react-dom/server';
 
 import ApiRequest from '../../../connections/ApiRequest.js'
-import MyStockLogo from '../../../assets/icons/logologoMyStock-v1.jpg' 
+import MyStockLogo from '../../../assets/icons/logologoMyStock-v1.jpg'
+
+import Alert from '../../alerts/Alert.js'
+import ErrorIcon from '../../../assets/icons/error.svg'
+import SucessIcon from '../../../assets/icons/sucess.svg'
 
 function Relatorio() {
     const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
@@ -28,8 +32,6 @@ function Relatorio() {
 
     const [modeloSelecionado, setModeloSelecionado] = useState('diario');
 
-    const [dadosCarregados, setDadosCarregados] = useState(false);
-    
     const handleSelectMes = (event) => {
         setMesSelecionado(event.target.value);
     };
@@ -47,200 +49,142 @@ function Relatorio() {
     };
 
 
-    const [listaEstoque, setListaEstoque] = useState([]); 
+    const [listaEstoque, setListaEstoque] = useState([]);
+    const [listaMaisVendidos, setListaMaisVendidos] = useState([]);
+    const [listaFuncionariosRanking, setListaFuncionarioRanking] = useState([]);
+    const [entrada, setEntrada] = useState(0);
+    const [saida, setSaida] = useState(0);
+    const [lucro, setLucro] = useState(0);
+    const [variacaoLucro, setVariacaoLucro] = useState(0);
 
-    var listaFuncionarios = [];
-    var listaMaisVendidos = [];
+    const [qtdEstoqueAtual, setQtdEstoqueAtual] = useState(0);
+    const [qtdProdutosVendidos, setQtdProdutosVendidos] = useState(0);
+    const [qtdProdutosTransferidos, setQtdProdutosTransferidos] = useState(0);
 
-    var entrada = 0;
-    var saida = 0;
-    var lucroOperacional = 0;
-    var porcentagemLucro = 0;
+    const [dias, setDias] = useState(30)
 
-    var qtdEstoqueAtual = 0;
-    var qtdProdutosVendidos = 0;
-    var qtdProdutosTransferidos = 0;
 
-    useEffect(()=>{
-        // listarFuncionarios();
-        listarEstoque(2);
-        // listarEntrada();
-        // listarModelosMaisVendidos();
-        // listarEstoqueResumo();
-    },[])
+    useEffect(() => {
+        listarEstoque();
+        listarFuncionarios(dias);
+        listarResumoVendas(dias);
+        listarEstoqueResumo(dias);
+        listarModelosMaisVendidos(dias);
+    }, [dias])
 
-    async function listarFuncionarios(dias){
+    async function listarFuncionarios(dias) {
+        var listaFuncionariosAux = [];
 
-        listaFuncionarios = [];
-
-        try{
-
-            const response = await ApiRequest.relatorioRankingVendas(dias);
-            if(response.status === 200){
-                response.data.forEach(funcionario => {
-                    listaFuncionarios.push(funcionario);
+        const response = await ApiRequest.relatorioRankingVendas(dias).then((req, res) => {
+            if (req.status === 200) {
+                req.data.forEach(posicaoFuncionario => {
+                    listaFuncionariosAux.push(posicaoFuncionario);
                 })
+                setListaFuncionarioRanking(listaFuncionariosAux);
+
+            } else {
+                Alert.alert(ErrorIcon, "Não foi possível encontrar dados do ranking dos funcionarios, por favor, tente novamente")
             }
-            
 
-        }catch (error){
-            console.log("Erro ao buscar os funcionarios");
-        }
-
-        return listaFuncionarios;
+            //            setListaFuncionarioRanking(listaFuncionariosAux);
+        })
     }
 
-    async function listarEstoque(dias){
+    async function listarEstoque() {
         var listaEstoqueAux = [];
-        try{
 
-            const response = await ApiRequest.relatorioProdutosAcabando(dias);
-
-            if(response.status === 200){
-                response.data.forEach(estoque => {
+        const response = await ApiRequest.relatorioProdutosAcabando().then((req, res) => {
+            if (req.status === 200) {
+                req.data.forEach(estoque => {
                     listaEstoqueAux.push(estoque);
                 })
+            } else {
+                Alert.alert(ErrorIcon, "Não foi possível buscar os dados dos produtos que estão acabando, por favor, tente novamente")
             }
 
-        }catch (error){
-            console.log("Erro ao buscar a lista do estoque");
-        }
+            setListaEstoque(listaEstoqueAux);
+        })
 
-        var estoque01 = {
-            "nome": "Papete",
-            "qtdEstoque": 2,
-            "lojaNome": "Sapatilha",
-        } 
-
-        listaEstoqueAux.push(estoque01)
-
-        console.log("Lista Estoque: ", listaEstoqueAux)
-
-        setListaEstoque(listaEstoqueAux);
-        setDadosCarregados(true);
     }
 
-    async function listarEntrada(){
-       
-    
-        var dadosEntrada = {
-            "entrada" : 1242,
-            "saida" : 125234,
-            "lucroOperacional" : 6212,
-            "porcentagemLucro" : 23,
-        }
+    async function listarResumoVendas(dias) {
 
-        return dadosEntrada
+        const response = await ApiRequest.relatorioGetResumoGeral(dias).then((req, res) => {
+            if (req.status === 200) {
+                setEntrada(req.data.entrada);
+                setSaida(req.data.saida);
+                setLucro(req.data.lucroOperacional);
+                setVariacaoLucro(req.data.porcentagemLucro);
+            } else {
+                Alert.alert(ErrorIcon, "Não foi possível buscar os dados do resumo das vendas, por favor, tente novamente")
+            }
+        })
     }
 
-    async function listarModelosMaisVendidos(){
-        
-        listaMaisVendidos = [];
+    async function listarModelosMaisVendidos(dias) {
+        var listaModelosMaisVendidos = [];
 
-        var produto01 = {
-            "codigo": 123,
-            "nome": "Papete",
-            "tipo": "Sapatilha",
-            "categoria": "Tênis",
-            "valorVendido": 84172,
-        }
-        
-        var produto02 = {
-            "codigo": 123,
-            "nome": "Papete",
-            "tipo": "Sapatilha",
-            "categoria": "Tênis",
-            "valorVendido": 84172,
-        }
-        
-        var produto03 = {
-            "codigo": 123,
-            "nome": "Papete",
-            "tipo": "Sapatilha",
-            "categoria": "Tênis",
-            "valorVendido": 84172,
-        }
-        
-        var produto04 = {
-            "codigo": 123,
-            "nome": "Papete",
-            "tipo": "Sapatilha",
-            "categoria": "Tênis",
-            "valorVendido": 84172,
-        }
-        
-        var produto05 = {
-            "codigo": 123,
-            "nome": "Papete",
-            "tipo": "Sapatilha",
-            "categoria": "Tênis",
-            "valorVendido": 84172,
-        }
-        
-        listaMaisVendidos.push(produto01);
-        listaMaisVendidos.push(produto02);
-        listaMaisVendidos.push(produto03);
-        listaMaisVendidos.push(produto04);
-        listaMaisVendidos.push(produto05);
+        const response = await ApiRequest.relatorioGetModelosMaisVendidosByQtdDias(dias).then((req, res) => {
+            if (req.status === 200) {
+                req.data.forEach(modelo => {
+                    listaModelosMaisVendidos.push(modelo);
+                })
+            } else {
+                Alert.alert(ErrorIcon, "Não foi possível encontrar dados do ranking de modelos mais vendidos, por favor, tente novamente")
+            }
+
+            setListaMaisVendidos(listaModelosMaisVendidos);
+        })
     }
 
-    async function listarEstoqueResumo(){
-        qtdEstoqueAtual = 4124;
-        qtdProdutosVendidos = 124124;
-        qtdProdutosTransferidos = 1231;
+    async function listarEstoqueResumo(dias) {
+        const response = await ApiRequest.relatorioFluxoEstoque(dias).then((req, res) => {
+            if (req.status === 200) {
+                setQtdEstoqueAtual(req.data.qtdEstoqueAtual)
+                setQtdProdutosVendidos(req.data.qtdProdutosVendidos)
+                setQtdProdutosTransferidos(req.data.qtdProdutosTransferidos)
+            } else {
+                Alert.alert(ErrorIcon, "Não foi possível encontrar dados do resumo do estoque, por favor, tente novamente")
+            }
+
+        })
+
     }
 
-    const downloadFileFromResponseObjectPdf = (responseObject, fileName) => {
-
-        pdfMake.vfs = pdfFonts.pdfMake.vfs;
-        console.log("RESPONSE OBJ", responseObject)
-        
-        const htmlString = ReactDOMServer.renderToStaticMarkup(responseObject);
-        console.log("HTML", htmlString)
-        const pdfContent = htmlToPdfmake(htmlString);    
-        const docDefinition = { 
-            content: [
-                // {
-                //     image: `${MyStockLogo}`,
-                //     width: 150
-                // },
-                pdfContent
-            ]};
-        
-        pdfMake.createPdf(docDefinition).download(fileName);
-        pdfMake.createPdf(docDefinition).open();
-    };
-    
     async function handleFileDownload() {
-        if (!dadosCarregados) {
-            console.log("Aguarde até que os dados sejam carregados.");
-            return;
-        }
-    
-        // Cria o conteúdo do PDF com os dados carregados
-        const pdfContent = await htmlToPdfmake(
-            listaEstoque &&
+
+
+        const pdfContent = htmlToPdfmake(
             ReactDOMServer.renderToStaticMarkup(
-                <RelatorioGeral 
-                    dias={2}
-                    listaEstoque={listaEstoque}
-                />
+                <RelatorioGeral
+                    dias={dias}
+                    listaEstoque={listaEstoque}//produtos que estão acabando
+                    listaMaisVendidos={listaMaisVendidos}
+                    listaFuncionarios={listaFuncionariosRanking}
+                    entrada={entrada ? entrada : 0}
+                    saida={saida ? saida : 0}
+                    lucro={lucro ? lucro : 0}
+                    variacaoLucro={variacaoLucro ? variacaoLucro : 0}
+                    qtdEstoqueAtual={qtdEstoqueAtual}
+                    qtdProdutosVendidos={qtdProdutosVendidos}
+                    qtdProdutosTransferidos={qtdProdutosTransferidos}
+                    imgMyStock={MyStockLogo}
+                />,
+                {}
             )
         );
-    
+
         // Define o documento PDF
         const docDefinition = {
             content: pdfContent,
         };
-    
+
         // Configuração do pdfMake (caso necessário)
         pdfMake.vfs = pdfFonts.pdfMake.vfs;
-    
+
         // Cria e faz o download do PDF
         pdfMake.createPdf(docDefinition).download('Relatorio.pdf');
     }
-    
-
 
     return (
         <>
@@ -335,7 +279,7 @@ function Relatorio() {
                                 </div>
                                 <div className='w-full flex flex-col bottom-0'>
                                     <ButtonModal
-                                      funcao={handleFileDownload}
+                                        funcao={handleFileDownload}
                                     >GERAR RELATÓRIO</ButtonModal>
                                 </div>
                             </div>

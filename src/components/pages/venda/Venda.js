@@ -455,4 +455,4 @@ function Venda() {
 }
 
 
-export default Venda    
+export default Venda;    

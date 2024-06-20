@@ -1,19 +1,19 @@
 import './relatorio.css'
 import CircleItemList from '../../assets/icons/Ellipse 27.svg'
-import MyStockLogo from '../../assets/icons/logoMyStock.svg'
-import React, { useEffect } from 'react';
+// import MyStockLogo from '../../../assets/icons/logoMyStock.svg'
+import React, { useEffect, useState } from 'react';
 import ApiRequest from '../../connections/ApiRequest';
 
 
-function Barra(){
-    return(
+function Barra() {
+    return (
         <div className="barraSubTitulo">
         </div>
     )
 }
 
-function Modulo(props){
-    return(
+function Modulo(props) {
+    return (
         <section>
             <h1>-{props.titulo}:</h1>
             <div>
@@ -24,138 +24,31 @@ function Modulo(props){
     )
 }
 
-function RelatorioGeral(props){
+function RelatorioGeral(props) {
 
-    var listaFuncionarios = [];
-    var listaEstoque = [props.listaEstoque];
+    var listaFuncionarios = props.listaFuncionarios;
+    var listaEstoque = props.listaEstoque;
+    var listaMaisVendidos = props.listaMaisVendidos;
+
+    var entrada = props.entrada;
+    var saida = props.saida;
+    var lucroOperacional = props.lucro;
+    var porcentagemLucro = props.variacaoLucro;
+
+    var qtdEstoqueAtual = props.qtdEstoqueAtual;
+    var qtdProdutosVendidos = props.qtdProdutosVendidos;
+    var qtdProdutosTransferidos = props.qtdProdutosTransferidos;
+
+    var imgRelatorio = props.imgMyStock;
+
     console.log("Lista estoque: ", listaEstoque);
-    var listaMaisVendidos = [];
+    console.log("Lista funcionarios: ", listaFuncionarios);
 
-    var entrada = 0;
-    var saida = 0;
-    var lucroOperacional = 0;
-    var porcentagemLucro = 0;
 
-    var qtdEstoqueAtual = 0;
-    var qtdProdutosVendidos = 0;
-    var qtdProdutosTransferidos = 0;
-
-    useEffect(()=>{
-        listarFuncionarios();
-        // listarEstoque();
-        listarEntrada();
-        listarModelosMaisVendidos();
-        listarEstoqueResumo();
-    })
-
-    async function listarFuncionarios(){
-
-        listaFuncionarios = [];
-
-        try{
-
-            const response = await ApiRequest.relatorioRankingVendas(props.dias);
-            if(response.status === 200){
-                response.data.forEach(funcionario => {
-                    listaFuncionarios.push(funcionario);
-                })
-            }
-            
-
-        }catch (error){
-            console.log("Erro ao buscar os funcionarios");
-        }
-
-    }
-
-    // async function listarEstoque(){
-    //     listaEstoque = [];
-    //     try{
-
-    //         const response = await ApiRequest.relatorioProdutosAcabando(props.dias);
-
-    //         if(response.status === 200){
-    //             response.data.forEach(estoque => {
-    //                 listaEstoque.push(estoque);
-    //             })
-    //         }
-
-    //         alert("Deveria vir primeiro")
-
-    //     }catch (error){
-    //         console.log("Erro ao buscar a lista do estoque");
-    //     }
-    // }
-
-    async function listarEntrada(){
-       
-        entrada = 1242;
-        saida = 125234;
-        lucroOperacional = 6212;
-        porcentagemLucro = 23;
-    }
-
-    async function listarModelosMaisVendidos(){
-        
-        listaMaisVendidos = [];
-
-        var produto01 = {
-            "codigo": 123,
-            "nome": "Papete",
-            "tipo": "Sapatilha",
-            "categoria": "Tênis",
-            "valorVendido": 84172,
-        }
-        
-        var produto02 = {
-            "codigo": 123,
-            "nome": "Papete",
-            "tipo": "Sapatilha",
-            "categoria": "Tênis",
-            "valorVendido": 84172,
-        }
-        
-        var produto03 = {
-            "codigo": 123,
-            "nome": "Papete",
-            "tipo": "Sapatilha",
-            "categoria": "Tênis",
-            "valorVendido": 84172,
-        }
-        
-        var produto04 = {
-            "codigo": 123,
-            "nome": "Papete",
-            "tipo": "Sapatilha",
-            "categoria": "Tênis",
-            "valorVendido": 84172,
-        }
-        
-        var produto05 = {
-            "codigo": 123,
-            "nome": "Papete",
-            "tipo": "Sapatilha",
-            "categoria": "Tênis",
-            "valorVendido": 84172,
-        }
-        
-        listaMaisVendidos.push(produto01);
-        listaMaisVendidos.push(produto02);
-        listaMaisVendidos.push(produto03);
-        listaMaisVendidos.push(produto04);
-        listaMaisVendidos.push(produto05);
-    }
-
-    async function listarEstoqueResumo(){
-        qtdEstoqueAtual = 4124;
-        qtdProdutosVendidos = 124124;
-        qtdProdutosTransferidos = 1231;
-    }
-    
     return (
         listaEstoque &&
         <>
-            {/* <img src={MyStockLogo}></img> */}
+            {/* <img src={imgRelatorio} alt='Logo do MyStock'></img> */}
             <Modulo titulo={"Resumo"}>
                 <h4>Últimos {props.dias} dias:</h4>
                 <div className="barraSubTitulo" />
@@ -186,14 +79,14 @@ function RelatorioGeral(props){
                         <th>Valor Vendido</th>
                     </tr>
                     {listaMaisVendidos.map((produto, index) => (
-                    <tr key={index}>
-                        <td>{produto.codigo}</td>
-                        <td>{produto.nome}</td>
-                        <td>{produto.tipo}</td>
-                        <td>{produto.categoria}</td>
-                        <td>R$ {produto.valorVendido.toFixed(2)}</td>
-                    </tr>
-                ))}
+                        <tr key={index}>
+                            <td>{produto.modelo.codigo}</td>
+                            <td>{produto.modelo.nome}</td>
+                            <td>{produto.modelo.tipo.nome}</td>
+                            <td>{produto.modelo.categoria.nome}</td>
+                            <td>R$ {produto.valorVendido ? produto.valorVendido.toFixed(2) : 0}</td>
+                        </tr>
+                    ))}
                 </table>
             </Modulo>
             <Modulo titulo={"Funcionários"}>
@@ -211,9 +104,9 @@ function RelatorioGeral(props){
                         <tr key={index}>
                             <td>{funcionario.colocacao}</td>
                             <td>{funcionario.nomeFuncionario}</td>
-                            <td>{funcionario.qtdVendidasPromocao}</td>
-                            <td>{funcionario.qtdPromocoes}</td>
-                            <td>R${funcionario.valorVendido.toFixed(2)}</td>
+                            <td>{funcionario.qtdVendas ? funcionario.qtdVendas : 0}</td>
+                            <td>R$ {funcionario.valorVendido.toFixed(2)}</td>
+                            <td>{funcionario.qtdVendidasPromocao ? funcionario.qtdVendidasPromocao : 0}</td>
                         </tr>
                     ))}
                 </table>
@@ -232,7 +125,7 @@ function RelatorioGeral(props){
                         <td>{qtdProdutosTransferidos}</td>
                     </tr>
                 </table>
-                <Barra />                
+                <Barra />
                 <h6>Produtos acabando:</h6>
                 <table>
                     <tr>
@@ -240,14 +133,15 @@ function RelatorioGeral(props){
                         <th>Qntd. no estoque</th>
                         <th>Nome da Loja</th>
                     </tr>
-            
+
                     {listaEstoque ? listaEstoque.map((estoque, index) => (
                         <tr key={index}>
                             <td>{estoque.nome}</td>
                             <td>{estoque.qtdEstoque}</td>
                             <td>{estoque.lojaNome}</td>
                         </tr>
-                    )) : <tr><td>Carregando...</td></tr>}
+                    )
+                    ) : <tr><td>Carregando...</td></tr>}
                 </table>
             </Modulo>
         </>
