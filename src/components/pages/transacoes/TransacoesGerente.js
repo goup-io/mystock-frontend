@@ -19,7 +19,9 @@ function HistoricoVendasGerente() {
     ];
 
     const [colunas, setColunas] = useState([]);
-    const [dados, setDados] = useState([]);
+    const [colunasAprovacao, setColunasAprovacao] = useState([]);
+    const [dadosHistorico, setDadosHistorico] = useState([]);
+    const [dadosAprovacao, setDadosAprovacao] = useState([]);
     const [idsDadosPendentes, setIdsDadosPendentes] = useState([]);
     const [isHistoricoSelected, setIsHistoricoSelected] = useState(true);
 
@@ -33,6 +35,7 @@ function HistoricoVendasGerente() {
 
     async function fetchData() {
         const colunasDoBanco = ['Data', 'Solicitante', 'Liberadora', 'Cod.Modelo', 'Cor', 'Tamanho', 'N.Solic.', 'N.Lib.', 'Liberador', 'Coletor', 'Status'];
+        const colunasDoBancoAprovacao = ['Data', 'Solicitante', 'Liberadora', 'Cod.Modelo', 'Cor', 'Tamanho', 'N.Solic.', 'Coletor', 'Status'];
 
         try {
             let response;
@@ -44,7 +47,7 @@ function HistoricoVendasGerente() {
 
             if (response.status === 200) {
                 const dados = response.data.map(item => ({
-                    data: (item.dataHora).replace('T', ' '),
+                    data: (item.dataHora).replace('T', ' ').split(".")[0],
                     solicitante: item.loja_coletora,
                     liberadora: item.loja_liberadora,
                     codModelo: item.etp.codigo,
@@ -56,7 +59,33 @@ function HistoricoVendasGerente() {
                     coletor: item.coletor,
                     status: item.status.status,
                 }));
-                setDados(dados);
+                setDadosHistorico(dados);
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+       
+        try {
+            let response;
+            if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
+                response = await ApiRequest.getTransferenciaLojaLiberador(0);
+            } else {
+                response = await ApiRequest.getTransferenciaLojaLiberador(localStorage.getItem('visao_loja'));
+            }
+
+            if (response.status === 200) {
+                const dados = response.data.map(item => ({
+                    data: (item.dataHora).replace('T', ' ').split(".")[0],
+                    solicitante: item.loja_coletora,
+                    liberadora: item.loja_liberadora,
+                    codModelo: item.etp.codigo,
+                    cor: item.etp.cor,
+                    tamanho: item.etp.tamanho,
+                    nSolic: item.quantidadeSolicitada,
+                    coletor: item.coletor,
+                    status: item.status.status,
+                }));
+                setDadosAprovacao(dados);
 
                 const idsPendentes = response.data.filter(item => item.status.status === 'PENDENTE').map(item => item.id);
                 setIdsDadosPendentes(idsPendentes);
@@ -64,10 +93,13 @@ function HistoricoVendasGerente() {
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
         }
+
+
         setColunas(colunasDoBanco);
+        setColunasAprovacao(colunasDoBancoAprovacao);
     }
 
-    async function fetchDataFilter(filterData) {
+    async function fetchDataFilterHistorico(filterData) {
         try {
             let response;
             if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
@@ -79,7 +111,7 @@ function HistoricoVendasGerente() {
 
             if (response.status === 200) {
                 const dados = response.data.map(item => ({
-                    data: (item.dataHora).replace('T', ' '),
+                    data: (item.dataHora).replace('T', ' ').split(".")[0],
                     solicitante: item.loja_liberadora,
                     destinatario: item.loja_coletora,
                     codModelo: item.etp.codigo,
@@ -92,10 +124,7 @@ function HistoricoVendasGerente() {
                     status: item.status.status,
                 }));
 
-                const idsPendentes = response.data.filter(item => item.status.status === 'PENDENTE').map(item => item.id);
-                setIdsDadosPendentes(idsPendentes);
-
-                setDados(dados);
+                setDadosHistorico(dados);
                 Alert.alertTop(false, "Filtro aplicado com sucesso!");
 
             } else if (response.status === 204) {
@@ -107,12 +136,50 @@ function HistoricoVendasGerente() {
         }
     }
 
-    async function fetchDataFilterSearch(filterData) {
+    async function fetchDataFilterAprovacao(filterData) {
+        try {
+            let response;
+            if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
+                response = await ApiRequest.transferenciaGetByFilterLiberador(filterData.dataInicio, filterData.dataFim, filterData.horaInicio, filterData.horaFim, filterData.modelo, filterData.produto, filterData.tamanho, filterData.cor, filterData.status, '');
+            } else {
+                response = await ApiRequest.transferenciaGetByFilterLiberador(filterData.dataInicio, filterData.dataFim, filterData.horaInicio, filterData.horaFim, filterData.modelo, filterData.produto, filterData.tamanho, filterData.cor, filterData.status, localStorage.getItem('visao_loja'));
+            }
+            console.log(response);
+
+            if (response.status === 200) {
+                const dados = response.data.map(item => ({
+                    data: (item.dataHora).replace('T', ' ').split(".")[0],
+                    solicitante: item.loja_liberadora,
+                    destinatario: item.loja_coletora,
+                    codModelo: item.etp.codigo,
+                    cor: item.etp.cor,
+                    tamanho: item.etp.tamanho,
+                    nSolic: item.quantidadeSolicitada,
+                    coletor: item.coletor,
+                    status: item.status.status,
+                }));
+
+                const idsPendentes = response.data.filter(item => item.status.status === 'PENDENTE').map(item => item.id);
+                setIdsDadosPendentes(idsPendentes);
+
+                setDadosAprovacao(dados);
+                Alert.alertTop(false, "Filtro aplicado com sucesso!");
+
+            } else if (response.status === 204) {
+                Alert.alertTop(true, "Nenhum produto encontrado com os filtros aplicados!");
+                fetchData();
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+    }
+
+    async function fetchDataFilterSearchHistorico(filterData) {
         if (filterData === "") {
             fetchData();
         } else {
             const lowerCaseFilter = filterData.toLowerCase();
-            const searchData = dados.filter((item) => {
+            const searchData = dadosHistorico.filter((item) => {
                 return (
                     (item.solicitante?.toLowerCase() || '').includes(lowerCaseFilter) ||
                     (item.destinatario?.toLowerCase() || '').includes(lowerCaseFilter) ||
@@ -123,7 +190,27 @@ function HistoricoVendasGerente() {
                     (item.status?.toLowerCase() || '').includes(lowerCaseFilter)
                 );
             });
-            setDados(searchData);
+            setDadosHistorico(searchData);
+        }
+    }
+
+    async function fetchDataFilterSearchAprovacao(filterData) {
+        if (filterData === "") {
+            fetchData();
+        } else {
+            const lowerCaseFilter = filterData.toLowerCase();
+            const searchData = dadosAprovacao.filter((item) => {
+                return (
+                    (item.solicitante?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                    (item.destinatario?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                    (item.codModelo?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                    (item.cor?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                    (item.liberador?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                    (item.coletor?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                    (item.status?.toLowerCase() || '').includes(lowerCaseFilter)
+                );
+            });
+            setDadosAprovacao(searchData);
         }
     }
     
@@ -136,7 +223,7 @@ function HistoricoVendasGerente() {
         fetchData();
     };
 
-    const qtdTransferenciasPendente = dados.filter(dado => dado.status == 'PENDENTE').length;
+    const qtdTransferenciasPendente = dadosAprovacao.filter(dado => dado.status === 'PENDENTE').length;
 
     const handleAceitarTransferencia = (id, qtdSolicitadaTransf) => {
         AbrirModalLiberarTransferencia(id, qtdSolicitadaTransf, updateTable);
@@ -184,7 +271,7 @@ function HistoricoVendasGerente() {
                 <TitleBox title="Transferências" buttons={buttons}></TitleBox>
 
                 <div className='w-full flex md:flex-row md:justify-center rounded-md py-4 px-6 shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] items-center text-sm bg-white'>
-                    <Filter data modelo produto tamanho status funcaoOriginal={fetchData} funcaoFilter={fetchDataFilter} ></Filter>
+                    <Filter data modelo produto tamanho status funcaoOriginal={fetchData} funcaoFilter={isHistoricoSelected ?   fetchDataFilterHistorico : fetchDataFilterAprovacao} ></Filter>
                 </div>
 
                 <ChartBox>
@@ -211,16 +298,16 @@ function HistoricoVendasGerente() {
                             </div>
 
                             <div className='flex gap-4 items-center'>
-                                <InputSearcModal props="text" funcao={fetchDataFilterSearch}>Pesquisar</InputSearcModal>
+                                <InputSearcModal props="text" funcao={isHistoricoSelected ?   fetchDataFilterSearchHistorico : fetchDataFilterSearchAprovacao}>Pesquisar</InputSearcModal>
                                 <ButtonDownLoad func={csvTransferencias}></ButtonDownLoad>
                             </div>
                         </div>
                         <div className='w-full h-[50vh] mt-2 flex justify-center items-center'>
                             <div className='w-full h-full border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto rounded'>
                                 {isHistoricoSelected ? (
-                                    <TabelaPage colunas={colunas} dados={dados.filter(dado => dado.status !== 'PENDENTE')} />
+                                    <TabelaPage colunas={colunas} dados={dadosHistorico} />
                                 ) : (
-                                    <TabelaPage colunas={colunas} dados={dados.filter(dado => dado.status === 'PENDENTE')} aceitar={handleAceitarTransferencia} negar={handleNegarTransferencia} id={idsDadosPendentes} />
+                                    <TabelaPage colunas={colunasAprovacao} dados={dadosAprovacao.filter(dado => dado.status === 'PENDENTE')} aceitar={handleAceitarTransferencia} negar={handleNegarTransferencia} id={idsDadosPendentes} />
                                 )}
                             </div>
                         </div>
