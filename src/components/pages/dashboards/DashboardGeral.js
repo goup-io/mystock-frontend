@@ -39,11 +39,9 @@ function DashboardGeral() {
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
         }
-
     }
 
     async function fetchDadosFaturametoLoja() {
-
         try {
             const response = await ApiRequest.faturamentoPorLoja();
             if (response.status === 200) {
@@ -53,11 +51,9 @@ function DashboardGeral() {
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
         }
-
     }
 
     async function fetchDadosFaturametoLojaMesAtual() {
-
         try {
             const response = await ApiRequest.faturamentoPorLojamesAtual();
             if (response.status === 200) {
@@ -67,11 +63,9 @@ function DashboardGeral() {
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
         }
-
     }
 
     async function fetchDadosModeloMaisVendido() {
-
         try {
             const response = await ApiRequest.GraficomodelosMaisVendidos();
             if (response.status === 200) {
@@ -84,7 +78,6 @@ function DashboardGeral() {
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
         }
-
     }
 
     async function fetchDadosFluxoEstoque() {
@@ -113,7 +106,7 @@ function DashboardGeral() {
     function transformaDadosFaturamento(dados) {
         const series = dados.map(loja => ({
             name: loja[0],
-            data: loja.slice(1, loja.length - 1)  // Remove o último elemento null
+            data: loja.slice(1)  // Inclui todos os elementos, incluindo o último
         }));
 
         return series;
@@ -143,10 +136,6 @@ function DashboardGeral() {
         return { categories, series };
     }
 
-    function getDaysInMonth(year, month) {
-        return new Date(year, month + 1, 0).getDate();
-    }
-
     const kpis = [
         { info: `R$ ${dadosKpi.faturamentoMes.toFixed(2)}`, descricao: "Fat. do mês vigente" },
         { info: `R$ ${dadosKpi.faturamentoDia.toFixed(2)}`, descricao: "Fat. do dia vigente" },
@@ -155,12 +144,30 @@ function DashboardGeral() {
         { info: dadosKpi.produtosEmEstoque.toString(), descricao: "Produtos em estoque" }
     ];
 
+    function getDaysInMonth(year, month) {
+        return new Date(year, month + 1, 0).getDate();
+    }
+
+    function getMonthLabels() {
+        const currentMonth = new Date().getMonth();
+        const monthLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        let labels = [];
+
+        for (let i = 0; i < 12; i++) {
+            const index = (currentMonth + 12 - i) % 12;
+            labels.push(monthLabels[index]);
+        }
+        labels.reverse();
+
+        return labels;
+    }
+
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
     const daysInCurrentMonth = getDaysInMonth(currentYear, currentMonth);
     const labelsGraficoFaturamentoMesAtual = Array.from({ length: daysInCurrentMonth }, (_, i) => (i + 1).toString());
 
-    const labelsGraficoFaturamento = mostrarFaturamentoMesAtual ? labelsGraficoFaturamentoMesAtual : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const labelsGraficoFaturamento = mostrarFaturamentoMesAtual ? labelsGraficoFaturamentoMesAtual : getMonthLabels();
     const seriesGraficoFaturamento = mostrarFaturamentoMesAtual ? dadosGraficoFaturamentoPorLojaMesAtual : dadosGraficoFaturamentoPorLoja;
 
     const handleSelectOpcao1 = () => {

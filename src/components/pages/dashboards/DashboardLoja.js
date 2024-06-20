@@ -146,13 +146,32 @@ function DashboardGeral() {
         { info: dadosKpi.produtosEmEstoque.toString(), descricao: "Produtos em estoque" }
     ];
 
+    function getDaysInMonth(year, month) {
+        return new Date(year, month + 1, 0).getDate();
+    }
+
+    function getMonthLabels() {
+        const currentMonth = new Date().getMonth();
+        const monthLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        let labels = [];
+
+        for (let i = 0; i < 12; i++) {
+            const index = (currentMonth + 12 - i) % 12;
+            labels.push(monthLabels[index]);
+        }
+        labels.reverse();
+
+        return labels;
+    }
+
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
-    const daysInCurrentMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+    const daysInCurrentMonth = getDaysInMonth(currentYear, currentMonth);
     const labelsGraficoFaturamentoMesAtual = Array.from({ length: daysInCurrentMonth }, (_, i) => (i + 1).toString());
 
-    const labelsGraficoFaturamento = mostrarFaturamentoMesAtual ? labelsGraficoFaturamentoMesAtual : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const labelsGraficoFaturamento = mostrarFaturamentoMesAtual ? labelsGraficoFaturamentoMesAtual : getMonthLabels();
     const seriesGraficoFaturamento = mostrarFaturamentoMesAtual ? dadosGraficoFaturamentoMesAtual : dadosGraficoFaturamento;
+
 
     const handleSelectOpcao1 = () => {
         setMostrarFaturamentoMesAtual(false);
