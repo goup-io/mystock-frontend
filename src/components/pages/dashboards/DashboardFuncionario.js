@@ -20,9 +20,6 @@ function DashboardGeral() {
     const { state } = location;
     const userId = state ? state.idFuncionario : null;
 
-    const funcionario = "Funcionario"
-
-
     const [dadosKpi, setDadosKpi] = useState({
         faturamentoMes: 0,
         faturamentoDia: 0,
@@ -42,9 +39,17 @@ function DashboardGeral() {
     const [categoriesExibido, setCategoriesExibido] = useState([]);
     const [seriesExibido, setSeriesExibido] = useState([]);
 
+    const [dadosFunc, setDadosFunc] = useState([]);
+
     const [dadosGraficoModelosMaisVendidos, setDadosGraficoModelosMaisVendidos] = useState({ series: [], labels: [] });
+
+    const funcionario = "Funcionario"
+
     useEffect(() => {
         fetchDados();
+        console.log(categoriesExibido)
+        console.log(categoriesItensVendidosMesAtual)
+        console.log(seriesItensVendidosMesAtual)
     }, []);
 
     async function fetchDados() {
@@ -56,6 +61,16 @@ function DashboardGeral() {
         } catch (error) {
             console.log("Erro ao buscar os dados de KPI", error);
         }
+
+        // try {
+        //     const response = await ApiRequest.userGetById(idFuncionario);
+        //     if (response.status === 200) {
+        //         console.log("pintoooooooooooo" + response.data);
+        //         setDadosFunc(response.data);
+        //     }
+        // } catch (error) {
+        //     console.log("Erro ao buscar os dados do funcionario", error);
+        // }
 
         try {
             const responseFaturamento = await ApiRequest.faturamentoPorLojaDashFunc(idFuncionario);
@@ -69,6 +84,7 @@ function DashboardGeral() {
 
         try {
             const responseFaturamentoMesAtual = await ApiRequest.faturamentoPorLojamesAtualDashFunc(idFuncionario);
+           
             if (responseFaturamentoMesAtual.status === 200) {
                 setDadosGraficoFaturamentoMesAtual(transformaDadosFaturamentoMesAtual(responseFaturamentoMesAtual.data));
             }
@@ -98,8 +114,11 @@ function DashboardGeral() {
 
         try {
             const responseItensVendidosMesAtual = await ApiRequest.GraficoItensVendidosMesAtualDashFunc(idFuncionario);
+          
             if (responseItensVendidosMesAtual.status === 200) {
+
                 const dadosTransformados = transformaDadosItensVendidosMesAtual(responseItensVendidosMesAtual.data);
+                console.log("aaaaaaaaaaa" + dadosTransformados);
                 setCategoriesItensVendidosMesAtual(dadosTransformados.categories);
                 setSeriesItensVendidosMesAtual(dadosTransformados.series);
             }
@@ -131,12 +150,18 @@ function DashboardGeral() {
 
     function transformaDadosFaturamentoMesAtual(dados) {
         if (!dados || !Array.isArray(dados) || dados.length === 0) return [];
-        console.log("Transforma dados faturamento mês atual:", dados);
+        
+        // Remove o último elemento que é null
+        dados.pop();
+        
         return [{
-            name: dados[0][0], // Nome da loja
-            data: dados[0].slice(1, -1) // Valores de faturamento para os dias do mês, excluindo o último item que é null
+            // Assumindo que os dados representam o faturamento diário para cada dia do mês
+            // Se necessário, ajuste o nome da propriedade 'name' conforme a necessidade
+            name: 'Faturamento Diário', // Nome da série
+            data: dados // Valores de faturamento para os dias do mês
         }];
     }
+    
 
     function transformaDadosModelosMaisVendidos(dados) {
         if (!dados || !Array.isArray(dados)) return { series: [], labels: [] };
@@ -148,8 +173,15 @@ function DashboardGeral() {
 
     function transformaDadosItensVendidos(dados) {
         if (!dados || !Array.isArray(dados) || dados.length === 0) return { categories: [], series: [] };
+        const currentMonth = new Date().getMonth();
+        const monthLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        let categories = [];
 
-            const categories =  ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        for (let i = 0; i < 12; i++) {
+            const index = (currentMonth + 12 - i) % 12;
+            categories.push(monthLabels[index]);
+        }
+        categories.reverse();
             const series = [
                 { name: 'qtdTotalItensVendidos', data: dados.map(item => item.qtdTotalItensVendidos) },
                 { name: 'qtdTotalItensPromocao', data: dados.map(item => item.qtdTotalItensPromocao) }
@@ -177,12 +209,30 @@ function DashboardGeral() {
         { info: dadosKpi.produtoMaisVendido, descricao: "Produto mais vendido" }
     ];
     
+    function getDaysInMonth(year, month) {
+        return new Date(year, month + 1, 0).getDate();
+    }
+
+    function getMonthLabels() {
+        const currentMonth = new Date().getMonth();
+        const monthLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        let labels = [];
+
+        for (let i = 0; i < 12; i++) {
+            const index = (currentMonth + 12 - i) % 12;
+            labels.push(monthLabels[index]);
+        }
+        labels.reverse();
+
+        return labels;
+    }
+
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
-    const daysInCurrentMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-    const labelsGraficoFaturamentoMesAtual = daysInCurrentMonth ? Array.from({ length: daysInCurrentMonth }, (_, i) => (i + 1).toString()) : [];
+    const daysInCurrentMonth = getDaysInMonth(currentYear, currentMonth);
+    const labelsGraficoFaturamentoMesAtual = Array.from({ length: daysInCurrentMonth }, (_, i) => (i + 1).toString());
 
-    const labelsGraficoFaturamento = mostrarFaturamentoMesAtual ? labelsGraficoFaturamentoMesAtual : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const labelsGraficoFaturamento = mostrarFaturamentoMesAtual ? labelsGraficoFaturamentoMesAtual : getMonthLabels();
     const seriesGraficoFaturamento = mostrarFaturamentoMesAtual ? dadosGraficoFaturamentoMesAtual : dadosGraficoFaturamento;
 
     
