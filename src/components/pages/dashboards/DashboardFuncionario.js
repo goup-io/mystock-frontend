@@ -192,13 +192,19 @@ function DashboardGeral() {
     
 
     function transformaDadosItensVendidosMesAtual(dados) {
-        const categories = ['Mês Atual']; // Defina a categoria conforme necessário
+        if (!dados || !Array.isArray(dados) || dados.length === 0) return { categories: [], series: [] };
+        
+        // Verificar se os dados são válidos e definir categorias como os dias do mês
+        const categories = Array.from({ length: dados.length }, (_, index) => (index + 1).toString());
+        
+        // Verificar se os dados contêm as propriedades necessárias
         const series = [
-            { name: 'qtdTotalItensVendidos', data: [dados.qtdTotalItensVendidos] },
-            { name: 'qtdTotalItensPromocao', data: [dados.qtdTotalItensPromocao] }
+            { name: 'qtdTotalItensVendidos', data: dados.map(item => item.qtdTotalItensVendidos || 0) },
+            { name: 'qtdTotalItensPromocao', data: dados.map(item => item.qtdTotalItensPromocao || 0) }
         ];
-    
+        
         return { categories, series };
+        
     }
 
     const kpis = [
