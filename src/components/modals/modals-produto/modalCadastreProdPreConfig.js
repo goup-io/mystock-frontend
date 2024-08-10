@@ -2,7 +2,7 @@ import InputSearcModal from '../../inputs/inputSearchModal';
 import HeaderModal from '../headerModal';
 import ButtonClear from '../../buttons/buttonClear';
 import ButtonModal from '../../buttons/buttonsModal';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import ApiRequest from "../../../connections/ApiRequest";
@@ -18,54 +18,76 @@ function ModalCadastreProdPreConfig({ onUpdate }) {
   const [totalItens, setTotalItens] = useState(0);
   const [quantidades, setQuantidades] = useState({});
 
-  const handleQuantityChange = (newQuantities) => {
+  const handleQuantityChange = useCallback((newQuantities) => {
     setQuantidades(newQuantities);
     const newTotal = Object.values(newQuantities).reduce((acc, cur) => acc + cur, 0);
     setTotalItens(newTotal);
-  };
-
-  async function fetchData() {
-    const colunasDoBancoETP = ['Código', 'Nome', 'Modelo', 'Tamanho', 'Cor', 'Preço', 'Loja', 'N.Itens'];
-
-    try {
-      const response = await ApiRequest.etpsGetAll();
-
-      if (response.status === 200) {
-        const dados = response.data;
-
-        const filtrarDadosETP = dados.map(obj => ({
-          codigo: obj.codigo,
-          nome: obj.nome,
-          modelo: obj.modelo,
-          tamanho: obj.tamanho,
-          cor: obj.cor,
-          preco: obj.preco,
-          loja: obj.loja,
-          quantidade: obj.quantidade
-        }));
-
-        const ids = dados.map(obj => ({
-          id: obj.id
-        }))
-
-        setIdEtps(ids);
-
-        setDadosFiltradosETP(filtrarDadosETP);
-      }
-    } catch (error) {
-      console.log("Erro ao buscar os dados", error);
-    }
-
-    setColunasETP(colunasDoBancoETP);
-  }
+  }, []);
 
   useEffect(() => {
+    const fetchData = async () => {
+      const colunasDoBancoETP = ['Código', 'Nome', 'Modelo', 'Tamanho', 'Cor', 'Preço', 'Loja', 'N.Itens'];
+      try {
+        const response = await ApiRequest.etpsGetAll();
+
+        if (response.status === 200) {
+          const dados = response.data;
+
+          const filtrarDadosETP = dados.map(obj => ({
+            codigo: obj.codigo,
+            nome: obj.nome,
+            modelo: obj.modelo,
+            tamanho: obj.tamanho,
+            cor: obj.cor,
+            preco: obj.preco,
+            loja: obj.loja,
+            quantidade: obj.quantidade
+          }));
+
+          const ids = dados.map(obj => ({
+            id: obj.id
+          }));
+
+          setIdEtps(prevIds => {
+            const newIds = JSON.stringify(ids);
+            const oldIds = JSON.stringify(prevIds);
+            if (newIds !== oldIds) {
+              return ids;
+            }
+            return prevIds;
+          });
+
+          setDadosFiltradosETP(prevDados => {
+            const newDados = JSON.stringify(filtrarDadosETP);
+            const oldDados = JSON.stringify(prevDados);
+            if (newDados !== oldDados) {
+              return filtrarDadosETP;
+            }
+            return prevDados;
+          });
+        }
+      } catch (error) {
+        console.log("Erro ao buscar os dados", error);
+      }
+
+      setColunasETP(prevColunas => {
+        const newColunas = JSON.stringify(colunasDoBancoETP);
+        const oldColunas = JSON.stringify(prevColunas);
+        if (newColunas !== oldColunas) {
+          return colunasDoBancoETP;
+        }
+        return prevColunas;
+      });
+    }
+
+
     fetchData();
   }, []);
 
-  const handleCadastrar = async () => {
+  const handleCadastrar = useCallback(async () => {
     console.log(quantidades);
-    const produtosParaCadastrar = idEtps.filter(idEtp => quantidades[idEtp.id] > 0);
+    const produtosParaCadastrar = quantidades.filter(idEtp => idEtp.quantidadeSolicitada > 0);
+    console.log(produtosParaCadastrar)
 
     if (produtosParaCadastrar.length === 0) {
       Alert.alert(ErrorImage, "Adicione a quantidade de pelo menos um produto!");
@@ -75,13 +97,13 @@ function ModalCadastreProdPreConfig({ onUpdate }) {
     var etpsEQuantidade = [];
 
     for (const [key, value] of Object.entries(quantidades)) {
-      console.log(`${key}: ${value}`);
-
       etpsEQuantidade.push({
-        "idEtp": key,
-        "quantidade": value
+        "idEtp": value.etp_id,
+        "quantidade": value.quantidadeSolicitada
       })
     }
+
+    console.log(etpsEQuantidade);
 
     const idLoja = localStorage.getItem("loja_id")
 
@@ -97,7 +119,10 @@ function ModalCadastreProdPreConfig({ onUpdate }) {
       console.log("Erro ao cadastrar um produto: ", error);
       Alert.alert(ErrorImage, "Erro ao cadastrar um produto!");
     }
-  };
+  }, [quantidades]);
+
+
+  const idList = useMemo(() => idEtps.map(({ id }) => id), [idEtps]);
 
   return (
     <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[45rem] h-[26rem] flex flex-col justify-around items-center bg-white p-2 rounded-lg border border-black">
@@ -113,11 +138,11 @@ function ModalCadastreProdPreConfig({ onUpdate }) {
           dados={dadosFiltradosETP}
           iptQuantidade
           onQuantityChange={handleQuantityChange}
-          id={idEtps.map(({ ...id }) => id)}
+          id={idEtps.map(({ ...id }) => id)} // Usa a versão memoizada
         />
       </div>
       <div className="w-[43rem] flex justify-end items-end mt-1 h-7">
-        <ButtonClear >Limpar</ButtonClear>
+        <ButtonClear>Limpar</ButtonClear>
         <ButtonModal funcao={handleCadastrar}>Cadastrar</ButtonModal>
       </div>
     </div>

@@ -77,7 +77,7 @@ function ModalRequestProd() {
         if (codVendedor !== '' && produtosSolicitados.length > 0) {
             const requestBodyProdutos = {
                 coletor_cod: codVendedor,
-                itens: produtosSolicitados
+                itens: produtosSolicitados.filter(idEtp => idEtp.quantidadeSolicitada > 0)
             };
 
             try {
