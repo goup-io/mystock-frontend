@@ -127,47 +127,82 @@ function Pagamento() {
                 // var valorRestante = 0;
                 dados.forEach((pagamento) => {
                     valorPago2 += pagamento.valor;
+                    console.log("pagamentos"+pagamento.valor)
+                    
                 });
                 //valorRestante = venda ? venda.valorTotal - valorPago : 0;
                 setValorPago(valorPago2);
                 //setValorRestante(valorRestante);
                 setFluxoPagamento(dados);
 
-               // if (valorTotal <= valorPago2) {
-                  //  console.log("Venda finalizada");
-                  //  finalizarVenda();
-              //  }
-
             }
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
         }
     }
+    
+    
 
     async function finalizarVenda() {
+
+        var valorRestanteTemp = 0;
+        var valorTotalTemp = 0;
+        var valorPagoTemp = 0;
+
         try {
-            const response = await ApiRequest.pagamentoFinalizar(idVenda);
+            const response = await ApiRequest.getPagamentoFluxoCaixa(idVenda);
             if (response.status === 200) {
                 const dados = response.data;
-              /*  Swal.fire({
-                    title: "Venda finalizada",
-                    text: `Pagamento de R$ ${valorTotal} finalizado com sucesso`,
-                    icon: "success",
-                    confirmButtonText: "OK",
+                var valorPago2 = 0;
+                dados.forEach((pagamento) => {
+                    valorPago2 += pagamento.valor;
                 });
-                navigate(`/venda/caixa`);
-                */
+
+                valorPagoTemp = valorPago2;
             }
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
         }
+
+
+        try {
+            const response = await ApiRequest.detalhamentosVendas(idVenda);
+
+            if (response.status === 200) {
+                const dados = response.data;
+                valorTotalTemp = dados.valorTotal
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+
+
+        if ((valorTotalTemp - valorPagoTemp) === 0) {
+            try {
+                const response = await ApiRequest.pagamentoFinalizar(idVenda);
+                if (response.status === 200) {
+                    const dados = response.data;
+                    Swal.fire({
+                        title: "Venda finalizada",
+                        text: `Pagamento de R$ ${valorTotal} finalizado com sucesso`,
+                        icon: "success",
+                        confirmButtonText: "OK",
+                    });
+                    navigate("/venda/caixa");
+
+                }
+            } catch (error) {
+                console.log("Erro ao buscar os dados", error);
+            }
+        }
+
     }
 
     const fetchPagamentoRealizado = () => {
         fetchVenda();
         fetchTipoPagamento();
         fetchFluxoPagamento();
-
+        finalizarVenda();
     }
 
 
@@ -244,21 +279,21 @@ function Pagamento() {
                         </div>
 
                         <div style={div2} className="flex flex-col text-2xl justify-center font-semibold cursor-pointer bg-[#E7E7E7] rounded-md duration-150 ease-in-out hover:scale-[1.02] hover:bg-[#E1E1E1]">
-                            <a onClick={PaymentCashModal}>
+                            <a onClick={() => PaymentCashModal(idVenda,dinheiro,1,valorPago,venda ? venda.valorTotal : 0, (valorTotal - valorPago),fetchPagamentoRealizado)}>
                                 <p>DINHEIRO</p>
                                 <p>(F1)</p>
                             </a>
                         </div>
 
                         <div style={div3} className="flex flex-col text-2xl justify-center font-semibold cursor-pointer bg-[#E7E7E7] rounded-md duration-150 ease-in-out hover:scale-[1.02] hover:bg-[#E1E1E1]">
-                            <a onClick={PaymentCardModal}>
+                            <a onClick={() => PaymentCardModal}>
                                 <p>CARTÃO</p>
                                 <p>(F2)</p>
                             </a>
                         </div>
                         <div style={div4} onClick={() => AbrirModalPaymentPix(idVenda, pix, 1, valorPago, venda ? venda.valorTotal : 0, (valorTotal - valorPago), fetchPagamentoRealizado)} className="flex flex-col text-2xl justify-center font-semibold cursor-pointer bg-[#E7E7E7] rounded-md duration-150 ease-in-out hover:scale-[1.02] hover:bg-[#E1E1E1]">
                             <p>PIX</p>
-                            <p>F3</p>
+                            <p>(F3)</p>
                         </div>
                     </div>
                 </CaixaTexto>
