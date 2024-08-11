@@ -1726,17 +1726,17 @@ export class ApiRequest {
 
 
     static async pagamentoFinalizar(idVenda) {
-
         try {
-
-            const resposta = await axios.patch(springEndPoint + `/vendas/finalizar/${idVenda}`, {
-                headers: header
-            });
+            const resposta = await axios.patch(
+                `${springEndPoint}/vendas/finalizar/${idVenda}`,
+                null,
+                { headers: header }
+            );
 
             return resposta;
 
         } catch (erro) {
-            return erro
+            return erro;
         }
     }
 
@@ -2070,7 +2070,7 @@ export class ApiRequest {
         }
     }
 
-    static async alertasGetByFilter(dataInicio, dataFim, horaInicio, horaFim, lojaId) {   
+    static async alertasGetByFilter(dataInicio, dataFim, horaInicio, horaFim, lojaId) {
         try {
             let queryParams = [];
 
@@ -2278,12 +2278,12 @@ export class ApiRequest {
     }
 
 
-    
+
     // ***************************************************************************
     // *  DASHBOARDS func
     // ***************************************************************************
 
-    static async kpisGetAllDashFunc(idUser){
+    static async kpisGetAllDashFunc(idUser) {
         try {
 
             const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-funcionario/${idUser}/kpis`, {
@@ -2298,7 +2298,7 @@ export class ApiRequest {
     }
 
 
-    static async faturamentoPorLojaDashFunc(idUser){
+    static async faturamentoPorLojaDashFunc(idUser) {
         try {
 
             const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-funcionario/${idUser}/faturamento`, {
@@ -2312,7 +2312,7 @@ export class ApiRequest {
         }
     }
 
-    static async faturamentoPorLojamesAtualDashFunc(idUser){
+    static async faturamentoPorLojamesAtualDashFunc(idUser) {
         try {
 
             const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-funcionario/${idUser}/faturamento-mes-atual`, {
@@ -2326,7 +2326,7 @@ export class ApiRequest {
         }
     }
 
-    static async GraficomodelosMaisVendidosDashFunc(idUser){
+    static async GraficomodelosMaisVendidosDashFunc(idUser) {
         try {
 
             const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-funcionario/${idUser}/modelos-mais-vendido`, {
@@ -2341,7 +2341,7 @@ export class ApiRequest {
     }
 
 
-    static async GraficoItensVendidosDashFunc(idUser){
+    static async GraficoItensVendidosDashFunc(idUser) {
         try {
 
             const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-funcionario/${idUser}/totais-de-itens-vendidos`, {
@@ -2355,7 +2355,7 @@ export class ApiRequest {
         }
     }
 
-    static async GraficoItensVendidosMesAtualDashFunc(idUser){
+    static async GraficoItensVendidosMesAtualDashFunc(idUser) {
         try {
 
             const resposta = await axios.get(springEndPoint + `/dashboards/dashboard-funcionario/${idUser}/totais-de-itens-vendidos/mes-atual`, {
@@ -2389,7 +2389,7 @@ export class ApiRequest {
     }
 
     static async relatorioGetResumoGeral(qtdDias) {
-        
+
         try {
 
             const resposta = await axios.get(springEndPoint + `/relatorios/secao-resumo/resumo-geral?qtdDias=${qtdDias}`, {
@@ -2402,7 +2402,7 @@ export class ApiRequest {
             return erro
         }
     }
-    
+
     static async relatorioRankingVendas(qtdDias) {
 
         try {

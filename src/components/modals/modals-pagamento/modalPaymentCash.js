@@ -50,8 +50,9 @@ function ModalPaymentCash({ idVenda, idTipoPagamento, qtdParcelas, valorPagoAteA
                     text: `Pagamento de ${valorRecebido} finalizado com sucesso, devolva um troco de ${troco}`,
                     icon: "success",
                     confirmButtonText: "OK",
-                });
-                onFinalizar();
+                }).then(() => {
+                    onFinalizar();
+                })
             }
         } catch (error) {
             console.log("Erro ao gerar pagamento", error);
