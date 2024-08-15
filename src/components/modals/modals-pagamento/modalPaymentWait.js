@@ -65,7 +65,6 @@ function AbrirModalPaymentWait(base64String,valorPago, onFinalizar) {
         showConfirmButton: false,
         heightAuto: true,
     });
-    console.log(valorPago);
 }
 
 export default AbrirModalPaymentWait;

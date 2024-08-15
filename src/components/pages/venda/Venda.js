@@ -466,7 +466,7 @@ function Venda() {
                                     width="8rem"
                                     height="2rem"
                                     bold="500"
-                                    dadosBanco={tipoVendaListaNomes}
+                                    dadosBanco={tipoVenda}
                                 />
                             </div>
                         </div>

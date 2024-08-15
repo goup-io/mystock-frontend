@@ -82,7 +82,8 @@ function ModalPaymentCard() {
 function AbrirModalPaymentCard() {
     const MySwal = withReactContent(Swal);
     MySwal.fire({
-        html: <ModalPaymentCard />,
+        html: <ModalPaymentCard 
+        />,
         showConfirmButton: false,
         heightAuto: true,
     });
