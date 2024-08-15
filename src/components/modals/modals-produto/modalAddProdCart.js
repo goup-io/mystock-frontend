@@ -21,11 +21,11 @@ function ModalAddProdCart(props) {
   const [itemsCarrinhoContext, setItemsCarrinhoContext] = useContext(SelectedItemsContext);
   const [detalhesProdutos, setDetalhesProdutos] = useState([]);
 
-  const handleQuantityChange = (newQuantities) => {
+  const handleQuantityChange = React.useCallback((newQuantities) => {
     setQuantidades(newQuantities);
     const newTotal = Object.values(newQuantities).reduce((acc, cur) => acc + cur, 0);
     setTotalItens(newTotal);
-  };
+  }, []);
 
   async function fetchData() {
     const colunasDoBancoETP = ['Código', 'Nome', 'Modelo', 'Tamanho', 'Cor', 'Preço', 'Loja', 'N.Itens'];
@@ -58,7 +58,7 @@ function ModalAddProdCart(props) {
   }
 
   useEffect(() => {
-    console.log("AAAAAAAAAA", itemsCarrinhoContext)
+    // console.log("AAAAAAAAAA", itemsCarrinhoContext)
     fetchData();
   }, []);
 
@@ -112,8 +112,8 @@ function ModalAddProdCart(props) {
     // ]);
     // }
     // setItemsCarrinhoContext(detalhesProdutos);
-    console.log("ITEMS", itemsCarrinhoContext);
-    console.log("DETALHES", detalhesProdutos)
+    // console.log("ITEMS", itemsCarrinhoContext);
+    // console.log("DETALHES", detalhesProdutos)
     
   }, [detalhesProdutos, setItemsCarrinhoContext]);
 

@@ -159,9 +159,9 @@ function Venda() {
 
     const navigate = useNavigate();
 
-    useEffect(() => {    
-        console.log(itemsCarrinhoContext);  
-    }, [itemsCarrinhoContext]);
+    // useEffect(() => {    
+    //     console.log(itemsCarrinhoContext);  
+    // }, [itemsCarrinhoContext]);
 
     useEffect(() => {
         fetchData();
@@ -191,13 +191,13 @@ function Venda() {
     }
 
     function adicionarItemCarrinho(item) {
-        console.log("olha o item", item)
+        // console.log("olha o item", item)
 
         // setItemsCarrinho(prevItemsCarrinho => {
 
             var ItemsCarrinhoAux = []
             itemsCarrinho.forEach(produto => {
-                console.log(produto)
+                // console.log(produto)
                 if(item.codigoProduto === produto.props.codigoProduto){
                     produto.props.quantidade++;
                      
@@ -387,11 +387,11 @@ function Venda() {
 
     }
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        console.log(" ITENS DO CARALEO",itemsCarrinhoContext)
-        //adicionarItemCarrinho(...itemsCarrinhoContext)
-    }, [itemsCarrinhoContext])
+    //     console.log(" ITENS DO CARALEO",itemsCarrinhoContext)
+    //     //adicionarItemCarrinho(...itemsCarrinhoContext)
+    // }, [itemsCarrinhoContext])
 
 
     return (
