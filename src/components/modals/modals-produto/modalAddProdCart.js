@@ -18,7 +18,7 @@ function ModalAddProdCart(props) {
   const [quantidades, setQuantidades] = useState({});
 
   // Usando o contexto
-  const [itemsCarrinhoContext, setItemsCarrinhoContext] = useContext(SelectedItemsContext);
+  const [itemsCarrinhoContext, setItemsCarrinhoContext] = useState([]);
   const [detalhesProdutos, setDetalhesProdutos] = useState([]);
 
   const handleQuantityChange = React.useCallback((newQuantities) => {
@@ -35,6 +35,7 @@ function ModalAddProdCart(props) {
       const response = await ApiRequest.etpsGetAll();
 
       if (response.status === 200) {
+
         const dados = response.data;
         const filtrarDadosETP = dados.map(obj => ({
           codigo: obj.codigo,
@@ -44,13 +45,29 @@ function ModalAddProdCart(props) {
           cor: obj.cor,
           preco: obj.preco,
           loja: obj.loja,
+          desconto: 0,
           quantidade: obj.quantidade
         }));
 
         const ids = dados.map(obj => ({ id: obj.id }));
 
-        setIdEtps(ids);
-        setDadosFiltradosETP(filtrarDadosETP);
+        setIdEtps(prevIds => {
+          const newIds = JSON.stringify(ids);
+          const oldIds = JSON.stringify(prevIds);
+          if (newIds !== oldIds) {
+            return ids;
+          }
+          return prevIds;
+        });
+
+        setDadosFiltradosETP(prevDados => {
+          const newDados = JSON.stringify(filtrarDadosETP);
+          const oldDados = JSON.stringify(prevDados);
+          if (newDados !== oldDados) {
+            return filtrarDadosETP;
+          }
+          return prevDados;
+        });
       }
     } catch (error) {
       console.log("Erro ao buscar os dados", error);
@@ -58,17 +75,18 @@ function ModalAddProdCart(props) {
   }
 
   useEffect(() => {
-    // console.log("AAAAAAAAAA", itemsCarrinhoContext)
+    console.log("AAAAAAAAAA", itemsCarrinhoContext)
     fetchData();
   }, []);
 
   const handleCadastrar = async () => {
     try {
-      const produtosSelecionados = idEtps.filter(idEtp => quantidades[idEtp.id] > 0);
 
-      const produtosParaCadastrar = produtosSelecionados.map(({ id }) => ({
-        idEtp: id,
-        quantidade: quantidades[id]
+      const produtosSelecionados = quantidades;
+
+      const produtosParaCadastrar = produtosSelecionados.map(produto => ({
+        idEtp: produto.etp_id,
+        quantidade: produto.quantidadeSolicitada
       }));
 
       const detalhesProdutos = [];
@@ -77,9 +95,11 @@ function ModalAddProdCart(props) {
         if (response.status === 200) {
           const dados = response.data;
           detalhesProdutos.push({
+            id: dados.id,
             codigoProduto: dados.codigo,
             descricaoProduto: dados.nome,
             precoUnitario: dados.preco,
+            desconto: 0,
             quantidade: produto.quantidade
           });
         } else {
@@ -87,17 +107,16 @@ function ModalAddProdCart(props) {
         }
       }
       setDetalhesProdutos(detalhesProdutos);
-    setItemsCarrinhoContext(detalhesProdutos);
-    detalhesProdutos.forEach(element => {
-      props.onUpdate(element);
-    });
-      console.log("dados", detalhesProdutos)
-      // Atualiza o contexto do carrinho com os novos produtos
-      // setItemsCarrinhoContext(prevItems => [
-      //   ...prevItems,
-      //   ...detalhesProdutos
-      // ]);
-      // console.log("Itens CONTEXTO", itemsCarrinhoContext)
+      // setItemsCarrinhoContext(detalhesProdutos);
+      //Atualiza o contexto do carrinho com os novos produtos
+      console.log("mahoeio", detalhesProdutos)
+      console.log("Itens CONTEXTO1", itemsCarrinhoContext)
+
+      setItemsCarrinhoContext((prevItems) => [...prevItems, ...detalhesProdutos]);
+
+      console.log("Itens CONTEXTO2", itemsCarrinhoContext)
+      props.onUpdate(detalhesProdutos);
+
     } catch (error) {
       console.log("Erro ao buscar os dados:", error);
     }
@@ -114,7 +133,7 @@ function ModalAddProdCart(props) {
     // setItemsCarrinhoContext(detalhesProdutos);
     // console.log("ITEMS", itemsCarrinhoContext);
     // console.log("DETALHES", detalhesProdutos)
-    
+
   }, [detalhesProdutos, setItemsCarrinhoContext]);
 
   return (

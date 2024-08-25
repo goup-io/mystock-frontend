@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const springEndPoint = "http://localhost:8080";
+const springEndPoint = "http://localhost:8080/api/v1";
 // const springEndPoint = "my-stock-application.azurewebsites.net";
 
 var header = {

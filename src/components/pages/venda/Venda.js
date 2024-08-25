@@ -139,15 +139,16 @@ function ItemCarrinho(props) {
     )
 }
 
-export const SelectedItemsContext = React.createContext([[], () => {}]);
+export const SelectedItemsContext = React.createContext();
 
 function Venda() {
 
     const [subTotal1, setSubTotal1] = useState(0.00);
     const [subTotal2, setSubTotal2] = useState(0.00);
-    const [itemsCarrinho, setItemsCarrinho] = useState([]);
+    const [qtdTotalItens, setQtdTotalItens] = useState(0);
+    const [itensCarrinho, setItensCarrinho] = useState([]);
 
-    const [itemsCarrinhoContext, setItemsCarrinhoContext] = useState([]);
+    // const [itemsCarrinhoContext, setItemsCarrinhoContext] = useState([]);
 
     const [descontoVenda, setDescontoVenda] = useState(0.00);
     const [descontoProdutos, setDescontoProdutos] = useState(0.00);
@@ -157,12 +158,6 @@ function Venda() {
     const [tipoVenda, setTipoVenda] = useState("");
     const [tipoVendaSelecionado, setTipoVendaSelecionado] = useState(1);
 
-    const navigate = useNavigate();
-
-    // useEffect(() => {    
-    //     console.log(itemsCarrinhoContext);  
-    // }, [itemsCarrinhoContext]);
-
     useEffect(() => {
         fetchData();
         recuperarTipoVenda();
@@ -171,93 +166,56 @@ function Venda() {
         let subTotal2 = 0;
         let descontoProdutos = 0;
         let valorTotal = 0;
+        let qtdTotal = 0;
 
-        itemsCarrinho.forEach(element => {
-            subTotal1 += element.props.precoUnitario * element.props.quantidade;
-            subTotal2 += (element.props.precoUnitario - element.props.descontoUnitario) * element.props.quantidade;
-            descontoProdutos += element.props.descontoUnitario * element.props.quantidade;
-            valorTotal += (element.props.precoUnitario - element.props.descontoUnitario) * element.props.quantidade;
+        itensCarrinho.forEach(element => {
+            subTotal1 += element.precoUnitario * element.quantidade;
+            subTotal2 += (element.precoUnitario - element.desconto) * element.quantidade;
+            descontoProdutos += element.desconto * element.quantidade;
+            valorTotal += (element.precoUnitario - element.desconto) * element.quantidade;
+            qtdTotal += element.quantidade;
         });
 
         setSubTotal1(subTotal1);
         setSubTotal2(subTotal2);
         setDescontoProdutos(descontoProdutos);
         setValorTotal(valorTotal);
+        setQtdTotalItens(qtdTotal);
 
-    }, [itemsCarrinho]);
+    }, [itensCarrinho]);
 
     function adicionarDescontoVenda(qtdDescontoVenda) {
         setDescontoVenda(qtdDescontoVenda)
     }
 
-    function adicionarItemCarrinho(item) {
-        // console.log("olha o item", item)
+    function adicionarItemCarrinho(produtosAdd) {
+        setItensCarrinho((prevItems) => {
+            let updatedItems = [...prevItems];
 
-        // setItemsCarrinho(prevItemsCarrinho => {
+            produtosAdd.forEach((novoItem) => {
+                const itemIndex = updatedItems.findIndex(item => item.id === novoItem.id);
 
-            var ItemsCarrinhoAux = []
-            itemsCarrinho.forEach(produto => {
-                // console.log(produto)
-                if(item.codigoProduto === produto.props.codigoProduto){
-                    produto.props.quantidade++;
-                     
-                }else{
-                    ItemsCarrinhoAux.push(produto)                    
-                }
-
-            })
-            var encontrouRepetido = false;
-
-        //     prevItemsCarrinho.forEach(element => {
-        //         console.log("acara do elemento", element)
-
-                if (item.codigoProduto === item.codigoProduto) {
-
-                    var quantidade = item.quantidade + 1
-
-                    ItemsCarrinhoAux.push(
-                        <ItemCarrinho
-                            id={contadorId}
-                            key={contadorId}
-                            codigoProduto={item.codigoProduto}
-                            descricaoProduto={item.descricaoProduto}
-                            precoUnitario={item.precoUnitario}
-                            quantidade={item.quantidade}
-                            descontoUnitario={0}
-                            precoLiquido={item.precoUnitario * item.quantidade}
-                        />)
-                    encontrouRepetido = true;
-
+                if (itemIndex !== -1) {
+                    // Atualiza a quantidade
+                    updatedItems[itemIndex] = {
+                        ...updatedItems[itemIndex],
+                        quantidade: novoItem.quantidade,
+                    };
                 } else {
-                    ItemsCarrinhoAux.push(item)
+                    // Adiciona novo item
+                    updatedItems.push(novoItem);
                 }
-            // });
+            });
 
-            if (!encontrouRepetido) {
-                ItemsCarrinhoAux.push(
-                    // <ItemCarrinho
-                    //     id={contadorId}
-                    //     key={contadorId}
-                    //     codigoProduto={item.codigoProduto ? item.codigoProduto : 0}
-                    //     descricaoProduto={item.descricaoProduto}
-                    //     precoUnitario={item.precoUnitario}
-                    //     quantidade={item.quantidade}
-                    //     descontoUnitario={item.descontoUnitario}
-                    //     precoLiquido={item.precoUnitario - item.descontoUnitario}
-                    // />
-                )
-            }
-            setItemsCarrinho(ItemsCarrinhoAux);
-        // });
-
-        contadorId++;
+            return updatedItems;
+        });
     }
 
-    async function recuperarTipoVenda(){
+    async function recuperarTipoVenda() {
         const response = await ApiRequest.tipoVendaGetAll()
 
         try {
-            if (response.status === 200){
+            if (response.status === 200) {
                 const dados = response.data.map(item => ({
                     id: item.id,
                     nome: item.tipo
@@ -270,72 +228,66 @@ function Venda() {
     }
 
     function removerItemCarrinho(id) {
-
-        setItemsCarrinho(prevItemsCarrinho => {
-
-            var ItemsCarrinhoAux = []
-            var item = null
-
-            prevItemsCarrinho.forEach(element => {
-                if (element.props.id !== id) {
-                    ItemsCarrinhoAux.push(element)
-
-                } else {
-                    if (element.props.quantidade > 1) {
-
-                        var quantidade = element.props.quantidade - 1;
-
-                        ItemsCarrinhoAux.push(<ItemCarrinho
-                            id={element.props.contadorId}
-                            key={element.props.contadorId}
-                            codigoProduto={element.props.codigoProduto}
-                            descricaoProduto={element.props.descricaoProduto}
-                            precoUnitario={element.props.precoUnitario}
-                            quantidade={quantidade}
-                            descontoUnitario={element.props.descontoUnitario}
-                            precoLiquido={element.props.precoUnitario - element.props.descontoUnitario}
-                        />)
+        setItensCarrinho(prevItems => {
+            return prevItems.reduce((acc, item) => {
+                if (item.id === id) {
+                    if (item.quantidade > 1) {
+                        acc.push({
+                            ...item,
+                            quantidade: item.quantidade - 1
+                        });
                     }
+                } else {
+                    acc.push(item);
                 }
-            });
-
-            return ItemsCarrinhoAux;
+                return acc;
+            }, []);
         });
-
     }
+
 
     function ItemCarrinho(props) {
         return (
-            <tr className="bg-[#DEE2FF] h-24 rounded text-[1.2rem]" >
-                <td>
-                    <p className="font-medium">{props.codigoProduto}</p>
-                </td>
-                <td>
-                    <p className="font-medium">{props.descricaoProduto}</p>
-                </td>
-                <td>
-                    <p className="font-medium">R$ {props.precoUnitario}</p>
-                </td>
-                <td>
-                    <p className="font-medium">{props.quantidade}</p>
-                </td>
-                <td>
-                    <p className="font-medium">R$ {props.precoLiquido}</p>
-                </td>
-                <td>
-                    <div className="flex flex-row items-center gap-12 justify-center">
-                        <ButtonEdit
-                            width={40}
-                            funcao={() => AbrirModalEditProd()}
-                        />
-                        <ButtonCancel
-                            posicao={props.id}
-                            funcao={() => removerItemCarrinho(props.id)}
-                            width={17}
-                        />
-                    </div>
-                </td>
-            </tr>
+            <>
+                <tr className="bg-[#DEE2FF] h-24 rounded text-[1.2rem]">
+                    <td>
+                        <p className="font-medium">{props.codigoProduto}</p>
+                    </td>
+                    <td>
+                        <p className="font-medium">{props.descricaoProduto}</p>
+                    </td>
+                    <td>
+                        <p className="font-medium">R$ {props.precoUnitario}</p>
+                    </td>
+                    <td>
+                        <p className="font-medium">{props.quantidade}</p>
+                    </td>
+                    <td>
+                        <p className="font-medium">R$ {props.precoLiquido}</p>
+                    </td>
+                    <td>
+                        <div className="flex flex-row items-center gap-12 justify-center">
+                            <ButtonEdit
+                                width={40}
+                                funcao={() => AbrirModalEditProd()}
+                            />
+                            <ButtonCancel
+                                posicao={props.id}
+                                funcao={() => removerItemCarrinho(props.id)}
+                                width={17}
+                            />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colSpan="6" className="bg-[#DEE2FF] h-9 rounded-b-md">
+                        <div className="bg-[#354f7014] flex flex-row w-full h-full rounded-b-lg items-center justify-end">
+                            <p className="text-right pr-12 text-[1rem] font-bold text-black">Subtotal: R$ {subTotal2.toFixed(2)}</p>
+                        </div>
+                    </td>
+                </tr>
+
+            </>
 
         )
     }
@@ -356,7 +308,7 @@ function Venda() {
             descontoVenda,
             tipoVenda,
             codigoVendedor,
-            itemsCarrinho
+            itensCarrinho
         )
     }
 
@@ -366,136 +318,121 @@ function Venda() {
     }
 
 
-    const [idEtps, setIdEtps] = useState([]);
-
     async function fetchData() {
-
-        {
-            itemsCarrinhoContext.map((item, index) => (
-                <ItemCarrinho
-                    key={index} // Use um identificador único para a chave, como o índice neste caso
-                    codigoProduto={item.codigoProduto}
-                    descricaoProduto={item.descricaoProduto}
-                    precoUnitario={item.precoUnitario}
-                    quantidade={item.quantidade}
-                    precoLiquido={item.precoUnitario * item.quantidade}
-                    id={index} // Também use o índice como identificador único, se aplicável
-                    removerItemCarrinho={() => removerItemCarrinho(index)} // Se precisar de uma função de remoção
-                />
-            ))
-        }
-
+        console.log("fetchado")
+        //test
     }
 
-    // useEffect(() => {
-
-    //     console.log(" ITENS DO CARALEO",itemsCarrinhoContext)
-    //     //adicionarItemCarrinho(...itemsCarrinhoContext)
-    // }, [itemsCarrinhoContext])
-
-
     return (
-        <SelectedItemsContext.Provider value={[itemsCarrinhoContext, setItemsCarrinhoContext]}>
-            <PageLayout>
-                <Header telaAtual="Área de Venda" />
-                <div style={divPai}>
-                    <div style={divCarrinho} class="shadow flex flex-col items-start py-4 px-8">
-                        <div class="flex justify-between w-full text-2xl">
-                            <p class="font-semibold text-2xl">CARRINHO</p>
-                            <div class="flex flex-row-reverse w-2/3 gap-4 items-center">
-                                <Button funcao={() => AbrirModalAddProdCart(adicionarItemCarrinho)}>
-                                    <p class="flex justify-between w-full text-2xl">Adicionar Produto</p>
-                                </Button>
-                                {/* <Button funcao={() => AbrirModalAddKitCart()}>
+        <PageLayout>
+            <Header telaAtual="Área de Venda" />
+            <div style={divPai}>
+                <div style={divCarrinho} className="shadow flex flex-col items-start py-4 px-8">
+                    <div className="flex justify-between w-full text-2xl">
+                        <p className="font-semibold text-2xl">CARRINHO</p>
+                        <div className="flex flex-row-reverse w-2/3 gap-4 items-center">
+                            <Button funcao={() => AbrirModalAddProdCart(adicionarItemCarrinho)}>
+                                <p className="flex justify-between w-full text-2xl">Adicionar Produto</p>
+                            </Button>
+                            {/* <Button funcao={() => AbrirModalAddKitCart()}>
                                     <p className="flex justify-between w-full text-xl">Adicionar Kit</p>
                                 </Button> */}
-                            </div>
                         </div>
+                    </div>
 
-                        <div class="bg-[#F5F3F4] w-full h-full rounded-[5px] my-2 overflow-y-scroll px-4">
-                            <Tabela>
-                                <thead>
-                                    <tr class="flex-row gap-16 pl-6 table-row text-[1.2rem]">
-                                        <th>
-                                            <p class="font-medium ">Código Prod.</p>
-                                        </th>
-                                        <th>
-                                            <p class="font-medium">Descrição Prod.</p>
-                                        </th>
-                                        <th>
-                                            <p class="font-medium">Preço Un.</p>
-                                        </th>
-                                        <th>
-                                            <p class="font-medium">Quanti.</p>
-                                        </th>
+                    <div className="bg-[#F5F3F4] w-full h-full rounded-[5px] my-2 overflow-y-scroll px-4">
+                        <Tabela >
+                            <thead>
+                                <tr className="flex-row gap-16 pl-6 table-row text-[1.2rem]">
+                                    <th>
+                                        <p className="font-medium ">Código Prod.</p>
+                                    </th>
+                                    <th>
+                                        <p className="font-medium">Descrição Prod.</p>
+                                    </th>
+                                    <th>
+                                        <p className="font-medium">Preço Un.</p>
+                                    </th>
+                                    <th>
+                                        <p className="font-medium">Quanti.</p>
+                                    </th>
 
-                                        <th>
-                                            <p class="font-medium">Preço Líquido</p>
-                                        </th>
+                                    <th>
+                                        <p className="font-medium">Preço Líquido</p>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {itensCarrinho.length === 0 ? (
+                                    <tr>
+                                        <td colSpan="7" className="text-center"></td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    {itemsCarrinho.length == 0 ? null : itemsCarrinho}
-                                </tbody>
+                                ) : (
+                                    itensCarrinho.map(item => (
+                                        <ItemCarrinho
+                                            key={item.id}
+                                            codigoProduto={item.codigoProduto}
+                                            descricaoProduto={item.descricaoProduto}
+                                            precoUnitario={item.precoUnitario}
+                                            quantidade={item.quantidade}
+                                            descontoUnitario={item.desconto}
+                                            precoLiquido={item.precoUnitario * item.quantidade - item.desconto}
+                                            id={item.id}
+                                            contadorId={item.id}
+                                        />
+                                    ))
+                                )}
+                            </tbody>
 
-                            </Tabela>
-                            {itemsCarrinho.length == 0 ? null :
-                                <div className="bg-[#DEE2FF] flex flex-row mt-[-24px] w-full h-9 rounded-b-md">
-                                    <div className="bg-[#354f7014] flex flex-row w-full h-9 rounded-b-lg items-center justify-end">
-                                        <p className="text-right pr-12 text-[1rem] font-bold text-black">Subtotal: R$ {subTotal2.toFixed(2)}</p>
-                                    </div>
-                                </div>
-                            }
-
-                        </div>
+                        </Tabela>
                     </div>
-                    <div style={divDadosBasicosVenda} class="shadow flex flex-col items-start px-8 justify-evenly">
-                        <div class="flex flex-wrap flex-row items-center align-middle gap-6 p-2">
-                            <p class="font-semibold text-2xl">DADOS BÁSICOS DA VENDA:</p>
-                            <div class="flex flex-row items-center text-[1.45rem] gap-3">
-                                <p>Cód. vendedor:</p>
-                                <Input
-                                    handleInput={handleInput}
-                                    handlerAtributeChanger={setCodigoVendedor}
-                                    width="7rem"
-                                />
-                            </div>
-                            <div class="flex flex-row items-center text-[1.45rem] gap-3 text-nowrap">
-                                <p>Tipo Venda:</p>
-                                <ComboBoxFilter
-                                    width="8rem"
-                                    height="2rem"
-                                    bold="500"
-                                    dadosBanco={tipoVenda}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div style={divResumoVenda} class="shadow flex flex-col items-center">
-                        <p class="font-semibold text-2xl mt-4">RESUMO DA VENDA</p>
-                        <div class="bg-[#F5F3F4] w-11/12 h-full rounded-[8px] my-4 mb-3">
-                            <ResumoVenda
-                                codigoVenda={1}
-                                totalItens={itemsCarrinho.length}
-                                subtotal1={subTotal1}
-                                descontoProdutos={descontoProdutos}
-                                subtotal2={subTotal2}
-                                descontoVenda={descontoVenda}
-                                valorTotal={valorTotal.toFixed(2)}
+                </div>
+                <div style={divDadosBasicosVenda} className="shadow flex flex-col items-start px-8 justify-evenly">
+                    <div className="flex flex-wrap flex-row items-center align-middle gap-6 p-2">
+                        <p className="font-semibold text-2xl">DADOS BÁSICOS DA VENDA:</p>
+                        <div className="flex flex-row items-center text-[1.45rem] gap-3">
+                            <p>Cód. vendedor:</p>
+                            <Input
+                                handleInput={handleInput}
+                                handlerAtributeChanger={setCodigoVendedor}
+                                width="7rem"
                             />
                         </div>
-                        <div class="flex flex-col w-full gap-2 my-2 px-5 flex-wrap text-[1.1rem] font-semibold">
-                            <Button cor={"#DEE2FF"} funcao={() => AbrirModalAddDiscount(adicionarDescontoVenda)}>
-                                <p class="p-2 text-black">ADICIONAR DESCONTO À VENDA</p>
-                            </Button>
-                            <Button funcao={finalizarVenda}>
-                                <p class="p-2">FINALIZAR PRÉ-VENDA</p>
-                            </Button>
+                        <div className="flex flex-row items-center text-[1.45rem] gap-3 text-nowrap">
+                            <p>Tipo Venda:</p>
+                            <ComboBoxFilter
+                                width="8rem"
+                                height="2rem"
+                                bold="500"
+                                dadosBanco={tipoVenda}
+                            />
                         </div>
                     </div>
                 </div>
-            </PageLayout>
-        </SelectedItemsContext.Provider>
+                <div style={divResumoVenda} className="shadow flex flex-col items-center">
+                    <p className="font-semibold text-2xl mt-4">RESUMO DA VENDA</p>
+                    <div className="bg-[#F5F3F4] w-11/12 h-full rounded-[8px] my-4 mb-3">
+                        <ResumoVenda
+                            codigoVenda={1}
+                            totalItens={qtdTotalItens}
+                            subtotal1={subTotal1}
+                            descontoProdutos={descontoProdutos}
+                            subtotal2={subTotal2}
+                            descontoVenda={descontoVenda}
+                            valorTotal={valorTotal.toFixed(2)}
+                        />
+                    </div>
+                    <div className="flex flex-col w-full gap-2 my-2 px-5 flex-wrap text-[1.1rem] font-semibold">
+                        <Button cor={"#DEE2FF"} funcao={() => AbrirModalAddDiscount(adicionarDescontoVenda)}>
+                            <p className="p-2 text-black">ADICIONAR DESCONTO À VENDA</p>
+                        </Button>
+                        <Button funcao={finalizarVenda}>
+                            <p className="p-2">FINALIZAR PRÉ-VENDA</p>
+                        </Button>
+                    </div>
+                </div>
+            </div>
+        </PageLayout >
     )
 }
 
