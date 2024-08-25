@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import InputSearcModal from '../../inputs/inputSearchModal';
 import HeaderModal from '../headerModal';
 import ButtonClear from '../../buttons/buttonClear';
@@ -7,8 +7,6 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import ApiRequest from "../../../connections/ApiRequest";
 import TabelaModal from '../../tables/tableModal';
-import Alert from '../../alerts/Alert.js';
-import { SelectedItemsContext } from '../../pages/venda/Venda.js'; // Importando o contexto
 
 function ModalAddProdCart(props) {
   const [colunasETP, setColunasETP] = useState([]);

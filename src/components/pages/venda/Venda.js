@@ -199,7 +199,7 @@ function Venda() {
                     // Atualiza a quantidade
                     updatedItems[itemIndex] = {
                         ...updatedItems[itemIndex],
-                        quantidade: novoItem.quantidade,
+                        quantidade: updatedItems[itemIndex].quantidade + novoItem.quantidade,
                     };
                 } else {
                     // Adiciona novo item
@@ -341,7 +341,7 @@ function Venda() {
                     </div>
 
                     <div className="bg-[#F5F3F4] w-full h-full rounded-[5px] my-2 overflow-y-scroll px-4">
-                        <Tabela >
+                        <Tabela>
                             <thead>
                                 <tr className="flex-row gap-16 pl-6 table-row text-[1.2rem]">
                                     <th>
