@@ -306,7 +306,7 @@ function Venda() {
 
         ApiRequest.vendaCreate(
             descontoVenda,
-            tipoVenda,
+            2,
             codigoVendedor,
             itensCarrinho
         )
