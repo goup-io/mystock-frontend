@@ -282,7 +282,7 @@ function Venda() {
                 <tr>
                     <td colSpan="6" className="bg-[#DEE2FF] h-9 rounded-b-md">
                         <div className="bg-[#354f7014] flex flex-row w-full h-full rounded-b-lg items-center justify-end">
-                            <p className="text-right pr-12 text-[1rem] font-bold text-black">Subtotal: R$ {subTotal2.toFixed(2)}</p>
+                            <p className="text-right pr-12 text-[1rem] font-bold text-black">Subtotal: R$ {props.precoUnitario * props.quantidade}</p>
                         </div>
                     </td>
                 </tr>
@@ -356,7 +356,6 @@ function Venda() {
                                     <th>
                                         <p className="font-medium">Quanti.</p>
                                     </th>
-
                                     <th>
                                         <p className="font-medium">Preço Líquido</p>
                                     </th>
