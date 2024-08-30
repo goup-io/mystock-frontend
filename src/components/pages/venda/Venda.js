@@ -292,7 +292,7 @@ function Venda() {
         )
     }
 
-    function finalizarVenda() {
+    async function finalizarVenda() {
 
         if (codigoVendedor === "" || codigoVendedor === null) {
             Alert.alert(ErrorIcon, "Favor informar o código do vendedor")
@@ -304,12 +304,19 @@ function Venda() {
             return;
         }
 
-        ApiRequest.vendaCreate(
+        const respostaHTTP = await ApiRequest.vendaCreate(
             descontoVenda,
             2,
             codigoVendedor,
             itensCarrinho
         )
+
+        if(respostaHTTP.status === 201){
+            Alert.alert(SucessIcon, "Pré-venda realizada com sucesso!");
+        }
+        else{
+            Alert.alert(ErrorIcon, "Ops .... parece que algo deu errado na sua pré-venda");
+        }
     }
 
     function handleInput(evento, stateFunction) {
