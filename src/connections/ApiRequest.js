@@ -1748,11 +1748,11 @@ export class ApiRequest {
         }
     }
 
-    static async pagamentoCancelar(idVenda) {
+    static async vendaCancelar(idVenda) {
 
         try {
 
-            const resposta = await axios.patch(springEndPoint + `/vendas/cancelar/${idVenda}`, {
+            const resposta = await axios.patch(springEndPoint + `/vendas/cancelar/${idVenda}`, null, {
                 headers: header
             });
 
@@ -1762,6 +1762,7 @@ export class ApiRequest {
             return erro
         }
     }
+
 
     static async vendaGetByFilter(dataInicio, dataFim, horaInicio, horaFim, vendedor, tipoVenda, status, lojaId) {
         let queryParams = [];

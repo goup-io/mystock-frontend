@@ -39,7 +39,7 @@ function HistoricoVendasGerente() {
                         }
                     ));
 
-                const filtrarIds = dados.map(obj => ({id: obj.id}));
+                const filtrarIds = dados.map(obj => ({ id: obj.id }));
 
                 setIdsDados(filtrarIds)
                 setDadosDoBanco(filtrarDados);
@@ -69,7 +69,7 @@ function HistoricoVendasGerente() {
                     }
                 ));
 
-                const filtrarIds = response.data.map(obj => ({id: obj.id}));
+                const filtrarIds = response.data.map(obj => ({ id: obj.id }));
                 setIdsDados(filtrarIds);
 
                 setDadosDoBanco(dados);
@@ -78,7 +78,7 @@ function HistoricoVendasGerente() {
             } else if (response.status === 204) {
                 Alert.alertTop(true, "Nenhum dado encontrado com os filtros aplicados!");
                 fetchData();
-            } 
+            }
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
         }
@@ -93,7 +93,7 @@ function HistoricoVendasGerente() {
                 return (
                     item.vendedor.toLowerCase().includes(lowerCaseFilter) ||
                     item.tipoVenda.toLowerCase().includes(lowerCaseFilter) ||
-                    item.status.toLowerCase().includes(lowerCaseFilter) 
+                    item.status.toLowerCase().includes(lowerCaseFilter)
                 );
             });
             setDadosDoBanco(searchData);
@@ -109,31 +109,31 @@ function HistoricoVendasGerente() {
     };
 
     async function csvHistoricoVendas() {
-        try { 
+        try {
             let response;
             if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
                 response = await ApiRequest.getCsvHistoricoVendas();
             } else {
                 response = await ApiRequest.getCsvHistoricoVendasByLoja(localStorage.getItem('visao_loja'));
             }
-    
+
             if (response.status === 200) {
                 const csvData = new TextDecoder('utf-8').decode(new Uint8Array(response.data));
                 const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-    
+
                 // Get current date and format it as YY_mm_dd
                 const date = new Date();
                 const formattedDate = `${date.getFullYear()}_${date.getMonth() + 1}_${date.getDate()}`;
-    
+
                 link.setAttribute('download', `Historico_Vendas_${formattedDate}.csv`);
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-    
-            } 
+
+            }
 
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
@@ -150,10 +150,12 @@ function HistoricoVendasGerente() {
 
     async function cancelarVenda(idVenda) {
         try {
-            const response = await ApiRequest.pagamentoCancelar(idVenda);
-            console.log(response);
+            const response = await ApiRequest.vendaCancelar(idVenda);
+            console.log("response do bagulho", response)
             if (response.status === 200) {
                 Alert.alertSuccess("Cancelada!", "A venda foi cancelada com sucesso", updateTable);
+            } else if (response.response.status === 409) {
+                Alert.alertError("Venda já cancelada!", "A venda já foi cancelada com sucesso anteriormente", updateTable);
             }
         } catch (error) {
             console.log("Erro ao cancelar a venda", error);
@@ -181,7 +183,7 @@ function HistoricoVendasGerente() {
                         </div>
 
                         <div className='w-full h-[50vh] mt-2 bg-slate-700 border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto rounded'>
-                            <TabelaPage colunas={colunas} dados={dadosDoBanco.map(({ ...dados }) => dados)} status verMais={handleDetailsVenda} cancel={handleCancelarVenda} id={idsDados} /> 
+                            <TabelaPage colunas={colunas} dados={dadosDoBanco.map(({ ...dados }) => dados)} status verMais={handleDetailsVenda} cancel={handleCancelarVenda} id={idsDados} />
                         </div>
                     </div>
                 </ChartBox>
