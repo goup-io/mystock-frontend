@@ -151,7 +151,6 @@ function Estoque() {
         if (filterData === "") {
             fetchData();
         } else {
-            //buscarEtps(); // atualiza etps
             const lowerCaseFilter = filterData.toLowerCase();
             const searchData = dadosDoBancoETP.filter(item => (
                 item.codigo.toLowerCase().includes(lowerCaseFilter) ||
@@ -179,7 +178,6 @@ function Estoque() {
                 item.categoria.toLowerCase().includes(lowerCaseFilter) ||
                 item.tipo.toLowerCase().includes(lowerCaseFilter)
             );
-            console.log("modelos filtrados", searchData)
             setDadosDoBancoModel(searchData);
             const filtrarIdsModels = searchData.map(obj => ({ id: obj.id }));
             setModelsIds(filtrarIdsModels);
@@ -230,7 +228,6 @@ function Estoque() {
     async function excluirModel(modelId) {
         try {
             const response = await ApiRequest.modeloDelete(modelId.id);
-            console.log("exclusão do modelo: ", response);
             if (response.response.status === 204) {
                 Alert.alertSuccess("Modelo excluído com sucesso!");
             } else if (response.response.status === 500) {
