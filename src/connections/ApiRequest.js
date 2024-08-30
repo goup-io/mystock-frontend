@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const springEndPoint = "http://localhost:8080";
+const springEndPoint = "http://localhost:8080/api/v1";
 // const springEndPoint = "my-stock-application.azurewebsites.net";
 
 var header = {
@@ -1640,7 +1640,7 @@ export class ApiRequest {
     static async vendaGetAllByLoja(idLoja) {
 
         try {
-            const resposta = await axios.get(springEndPoint + `/vendas/vendas-pendentes/${idLoja}`, {
+            const resposta = await axios.get(springEndPoint + `/vendas/filtro?id_loja=${idLoja}`, {
                 headers: header
             });
 
@@ -1757,59 +1757,40 @@ export class ApiRequest {
 
     static async vendaGetByFilter(dataInicio, dataFim, horaInicio, horaFim, vendedor, tipoVenda, status, lojaId) {
         let queryParams = [];
-
+    
         if (dataInicio !== '') {
-            queryParams.push(`dataHoraInicio=${dataInicio}T${horaInicio === '' ? '00:00:00' : horaInicio}`);
+            queryParams.push(`dataInicio=${dataInicio}T${horaInicio === '' ? '00:00:00' : horaInicio}`);
         }
         if (dataFim !== '') {
-            queryParams.push(`dataHoraFim=${dataFim}T${horaFim === '' ? '23:59:59' : horaFim}`);
+            queryParams.push(`dataFim=${dataFim}T${horaFim === '' ? '23:59:59' : horaFim}`);
         }
         if (vendedor !== '') {
-            queryParams.push(`id_vendedor=${vendedor}`);
+            queryParams.push(`vendedor=${vendedor}`);
         }
         if (tipoVenda !== '') {
-            queryParams.push(`id_tipo_venda=${tipoVenda}`);
+            queryParams.push(`tipoVenda=${tipoVenda}`);
         }
         if (status !== '') {
-            queryParams.push(`id_status=${status}`);
+            queryParams.push(`status=${status}`);
         }
         if (lojaId !== '') {
             queryParams.push(`id_loja=${lojaId}`);
         }
-
+    
         const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
-
+    
         try {
-            const resposta = await axios.get(springEndPoint + `/vendas/filtro${queryString}`, {
+            const resposta = await axios.get(`${springEndPoint}/vendas/filtro${queryString}`, {
                 headers: header
             });
-
+    
             return resposta;
-
+    
         } catch (erro) {
-            return erro
+            return erro;
         }
     }
-
-
-    // ***************************************************************************
-    // *  TRANSFERENCIA
-    // ***************************************************************************
-
-    static async transferenciaGetAll() {
-
-        try {
-
-            const resposta = await axios.get(springEndPoint + "/transferencias", {
-                headers: header
-            });
-
-            return resposta;
-
-        } catch (erro) {
-            return erro
-        }
-    }
+    
 
     static async transferenciaGetByFilter(dataInicio, dataFim, horaInicio, horaFim, modelo, produto, tamanho, cor, status, lojaId) {
         let queryParams = [];
