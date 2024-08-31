@@ -1652,6 +1652,21 @@ export class ApiRequest {
         }
     }
 
+    static async vendaGetAllByLojaPendente(idLoja) {
+
+        try {
+            const resposta = await axios.get(springEndPoint + `/vendas/filtro?id_loja=${idLoja}&id_status=1`, {
+                headers: header
+            });
+
+            console.log(resposta);
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
     static async vendaGetById(idPagamento) {
 
         try {
