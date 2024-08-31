@@ -220,11 +220,12 @@ function Venda() {
                     id: item.id,
                     nome: item.tipo
                 }));
+                console.log(dados)
                 setTipoVenda(dados)
             }
         } catch (error) {
             console.log("Erro ao buscar os tipos venda", error);
-        }
+        }   
     }
 
     function removerItemCarrinho(id) {
@@ -281,6 +282,7 @@ function Venda() {
                 </tr>
                 <tr>
                     <td colSpan="6" className="bg-[#DEE2FF] h-9 rounded-b-md">
+                        
                         <div className="bg-[#354f7014] flex flex-row w-full h-full rounded-b-lg items-center justify-end">
                             <p className="text-right pr-12 text-[1rem] font-bold text-black">Subtotal: R$ {props.precoUnitario * props.quantidade}</p>
                         </div>
@@ -294,28 +296,37 @@ function Venda() {
 
     async function finalizarVenda() {
 
+        if(itensCarrinho.length === 0 || itensCarrinho === null){
+            Alert.alert(ErrorIcon, "Seu carrinho está vazio!")
+            return;
+        }
+
         if (codigoVendedor === "" || codigoVendedor === null) {
             Alert.alert(ErrorIcon, "Favor informar o código do vendedor")
             return;
         }
 
-        if (tipoVenda === "" || tipoVenda === null) {
+        if (tipoVendaSelecionado === "" || tipoVendaSelecionado === null) {
             Alert.alert(ErrorIcon, "Favor informar o tipo da venda")
             return;
         }
 
         const respostaHTTP = await ApiRequest.vendaCreate(
             descontoVenda,
-            2,
+            tipoVendaSelecionado,
             codigoVendedor,
             itensCarrinho
         )
 
         if(respostaHTTP.status === 201){
-            Alert.alert(SucessIcon, "Pré-venda realizada com sucesso!");
+            Alert.alertTimer(SucessIcon, "Pré-venda realizada com sucesso!", 1500);
+            setInterval(() => {
+                window.location.reload()
+            }, 1500);
+            
         }
         else{
-            Alert.alert(ErrorIcon, "Ops .... parece que algo deu errado na sua pré-venda");
+            Alert.alert(ErrorIcon, `Ops .... <br/> ${respostaHTTP.response.data.message}`);
         }
     }
 
@@ -410,7 +421,10 @@ function Venda() {
                                 width="8rem"
                                 height="2rem"
                                 bold="500"
-                                dadosBanco={tipoVenda}
+                                opcoes={tipoVenda}
+                                value={tipoVendaSelecionado}
+                                handleInput={handleInput}
+                                handleAtribute={setTipoVendaSelecionado}
                             />
                         </div>
                     </div>

@@ -43,6 +43,19 @@ export class Alert {
         });
     }
 
+    static alertTimer(icone, mensagem, tempo) {
+        const MySwal = withReactContent(Swal);
+        MySwal.fire({
+            imageUrl: icone,
+            timerProgressBar: true,
+            timerProgressBarColor: "#355070",
+            timer: tempo,
+            title: mensagem,
+            confirmButtonColor: "#355070"
+            // heightAuto: true,
+        });
+    }
+
     static alertQuestion(mensagem, opcaoPositiva, opcaoNegativa, funcao, callBack) {
         const MySwal = withReactContent(Swal);
         MySwal.fire({
