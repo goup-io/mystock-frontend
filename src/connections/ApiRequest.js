@@ -1767,6 +1767,19 @@ export class ApiRequest {
     static async vendaGetByFilter(dataInicio, dataFim, horaInicio, horaFim, vendedor, tipoVenda, status, lojaId) {
         let queryParams = [];
     
+        console.log("filtros aplicados",
+            {
+                dataInicio: dataInicio,
+                dataFim:dataFim,
+                horaInicio: horaInicio,
+                horaFim:horaFim,
+                vendedor:vendedor,
+                tipoVenda:tipoVenda,
+                status:status,
+                lojaId:lojaId
+            }
+        )
+
         if (dataInicio !== '') {
             queryParams.push(`dataInicio=${dataInicio}T${horaInicio === '' ? '00:00:00' : horaInicio}`);
         }

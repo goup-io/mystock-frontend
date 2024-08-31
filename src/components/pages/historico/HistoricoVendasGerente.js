@@ -35,7 +35,7 @@ function HistoricoVendasGerente() {
                 const filtrarDados = dados
                     .map(obj => (
                         {
-                            data: obj.data, horario: obj.hora, vendedor: obj.nomeVendedor, tipoVenda: obj.tipoVenda.tipo, qtdItens: obj.qtdItens, valor: obj.valor, status: obj.statusVenda
+                            id: obj.id, data: obj.data, horario: obj.hora, vendedor: obj.nomeVendedor, tipoVenda: obj.tipoVenda.tipo, qtdItens: obj.qtdItens, valor: obj.valor, status: obj.statusVenda
                         }
                     ));
 
@@ -52,7 +52,6 @@ function HistoricoVendasGerente() {
     }
 
     async function fetchDataFilter(filterData) {
-        console.log(filterData);
         try {
             let response;
             if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
@@ -61,11 +60,11 @@ function HistoricoVendasGerente() {
                 response = await ApiRequest.vendaGetByFilter(filterData.dataInicio, filterData.dataFim, filterData.horaInicio, filterData.horaFim, filterData.vendedor, filterData.tipoVenda, filterData.status, localStorage.getItem('visao_loja'));
             }
 
-            console.log(response);
+            console.log("responsta kraio", response);
             if (response.status === 200) {
                 const dados = response.data.map(obj => (
                     {
-                        data: obj.data, horario: obj.hora, vendedor: obj.nomeVendedor, tipoVenda: obj.tipoVenda.tipo, qtdItens: obj.qtdItens, valor: obj.valor, status: obj.statusVenda
+                        id: obj.id, data: obj.data, horario: obj.hora, vendedor: obj.nomeVendedor, tipoVenda: obj.tipoVenda.tipo, qtdItens: obj.qtdItens, valor: obj.valor, status: obj.statusVenda
                     }
                 ));
 
@@ -88,15 +87,15 @@ function HistoricoVendasGerente() {
         if (filterData === "") {
             fetchData();
         } else {
-            const searchData = dadosDoBanco.filter((item) => {
-                const lowerCaseFilter = filterData.toLowerCase();
-                return (
-                    item.vendedor.toLowerCase().includes(lowerCaseFilter) ||
-                    item.tipoVenda.toLowerCase().includes(lowerCaseFilter) ||
-                    item.status.toLowerCase().includes(lowerCaseFilter)
-                );
-            });
+            const lowerCaseFilter = filterData.toLowerCase();
+            const searchData = dadosDoBanco.filter((item) =>
+                item.vendedor.toLowerCase().includes(lowerCaseFilter) ||
+                item.tipoVenda.toLowerCase().includes(lowerCaseFilter) ||
+                item.status.toLowerCase().includes(lowerCaseFilter)
+            );
             setDadosDoBanco(searchData);
+            const filtrarIdsEtps = searchData.map(obj => ({ id: obj.id }));
+            setIdsDados(filtrarIdsEtps)
         }
     }
 
@@ -183,7 +182,7 @@ function HistoricoVendasGerente() {
                         </div>
 
                         <div className='w-full h-[50vh] mt-2 bg-slate-700 border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto rounded'>
-                            <TabelaPage colunas={colunas} dados={dadosDoBanco.map(({ ...dados }) => dados)} status verMais={handleDetailsVenda} cancel={handleCancelarVenda} id={idsDados} />
+                            <TabelaPage colunas={colunas} dados={dadosDoBanco.map(({ id, ...dados }) => dados)} status verMais={handleDetailsVenda} cancel={handleCancelarVenda} id={idsDados} />
                         </div>
                     </div>
                 </ChartBox>
