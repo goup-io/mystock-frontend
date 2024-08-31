@@ -64,9 +64,6 @@ var divResumoVenda = {
     gridArea: "1 / 6 / 10 / 8",
 };
 
-var contadorId = 0
-
-
 function ResumoVenda(props) {
 
     return (

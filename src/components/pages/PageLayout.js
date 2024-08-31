@@ -33,10 +33,10 @@ function PageLayout(props){
         <section className="flex flex-col items-center h-[100vh] bg-[#F5F3F4] w-full justify-between ">
             <div className="flex flex-row w-full justify-between items-center px-4 pl-[5%] h-[3.2rem] ">
                 <img className='w-[8rem]' src={myStockLogo}></img>
-                <div className='flex h-10 w-[18rem] justify-between items-center'>
+                { localStorage.getItem("tipo_acesso") === "CAIXA" ? <Notification></Notification> : <div className='flex h-10 w-[18rem] justify-between items-center'>
                     <ButtonModal funcao={AbrirModalRequestProd}>Solicitar Produto na Rede</ButtonModal>
                     <Notification></Notification>
-                </div>
+                </div>}
               
             </div>
 
