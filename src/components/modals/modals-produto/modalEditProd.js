@@ -27,7 +27,7 @@ function ModalEditProd({ id, onUpdate }) {
     const [idProduto, setIdProduto] = useState("");
     const [itemPromocional, setItemPromocional] = useState(false);
 
-    const setters = [setNome, setPrecoCusto, setPrecoRevenda, setModelo, setTamanho, setCor, setIdProduto, setItemPromocional];
+    const setters = [setNome, setPrecoCusto, setPrecoRevenda,setItemPromocional];
 
     function handleInputChange(event, setStateFunction) {
         setStateFunction(event.target.value);

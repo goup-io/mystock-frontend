@@ -23,7 +23,7 @@ function ModalCadastreModel() {
     const [tipo, setTipo] = useState("");
 
 
-    const setters = [setCodigo, setNome, setCategoria, setTipo, setDadosCategoria, setDadosTipo];
+    const setters = [setCodigo, setNome, setCategoria, setTipo];
 
     function handleInputChange(event, setStateFunction) {
         setStateFunction(event.target.value);

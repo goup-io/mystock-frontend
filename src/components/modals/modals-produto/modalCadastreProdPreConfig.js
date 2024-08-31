@@ -24,6 +24,9 @@ function ModalCadastreProdPreConfig({ onUpdate }) {
     setTotalItens(newTotal);
   }, []);
 
+  const setters = [setQuantidades,setTotalItens];
+
+
   useEffect(() => {
     const fetchData = async () => {
       const colunasDoBancoETP = ['Código', 'Nome', 'Modelo', 'Tamanho', 'Cor', 'Preço', 'Loja', 'N.Itens'];
@@ -84,6 +87,7 @@ function ModalCadastreProdPreConfig({ onUpdate }) {
     fetchData();
   }, []);
 
+
   const handleCadastrar = useCallback(async () => {
     console.log(quantidades);
     const produtosParaCadastrar = quantidades.filter(idEtp => idEtp.quantidadeSolicitada > 0);
@@ -142,7 +146,7 @@ function ModalCadastreProdPreConfig({ onUpdate }) {
         />
       </div>
       <div className="w-[43rem] flex justify-end items-end mt-1 h-7">
-        <ButtonClear>Limpar</ButtonClear>
+        <ButtonClear setters={setters}>Limpar</ButtonClear>
         <ButtonModal funcao={handleCadastrar}>Cadastrar</ButtonModal>
       </div>
     </div>

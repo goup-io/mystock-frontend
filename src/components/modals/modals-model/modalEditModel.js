@@ -23,7 +23,7 @@ function ModalEditModel({ id, onUpdate }) {
     const [idModelo, setIdModelo] = useState("");
     const [loading, setLoading] = useState(true);
  
-    const setters = [setNome, setCodigo, setCategoria, setTipo];
+    const setters = [setNome, setCodigo];
  
     function handleInputChange(event, setStateFunction) {
         setStateFunction(event.target.value);

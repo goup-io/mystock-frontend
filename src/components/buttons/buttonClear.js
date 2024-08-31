@@ -1,12 +1,22 @@
 import { useState } from "react";
 
 function Clear(setters) {
+    console.log(setters);
   setters.forEach(setter => setter(""));
 }
 
+/*
+function ClearObject(setters) {
+    console.log(setters);
+  setters.forEach(setter => setter({}));
+}
+*/
 function ButtonClear(props){
     const handleClick = () => {
-        Clear(props.setters);
+
+       
+            Clear(props.setters);
+        
     };
 
     return(

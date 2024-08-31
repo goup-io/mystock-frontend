@@ -23,7 +23,7 @@ function MenuCaixa() {
     }
 
     const handleNavigateBack = () => {
-        navigate(-1) // Esta função retorna para a tela anterior
+        navigate("/venda/caixa") // Esta função retorna para a tela anterior
     }
 
     function MenuItems() {

@@ -21,6 +21,8 @@ function ModalAddProdCart(props) {
   const [itemsCarrinhoContext, setItemsCarrinhoContext] = useContext(SelectedItemsContext);
   const [detalhesProdutos, setDetalhesProdutos] = useState([]);
 
+  const setters = [setQuantidades];
+
   const handleQuantityChange = (newQuantities) => {
     setQuantidades(newQuantities);
     const newTotal = Object.values(newQuantities).reduce((acc, cur) => acc + cur, 0);
@@ -135,7 +137,7 @@ function ModalAddProdCart(props) {
         />
       </div>
       <div className="w-[43rem] flex justify-end items-end mt-1 h-7">
-        <ButtonClear>Limpar</ButtonClear>
+        <ButtonClear setters = {setters}>Limpar</ButtonClear>
         <ButtonModal funcao={handleCadastrar}>Adicionar</ButtonModal>
       </div>
     </div>
