@@ -27,9 +27,15 @@ function ModalCadastreProd() {
     const [cor, setCor] = useState("");
     const [isPromocional, setIsPromocional] = useState("Não"); // Inicializa como "Não"
 
+    const setters = [setNome, setPrecoCusto, setPrecoRevenda, setModelo, setTamanho, setCor, setIsPromocional];
+    
+    console.log(cor)
+
     const handleCheckboxChange = () => {
-        setIsPromocional(prev => (prev === "Sim" ? "Não" : "Sim")); // Alterna entre "Sim" e "Não"
+        setIsPromocional(prev => (prev === "Sim" ? "Não" : "Sim"));
     };
+
+ 
 
     function handleInputChange(event, setStateFunction) {
         setStateFunction(event.target.value);
@@ -189,7 +195,7 @@ function ModalCadastreProd() {
 
                 </div>
                 <div className="w-[40rem] flex justify-end  h-6 ">
-                    <ButtonClear>Limpar</ButtonClear>
+                    <ButtonClear setters = {setters}>Limpar</ButtonClear>
                     <ButtonModal funcao={handleSave}>Cadastrar</ButtonModal>
                 </div>
             </div>
