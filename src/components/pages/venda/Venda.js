@@ -167,7 +167,7 @@ function Venda() {
     useEffect(() => {
         fetchData();
         recuperarTipoVenda();
-
+  
         let subTotal1 = 0;
         let subTotal2 = 0;
         let descontoProdutos = 0;
@@ -316,11 +316,22 @@ function Venda() {
             return;
         }
 
+        const itensCarrinhoApi = []
+
+        itensCarrinho.forEach((produto) => {
+            let auxiliar = {
+                "etpId": produto.id,
+                "quantidade": produto.quantidade,
+                "desconto": produto.desconto
+            }
+            itensCarrinhoApi.push(auxiliar)
+        })
+
         const respostaHTTP = await ApiRequest.vendaCreate(
             descontoVenda,
             tipoVendaSelecionado,
             codigoVendedor,
-            itensCarrinho
+            itensCarrinhoApi
         )
 
         if(respostaHTTP.status === 201){

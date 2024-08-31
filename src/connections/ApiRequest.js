@@ -1700,7 +1700,7 @@ export class ApiRequest {
 
             const venda = {
                 vendaReq,
-                "produtosVendaReq": [produtoMock]
+                "produtosVendaReq": produtoVendaReq
             }
 
             console.log(venda)

@@ -4,6 +4,7 @@ import Button from '../../buttons/buttonsModal.js';
 import ApiRequest from "../../../connections/ApiRequest";
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Alert from '../../alerts/Alert.js';
 
 const styleTitulo = {
     display: 'flex',
@@ -30,6 +31,10 @@ function ItemCarrinho(props) {
     function handleFinalizarVenda() {
         navigate(`/venda/pagamento/${props.id}`, { state: { id } });
     }
+
+    const updateTable = () => {
+        window.location.reload();
+    };
 
     return (
         <tr style={style} className="h-20 rounded-md shadow p-5 pl-5 text-left">
@@ -73,6 +78,7 @@ function Caixa() {
                     const dateB = new Date(`${b.data}T${b.hora}`);
                     return dateA - dateB;
                 });
+                console.log(dadosOrdenados)
                 setDadosDoBancoVenda(dadosOrdenados);
             }
         } catch (error) {
