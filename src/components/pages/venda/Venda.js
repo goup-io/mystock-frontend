@@ -85,7 +85,8 @@ function ResumoVenda(props) {
             />
             <ItemSeparadoPorLinhaTracejada
                 infoEsquerda={"Desconto em Produtos"}
-                infoDireita={"R$ " + props.descontoProdutos.toFixed(2)}
+                infoDireita={"- R$ " + props.descontoProdutos.toFixed(2)}
+                negativo={true}
             />
             <ItemSeparadoPorLinhaTracejada
                 infoEsquerda={"Subtotal 2"}
@@ -93,11 +94,12 @@ function ResumoVenda(props) {
             />
             <ItemSeparadoPorLinhaTracejada
                 infoEsquerda={"Desconto Venda"}
-                infoDireita={"R$ " + props.descontoVenda.toFixed(2)}
+                infoDireita={"- R$ " + props.descontoVenda.toFixed(2)}
+                negativo={true}
             />
             <ItemSeparadoPorLinhaTracejada
                 infoEsquerda={"Valor Total"}
-                infoDireita={"R$ " + props.valorTotal}
+                infoDireita={"R$ " + (props.valorTotal - (props.descontoVenda + props.descontoProdutos))}
             />
         </ul>
     )
@@ -435,9 +437,6 @@ function Venda() {
                             <p>Tipo Venda:</p>
                             <ComboBoxFilter
                                 style={styleSelectTipoVenda}
-                                width="8rem"
-                                // height="2rem"
-                                // bold="500"
                                 opcoes={tipoVenda}
                                 value={tipoVendaSelecionado}
                                 handleInput={handleInput}

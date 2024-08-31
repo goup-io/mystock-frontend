@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import ItemSeparadoPorLinhaTracejada from '../tables/ItemSeparadoPorLinhaTracejada';
 import React, { useState } from 'react';
+import Alert from "../alerts/Alert";
 
 function ModalDiscount(props) {
     const [percentualDesconto, setPercentualDesconto] = useState('');
@@ -37,6 +38,18 @@ function ModalDiscount(props) {
             setValorAposDesconto(valorAtual);
         }
     };
+
+    function validarDesconto(){
+
+        console.log(valorAposDesconto)
+        console.log(valorDesconto)
+        if(valorAposDesconto < 0){
+            Alert.alertError("Desconto inválido", "O valor do desconto é maior do que o da compra")
+            return
+        }
+
+        props.funcao(valorAtual - valorAposDesconto)
+    }
 
     return (
         <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[42rem] h-[22rem] flex flex-col items-center justify-around bg-white p-2 rounded-lg border border-black">
@@ -71,7 +84,7 @@ function ModalDiscount(props) {
                 />
                 <div className="flex flex-row justify-between text-sm">
                     <p>Valor Após o Desconto</p>
-                    <p>{`R$ ${valorAposDesconto.toFixed(2)}`}</p>
+                    { valorAposDesconto >= 0 ? <p>{`R$ ${valorAposDesconto.toFixed(2)}`}</p> : <p className="text-red-600">{`R$ ${valorAposDesconto.toFixed(2)}`}</p>}
                 </div>
             </div>
             <div className="w-[40rem] flex justify-end h-6">
@@ -81,7 +94,7 @@ function ModalDiscount(props) {
                     setValorAposDesconto(valorAtual);
                 }}>Limpar</ButtonClear>
                 <ButtonModal
-                funcao={() => props.funcao(valorDesconto)}
+                funcao={() => validarDesconto()}
                 >Adicionar</ButtonModal>
             </div>
         </div>
