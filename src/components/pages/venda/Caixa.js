@@ -46,9 +46,15 @@ function ItemCarrinho(props) {
         try {
             const response = await ApiRequest.vendaCancelar(idVenda);
             if (response.status === 200) {
-                Alert.alertSuccess("Cancelada!", "A venda foi cancelada com sucesso", fetchData);
+                Alert.alertSuccess("Cancelada!", "A venda foi cancelada com sucesso", fetchData, 1500);
+                setInterval(() => {
+                    window.location.reload()
+                }, 1500);
             } else if (response.status === 409) {
-                Alert.alertError("Venda já cancelada!", "A venda já foi cancelada anteriormente", fetchData);
+                Alert.alertError("Venda já cancelada!", "A venda já foi cancelada anteriormente", fetchData, 1500);
+                setInterval(() => {
+                    window.location.reload()
+                }, 1500);
             }
         } catch (error) {
             console.log("Erro ao cancelar a venda", error);

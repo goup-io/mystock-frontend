@@ -171,6 +171,22 @@ export class Alert {
         }
     }
 
+    static alertSuccess(titulo, mensagem, funcao, tempo) {
+        Swal.fire({
+            icon: 'success',
+            title: titulo,
+            text: mensagem,
+            timer: tempo,
+            confirmButtonColor: "#355070"
+        });
+        if (funcao) {
+            const executar = () => {
+                funcao();
+            }
+            executar()
+        }
+    }
+
     static alertError(titulo, mensagem) {
         Swal.fire({
             icon: 'error',
