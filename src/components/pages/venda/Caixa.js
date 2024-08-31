@@ -14,7 +14,7 @@ function CaixaTexto(props) {
     return (
         <div style={styleTitulo}>
             <p className="text-left font-semibold text-xl mb-2">{props.titulo !== undefined ? props.titulo : "SEM TITULO"}</p>
-            <span>Quantidade:  {props.quantidadeItens}</span>
+            <span>Quantidade: {props.quantidadeItens}</span>
         </div>
     );
 }
@@ -64,10 +64,9 @@ function Caixa() {
 
     async function fetchData() {
         try {
-            const response = await ApiRequest.vendaGetAllByLoja(idLoja);
+            const response = await ApiRequest.vendaGetAllByLoja(idLoja); 
             if (response.status === 200) {
                 const dados = response.data;
-                // Ordenar os dados por data e hora
                 const dadosOrdenados = dados.sort((a, b) => {
                     const dateA = new Date(`${a.data}T${a.hora}`);
                     const dateB = new Date(`${b.data}T${b.hora}`);
@@ -82,6 +81,10 @@ function Caixa() {
 
     useEffect(() => {
         fetchData();
+
+        const intervalId = setInterval(fetchData, 5000); 
+
+        return () => clearInterval(intervalId); // Limpa o intervalo ao desmontar o componente
     }, []);
 
     return (
