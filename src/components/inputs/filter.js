@@ -24,6 +24,7 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
 
     const [statusTransferencia, setStatusTransferencia] = useState([
         { nome: 'ACEITO'},
+        { nome: 'FINALIZADA'},
         { nome: 'NEGADO'},
         { nome: 'PENDENTE'}
     ]);

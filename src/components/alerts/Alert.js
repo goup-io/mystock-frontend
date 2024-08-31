@@ -43,6 +43,19 @@ export class Alert {
         });
     }
 
+    static alertTimer(icone, mensagem, tempo) {
+        const MySwal = withReactContent(Swal);
+        MySwal.fire({
+            imageUrl: icone,
+            timerProgressBar: true,
+            timerProgressBarColor: "#355070",
+            timer: tempo,
+            title: mensagem,
+            confirmButtonColor: "#355070"
+            // heightAuto: true,
+        });
+    }
+
     static alertQuestion(mensagem, opcaoPositiva, opcaoNegativa, funcao, callBack) {
         const MySwal = withReactContent(Swal);
         MySwal.fire({
@@ -113,10 +126,10 @@ export class Alert {
         }).then((result) => {
             if (result.isConfirmed) {
                 async function confirmar() {
-                    await funcao();
+                    funcao();
                     // MySwal.fire('Cancelada!', 'Cancelada com sucesso.', 'success');
                     if (callBack) {
-                        await callBack();
+                         callBack();
                     }
                 }
                 confirmar();
@@ -125,7 +138,7 @@ export class Alert {
         });
     }
 
-    static alertTop(iconeErro, mensagem){
+    static alertTop(iconeErro, mensagem) {
         const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -133,29 +146,48 @@ export class Alert {
             timer: 3500,
             timerProgressBar: true,
             didOpen: (toast) => {
-              toast.onmouseenter = Swal.stopTimer;
-              toast.onmouseleave = Swal.resumeTimer;
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
             }
-          });
-          Toast.fire({
+        });
+        Toast.fire({
             icon: !iconeErro ? "success" : "error",
             title: mensagem
-          });
+        });
     }
 
-    static alertSuccess(titulo, mensagem, funcao){
+    static alertSuccess(titulo, mensagem, funcao) {
         Swal.fire({
             icon: 'success',
             title: titulo,
             text: mensagem,
             confirmButtonColor: "#355070"
         });
-        if(funcao){
-            funcao();
+        if (funcao) {
+            const executar = () => {
+                funcao();
+            }
+            executar()
         }
     }
 
-    static alertError(titulo, mensagem){
+    static alertSuccess(titulo, mensagem, funcao, tempo) {
+        Swal.fire({
+            icon: 'success',
+            title: titulo,
+            text: mensagem,
+            timer: tempo,
+            confirmButtonColor: "#355070"
+        });
+        if (funcao) {
+            const executar = () => {
+                funcao();
+            }
+            executar()
+        }
+    }
+
+    static alertError(titulo, mensagem) {
         Swal.fire({
             icon: 'error',
             title: titulo,

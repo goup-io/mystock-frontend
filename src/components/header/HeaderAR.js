@@ -57,11 +57,13 @@ function HeaderAR() {
     const irParaDashLoja = (loja) => {
         localStorage.setItem('visao_loja', loja);
         setSelectedLoja(loja);
-        navigate("/dashboard-loja");
+        window.location.href = "/dashboard-loja"; // Redirecionamento com reload
     };
 
     const handleChange = (event) => {
         const lojaId = event.target.value;
+        console.log("Loja selecionada:", lojaId);
+
         if (isAdmin) {
             if (lojaId === '0') {
                 localStorage.setItem('visao_loja', '0');

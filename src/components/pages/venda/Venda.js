@@ -157,11 +157,17 @@ function Venda() {
     const [codigoVendedor, setCodigoVendedor] = useState("")
     const [tipoVenda, setTipoVenda] = useState("");
     const [tipoVendaSelecionado, setTipoVendaSelecionado] = useState(1);
+    const styleSelectTipoVenda = {
+        width:"8rem",
+        height:"1.5rem",
+        fontSize: "medium",
+        fontWeight: "400"
+    }
 
     useEffect(() => {
         fetchData();
         recuperarTipoVenda();
-
+  
         let subTotal1 = 0;
         let subTotal2 = 0;
         let descontoProdutos = 0;
@@ -224,7 +230,7 @@ function Venda() {
             }
         } catch (error) {
             console.log("Erro ao buscar os tipos venda", error);
-        }
+        }   
     }
 
     function removerItemCarrinho(id) {
@@ -281,6 +287,7 @@ function Venda() {
                 </tr>
                 <tr>
                     <td colSpan="6" className="bg-[#DEE2FF] h-9 rounded-b-md">
+                        
                         <div className="bg-[#354f7014] flex flex-row w-full h-full rounded-b-lg items-center justify-end">
                             <p className="text-right pr-12 text-[1rem] font-bold text-black">Subtotal: R$ {props.precoUnitario * props.quantidade}</p>
                         </div>
@@ -292,24 +299,51 @@ function Venda() {
         )
     }
 
-    function finalizarVenda() {
+    async function finalizarVenda() {
+
+        if(itensCarrinho.length === 0 || itensCarrinho === null){
+            Alert.alert(ErrorIcon, "Seu carrinho está vazio!")
+            return;
+        }
 
         if (codigoVendedor === "" || codigoVendedor === null) {
             Alert.alert(ErrorIcon, "Favor informar o código do vendedor")
             return;
         }
 
-        if (tipoVenda === "" || tipoVenda === null) {
+        if (tipoVendaSelecionado === "" || tipoVendaSelecionado === null) {
             Alert.alert(ErrorIcon, "Favor informar o tipo da venda")
             return;
         }
 
-        ApiRequest.vendaCreate(
+        const itensCarrinhoApi = []
+
+        itensCarrinho.forEach((produto) => {
+            let auxiliar = {
+                "etpId": produto.id,
+                "quantidade": produto.quantidade,
+                "desconto": produto.desconto
+            }
+            itensCarrinhoApi.push(auxiliar)
+        })
+
+        const respostaHTTP = await ApiRequest.vendaCreate(
             descontoVenda,
-            2,
+            tipoVendaSelecionado,
             codigoVendedor,
-            itensCarrinho
+            itensCarrinhoApi
         )
+
+        if(respostaHTTP.status === 201){
+            Alert.alertTimer(SucessIcon, "Pré-venda realizada com sucesso!", 1500);
+            setInterval(() => {
+                window.location.reload()
+            }, 1500);
+            
+        }
+        else{
+            Alert.alert(ErrorIcon, `Ops .... <br/> ${respostaHTTP.response.data.message}`);
+        }
     }
 
     function handleInput(evento, stateFunction) {
@@ -400,10 +434,14 @@ function Venda() {
                         <div className="flex flex-row items-center text-[1.45rem] gap-3 text-nowrap">
                             <p>Tipo Venda:</p>
                             <ComboBoxFilter
+                                style={styleSelectTipoVenda}
                                 width="8rem"
-                                height="2rem"
-                                bold="500"
-                                dadosBanco={tipoVenda}
+                                // height="2rem"
+                                // bold="500"
+                                opcoes={tipoVenda}
+                                value={tipoVendaSelecionado}
+                                handleInput={handleInput}
+                                handleAtribute={setTipoVendaSelecionado}
                             />
                         </div>
                     </div>
