@@ -10,10 +10,11 @@ import React, { useState } from 'react';
 function ModalDiscount(props) {
     const [percentualDesconto, setPercentualDesconto] = useState('');
     const [valorDesconto, setValorDesconto] = useState('');
-    const [valorAtual, setValorAtual] = useState(300.00); // Exemplo de valor atual
+    const [valorAtual, setValorAtual] = useState(props.valorAtual); // Exemplo de valor atual
     const [valorAposDesconto, setValorAposDesconto] = useState(valorAtual);
 
     const handlePercentualChange = (e) => {
+
         const percentual = e.target.value;
         setPercentualDesconto(percentual);
         setValorDesconto('');
@@ -87,10 +88,10 @@ function ModalDiscount(props) {
     );
 }
 
-function AbrirModalAddDiscount(funcao) {
+function AbrirModalAddDiscount(funcao, valorAtual) {
     const MySwal = withReactContent(Swal);
     MySwal.fire({
-        html: <ModalDiscount funcao={funcao}/>,
+        html: <ModalDiscount funcao={funcao} valorAtual={valorAtual}/>,
         width: "auto",
         heightAuto: true,
         showConfirmButton: false,

@@ -460,7 +460,7 @@ function Venda() {
                         />
                     </div>
                     <div className="flex flex-col w-full gap-2 my-2 px-5 flex-wrap text-[1.1rem] font-semibold">
-                        <Button cor={"#DEE2FF"} funcao={() => AbrirModalAddDiscount(adicionarDescontoVenda)}>
+                        <Button cor={"#DEE2FF"} funcao={() => AbrirModalAddDiscount(adicionarDescontoVenda, valorTotal)}>
                             <p className="p-2 text-black">ADICIONAR DESCONTO À VENDA</p>
                         </Button>
                         <Button funcao={finalizarVenda}>

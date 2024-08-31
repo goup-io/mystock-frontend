@@ -75,7 +75,6 @@ function ModalAddProdCart(props) {
   }
 
   useEffect(() => {
-    console.log("AAAAAAAAAA", itemsCarrinhoContext)
     fetchData();
   }, []);
 
