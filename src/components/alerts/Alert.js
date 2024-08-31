@@ -126,10 +126,10 @@ export class Alert {
         }).then((result) => {
             if (result.isConfirmed) {
                 async function confirmar() {
-                    await funcao();
+                    funcao();
                     // MySwal.fire('Cancelada!', 'Cancelada com sucesso.', 'success');
                     if (callBack) {
-                        await callBack();
+                         callBack();
                     }
                 }
                 confirmar();
@@ -138,7 +138,7 @@ export class Alert {
         });
     }
 
-    static alertTop(iconeErro, mensagem){
+    static alertTop(iconeErro, mensagem) {
         const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -146,29 +146,32 @@ export class Alert {
             timer: 3500,
             timerProgressBar: true,
             didOpen: (toast) => {
-              toast.onmouseenter = Swal.stopTimer;
-              toast.onmouseleave = Swal.resumeTimer;
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
             }
-          });
-          Toast.fire({
+        });
+        Toast.fire({
             icon: !iconeErro ? "success" : "error",
             title: mensagem
-          });
+        });
     }
 
-    static alertSuccess(titulo, mensagem, funcao){
+    static alertSuccess(titulo, mensagem, funcao) {
         Swal.fire({
             icon: 'success',
             title: titulo,
             text: mensagem,
             confirmButtonColor: "#355070"
         });
-        if(funcao){
-            funcao();
+        if (funcao) {
+            const executar = () => {
+                funcao();
+            }
+            executar()
         }
     }
 
-    static alertError(titulo, mensagem){
+    static alertError(titulo, mensagem) {
         Swal.fire({
             icon: 'error',
             title: titulo,

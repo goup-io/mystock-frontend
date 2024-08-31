@@ -53,13 +53,13 @@ function Historico() {
             let response;
             const visaoLoja = localStorage.getItem('visao_loja');
             const cargo = localStorage.getItem('cargo');
-            
+
             if (cargo === 'ADMIN' && visaoLoja == 0) {
                 response = await ApiRequest.vendaGetByFilter(filterData.dataInicio, filterData.dataFim, filterData.horaInicio, filterData.horaFim, filterData.vendedor, filterData.tipoVenda, filterData.status, '');
             } else {
                 response = await ApiRequest.vendaGetByFilter(filterData.dataInicio, filterData.dataFim, filterData.horaInicio, filterData.horaFim, filterData.vendedor, filterData.tipoVenda, filterData.status, visaoLoja);
             }
-    
+
             if (response.status === 200) {
                 const dados = response.data.map(obj => ({
                     data: obj.data,
@@ -70,15 +70,15 @@ function Historico() {
                     valor: obj.valor,
                     status: obj.statusVenda
                 }));
-    
+
                 const filtrarIds = response.data.map(obj => ({ id: obj.id }));
                 setIdsDados(filtrarIds);
                 setDadosDoBanco(dados);
 
                 console.log("Dados Filtradoaaooooooooooooooos:", dados);
-    
+
                 Alert.alertTop(false, "Filtro aplicado com sucesso!");
-    
+
             } else if (response.status === 204) {
                 Alert.alertTop(true, "Nenhum dado encontrado com os filtros aplicados!");
                 fetchData();
@@ -87,8 +87,8 @@ function Historico() {
             console.log("Erro ao buscar os dados", error);
         }
     }
-    
-    
+
+
 
     async function fetchDataFilterSearch(filterData) {
         if (filterData === "") {
@@ -102,8 +102,8 @@ function Historico() {
                     item.status.toLowerCase().includes(lowerCaseFilter)
                 );
             });
-            console.log("cadeeeeeeee "+ searchData);
-            
+            console.log("cadeeeeeeee " + searchData);
+
             setDadosDoBanco(searchData);
         }
     }
@@ -126,10 +126,12 @@ function Historico() {
 
     async function cancelarVenda(idVenda) {
         try {
-            const response = await ApiRequest.pagamentoCancelar(idVenda);
-
+            const response = await ApiRequest.vendaCancelar(idVenda);
+            console.log("response do bagulho", response)
             if (response.status === 200) {
                 Alert.alertSuccess("Cancelada!", "A venda foi cancelada com sucesso", updateTable);
+            } else if(response.response.status === 409){
+                Alert.alertError("Venda já cancelada!", "A venda já foi cancelada com sucesso anteriormente", updateTable);
             }
         } catch (error) {
             console.log("Erro ao cancelar a venda", error);

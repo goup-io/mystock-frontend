@@ -1652,6 +1652,21 @@ export class ApiRequest {
         }
     }
 
+    static async vendaGetAllByLojaPendente(idLoja) {
+
+        try {
+            const resposta = await axios.get(springEndPoint + `/vendas/filtro?id_loja=${idLoja}&id_status=1`, {
+                headers: header
+            });
+
+            console.log(resposta);
+            return resposta;
+
+        } catch (erro) {
+            return erro
+        }
+    }
+
     static async vendaGetById(idPagamento) {
 
         try {
@@ -1748,11 +1763,11 @@ export class ApiRequest {
         }
     }
 
-    static async pagamentoCancelar(idVenda) {
+    static async vendaCancelar(idVenda) {
 
         try {
 
-            const resposta = await axios.patch(springEndPoint + `/vendas/cancelar/${idVenda}`, {
+            const resposta = await axios.patch(springEndPoint + `/vendas/cancelar/${idVenda}`, null, {
                 headers: header
             });
 
@@ -1763,9 +1778,23 @@ export class ApiRequest {
         }
     }
 
+
     static async vendaGetByFilter(dataInicio, dataFim, horaInicio, horaFim, vendedor, tipoVenda, status, lojaId) {
         let queryParams = [];
     
+        console.log("filtros aplicados",
+            {
+                dataInicio: dataInicio,
+                dataFim:dataFim,
+                horaInicio: horaInicio,
+                horaFim:horaFim,
+                vendedor:vendedor,
+                tipoVenda:tipoVenda,
+                status:status,
+                lojaId:lojaId
+            }
+        )
+
         if (dataInicio !== '') {
             queryParams.push(`dataInicio=${dataInicio}T${horaInicio === '' ? '00:00:00' : horaInicio}`);
         }

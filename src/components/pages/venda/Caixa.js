@@ -15,13 +15,13 @@ function CaixaTexto(props) {
     return (
         <div style={styleTitulo}>
             <p className="text-left font-semibold text-xl mb-2">{props.titulo !== undefined ? props.titulo : "SEM TITULO"}</p>
-            <span>Quantidade:  {props.quantidadeItens}</span>
+            <span>Quantidade: {props.quantidadeItens}</span>
         </div>
     );
 }
 
 function ItemCarrinho(props) {
-    const { id, horario, vendedor, quantidadeItens, tipoVenda, valor, par } = props;
+    const { id, horario, vendedor, quantidadeItens, tipoVenda, valor, par, fetchData } = props;
     const navigate = useNavigate();
 
     const style = {
@@ -29,7 +29,30 @@ function ItemCarrinho(props) {
     };
 
     function handleFinalizarVenda() {
-        navigate(`/venda/pagamento/${props.id}`, { state: { id } });
+        navigate(`/venda/pagamento/${id}`, { state: { id } });
+    }
+
+    const handleCancelarVenda = (idVenda) => {
+        Alert.alertQuestionCancelar(
+            "Deseja mesmo cancelar essa venda? Essa ação é irreversível.",
+            "Sim",
+            "Cancelar",
+            () => cancelarVenda(idVenda),
+            fetchData
+        );
+    }
+
+    async function cancelarVenda(idVenda) {
+        try {
+            const response = await ApiRequest.vendaCancelar(idVenda);
+            if (response.status === 200) {
+                Alert.alertSuccess("Cancelada!", "A venda foi cancelada com sucesso", fetchData);
+            } else if (response.status === 409) {
+                Alert.alertError("Venda já cancelada!", "A venda já foi cancelada anteriormente", fetchData);
+            }
+        } catch (error) {
+            console.log("Erro ao cancelar a venda", error);
+        }
     }
 
     const updateTable = () => {
@@ -55,7 +78,7 @@ function ItemCarrinho(props) {
             </td>
             <td>
                 <div className="flex flex-row items-center gap-4 justify-center">
-                    <Button cor={"#919191"}><p className="text-[1rem] p-1 px-5">CANCELAR</p></Button>
+                    <Button cor={"#919191"} funcao={() => handleCancelarVenda(id)}><p className="text-[1rem] p-1 px-5">CANCELAR</p></Button>
                     <Button funcao={handleFinalizarVenda}><p className="text-[1rem] p-1 px-5">FINALIZAR VENDA</p></Button>
                 </div>
             </td>
@@ -69,10 +92,9 @@ function Caixa() {
 
     async function fetchData() {
         try {
-            const response = await ApiRequest.vendaGetAllByLoja(idLoja);
+            const response = await ApiRequest.vendaGetAllByLojaPendente(idLoja);
             if (response.status === 200) {
                 const dados = response.data;
-                // Ordenar os dados por data e hora
                 const dadosOrdenados = dados.sort((a, b) => {
                     const dateA = new Date(`${a.data}T${a.hora}`);
                     const dateB = new Date(`${b.data}T${b.hora}`);
@@ -88,6 +110,10 @@ function Caixa() {
 
     useEffect(() => {
         fetchData();
+
+        const intervalId = setInterval(fetchData, 5000);
+
+        return () => clearInterval(intervalId);
     }, []);
 
     return (
@@ -118,6 +144,7 @@ function Caixa() {
                                     tipoVenda={venda.tipoVenda.tipo}
                                     valor={venda.valor.toFixed(2)}
                                     par={index % 2 === 0}
+                                    fetchData={fetchData}
                                 />
                             ))}
                         </tbody>
