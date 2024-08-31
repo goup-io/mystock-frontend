@@ -157,6 +157,12 @@ function Venda() {
     const [codigoVendedor, setCodigoVendedor] = useState("")
     const [tipoVenda, setTipoVenda] = useState("");
     const [tipoVendaSelecionado, setTipoVendaSelecionado] = useState(1);
+    const styleSelectTipoVenda = {
+        width:"8rem",
+        height:"1.5rem",
+        fontSize: "medium",
+        fontWeight: "400"
+    }
 
     useEffect(() => {
         fetchData();
@@ -220,7 +226,6 @@ function Venda() {
                     id: item.id,
                     nome: item.tipo
                 }));
-                console.log(dados)
                 setTipoVenda(dados)
             }
         } catch (error) {
@@ -418,9 +423,10 @@ function Venda() {
                         <div className="flex flex-row items-center text-[1.45rem] gap-3 text-nowrap">
                             <p>Tipo Venda:</p>
                             <ComboBoxFilter
+                                style={styleSelectTipoVenda}
                                 width="8rem"
-                                height="2rem"
-                                bold="500"
+                                // height="2rem"
+                                // bold="500"
                                 opcoes={tipoVenda}
                                 value={tipoVendaSelecionado}
                                 handleInput={handleInput}
