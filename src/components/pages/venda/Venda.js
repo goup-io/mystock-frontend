@@ -96,7 +96,7 @@ function ResumoVenda(props) {
             />
             <ItemSeparadoPorLinhaTracejada
                 infoEsquerda={"Valor Total"}
-                infoDireita={"R$ " + (props.valorTotal - (props.descontoVenda + props.descontoProdutos))}
+                infoDireita={"R$ " + (props.valorTotal - (props.descontoVenda + props.descontoProdutos)).toFixed(2)}
             />
         </ul>
     )
@@ -299,6 +299,11 @@ function Venda() {
     }
 
     async function finalizarVenda() {
+
+        if((valorTotal - (descontoVenda + descontoProdutos)) <= 0){
+            Alert.alert(ErrorIcon, "Valor de venda inválido!")
+            return;
+        }
 
         if(itensCarrinho.length === 0 || itensCarrinho === null){
             Alert.alert(ErrorIcon, "Seu carrinho está vazio!")
