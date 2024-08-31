@@ -29,37 +29,8 @@ function Estoque() {
     const [etpsIds, setEtpsIds] = useState([]);
     const [modelsIds, setModelsIds] = useState([]);
 
-    async function fetchData() {
-        const colunasDoBancoETP = ['Código', 'Nome', 'Modelo', 'Tamanho', 'Cor', 'Preço', 'Loja', 'Item Promo.', 'N.Itens'];
-        const colunasDoBancoModel = ['Código', 'Nome', 'Categoria', 'Tipo'];
 
-        try {
-            let response;
-            if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
-                response = await ApiRequest.etpsGetAll();
-            } else {
-                response = await ApiRequest.etpsGetAllByLoja(localStorage.getItem('visao_loja'));
-            }
-
-            if (response.status === 200) {
-                const dados = response.data;
-
-                const filtrarDados = dados
-                    .map(obj => (
-                        {
-                            codigo: obj.codigo, nome: obj.nome, modelo: obj.modelo, tamanho: obj.tamanho, cor: obj.cor, preco: obj.preco, loja: obj.loja, itemPromocional: obj.itemPromocional == 'SIM' ? 'Sim' : 'Não', quantidade: obj.quantidade
-                        }
-                    ));
-
-                const filtrarIdsEtps = dados.map(obj => ({ id: obj.id }));
-                setEtpsIds(filtrarIdsEtps);
-
-                setDadosDoBancoETP(filtrarDados);
-            }
-        } catch (error) {
-            console.log("Erro ao buscar os dados", error);
-        }
-
+    async function buscarModelos() {
         try {
             const responseModel = await ApiRequest.modeloGetAll();
 
@@ -74,8 +45,45 @@ function Estoque() {
             console.log("Erro ao buscar os dados", error);
         }
 
+    }
+
+    async function buscarEtps() {
+        try {
+            let response;
+            if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
+                response = await ApiRequest.etpsGetAll();
+            } else {
+                response = await ApiRequest.etpsGetAllByLoja(localStorage.getItem('visao_loja'));
+            }
+
+            if (response.status === 200) {
+                const dados = response.data;
+                const filtrarDados = dados
+                    .map(obj => (
+                        {
+                            id: obj.id, codigo: obj.codigo, nome: obj.nome, modelo: obj.modelo, tamanho: obj.tamanho, cor: obj.cor, preco: obj.preco, loja: obj.loja, itemPromocional: obj.itemPromocional == 'SIM' ? 'Sim' : 'Não', quantidade: obj.quantidade
+                        }
+                    ));
+
+                const filtrarIdsEtps = dados.map(obj => ({ id: obj.id }));
+
+                setEtpsIds(filtrarIdsEtps);
+                setDadosDoBancoETP(filtrarDados);
+            }
+        } catch (error) {
+            console.log("Erro ao buscar os dados", error);
+        }
+    }
+
+    async function fetchData() {
+        const colunasDoBancoETP = ['Código', 'Nome', 'Modelo', 'Tamanho', 'Cor', 'Preço', 'Loja', 'Item Promo.', 'N.Itens'];
+        const colunasDoBancoModel = ['Código', 'Nome', 'Categoria', 'Tipo'];
+
         setColunasETP(colunasDoBancoETP);
         setColunasModel(colunasDoBancoModel);
+
+        buscarEtps();
+        buscarModelos();
     }
 
     async function fetchDataFilterProduto(filterData) {
@@ -143,18 +151,18 @@ function Estoque() {
         if (filterData === "") {
             fetchData();
         } else {
-            const searchData = dadosDoBancoETP.filter((item) => {
-                const lowerCaseFilter = filterData.toLowerCase();
-                return (
-                    item.codigo.toLowerCase().includes(lowerCaseFilter) ||
-                    item.nome.toLowerCase().includes(lowerCaseFilter) ||
-                    item.modelo.toLowerCase().includes(lowerCaseFilter) ||
-                    item.cor.toLowerCase().includes(lowerCaseFilter) ||
-                    item.loja.toLowerCase().includes(lowerCaseFilter) ||
-                    item.itemPromocional.toLowerCase().includes(lowerCaseFilter)
-                );
-            });
+            const lowerCaseFilter = filterData.toLowerCase();
+            const searchData = dadosDoBancoETP.filter(item => (
+                item.codigo.toLowerCase().includes(lowerCaseFilter) ||
+                item.nome.toLowerCase().includes(lowerCaseFilter) ||
+                item.modelo.toLowerCase().includes(lowerCaseFilter) ||
+                item.cor.toLowerCase().includes(lowerCaseFilter) ||
+                item.loja.toLowerCase().includes(lowerCaseFilter) ||
+                item.itemPromocional.toLowerCase().includes(lowerCaseFilter)
+            ));
             setDadosDoBancoETP(searchData);
+            const filtrarIdsEtps = searchData.map(obj => ({ id: obj.id }));
+            setEtpsIds(filtrarIdsEtps);
         }
     }
 
@@ -162,16 +170,17 @@ function Estoque() {
         if (filterData === "") {
             fetchData();
         } else {
-            const searchData = dadosDoBancoModel.filter((item) => {
-                const lowerCaseFilter = filterData.toLowerCase();
-                return (
-                    item.codigo.toLowerCase().includes(lowerCaseFilter) ||
-                    item.nome.toLowerCase().includes(lowerCaseFilter) ||
-                    item.categoria.toLowerCase().includes(lowerCaseFilter) ||
-                    item.tipo.toLowerCase().includes(lowerCaseFilter)
-                );
-            });
+            const lowerCaseFilter = filterData.toLowerCase();
+
+            const searchData = dadosDoBancoModel.filter((item) =>
+                item.codigo.toLowerCase().includes(lowerCaseFilter) ||
+                item.nome.toLowerCase().includes(lowerCaseFilter) ||
+                item.categoria.toLowerCase().includes(lowerCaseFilter) ||
+                item.tipo.toLowerCase().includes(lowerCaseFilter)
+            );
             setDadosDoBancoModel(searchData);
+            const filtrarIdsModels = searchData.map(obj => ({ id: obj.id }));
+            setModelsIds(filtrarIdsModels);
         }
     }
 
@@ -219,13 +228,14 @@ function Estoque() {
     async function excluirModel(modelId) {
         try {
             const response = await ApiRequest.modeloDelete(modelId.id);
-            console.log(response);
-            if (response.status === 204) {
+            if (response.response.status === 204) {
                 Alert.alertSuccess("Modelo excluído com sucesso!");
             } else if (response.response.status === 500) {
-                Alert.alertError("Erro ao excluir modelo!", "Este modelo está sendo utilizado em um produto!");
+                Alert.alertError("Erro ao excluir modelo!", "Aconteceu um erro inesperado");
+            } else if (response.response.status === 409) {
+                Alert.alertError("Não foi possível excluir o modelo!", response.response.data);
             } else {
-                Alert.alertError("Erro ao excluir modelo!", response.response.data.message);
+                Alert.alertError("Erro ao excluir modelo!", response.response.data);
             }
         } catch (error) {
             console.log("Erro ao excluir um modelo: ", error);
@@ -278,7 +288,7 @@ function Estoque() {
                     <div className='w-full h-[78%] mt-2 flex justify-center items-center '>
                         <div className=' w-full h-[100%] border-solid border-[1px] border-slate-700  bg-slate-700 overflow-y-auto rounded-md'>
                             {isProdutoSelected ? (
-                                <TabelaPage colunas={colunasETP} dados={dadosDoBancoETP.map(({ ...dados }) => dados)} edit={handleEditarEtp} remove={handleDeleteEtp} id={etpsIds} />
+                                <TabelaPage colunas={colunasETP} dados={dadosDoBancoETP.map(({ id, ...dados }) => dados)} edit={handleEditarEtp} remove={handleDeleteEtp} id={etpsIds} />
                             ) : (
                                 <TabelaPage colunas={colunasModel} dados={dadosDoBancoModel.map(({ id, ...dados }) => dados)} edit={handleEditarModel} remove={handleDeleteModel} id={modelsIds} />
                             )}
