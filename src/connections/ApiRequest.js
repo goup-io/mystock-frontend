@@ -1684,6 +1684,12 @@ export class ApiRequest {
 
     static async vendaCreate(desconto, tipoVendaId, codigoVendedor, produtoVendaReq) {
 
+        const produtoMock = {
+            "etpId": 1,
+            "quantidade": 1,
+            "desconto": 0
+        }
+
         try {
 
             const vendaReq = {
@@ -1694,8 +1700,10 @@ export class ApiRequest {
 
             const venda = {
                 vendaReq,
-                "produtoVendaReq": produtoVendaReq
+                "produtosVendaReq": [produtoMock]
             }
+
+            console.log(venda)
 
             const resposta = await axios.post(springEndPoint + `/vendas`, venda, {
                 headers: header
@@ -1740,11 +1748,11 @@ export class ApiRequest {
         }
     }
 
-    static async pagamentoCancelar(idVenda) {
+    static async vendaCancelar(idVenda) {
 
         try {
 
-            const resposta = await axios.patch(springEndPoint + `/vendas/cancelar/${idVenda}`, {
+            const resposta = await axios.patch(springEndPoint + `/vendas/cancelar/${idVenda}`, null, {
                 headers: header
             });
 
@@ -1755,9 +1763,23 @@ export class ApiRequest {
         }
     }
 
+
     static async vendaGetByFilter(dataInicio, dataFim, horaInicio, horaFim, vendedor, tipoVenda, status, lojaId) {
         let queryParams = [];
     
+        console.log("filtros aplicados",
+            {
+                dataInicio: dataInicio,
+                dataFim:dataFim,
+                horaInicio: horaInicio,
+                horaFim:horaFim,
+                vendedor:vendedor,
+                tipoVenda:tipoVenda,
+                status:status,
+                lojaId:lojaId
+            }
+        )
+
         if (dataInicio !== '') {
             queryParams.push(`dataInicio=${dataInicio}T${horaInicio === '' ? '00:00:00' : horaInicio}`);
         }

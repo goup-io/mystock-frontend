@@ -47,7 +47,8 @@ function Login() {
 
         if (respostaHTTP.status === 200) {
             var data = respostaHTTP.data.token;
-            console.log(respostaHTTP.data)
+            console.log("Dados de login ", respostaHTTP.data)
+            localStorage.clear()
             localStorage.setItem("token", data);
             if (respostaHTTP.data.contexto === "usuario") {
                 localStorage.setItem("loja_id", respostaHTTP.data.idLoja)
