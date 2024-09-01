@@ -64,9 +64,6 @@ var divResumoVenda = {
     gridArea: "1 / 6 / 10 / 8",
 };
 
-var contadorId = 0
-
-
 function ResumoVenda(props) {
 
     return (
@@ -85,7 +82,8 @@ function ResumoVenda(props) {
             />
             <ItemSeparadoPorLinhaTracejada
                 infoEsquerda={"Desconto em Produtos"}
-                infoDireita={"R$ " + props.descontoProdutos.toFixed(2)}
+                infoDireita={"- R$ " + props.descontoProdutos.toFixed(2)}
+                negativo={true}
             />
             <ItemSeparadoPorLinhaTracejada
                 infoEsquerda={"Subtotal 2"}
@@ -93,11 +91,12 @@ function ResumoVenda(props) {
             />
             <ItemSeparadoPorLinhaTracejada
                 infoEsquerda={"Desconto Venda"}
-                infoDireita={"R$ " + props.descontoVenda.toFixed(2)}
+                infoDireita={"- R$ " + props.descontoVenda.toFixed(2)}
+                negativo={true}
             />
             <ItemSeparadoPorLinhaTracejada
                 infoEsquerda={"Valor Total"}
-                infoDireita={"R$ " + props.valorTotal}
+                infoDireita={"R$ " + (props.valorTotal - (props.descontoVenda + props.descontoProdutos)).toFixed(2)}
             />
         </ul>
     )
@@ -251,8 +250,29 @@ function Venda() {
         });
     }
 
+    function adicionarDescontoProduto(id, novoDesconto){
+
+        setItensCarrinho(itemProduto => {
+            const updatedItems = itemProduto.map(item => {
+                if (item.id === id) {
+                    return {
+                        ...item,
+                        desconto: novoDesconto
+                    };
+                }
+                return item;
+            });
+
+            return updatedItems;
+        });
+    }
 
     function ItemCarrinho(props) {
+
+        function auxiliar(novoDesconto){
+            adicionarDescontoProduto(props.id, novoDesconto)
+        }
+
         return (
             <>
                 <tr className="bg-[#DEE2FF] h-24 rounded text-[1.2rem]">
@@ -275,7 +295,7 @@ function Venda() {
                         <div className="flex flex-row items-center gap-12 justify-center">
                             <ButtonEdit
                                 width={40}
-                                funcao={() => AbrirModalEditProd()}
+                                funcao={() => AbrirModalAddDiscount(auxiliar, props.precoUnitario)}
                             />
                             <ButtonCancel
                                 posicao={props.id}
@@ -289,7 +309,7 @@ function Venda() {
                     <td colSpan="6" className="bg-[#DEE2FF] h-9 rounded-b-md">
                         
                         <div className="bg-[#354f7014] flex flex-row w-full h-full rounded-b-lg items-center justify-end">
-                            <p className="text-right pr-12 text-[1rem] font-bold text-black">Subtotal: R$ {props.precoUnitario * props.quantidade}</p>
+                            <p className="text-right pr-12 text-[1rem] font-bold text-black">Subtotal: R$ {(props.precoUnitario * props.quantidade) - (props.descontoUnitario * props.quantidade)}</p>
                         </div>
                     </td>
                 </tr>
@@ -300,6 +320,11 @@ function Venda() {
     }
 
     async function finalizarVenda() {
+
+        if((valorTotal - (descontoVenda + descontoProdutos)) <= 0){
+            Alert.alert(ErrorIcon, "Valor de venda inválido!")
+            return;
+        }
 
         if(itensCarrinho.length === 0 || itensCarrinho === null){
             Alert.alert(ErrorIcon, "Seu carrinho está vazio!")
@@ -435,9 +460,6 @@ function Venda() {
                             <p>Tipo Venda:</p>
                             <ComboBoxFilter
                                 style={styleSelectTipoVenda}
-                                width="8rem"
-                                // height="2rem"
-                                // bold="500"
                                 opcoes={tipoVenda}
                                 value={tipoVendaSelecionado}
                                 handleInput={handleInput}
@@ -460,7 +482,7 @@ function Venda() {
                         />
                     </div>
                     <div className="flex flex-col w-full gap-2 my-2 px-5 flex-wrap text-[1.1rem] font-semibold">
-                        <Button cor={"#DEE2FF"} funcao={() => AbrirModalAddDiscount(adicionarDescontoVenda)}>
+                        <Button cor={"#DEE2FF"} funcao={() => AbrirModalAddDiscount(adicionarDescontoVenda, valorTotal)}>
                             <p className="p-2 text-black">ADICIONAR DESCONTO À VENDA</p>
                         </Button>
                         <Button funcao={finalizarVenda}>
