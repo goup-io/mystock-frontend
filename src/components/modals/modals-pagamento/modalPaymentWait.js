@@ -13,8 +13,10 @@ import React, { useEffect, useState } from 'react';
 import TabelaModal from "../../tables/tableModal";
 import ButtonModalFull from "../../buttons/buttonModalFull";
 import { LoadingButton } from "@mui/lab";
+import ApiRequest from "../../../connections/ApiRequest";
 
-function ModalPaymentWait({ base64String, valorPago = 0, onFinalizar }) {
+
+function ModalPaymentWait({ base64String, valorPago = 0, onFinalizar, idTipoPagamento, idVenda}) {
     const [base64, setBase64] = useState(base64String || '');
     const [valorTotalPago, setValorPago] = useState(valorPago ? valorPago : 0);
 
@@ -24,14 +26,19 @@ function ModalPaymentWait({ base64String, valorPago = 0, onFinalizar }) {
         }
     }, [base64String, valorPago]);
 
-    function handleFinalizarPagamento() {
-        Swal.fire({
-            title: "Pagamento finalizado",
-            text: `Pagamento de R$ ${valorTotalPago} finalizado com sucesso`,
-            icon: "success",
-            confirmButtonText: "OK",
-        });
-        onFinalizar();
+    async function handleFinalizarPagamento() {
+
+        const response = await ApiRequest.pagamentoCreate(idTipoPagamento, idVenda, valorPago, 1);
+        if (response.status === 201) {
+
+            Swal.fire({
+                title: "Pagamento finalizado",
+                text: `Pagamento de R$ ${valorTotalPago} finalizado com sucesso`,
+                icon: "success",
+                confirmButtonText: "OK",
+            });
+            onFinalizar();
+        }
     }
 
     function handleCancelarPagamento() {
@@ -52,13 +59,15 @@ function ModalPaymentWait({ base64String, valorPago = 0, onFinalizar }) {
     );
 }
 
-function AbrirModalPaymentWait(base64String, valorPago, onFinalizar) {
+function AbrirModalPaymentWait(base64String, valorPago, onFinalizar, idTipoPagamento, idVenda) {
     const MySwal = withReactContent(Swal);
     MySwal.fire({
         html: <ModalPaymentWait
             base64String={base64String}
             valorPago={valorPago}
             onFinalizar={onFinalizar}
+            idTipoPagamento={idTipoPagamento}
+            idVenda={idVenda}
         />,
         showConfirmButton: false,
         heightAuto: true,
