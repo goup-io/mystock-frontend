@@ -13,14 +13,15 @@ import ApiRequest from "../../../connections/ApiRequest";
 import Alert from '../../alerts/Alert.js';
 import ErrorImage from '../../../assets/icons/error.svg'
 import SucessImage from '../../../assets/icons/sucess.svg'
+import AbrirModalAddDiscount from "../modalAddDiscount.js";
 
 function ModalEditProd({ id, onUpdate }) {
     const [dadosModelo, setDadosModelo] = useState([]);
     const [dadosTamanho, setDadosTamanho] = useState([]);
     const [dadosCor, setDadosCor] = useState([]);
     const [nome, setNome] = useState("");
-    const [precoCusto, setPrecoCusto] = useState("");
-    const [precoRevenda, setPrecoRevenda] = useState("");
+    const [precoCusto, setPrecoCusto] = useState(0.00);
+    const [precoRevenda, setPrecoRevenda] = useState(0.00);
     const [modelo, setModelo] = useState("");
     const [tamanho, setTamanho] = useState("");
     const [cor, setCor] = useState("");
@@ -187,11 +188,14 @@ function ModalEditProd({ id, onUpdate }) {
                     </div>
 
                 </div>
-                <div className="w-[40rem] flex justify-end  h-6 ">
-                    <ButtonClear
-                      setters={setters}
-                    >Limpar</ButtonClear>
-                    <ButtonModal funcao={handleSave}>Editar</ButtonModal>
+                <div className="justify-between flex-row flex w-11/12">
+                    <ButtonModal height={"2rem"} width={"16rem"} funcao={() => AbrirModalAddDiscount(setPrecoRevenda, precoRevenda)}>Adicionar Desconto</ButtonModal>
+                    <div className="w-[40rem] flex justify-end  h-6 ">
+                        <ButtonClear
+                        setters={setters}
+                        >Limpar</ButtonClear>
+                        <ButtonModal funcao={handleSave}>Editar</ButtonModal>
+                    </div>
                 </div>
             </div>
         </>

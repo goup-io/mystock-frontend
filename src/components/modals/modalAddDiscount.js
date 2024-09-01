@@ -41,14 +41,13 @@ function ModalDiscount(props) {
 
     function validarDesconto(){
 
-        console.log(valorAposDesconto)
-        console.log(valorDesconto)
         if(valorAposDesconto < 0){
             Alert.alertError("Desconto inválido", "O valor do desconto é maior do que o da compra")
             return
         }
 
         props.funcao(valorAtual - valorAposDesconto)
+        Swal.close()
     }
 
     return (

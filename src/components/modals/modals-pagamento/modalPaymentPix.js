@@ -8,7 +8,8 @@ import React, { useEffect, useState } from 'react';
 import ApiRequest from "../../../connections/ApiRequest.js"
 import { Await } from "react-router-dom";
 import AbrirModalPaymentWait from "./modalPaymentWait";
-
+import { Alert } from "@mui/lab";
+import Alertt from "../../alerts/Alert.js";
 
 
 function ModalPaymentPix({ idVenda, idTipoPagamento, qtdParcelas,valorPagoAteAgora,valorTotal,valorRestante, onFinalizar}) {
@@ -21,14 +22,19 @@ function ModalPaymentPix({ idVenda, idTipoPagamento, qtdParcelas,valorPagoAteAgo
 
     const handleInputChange = (e) => {
         setValorPagar(Number(e.target.value));
+        setValorRestante((valorRealTotal - valorPago) - Number(e.target.value))
     };
 
     const handleFinalizar = () => {
+
+        if(valorAPagar + valorPago > valorRealTotal){
+            return
+        }
+
         const novoValorRestante = valorRestante - valorAPagar;
         setValorRestante(novoValorRestante);
         realizarPagamento();
     };
-
 
     function ImageComponent() {
         return (
@@ -48,9 +54,6 @@ function ModalPaymentPix({ idVenda, idTipoPagamento, qtdParcelas,valorPagoAteAgo
             console.log("Erro ao gerar pagamento", error);
         }
      }
-
-
-
 
     return (
         <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[42rem] h-[22rem] flex flex-col items-center justify-around bg-white p-2 rounded-lg border border-black">
@@ -80,7 +83,7 @@ function ModalPaymentPix({ idVenda, idTipoPagamento, qtdParcelas,valorPagoAteAgo
                     />
                     <li className="flex flex-row justify-between">
                         <p className="text-sm font-bold">Valor Restante:</p>
-                        <p className="text-sm font-bold">{`R$ ${valorQueResta.toFixed(2)}`}</p>
+                        { valorQueResta < 0 ? <p className="text-sm font-bold text-red-600">{`R$ ${valorQueResta.toFixed(2)}`}</p> : <p className="text-sm font-bold">{`R$ ${valorQueResta.toFixed(2)}`}</p> }
                     </li>
                     <div className="w-full h-[0.1rem] bg-[#355070] mt-4"></div>
                 </div>

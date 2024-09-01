@@ -250,8 +250,29 @@ function Venda() {
         });
     }
 
+    function adicionarDescontoProduto(id, novoDesconto){
+
+        setItensCarrinho(itemProduto => {
+            const updatedItems = itemProduto.map(item => {
+                if (item.id === id) {
+                    return {
+                        ...item,
+                        desconto: novoDesconto
+                    };
+                }
+                return item;
+            });
+
+            return updatedItems;
+        });
+    }
 
     function ItemCarrinho(props) {
+
+        function auxiliar(novoDesconto){
+            adicionarDescontoProduto(props.id, novoDesconto)
+        }
+
         return (
             <>
                 <tr className="bg-[#DEE2FF] h-24 rounded text-[1.2rem]">
@@ -274,7 +295,7 @@ function Venda() {
                         <div className="flex flex-row items-center gap-12 justify-center">
                             <ButtonEdit
                                 width={40}
-                                funcao={() => AbrirModalEditProd()}
+                                funcao={() => AbrirModalAddDiscount(auxiliar, props.precoUnitario)}
                             />
                             <ButtonCancel
                                 posicao={props.id}
@@ -288,7 +309,7 @@ function Venda() {
                     <td colSpan="6" className="bg-[#DEE2FF] h-9 rounded-b-md">
                         
                         <div className="bg-[#354f7014] flex flex-row w-full h-full rounded-b-lg items-center justify-end">
-                            <p className="text-right pr-12 text-[1rem] font-bold text-black">Subtotal: R$ {props.precoUnitario * props.quantidade}</p>
+                            <p className="text-right pr-12 text-[1rem] font-bold text-black">Subtotal: R$ {(props.precoUnitario * props.quantidade) - (props.descontoUnitario * props.quantidade)}</p>
                         </div>
                     </td>
                 </tr>
