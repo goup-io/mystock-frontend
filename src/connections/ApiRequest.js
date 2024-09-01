@@ -1763,6 +1763,21 @@ export class ApiRequest {
         }
     }
 
+    static async qrCodePix(valorPix) {
+        try {
+            
+            const resposta = await axios.get(
+                `${springEndPoint}/pagamentos/qrCodePix?valorPix=${valorPix}`,
+                { headers: header }
+            );
+
+            return resposta;
+
+        } catch (erro) {
+            return erro;
+        }
+    }
+
     static async vendaCancelar(idVenda) {
 
         try {
