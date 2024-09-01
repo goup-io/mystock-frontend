@@ -127,7 +127,6 @@ function Historico() {
     async function cancelarVenda(idVenda) {
         try {
             const response = await ApiRequest.vendaCancelar(idVenda);
-            console.log("response do bagulho", response)
             if (response.status === 200) {
                 Alert.alertSuccess("Cancelada!", "A venda foi cancelada com sucesso", updateTable);
             } else if(response.response.status === 409){
