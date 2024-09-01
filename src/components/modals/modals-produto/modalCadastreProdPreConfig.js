@@ -24,14 +24,15 @@ function ModalCadastreProdPreConfig({ onUpdate }) {
     setTotalItens(newTotal);
   }, []);
 
-  const setters = [setQuantidades,setTotalItens];
+  const setters = [setQuantidades, setTotalItens];
 
 
   useEffect(() => {
     const fetchData = async () => {
       const colunasDoBancoETP = ['Código', 'Nome', 'Modelo', 'Tamanho', 'Cor', 'Preço', 'Loja', 'N.Itens'];
       try {
-        const response = await ApiRequest.etpsGetAll();
+        const idLoja = localStorage.getItem("loja_id")
+        const response = await ApiRequest.etpsGetAllByLoja(idLoja);
 
         if (response.status === 200) {
           const dados = response.data;

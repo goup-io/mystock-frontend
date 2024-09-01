@@ -17,10 +17,11 @@ function ModalRequestProd() {
     const tabelaRef = useRef(null);
 
     async function fetchData() {
-        const colunasDoBancoETP = ['Cód.', 'Nome', 'Modelo', 'Tam.', 'Cor', 'Preço', 'Loja', 'Item Promo.', 'N.Itens'];
+        const colunasDoBancoETP = ['Cod.', 'Nome', 'Modelo', 'Tam.', 'Cor', 'Preço', 'Loja', 'Item Promo.', 'N.Itens'];
 
         try {
-            const response = await ApiRequest.etpsGetAll();
+            const idLoja = localStorage.getItem("loja_id")
+            const response = await ApiRequest.etpsGetAllLojaNot(idLoja);
 
             if (response.status === 200) {
                 const dados = response.data;
@@ -123,7 +124,7 @@ function ModalRequestProd() {
                 <InputSearcModal props="text" funcao={fetchDataFilterSearchProduto}>Pesquisar</InputSearcModal>
             </div>
             <div className='w-[40rem] h-[19rem] border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto rounded-md'>
-                <Tabela colunas={colunasETP} dados={dadosDoBancoETP} id={etpsIds} iptQuantidade onQuantityChange={setProdutosSolicitados} ref={tabelaRef} />
+                <Tabela colunas={colunasETP} dados={dadosDoBancoETP.map(({id, ...dados}) => dados)} id={etpsIds} iptQuantidade onQuantityChange={setProdutosSolicitados} ref={tabelaRef} />
             </div>
             <div className="w-[40rem] flex justify-end items-end mt-1 h-7 gap-2">
                 <ButtonModal cor="#919191" funcao={limparCampos}>Limpar</ButtonModal>
