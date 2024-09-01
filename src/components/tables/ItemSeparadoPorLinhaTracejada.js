@@ -9,7 +9,7 @@ function ItemSeparadoPorLinhaTracejada(props) {
         <>
             <li className="flex flex-row justify-between">
                 <p className="text-sm">{props.infoEsquerda}</p>
-                <p className="text-sm">{props.infoDireita}</p>
+                {props.negativo !=undefined ? <p className="text-sm text-red-600">{props.infoDireita}</p> :<p className="text-sm">{props.infoDireita}</p>}
             </li>
             <DivisorTracejado />
         </>

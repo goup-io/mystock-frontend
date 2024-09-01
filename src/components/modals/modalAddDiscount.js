@@ -6,14 +6,16 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import ItemSeparadoPorLinhaTracejada from '../tables/ItemSeparadoPorLinhaTracejada';
 import React, { useState } from 'react';
+import Alert from "../alerts/Alert";
 
 function ModalDiscount(props) {
     const [percentualDesconto, setPercentualDesconto] = useState('');
     const [valorDesconto, setValorDesconto] = useState('');
-    const [valorAtual, setValorAtual] = useState(300.00); // Exemplo de valor atual
+    const [valorAtual, setValorAtual] = useState(props.valorAtual); // Exemplo de valor atual
     const [valorAposDesconto, setValorAposDesconto] = useState(valorAtual);
 
     const handlePercentualChange = (e) => {
+
         const percentual = e.target.value;
         setPercentualDesconto(percentual);
         setValorDesconto('');
@@ -36,6 +38,17 @@ function ModalDiscount(props) {
             setValorAposDesconto(valorAtual);
         }
     };
+
+    function validarDesconto(){
+
+        if(valorAposDesconto < 0){
+            Alert.alertError("Desconto inválido", "O valor do desconto é maior do que o da compra")
+            return
+        }
+
+        props.funcao(valorAtual - valorAposDesconto)
+        Swal.close()
+    }
 
     return (
         <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[42rem] h-[22rem] flex flex-col items-center justify-around bg-white p-2 rounded-lg border border-black">
@@ -70,7 +83,7 @@ function ModalDiscount(props) {
                 />
                 <div className="flex flex-row justify-between text-sm">
                     <p>Valor Após o Desconto</p>
-                    <p>{`R$ ${valorAposDesconto.toFixed(2)}`}</p>
+                    { valorAposDesconto >= 0 ? <p>{`R$ ${valorAposDesconto.toFixed(2)}`}</p> : <p className="text-red-600">{`R$ ${valorAposDesconto.toFixed(2)}`}</p>}
                 </div>
             </div>
             <div className="w-[40rem] flex justify-end h-6">
@@ -80,17 +93,17 @@ function ModalDiscount(props) {
                     setValorAposDesconto(valorAtual);
                 }}>Limpar</ButtonClear>
                 <ButtonModal
-                funcao={() => props.funcao(valorDesconto)}
+                funcao={() => validarDesconto()}
                 >Adicionar</ButtonModal>
             </div>
         </div>
     );
 }
 
-function AbrirModalAddDiscount(funcao) {
+function AbrirModalAddDiscount(funcao, valorAtual) {
     const MySwal = withReactContent(Swal);
     MySwal.fire({
-        html: <ModalDiscount funcao={funcao}/>,
+        html: <ModalDiscount funcao={funcao} valorAtual={valorAtual}/>,
         width: "auto",
         heightAuto: true,
         showConfirmButton: false,

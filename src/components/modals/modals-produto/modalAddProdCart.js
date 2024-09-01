@@ -75,7 +75,6 @@ function ModalAddProdCart(props) {
   }
 
   useEffect(() => {
-    console.log("AAAAAAAAAA", itemsCarrinhoContext)
     fetchData();
   }, []);
 
@@ -116,6 +115,7 @@ function ModalAddProdCart(props) {
 
       console.log("Itens CONTEXTO2", itemsCarrinhoContext)
       props.onUpdate(detalhesProdutos);
+      Swal.close()
 
     } catch (error) {
       console.log("Erro ao buscar os dados:", error);
