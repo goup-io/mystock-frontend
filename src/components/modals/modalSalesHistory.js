@@ -66,7 +66,7 @@ function ModalSalesHistory({idVenda, funcaoUpdateTable}) {
 
     async function cancelarVenda(idVenda) {
         try {
-            const response = await ApiRequest.pagamentoCancelar(idVenda);
+            const response = await ApiRequest.vendaCancelar(idVenda);
 
             if (response.status === 200) {
                 Alert.alertSuccess("Cancelada!", "A venda foi cancelada com sucesso", funcaoUpdateTable);
