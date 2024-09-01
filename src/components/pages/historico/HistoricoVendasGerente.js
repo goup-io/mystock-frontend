@@ -60,7 +60,6 @@ function HistoricoVendasGerente() {
                 response = await ApiRequest.vendaGetByFilter(filterData.dataInicio, filterData.dataFim, filterData.horaInicio, filterData.horaFim, filterData.vendedor, filterData.tipoVenda, filterData.statusVenda, localStorage.getItem('visao_loja'));
             }
 
-            console.log("responsta", response);
             if (response.status === 200) {
                 const dados = response.data.map(obj => (
                     {
