@@ -21,6 +21,15 @@ function ModalPaymentPix({ idVenda, idTipoPagamento, qtdParcelas,valorPagoAteAgo
     const [base64String, setBase64String] = useState("");
 
     const handleInputChange = (e) => {
+        // console.log(parseInt(e.target.value))
+        // try{
+        //     consNumber(e.target.value)
+        // }catch(e){
+
+        if (isNaN(e.target.value)) {
+            return;
+        }
+
         setValorPagar(Number(e.target.value));
         setValorRestante((valorRealTotal - valorPago) - Number(e.target.value))
     };
