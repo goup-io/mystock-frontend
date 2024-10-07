@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { useState } from "react";
 import ButtonClear from "../../buttons/buttonClear";
@@ -35,11 +34,8 @@ function ModalCadastreProd() {
         setIsPromocional(prev => (prev === "Sim" ? "Não" : "Sim"));
     };
 
- 
-
     function handleInputChange(event, setStateFunction) {
         setStateFunction(event.target.value);
-
     }
 
     const handleChangeModelo = (event) => {
@@ -86,7 +82,6 @@ function ModalCadastreProd() {
         fetchDadosModeloCorTamanho();
     }, [])
 
-
     const handleSave = () => {
 
         if (!modelo || !cor || !tamanho || !nome || !precoCusto || !precoRevenda) {
@@ -114,7 +109,7 @@ function ModalCadastreProd() {
             idModelo,
             idCor,
             tamanhoNumero,
-            isPromocional: isPromocional ? "SIM" : "NAO",
+            isPromocional: isPromocional === "Sim" ? "SIM" : "NAO",
             idLoja: localStorage.getItem("loja_id")
         };
 
@@ -186,16 +181,20 @@ function ModalCadastreProd() {
                     </div>
 
                     <div className="mt-2 flex justify-start items-center">
-                    <input type="checkbox" className="w-6 h-6 ml-6"></input>
-                       <p className="form-floating text-lg text-black font-normal ml-4"
-                         checked={isPromocional}
-                         onChange={handleCheckboxChange}
-                       >Item Promocional</p>
+                        <input 
+                            type="checkbox" 
+                            className="w-6 h-6 ml-6" 
+                            checked={isPromocional === "Sim"} 
+                            onChange={handleCheckboxChange}
+                        />
+                        <p className="form-floating text-lg text-black font-normal ml-4">
+                            Item Promocional
+                        </p>
                     </div>
 
                 </div>
                 <div className="w-[40rem] flex justify-end  h-6 ">
-                    <ButtonClear setters = {setters}>Limpar</ButtonClear>
+                    <ButtonClear setters={setters}>Limpar</ButtonClear>
                     <ButtonModal funcao={handleSave}>Cadastrar</ButtonModal>
                 </div>
             </div>
@@ -215,4 +214,3 @@ function AbrirModalCadastreProd() {
 }
 
 export default AbrirModalCadastreProd;
-
