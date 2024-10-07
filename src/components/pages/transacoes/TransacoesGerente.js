@@ -47,6 +47,7 @@ function HistoricoVendasGerente() {
 
             if (response.status === 200) {
                 const dados = response.data.map(item => ({
+                    id: item.id,
                     data: (item.dataHora).replace('T', ' ').split(".")[0],
                     solicitante: item.loja_coletora,
                     liberadora: item.loja_liberadora,
@@ -55,7 +56,7 @@ function HistoricoVendasGerente() {
                     tamanho: item.etp.tamanho,
                     nSolic: item.quantidadeSolicitada,
                     nLib: item.quantidadeLiberada != null ? item.quantidadeLiberada : '---',
-                    liberador: item.liberador != null ?  item.liberador : '---',
+                    liberador: item.liberador != null ? item.liberador : '---',
                     coletor: item.coletor,
                     status: item.status.status,
                 }));
@@ -64,7 +65,7 @@ function HistoricoVendasGerente() {
         } catch (error) {
             console.log("Erro ao buscar os dados", error);
         }
-       
+
         try {
             let response;
             if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
@@ -75,6 +76,7 @@ function HistoricoVendasGerente() {
 
             if (response.status === 200) {
                 const dados = response.data.map(item => ({
+                    id: item.id,
                     data: (item.dataHora).replace('T', ' ').split(".")[0],
                     solicitante: item.loja_coletora,
                     liberadora: item.loja_liberadora,
@@ -111,6 +113,7 @@ function HistoricoVendasGerente() {
 
             if (response.status === 200) {
                 const dados = response.data.map(item => ({
+                    id: item.id,
                     data: (item.dataHora).replace('T', ' ').split(".")[0],
                     solicitante: item.loja_liberadora,
                     destinatario: item.loja_coletora,
@@ -148,6 +151,7 @@ function HistoricoVendasGerente() {
 
             if (response.status === 200) {
                 const dados = response.data.map(item => ({
+                    id: item.id,
                     data: (item.dataHora).replace('T', ' ').split(".")[0],
                     solicitante: item.loja_liberadora,
                     destinatario: item.loja_coletora,
@@ -160,8 +164,8 @@ function HistoricoVendasGerente() {
                 }));
 
                 const idsPendentes = response.data.filter(item => item.status.status === 'PENDENTE').map(item => item.id);
-                setIdsDadosPendentes(idsPendentes);
 
+                setIdsDadosPendentes(idsPendentes);
                 setDadosAprovacao(dados);
                 Alert.alertTop(false, "Filtro aplicado com sucesso!");
 
@@ -199,21 +203,22 @@ function HistoricoVendasGerente() {
             fetchData();
         } else {
             const lowerCaseFilter = filterData.toLowerCase();
-            const searchData = dadosAprovacao.filter((item) => {
-                return (
-                    (item.solicitante?.toLowerCase() || '').includes(lowerCaseFilter) ||
-                    (item.destinatario?.toLowerCase() || '').includes(lowerCaseFilter) ||
-                    (item.codModelo?.toLowerCase() || '').includes(lowerCaseFilter) ||
-                    (item.cor?.toLowerCase() || '').includes(lowerCaseFilter) ||
-                    (item.liberador?.toLowerCase() || '').includes(lowerCaseFilter) ||
-                    (item.coletor?.toLowerCase() || '').includes(lowerCaseFilter) ||
-                    (item.status?.toLowerCase() || '').includes(lowerCaseFilter)
-                );
-            });
+            const searchData = dadosAprovacao.filter((item) =>
+                (item.solicitante?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                (item.destinatario?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                (item.codModelo?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                (item.cor?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                (item.liberador?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                (item.coletor?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                (item.status?.toLowerCase() || '').includes(lowerCaseFilter)
+            )
+            const idsPendentes = searchData.filter(item => item.status === 'PENDENTE').map(item => item.id);
             setDadosAprovacao(searchData);
+            setIdsDadosPendentes(idsPendentes);
+
         }
     }
-    
+
 
     useEffect(() => {
         fetchData();
@@ -271,7 +276,7 @@ function HistoricoVendasGerente() {
                 <TitleBox title="Transferências" buttons={buttons}></TitleBox>
 
                 <div className='w-full flex md:flex-row md:justify-center rounded-md py-4 px-6 shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] items-center text-sm bg-white'>
-                    <Filter data modelo produto tamanho status funcaoOriginal={fetchData} funcaoFilter={isHistoricoSelected ?   fetchDataFilterHistorico : fetchDataFilterAprovacao} ></Filter>
+                    <Filter data modelo produto tamanho status funcaoOriginal={fetchData} funcaoFilter={isHistoricoSelected ? fetchDataFilterHistorico : fetchDataFilterAprovacao} ></Filter>
                 </div>
 
                 <ChartBox>
@@ -298,16 +303,16 @@ function HistoricoVendasGerente() {
                             </div>
 
                             <div className='flex gap-4 items-center'>
-                                <InputSearcModal props="text" funcao={isHistoricoSelected ?   fetchDataFilterSearchHistorico : fetchDataFilterSearchAprovacao}>Pesquisar</InputSearcModal>
+                                <InputSearcModal props="text" funcao={isHistoricoSelected ? fetchDataFilterSearchHistorico : fetchDataFilterSearchAprovacao}>Pesquisar</InputSearcModal>
                                 <ButtonDownLoad func={csvTransferencias}></ButtonDownLoad>
                             </div>
                         </div>
                         <div className='w-full h-[50vh] mt-2 flex justify-center items-center'>
                             <div className='w-full h-full border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto rounded'>
                                 {isHistoricoSelected ? (
-                                    <TabelaPage colunas={colunas} dados={dadosHistorico} />
+                                    <TabelaPage colunas={colunas} dados={dadosHistorico.map(({ id, ...dados }) => dados)} />
                                 ) : (
-                                    <TabelaPage colunas={colunasAprovacao} dados={dadosAprovacao.filter(dado => dado.status === 'PENDENTE')} aceitar={handleAceitarTransferencia} negar={handleNegarTransferencia} id={idsDadosPendentes} />
+                                    <TabelaPage colunas={colunasAprovacao} dados={dadosAprovacao.filter(dado => dado.status === 'PENDENTE').map(({ id, ...dados }) => dados)} aceitar={handleAceitarTransferencia} negar={handleNegarTransferencia} id={idsDadosPendentes} />
                                 )}
                             </div>
                         </div>

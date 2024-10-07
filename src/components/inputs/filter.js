@@ -6,7 +6,7 @@ import ComboBoxFilter from "../inputs/comboBoxFilter";
 import ApiRequest from '../../connections/ApiRequest';
 import Alert from '../alerts/Alert';
 
-function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVenda, horario, tipoAlerta, produto, funcaoFilter, funcaoOriginal, categoriaModelo, tipoModelo }) {
+function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVenda, horario, tipoAlerta, produto, funcaoFilter, funcaoOriginal, categoriaModelo, tipoModelo, statusVenda }) {
     const [selectedValue, setSelectedValue] = useState('estoque');
 
     const handleChange = (event) => {
@@ -23,11 +23,16 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
     const [produtos, setProdutos] = useState([]);
 
     const [statusTransferencia, setStatusTransferencia] = useState([
-        { nome: 'ACEITO'},
-        { nome: 'FINALIZADA'},
-        { nome: 'NEGADO'},
-        { nome: 'PENDENTE'}
+        { nome: 'ACEITO' },
+        { nome: 'NEGADO' },
+        { nome: 'PENDENTE' }
     ]);
+
+    const [statusVendas, setStatusVendas] = useState([
+        { nome: 'PENDENTE' },
+        { nome: 'FINALIZADA' },
+        { nome: 'CANCELADA' }
+    ])
 
     const [inputCorSelecionada, setInputCorSelecionada] = useState('');
     const [inputModeloSelecionado, setInputModeloSelecionado] = useState('');
@@ -36,6 +41,7 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
     const [inputTipoVendaSelecionado, setInputTipoVendaSelecionado] = useState('');
     const [inputTamanhoSelecionado, setInputTamanhoSelecionado] = useState('');
     const [inputStatusSelecionado, setInputStatusSelecionado] = useState('');
+    const [inputStatusVendaSelecionado, setInputStatusVendaSelecionado] = useState('');
     const [inputVendedorSelecionado, setInputVendedorSelecionado] = useState('');
     const [inputProdutoSelecionado, setInputProdutoSelecionado] = useState('');
     const [inputDataInicioSelecionada, setInputDataInicioSelecionada] = useState('');
@@ -54,6 +60,7 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
         setInputModeloSelecionado('');
         setInputTamanhoSelecionado('');
         setInputStatusSelecionado('');
+        setInputStatusVendaSelecionado('');
         setInputTipoVendaSelecionado('');
         setInputVendedorSelecionado('');
         setInputProdutoSelecionado('');
@@ -90,25 +97,25 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
 
                 if (response.status === 200) {
                     const dados = response.data;
-                
+
                     const filtrarDados = dados.map(obj => (
                         { id: obj.id, nome: obj.nome }
                     ));
-                
+
                     const filtrarCategoriaDados = dados.reduce((acc, obj) => {
                         if (!acc.some(accObj => accObj.nome === obj.categoria)) {
                             acc.push({ nome: obj.categoria });
                         }
                         return acc;
                     }, []);
-                
+
                     const filtrarTipoDados = dados.reduce((acc, obj) => {
                         if (!acc.some(accObj => accObj.nome === obj.tipo)) {
                             acc.push({ nome: obj.tipo });
                         }
                         return acc;
                     }, []);
-                
+
                     setModelos(filtrarDados);
                     setCategoriasModelo(filtrarCategoriaDados);
                     setTiposModelo(filtrarTipoDados);
@@ -212,10 +219,11 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
             precoFim: inputPrecoFimSelecionado,
             tipoAlerta: selectedValue,
             categoriaModelo: inputCategoriaModeloSelecionado,
-            tipoModelo: inputTipoModeloSelecionado
+            tipoModelo: inputTipoModeloSelecionado,
+            statusVenda: inputStatusVendaSelecionado
         };
 
-        if (filterData.cor !== '' || filterData.modelo !== '' || filterData.tamanho !== '' || filterData.status !== '' || filterData.tipoVenda !== '' || filterData.vendedor !== '' || filterData.produto !== '' || filterData.dataInicio !== '' || filterData.dataFim !== '' || filterData.horaInicio !== '' || filterData.horaFim !== '' || filterData.precoInicio !== '' || filterData.precoFim !== '' || filterData.categoriaModelo !== '' || filterData.tipoModelo !== '') {
+        if (filterData.cor !== '' || filterData.modelo !== '' || filterData.tamanho !== '' || filterData.status !== '' || filterData.tipoVenda !== '' || filterData.vendedor !== '' || filterData.produto !== '' || filterData.dataInicio !== '' || filterData.dataFim !== '' || filterData.horaInicio !== '' || filterData.horaFim !== '' || filterData.precoInicio !== '' || filterData.precoFim !== '' || filterData.categoriaModelo !== '' || filterData.tipoModelo !== '' || filterData.statusVenda !== '') {
             funcaoFilter(filterData);
         } else {
             Alert.alertTop(true, 'Nenhum campo preenchido!');
@@ -265,6 +273,7 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
                 {produto && <ComboBoxFilter name="select_produto" opcoes={produtos} value={inputProdutoSelecionado} handleInput={handleInput} handleAtribute={setInputProdutoSelecionado} valueNome>Produto</ComboBoxFilter>}
                 {tamanho && <ComboBoxFilter name="select_tamanho" opcoes={tamanhos} value={inputTamanhoSelecionado} handleInput={handleInput} handleAtribute={setInputTamanhoSelecionado} valueNome>Tamanho</ComboBoxFilter>}
                 {status && <ComboBoxFilter name="select_status" opcoes={statusTransferencia} value={inputStatusSelecionado} handleInput={handleInput} handleAtribute={setInputStatusSelecionado} valueNome>Status</ComboBoxFilter>}
+                {statusVenda && <ComboBoxFilter name="select_status" opcoes={statusVendas} value={inputStatusVendaSelecionado} handleInput={handleInput} handleAtribute={setInputStatusVendaSelecionado} valueNome>Status</ComboBoxFilter>}
                 {preço && (
                     <div>
                         <InputFilterDate
@@ -291,7 +300,7 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
                                     value="estoque"
                                     checked={selectedValue === 'estoque'}
                                     onChange={handleChange}
-                                /> 
+                                />
                                 Estoque
                             </div>
                             <div className="flex items-center gap-1">
@@ -301,7 +310,7 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
                                     value="transferencias"
                                     checked={selectedValue === 'transferencias'}
                                     onChange={handleChange}
-                                /> 
+                                />
                                 Transferências
                             </div>
                         </div>

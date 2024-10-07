@@ -531,6 +531,22 @@ export class ApiRequest {
         }
     }
 
+    static async etpsGetAllLojaNot(idLoja) {
+
+        try {
+            const resposta = await axios.get(springEndPoint + `/etps/filtro/loja/${idLoja}`, {
+                headers: header
+            });
+
+            return resposta;
+        } catch (erro) {
+            return {
+                status: erro.response.status,
+                data: erro.response.data
+            };
+        }
+    }
+
     static async etpsGetById(id) {
 
         try {
@@ -1655,7 +1671,8 @@ export class ApiRequest {
     static async vendaGetAllByLojaPendente(idLoja) {
 
         try {
-            const resposta = await axios.get(springEndPoint + `/vendas/filtro?id_loja=${idLoja}&id_status=1`, {
+            const STATUS = "PENDENTE"
+            const resposta = await axios.get(springEndPoint + `/vendas/filtro?id_loja=${idLoja}&statusVenda=${STATUS}`, {
                 headers: header
             });
 
@@ -1763,6 +1780,21 @@ export class ApiRequest {
         }
     }
 
+    static async qrCodePix(valorPix) {
+        try {
+            
+            const resposta = await axios.get(
+                `${springEndPoint}/pagamentos/qrCodePix?valorPix=${valorPix}`,
+                { headers: header }
+            );
+
+            return resposta;
+
+        } catch (erro) {
+            return erro;
+        }
+    }
+
     static async vendaCancelar(idVenda) {
 
         try {
@@ -1781,53 +1813,43 @@ export class ApiRequest {
 
     static async vendaGetByFilter(dataInicio, dataFim, horaInicio, horaFim, vendedor, tipoVenda, status, lojaId) {
         let queryParams = [];
-    
-        console.log("filtros aplicados",
-            {
-                dataInicio: dataInicio,
-                dataFim:dataFim,
-                horaInicio: horaInicio,
-                horaFim:horaFim,
-                vendedor:vendedor,
-                tipoVenda:tipoVenda,
-                status:status,
-                lojaId:lojaId
-            }
-        )
+
+        const timeInicial = horaInicio + ":00";
+        const timeFinal = horaFim + ":00"
 
         if (dataInicio !== '') {
-            queryParams.push(`dataInicio=${dataInicio}T${horaInicio === '' ? '00:00:00' : horaInicio}`);
+            queryParams.push(`dataHoraInicio=${dataInicio}T${horaInicio === '' ? '00:00:00' : timeInicial}`);
         }
         if (dataFim !== '') {
-            queryParams.push(`dataFim=${dataFim}T${horaFim === '' ? '23:59:59' : horaFim}`);
+            queryParams.push(`dataHoraFim=${dataFim}T${horaFim === '' ? '23:59:59' : timeFinal}`);
         }
         if (vendedor !== '') {
-            queryParams.push(`vendedor=${vendedor}`);
+            queryParams.push(`id_vendedor=${vendedor}`);
         }
         if (tipoVenda !== '') {
-            queryParams.push(`tipoVenda=${tipoVenda}`);
+            queryParams.push(`id_tipo_venda=${tipoVenda}`);
         }
         if (status !== '') {
-            queryParams.push(`status=${status}`);
+            queryParams.push(`statusVenda=${status}`);
         }
         if (lojaId !== '') {
             queryParams.push(`id_loja=${lojaId}`);
         }
-    
+
         const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
-    
+
         try {
             const resposta = await axios.get(`${springEndPoint}/vendas/filtro${queryString}`, {
                 headers: header
             });
-    
+
             return resposta;
-    
+
         } catch (erro) {
             return erro;
         }
     }
-    
+
 
     static async transferenciaGetByFilter(dataInicio, dataFim, horaInicio, horaFim, modelo, produto, tamanho, cor, status, lojaId) {
         let queryParams = [];
