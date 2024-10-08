@@ -107,15 +107,7 @@ function ModalCadastreModel() {
                     ></HeaderModal>
                 </div>
                 <div className="w-[40rem] h-[16rem] flex flex-col rounded justify-around p-3 bg-[#F5F3F4] border-solid shadow-[5px_5px_10px_0_rgba(0,0,0,0.14)] border-gray-700">
-
-                    <div className="flex justify-around ">
-                        <InputAndLabelModal
-                            type="Text"
-                            placeholder="digite o código..."
-                            value={codigo}
-                            handleInput={handleInputChange}
-                            handlerAtributeChanger={setCodigo}
-                        >Código</InputAndLabelModal>
+                    <div className="px-8 flex justify-between">
                         <InputAndLabelModal
                             type="Text"
                             placeholder="digite o nome..."
@@ -124,7 +116,7 @@ function ModalCadastreModel() {
                             handlerAtributeChanger={setNome}
                         >Nome</InputAndLabelModal>
                     </div>
-                    <div className="flex justify-around">
+                    <div className="px-8 flex justify-between">
                         <ComboBoxModal
                             dadosBanco={dadosCategoria.map(value => value.nome)}
                             value={categoria}
