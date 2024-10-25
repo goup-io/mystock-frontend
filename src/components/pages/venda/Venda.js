@@ -69,10 +69,6 @@ function ResumoVenda(props) {
     return (
         <ul className="flex flex-col gap-2 px-4 py-6 text-[1.2rem] font-semibold">
             <ItemSeparadoPorLinhaTracejada
-                infoEsquerda={"Código da Venda"}
-                infoDireita={props.codigoVenda}
-            />
-            <ItemSeparadoPorLinhaTracejada
                 infoEsquerda={"Total de Itens"}
                 infoDireita={props.totalItens}
             />
@@ -472,7 +468,6 @@ function Venda() {
                     <p className="font-semibold text-2xl mt-4">RESUMO DA VENDA</p>
                     <div className="bg-[#F5F3F4] w-11/12 h-full rounded-[8px] my-4 mb-3">
                         <ResumoVenda
-                            codigoVenda={1}
                             totalItens={qtdTotalItens}
                             subtotal1={subTotal1}
                             descontoProdutos={descontoProdutos}

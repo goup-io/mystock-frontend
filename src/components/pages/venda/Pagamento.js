@@ -81,10 +81,11 @@ function Pagamento() {
 
         try {
             const response = await ApiRequest.detalhamentosVendas(idVenda);
-
+            
 
             if (response.status === 200) {
                 const dados = response.data;
+                console.log(dados)
                 setVenda(dados);
             }
         } catch (error) {

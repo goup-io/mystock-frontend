@@ -19,7 +19,7 @@ function ModalAddProdCart(props) {
   const [itemsCarrinhoContext, setItemsCarrinhoContext] = useState([]);
   const [detalhesProdutos, setDetalhesProdutos] = useState([]);
 
-  const setters = [setQuantidades, setTotalItens];  
+  const setters = [setQuantidades, setTotalItens];
 
   const handleQuantityChange = React.useCallback((newQuantities) => {
     setQuantidades(newQuantities);
@@ -32,7 +32,8 @@ function ModalAddProdCart(props) {
     setColunasETP(colunasDoBancoETP);
 
     try {
-      const response = await ApiRequest.etpsGetAll();
+      const idLoja = localStorage.getItem("loja_id")
+      const response = await ApiRequest.etpsGetAllByLoja(idLoja);
 
       if (response.status === 200) {
 
@@ -154,7 +155,7 @@ function ModalAddProdCart(props) {
         />
       </div>
       <div className="w-[43rem] flex justify-end items-end mt-1 h-7">
-        <ButtonClear setters = {setters}>Limpar</ButtonClear>
+        <ButtonClear setters={setters}>Limpar</ButtonClear>
         <ButtonModal funcao={handleCadastrar}>Adicionar</ButtonModal>
       </div>
     </div>

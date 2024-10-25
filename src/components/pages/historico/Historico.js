@@ -32,7 +32,7 @@ function Historico() {
                 const filtrarDados = dados
                     .map(obj => (
                         {
-                            data: obj.data, horario: obj.hora, vendedor: obj.nomeVendedor, tipoVenda: obj.tipoVenda.tipo, qtdItens: obj.qtdItens, valor: obj.valor, status: obj.statusVenda
+                            id: obj.id, data: obj.data, horario: obj.hora, vendedor: obj.nomeVendedor, tipoVenda: obj.tipoVenda.tipo, qtdItens: obj.qtdItens, valor: obj.valor, status: obj.statusVenda
                         }
                     ));
 
@@ -54,14 +54,16 @@ function Historico() {
             const visaoLoja = localStorage.getItem('visao_loja');
             const cargo = localStorage.getItem('cargo');
 
+            console.log(filterData)
             if (cargo === 'ADMIN' && visaoLoja == 0) {
-                response = await ApiRequest.vendaGetByFilter(filterData.dataInicio, filterData.dataFim, filterData.horaInicio, filterData.horaFim, filterData.vendedor, filterData.tipoVenda, filterData.status, '');
+                response = await ApiRequest.vendaGetByFilter(filterData.dataInicio, filterData.dataFim, filterData.horaInicio, filterData.horaFim, filterData.vendedor, filterData.tipoVenda, filterData.statusVenda, '');
             } else {
-                response = await ApiRequest.vendaGetByFilter(filterData.dataInicio, filterData.dataFim, filterData.horaInicio, filterData.horaFim, filterData.vendedor, filterData.tipoVenda, filterData.status, visaoLoja);
+                response = await ApiRequest.vendaGetByFilter(filterData.dataInicio, filterData.dataFim, filterData.horaInicio, filterData.horaFim, filterData.vendedor, filterData.tipoVenda, filterData.statusVenda, localStorage.getItem('visao_loja'));
             }
 
             if (response.status === 200) {
                 const dados = response.data.map(obj => ({
+                    id: obj.id,
                     data: obj.data,
                     horario: obj.hora,
                     vendedor: obj.nomeVendedor,
@@ -74,8 +76,6 @@ function Historico() {
                 const filtrarIds = response.data.map(obj => ({ id: obj.id }));
                 setIdsDados(filtrarIds);
                 setDadosDoBanco(dados);
-
-                console.log("Dados Filtradoaaooooooooooooooos:", dados);
 
                 Alert.alertTop(false, "Filtro aplicado com sucesso!");
 
@@ -102,9 +102,11 @@ function Historico() {
                     item.status.toLowerCase().includes(lowerCaseFilter)
                 );
             });
-            console.log("cadeeeeeeee " + searchData);
 
+            console.log("dados", searchData)
+            const filtrarIdsEtps = searchData.map(obj => ({ id: obj.id }));
             setDadosDoBanco(searchData);
+            setIdsDados(filtrarIdsEtps)
         }
     }
 
@@ -127,10 +129,9 @@ function Historico() {
     async function cancelarVenda(idVenda) {
         try {
             const response = await ApiRequest.vendaCancelar(idVenda);
-            console.log("response do bagulho", response)
             if (response.status === 200) {
                 Alert.alertSuccess("Cancelada!", "A venda foi cancelada com sucesso", updateTable);
-            } else if(response.response.status === 409){
+            } else if (response.response.status === 409) {
                 Alert.alertError("Venda já cancelada!", "A venda já foi cancelada com sucesso anteriormente", updateTable);
             }
         } catch (error) {
@@ -143,7 +144,7 @@ function Historico() {
             <PageLayout>
                 <Header telaAtual="Histórico de Vendas"></Header>
                 <div className='w-full flex md:flex-row md:justify-center rounded-md py-4 px-6  shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] items-center text-sm bg-white'>
-                    <Filter data horario vendedor tipoVenda status funcaoOriginal={fetchData} funcaoFilter={fetchDataFilter}></Filter>
+                    <Filter data horario vendedor tipoVenda funcaoOriginal={fetchData} funcaoFilter={fetchDataFilter} statusVenda></Filter>
                 </div>
 
                 <div className='bg-white mt-4 h-[74%] flex flex-col justify-start pl-10 pr-10 pt-2 pb-2 items-center shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] rounded-md'>
@@ -153,7 +154,7 @@ function Historico() {
                     </div>
                     <div className='w-full h-[85%] mt-2 flex justify-center items-center '>
                         <div className=' w-full h-full border-solid border-[1px] border-slate-700  bg-slate-700 overflow-y-auto rounded'>
-                            <TabelaPage colunas={colunas} dados={dadosDoBanco.map(({ ...dados }) => dados)} status verMais={handleDetailsVenda} cancel={handleCancelarVenda} id={idsDados} />
+                            <TabelaPage colunas={colunas} dados={dadosDoBanco.map(({ id, ...dados }) => dados)} status verMais={handleDetailsVenda} cancel={handleCancelarVenda} id={idsDados} />
                         </div>
                     </div>
                 </div>

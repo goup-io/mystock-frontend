@@ -8,7 +8,7 @@ import ApiRequest from "../../connections/ApiRequest";
 import Alert from "../alerts/Alert";
 
 
-function ModalLiberarTransferencia({idTransferencia, qtdSolicitadaTransf, funcaoUpdateTable}) {
+function ModalLiberarTransferencia({ idTransferencia, qtdSolicitadaTransf, funcaoUpdateTable }) {
 
     const [usuario, setUsuario] = useState('');
     const [qtdLiberada, setQtdLiberada] = useState(qtdSolicitadaTransf);
@@ -20,14 +20,14 @@ function ModalLiberarTransferencia({idTransferencia, qtdSolicitadaTransf, funcao
 
     function handleInputChange(event, setStateFunction) {
         setStateFunction(event.target.value);
-    }        
+    }
 
     async function aceitarTransferencia() {
         const requestBody = {
-                    cod_liberador: usuario,
-                    quantidadeLiberada: qtdLiberada
-               }   
-            
+            cod_liberador: usuario,
+            quantidadeLiberada: qtdLiberada
+        }
+
         try {
             const response = await ApiRequest.transferenciaAprovar(idTransferencia, requestBody);
             if (response.status === 200) {
@@ -40,7 +40,7 @@ function ModalLiberarTransferencia({idTransferencia, qtdSolicitadaTransf, funcao
             console.log("Erro ao buscar os dados", error);
         }
     }
-    
+
 
     return (
         <>

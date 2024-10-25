@@ -55,12 +55,11 @@ function HistoricoVendasGerente() {
         try {
             let response;
             if (localStorage.getItem('cargo') == 'ADMIN' && localStorage.getItem('visao_loja') == 0) {
-                response = await ApiRequest.vendaGetByFilter(filterData.dataInicio, filterData.dataFim, filterData.horaInicio, filterData.horaFim, filterData.vendedor, filterData.tipoVenda, filterData.status, '');
+                response = await ApiRequest.vendaGetByFilter(filterData.dataInicio, filterData.dataFim, filterData.horaInicio, filterData.horaFim, filterData.vendedor, filterData.tipoVenda, filterData.statusVenda, '');
             } else {
-                response = await ApiRequest.vendaGetByFilter(filterData.dataInicio, filterData.dataFim, filterData.horaInicio, filterData.horaFim, filterData.vendedor, filterData.tipoVenda, filterData.status, localStorage.getItem('visao_loja'));
+                response = await ApiRequest.vendaGetByFilter(filterData.dataInicio, filterData.dataFim, filterData.horaInicio, filterData.horaFim, filterData.vendedor, filterData.tipoVenda, filterData.statusVenda, localStorage.getItem('visao_loja'));
             }
 
-            console.log("responsta kraio", response);
             if (response.status === 200) {
                 const dados = response.data.map(obj => (
                     {
@@ -150,7 +149,6 @@ function HistoricoVendasGerente() {
     async function cancelarVenda(idVenda) {
         try {
             const response = await ApiRequest.vendaCancelar(idVenda);
-            console.log("response do bagulho", response)
             if (response.status === 200) {
                 Alert.alertSuccess("Cancelada!", "A venda foi cancelada com sucesso", updateTable);
             } else if (response.response.status === 409) {
@@ -167,7 +165,7 @@ function HistoricoVendasGerente() {
                 <TitleBox title="Histórico de Vendas"></TitleBox>
 
                 <div className='w-full flex md:flex-row md:justify-center rounded-md py-4 px-6  shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] items-center text-sm bg-white'>
-                    <Filter data horario vendedor tipoVenda status funcaoOriginal={fetchData} funcaoFilter={fetchDataFilter}></Filter>
+                    <Filter data horario vendedor tipoVenda funcaoOriginal={fetchData} funcaoFilter={fetchDataFilter} statusVenda></Filter>
                 </div>
 
                 <ChartBox>

@@ -21,6 +21,15 @@ function ModalPaymentPix({ idVenda, idTipoPagamento, qtdParcelas,valorPagoAteAgo
     const [base64String, setBase64String] = useState("");
 
     const handleInputChange = (e) => {
+        // console.log(parseInt(e.target.value))
+        // try{
+        //     consNumber(e.target.value)
+        // }catch(e){
+
+        if (isNaN(e.target.value)) {
+            return;
+        }
+
         setValorPagar(Number(e.target.value));
         setValorRestante((valorRealTotal - valorPago) - Number(e.target.value))
     };
@@ -45,11 +54,14 @@ function ModalPaymentPix({ idVenda, idTipoPagamento, qtdParcelas,valorPagoAteAgo
 
      async function realizarPagamento() {
         try {
-            const response = await ApiRequest.pagamentoCreate(idTipoPagamento, idVenda, valorAPagar, 1);
+
+            const response = await ApiRequest.qrCodePix(valorAPagar);
+            console.log(response)
             if (response.status === 201) {
                 const dados = response.data;
-                AbrirModalPaymentWait(dados.Base64QRCode,valorAPagar,onFinalizar);                
+                AbrirModalPaymentWait(dados,valorAPagar,onFinalizar, idTipoPagamento, idVenda);                
             }
+
         } catch (error) {
             console.log("Erro ao gerar pagamento", error);
         }

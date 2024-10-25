@@ -69,6 +69,7 @@ function Transacoes() {
 
             if (response.status === 200) {
                 const dados = response.data.map(item => ({
+                    id: item.id,
                     data: (item.dataHora).replace('T', ' ').split(".")[0],
                     solicitante: item.loja_coletora,
                     liberadora: item.loja_liberadora,
@@ -101,7 +102,6 @@ function Transacoes() {
             } else {
                 response = await ApiRequest.transferenciaGetByFilter(filterData.dataInicio, filterData.dataFim, filterData.horaInicio, filterData.horaFim, filterData.modelo, filterData.produto, filterData.tamanho, filterData.cor, filterData.status, localStorage.getItem('visao_loja'));
             }
-            console.log(response);
 
             if (response.status === 200) {
                 const dados = response.data.map(item => ({
@@ -117,7 +117,6 @@ function Transacoes() {
                     coletor: item.coletor,
                     status: item.status.status,
                 }));
-
                 setDadosHistorico(dados);
                 Alert.alertTop(false, "Filtro aplicado com sucesso!");
 
@@ -193,17 +192,17 @@ function Transacoes() {
             fetchData();
         } else {
             const lowerCaseFilter = filterData.toLowerCase();
-            const searchData = dadosAprovacao.filter((item) => {
-                return (
-                    (item.solicitante?.toLowerCase() || '').includes(lowerCaseFilter) ||
-                    (item.destinatario?.toLowerCase() || '').includes(lowerCaseFilter) ||
-                    (item.codModelo?.toLowerCase() || '').includes(lowerCaseFilter) ||
-                    (item.cor?.toLowerCase() || '').includes(lowerCaseFilter) ||
-                    (item.liberador?.toLowerCase() || '').includes(lowerCaseFilter) ||
-                    (item.coletor?.toLowerCase() || '').includes(lowerCaseFilter) ||
-                    (item.status?.toLowerCase() || '').includes(lowerCaseFilter)
-                );
-            });
+            const searchData = dadosAprovacao.filter((item) =>
+                (item.solicitante?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                (item.destinatario?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                (item.codModelo?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                (item.cor?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                (item.liberador?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                (item.coletor?.toLowerCase() || '').includes(lowerCaseFilter) ||
+                (item.status?.toLowerCase() || '').includes(lowerCaseFilter)
+            );
+            const filtrarIdsTransferencias = searchData.map(obj => obj.id);
+            setIdsDadosPendentes(filtrarIdsTransferencias);
             setDadosAprovacao(searchData);
         }
     }
@@ -265,7 +264,7 @@ function Transacoes() {
                             {isHistoricoSelected ? (
                                 <TabelaPage colunas={colunas} dados={dadosHistorico} />
                             ) : (
-                                <TabelaPage colunas={colunasAprovacao} dados={dadosAprovacao.filter(dado => dado.status === 'PENDENTE')} aceitar={handleAceitarTransferencia} negar={handleNegarTransferencia} id={idsDadosPendentes} />
+                                <TabelaPage colunas={colunasAprovacao} dados={dadosAprovacao.filter(dado => dado.status === 'PENDENTE').map(({ id, ...dados }) => dados)} aceitar={handleAceitarTransferencia} negar={handleNegarTransferencia} id={idsDadosPendentes} />
                             )}
                         </div>
                     </div>
