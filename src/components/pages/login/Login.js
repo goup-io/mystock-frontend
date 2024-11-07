@@ -51,6 +51,7 @@ function Login() {
             localStorage.clear()
             localStorage.setItem("token", data);
             if (respostaHTTP.data.contexto === "usuario") {
+                localStorage.setItem("loja_name", respostaHTTP.data.nomeLoja)
                 localStorage.setItem("loja_id", respostaHTTP.data.idLoja)
                 localStorage.setItem("cargo", respostaHTTP.data.cargo)
                 localStorage.setItem("user_id", respostaHTTP.data.idUser);
@@ -64,6 +65,7 @@ function Login() {
                 }
             }
             if (respostaHTTP.data.contexto === "loja") {
+                localStorage.setItem("loja_name", respostaHTTP.data.nomeLoja)
                 localStorage.setItem("loja_id", respostaHTTP.data.idLoja);
                 localStorage.setItem("tipo_acesso", respostaHTTP.data.tipoLogin);
                 if (respostaHTTP.data.tipoLogin === "AREA_VENDA") {
