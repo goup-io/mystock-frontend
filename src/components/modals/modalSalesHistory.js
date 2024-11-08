@@ -61,7 +61,7 @@ function ModalSalesHistory({idVenda, funcaoUpdateTable}) {
     }
 
     const handleCancelarVenda = () => {
-        Alert.alertQuestionCancelar("Deseja mesmo cancelar essa venda? Essa ação é irreversível.", "Sim", "Cancelar", () => cancelarVenda(idVenda), () => updateTable())
+        Alert.alertQuestionCancelar("Deseja mesmo cancelar essa venda? Essa ação é irreversível.", "Sim", "Voltar", () => cancelarVenda(idVenda), () => updateTable())
     }
 
     async function cancelarVenda(idVenda) {

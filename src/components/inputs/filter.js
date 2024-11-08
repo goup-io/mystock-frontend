@@ -277,10 +277,10 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
                 {preço && (
                     <div>
                         <InputFilterDate
-                            type="text"
+                            type="number"
                             placeholder="R$00,00"
                             inicio="Preço de"
-                            fim="á"
+                            fim="a"
                             name="select_preco"
                             valueInicio={inputPrecoInicioSelecionado}
                             valueFim={inputPrecoFimSelecionado}

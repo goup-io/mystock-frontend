@@ -36,7 +36,7 @@ function ItemCarrinho(props) {
         Alert.alertQuestionCancelar(
             "Deseja mesmo cancelar essa venda? Essa ação é irreversível.",
             "Sim",
-            "Cancelar",
+            "Voltar",
             () => cancelarVenda(idVenda),
             fetchData
         );

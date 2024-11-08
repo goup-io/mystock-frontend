@@ -76,7 +76,7 @@ function ModalPaymentPix({ idVenda, idTipoPagamento, qtdParcelas,valorPagoAteAgo
                 <div className="w-[40rem] h-[5rem] flex justify-between ml-[4rem]">
                     <InputAndLabelModal
                         placeholder="Digite o valor aqui..."
-                        text="number"
+                        type="number"
                         value={valorAPagar}
                         handleInput={handleInputChange}
                     >

@@ -118,6 +118,7 @@ function ModalCadastreProd() {
         ApiRequest.produtoCreate(objetoAdicionado).then((response) => {
             if (response.status === 201) {
                 Alert.alert(SucessImage, "Produto cadastrado no sistema!")
+                window.location.reload();
             }
             if (response.status === 409) {
                 Alert.alert(ErrorImage, "Produto já está cadastrado no sistema!")
@@ -200,8 +201,6 @@ function ModalCadastreProd() {
                                         type="checkbox"  
                                         className="w-7 h-7 bg-[F5F3F4] pl-2 text-[1rem] font-[300] capitalize text-[#555] form-control border border-[0.1rem] border-slate-600"
                                         style={{
-                                            appearance: 'none',
-                                            WebkitAppearance: 'none',
                                             borderRadius: '25%',
                                             cursor: 'pointer',
                                         }}
