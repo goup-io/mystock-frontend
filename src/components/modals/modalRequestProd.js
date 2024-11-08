@@ -85,6 +85,7 @@ function ModalRequestProd() {
                 const response = await ApiRequest.transferenciaCreate(requestBodyProdutos);
                 if (response.status === 201) {
                     Alert.alertSuccess("Solicitação de produto realizada com sucesso!");
+                    window.location.reload();
                     limparCampos();  // Adiciona a função de limpar campos após a solicitação ser realizada com sucesso
                 } else {
                     Alert.alertError("Erro ao solicitar produto!", response.response.data.message);

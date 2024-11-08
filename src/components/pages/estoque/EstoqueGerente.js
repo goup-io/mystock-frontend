@@ -22,7 +22,7 @@ function EstoqueGerente() {
 
     const buttons = [
         { label: "ADICIONAR PRODUTO", event: ModalAddProdCart },
-        { label: "NOVO KIT", event: AbrirModalCadastreKit },
+        // { label: "NOVO KIT", event: AbrirModalCadastreKit },
         { label: "NOVO MODELO", event: AbrirModalCadastreModel },
         { label: "NOVO PRODUTO", event: AbrirModalCadastreProd },
     ];
@@ -83,7 +83,7 @@ function EstoqueGerente() {
 
     async function fetchData() {
         const colunasDoBancoETP = ['Código', 'Nome', 'Modelo', 'Tamanho', 'Cor', 'Preço', 'Loja', 'Item Promo.', 'N.Itens'];
-        const colunasDoBancoModel = ['Código', 'Nome', 'Categoria', 'Tipo'];
+        const colunasDoBancoModel = ['Nome', 'Categoria', 'Tipo'];
 
         setColunasETP(colunasDoBancoETP);
         setColunasModel(colunasDoBancoModel);

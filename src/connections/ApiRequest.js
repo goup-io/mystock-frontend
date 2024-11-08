@@ -1,6 +1,20 @@
 import axios from 'axios'
+// const dotenv = require('dotenv')
 
-const springEndPoint = "http://localhost:8080/api/v1";
+var endpointProxy = process.env.REACT_APP_ENDPOINT_PROXY;
+
+var springEndPoint = `http://${endpointProxy}:8080/api/v1`
+
+// const springEndPoint = "http://localhost:8080/api/v1";
+
+// if(endpointProxy === undefined || endpointProxy === null){
+    // springEndPoint = "http://localhost:8080/api/v1";
+
+// }else {
+//     springEndPoint = "http://localhost:8080/api/v1";
+// }
+
+
 // const springEndPoint = "my-stock-application.azurewebsites.net";
 
 var header = {
@@ -406,7 +420,8 @@ export class ApiRequest {
                 "valorCusto": produtoObj.precoC,
                 "valorRevenda": produtoObj.precoR,
                 "itemPromocional": produtoObj.isPromocional,
-                "idLoja": produtoObj.idLoja
+                "idLoja": produtoObj.idLoja,
+                "codigo": produtoObj.codigo
             }
 
             const resposta = await axios.post(springEndPoint + "/produtos", produto, {

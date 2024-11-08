@@ -77,7 +77,7 @@ function Estoque() {
 
     async function fetchData() {
         const colunasDoBancoETP = ['Código', 'Nome', 'Modelo', 'Tamanho', 'Cor', 'Preço', 'Loja', 'Item Promo.', 'N.Itens'];
-        const colunasDoBancoModel = ['Código', 'Nome', 'Categoria', 'Tipo'];
+        const colunasDoBancoModel = ['Nome', 'Categoria', 'Tipo'];
 
         setColunasETP(colunasDoBancoETP);
         setColunasModel(colunasDoBancoModel);
@@ -296,9 +296,9 @@ function Estoque() {
                     </div>
                     <div className='w-full h-[8%] mt-2 flex justify-end '>
                         <div className='flex gap-4'>
-                            <ButtonModal
+                            {/* <ButtonModal
                                 funcao={AbrirModalCadastreKit}
-                            >Novo Kit</ButtonModal>
+                            >Novo Kit</ButtonModal> */}
                             <ButtonModal
                                 funcao={AbrirModalCadastreModel}
                             >Novo Modelo</ButtonModal>

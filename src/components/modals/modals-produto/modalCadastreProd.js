@@ -25,8 +25,9 @@ function ModalCadastreProd() {
     const [tamanho, setTamanho] = useState("");
     const [cor, setCor] = useState("");
     const [isPromocional, setIsPromocional] = useState("Não"); // Inicializa como "Não"
+    const [codigo, setCodigo] = useState("");
 
-    const setters = [setNome, setPrecoCusto, setPrecoRevenda, setModelo, setTamanho, setCor, setIsPromocional];
+    const setters = [setNome, setPrecoCusto, setPrecoRevenda, setModelo, setTamanho, setCor, setIsPromocional, setCodigo];
     
     console.log(cor)
 
@@ -84,7 +85,7 @@ function ModalCadastreProd() {
 
     const handleSave = () => {
 
-        if (!modelo || !cor || !tamanho || !nome || !precoCusto || !precoRevenda) {
+        if (!modelo || !cor || !tamanho || !nome || !precoCusto || !precoRevenda || !codigo) {
             Alert.alert(ErrorImage, "Preencha todos os campos!")
             return;
         }
@@ -110,12 +111,14 @@ function ModalCadastreProd() {
             idCor,
             tamanhoNumero,
             isPromocional: isPromocional === "Sim" ? "SIM" : "NAO",
-            idLoja: localStorage.getItem("loja_id")
+            idLoja: localStorage.getItem("loja_id"),
+            codigo
         };
 
         ApiRequest.produtoCreate(objetoAdicionado).then((response) => {
             if (response.status === 201) {
                 Alert.alert(SucessImage, "Produto cadastrado no sistema!")
+                window.location.reload();
             }
             if (response.status === 409) {
                 Alert.alert(ErrorImage, "Produto já está cadastrado no sistema!")
@@ -180,16 +183,34 @@ function ModalCadastreProd() {
                         >Preço Revenda</InputAndLabelModal>
                     </div>
 
-                    <div className="mt-2 flex justify-start items-center">
-                        <input 
-                            type="checkbox" 
-                            className="w-6 h-6 ml-6" 
-                            checked={isPromocional === "Sim"} 
-                            onChange={handleCheckboxChange}
-                        />
-                        <p className="form-floating text-lg text-black font-normal ml-4">
-                            Item Promocional
-                        </p>
+                    <div className="flex justify-around">
+                        <InputAndLabelModal
+                            type="text"
+                            placeholder="Digite o código do produto..."
+                            value={codigo}
+                            handleInput={handleInputChange}
+                            handlerAtributeChanger={setCodigo}
+                        >Código</InputAndLabelModal>
+                        <div class="w-2/2 h-1/3 flex">   
+                            <div className="flex flex-col justify-start items-start">
+                                <p className="form-floating text-lg text-black mb-2 font-normal">
+                                    Item Promocional
+                                </p>
+                                <form class="relative" className="w-[16rem] h-7 flex flex-col justify-start items-start">
+                                    <input 
+                                        type="checkbox"  
+                                        className="w-7 h-7 bg-[F5F3F4] pl-2 text-[1rem] font-[300] capitalize text-[#555] form-control border border-[0.1rem] border-slate-600"
+                                        style={{
+                                            borderRadius: '25%',
+                                            cursor: 'pointer',
+                                        }}
+                                        checked={isPromocional === "Sim"} 
+                                        onChange={handleCheckboxChange}
+                                        />
+                                </form>
+                                
+                            </div>
+                        </div>
                     </div>
 
                 </div>
