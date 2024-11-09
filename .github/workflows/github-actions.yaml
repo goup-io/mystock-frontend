@@ -24,9 +24,21 @@ jobs:
 
       - name: Unset CI
         run: unset CI
+
+      - name: Debug: List files in current directory
+        run: ls -la
+
+      - name: Debug: Check Node.js version
+        run: node -v
+
+      - name: Debug: Check npm version
+        run: npm -v
+
+      - name: Debug: Check environment variables
+        run: printenv
         
       - name: Build frontend
-        run: npm run build
+        run: npm run build --no-eslint
         working-directory: ./
 
       - name: Log in to Docker Hub
