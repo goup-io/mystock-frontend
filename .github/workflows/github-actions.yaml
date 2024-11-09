@@ -22,19 +22,19 @@ jobs:
         run: npm install
         working-directory: ./
 
-      - name: Unset CI
-        run: unset CI
+      - name: Set CI=false to allow warnings
+        run: echo "CI=false" >> $GITHUB_ENV
 
-      - name: Debug: List files in current directory
+      - name: Debug - List files in current directory
         run: ls -la
 
-      - name: Debug: Check Node.js version
+      - name: Debug - Check Node.js version
         run: node -v
 
-      - name: Debug: Check npm version
+      - name: Debug - Check npm version
         run: npm -v
 
-      - name: Debug: Check environment variables
+      - name: Debug - Check environment variables
         run: printenv
         
       - name: Build frontend
