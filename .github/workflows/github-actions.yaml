@@ -25,9 +25,6 @@ jobs:
       - name: Set CI=false to allow warnings
         run: echo "CI=false" >> $GITHUB_ENV
 
-      - name: Debug - List files in current directory
-        run: ls -la
-
       - name: Debug - Check Node.js version
         run: node -v
 
