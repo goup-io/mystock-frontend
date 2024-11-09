@@ -3,7 +3,7 @@ name: CI Frontend
 on:
   push:
     branches:
-      - main
+      - inacio@feat/ci-cd-development
 
 jobs:
   build-and-push:
