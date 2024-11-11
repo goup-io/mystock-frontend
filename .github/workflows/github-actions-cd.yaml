@@ -1,0 +1,40 @@
+name: Deploy Frontend
+
+on:
+  workflow_run:
+    workflows: ["CI Frontend"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod +x ~/.ssh/id_rsa
+        env:
+          EC2_SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+
+      - name: Add EC2 host to known hosts
+        run: |
+          ssh-keyscan -H ${{ secrets.EC2_PUBLIC_IP }} >> ~/.ssh/known_hosts
+
+      - name: Connect to EC2 and update frontend container
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
+            # Parar o container atual (se já estiver rodando)
+            docker stop mystock-frontend || true
+            docker rm mystock-frontend || true
+            
+            # Puxar a nova imagem do Docker Hub
+            docker pull ${{ secrets.DOCKER_USERNAME }}/mystock-frontend:latest
+            
+            # Iniciar um novo container com a imagem mais recente
+            docker run -d --name mystock-frontend -p 3000:3000 ${{ secrets.DOCKER_USERNAME }}/mystock-frontend:latest
+          EOF
