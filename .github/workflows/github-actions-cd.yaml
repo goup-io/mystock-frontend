@@ -15,19 +15,19 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Pull latest image
-        run: docker pull goupimg/mystock-frontend:latest
+        run: sudo docker pull goupimg/mystock-frontend:latest
 
       - name: Remove old container
         run: |
-          docker stop mystock-frontend || true
-          docker rm mystock-frontend || true
+          sudo docker stop mystock-frontend || true
+          sudo docker rm mystock-frontend || true
 
       - name: Run new container
         run: |
-          docker run -d --name mystock-frontend \
+          sudo docker run -d --name mystock-frontend \
           -p 3000:3000 \
           -e REACT_APP_ENDPOINT_PROXY=${{secrets.EC2_PUBLIC_IP}} \
           goupimg/mystock-frontend:latest
       
       - name: Check Docker logs
-        run: docker logs mystock-frontend || true
+        run: sudo docker logs mystock-frontend || true
