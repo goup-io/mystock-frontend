@@ -9,7 +9,7 @@ on:
 jobs:
   deploy:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    runs-on: [self-hosted, frontend, linux, docker]
+    runs-on: [self-hosted, frontend, Linux, docker]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
