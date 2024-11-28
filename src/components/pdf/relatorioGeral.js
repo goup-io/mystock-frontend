@@ -68,11 +68,10 @@ function RelatorioGeral(props) {
                 </table>
             </Modulo>
             <Modulo titulo={"Vendas"}>
-                <h4>Mais vendidos em:</h4>
+                <h4>Modelos mais vendidos:</h4>
                 <Barra />
                 <table>
                     <tr>
-                        <th>Codigo</th>
                         <th>Nome</th>
                         <th>Tipo</th>
                         <th>Categoria</th>
@@ -80,7 +79,6 @@ function RelatorioGeral(props) {
                     </tr>
                     {listaMaisVendidos.map((produto, index) => (
                         <tr key={index}>
-                            <td>{produto.modelo.codigo}</td>
                             <td>{produto.modelo.nome}</td>
                             <td>{produto.modelo.tipo.nome}</td>
                             <td>{produto.modelo.categoria.nome}</td>

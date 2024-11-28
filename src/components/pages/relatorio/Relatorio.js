@@ -48,6 +48,8 @@ function Relatorio() {
         setModeloSelecionado(event.target.value); // Atualiza o estado do modelo selecionado
     };
 
+    let firstTime = true;
+
 
     const [listaEstoque, setListaEstoque] = useState([]);
     const [listaMaisVendidos, setListaMaisVendidos] = useState([]);
@@ -65,11 +67,11 @@ function Relatorio() {
 
 
     useEffect(() => {
-        // listarEstoque();
-        // listarFuncionarios(dias);
-        // listarResumoVendas(dias);
-        // listarEstoqueResumo(dias);
-        // listarModelosMaisVendidos(dias);
+        listarEstoque();
+        listarFuncionarios(dias);
+        listarResumoVendas(dias);
+        listarEstoqueResumo(dias);
+        listarModelosMaisVendidos(dias);
     }, [dias])
 
     async function listarFuncionarios(dias) {
@@ -83,7 +85,7 @@ function Relatorio() {
                 setListaFuncionarioRanking(listaFuncionariosAux);
 
             } else {
-                Alert.alert(ErrorIcon, "Não foi possível encontrar dados do ranking dos funcionarios, por favor, tente novamente")
+                console.log("Não foi possível encontrar dados do ranking dos funcionarios, por favor, tente novamente")
             }
 
             //            setListaFuncionarioRanking(listaFuncionariosAux);
@@ -99,7 +101,8 @@ function Relatorio() {
                     listaEstoqueAux.push(estoque);
                 })
             } else {
-                Alert.alert(ErrorIcon, "Não foi possível buscar os dados dos produtos que estão acabando, por favor, tente novamente")
+                console.log("Não foi possível buscar os dados dos produtos que estão acabando, por favor, tente novamente")
+                return;
             }
 
             setListaEstoque(listaEstoqueAux);
@@ -116,7 +119,7 @@ function Relatorio() {
                 setLucro(req.data.lucroOperacional);
                 setVariacaoLucro(req.data.porcentagemLucro);
             } else {
-                Alert.alert(ErrorIcon, "Não foi possível buscar os dados do resumo das vendas, por favor, tente novamente")
+                console.log("Não foi possível buscar os dados do resumo das vendas, por favor, tente novamente")
             }
         })
     }
@@ -130,7 +133,7 @@ function Relatorio() {
                     listaModelosMaisVendidos.push(modelo);
                 })
             } else {
-                Alert.alert(ErrorIcon, "Não foi possível encontrar dados do ranking de modelos mais vendidos, por favor, tente novamente")
+                console.log("Não foi possível encontrar dados do ranking de modelos mais vendidos, por favor, tente novamente")
             }
 
             setListaMaisVendidos(listaModelosMaisVendidos);
@@ -144,7 +147,7 @@ function Relatorio() {
                 setQtdProdutosVendidos(req.data.qtdProdutosVendidos)
                 setQtdProdutosTransferidos(req.data.qtdProdutosTransferidos)
             } else {
-                Alert.alert(ErrorIcon, "Não foi possível encontrar dados do resumo do estoque, por favor, tente novamente")
+                console.log("Não foi possível encontrar dados do resumo do estoque, por favor, tente novamente")
             }
 
         })
@@ -152,7 +155,11 @@ function Relatorio() {
     }
 
     async function handleFileDownload() {
-
+        listarEstoque();
+        listarFuncionarios(dias);
+        listarResumoVendas(dias);
+        listarEstoqueResumo(dias);
+        listarModelosMaisVendidos(dias);
 
         const pdfContent = htmlToPdfmake(
             ReactDOMServer.renderToStaticMarkup(
@@ -192,10 +199,21 @@ function Relatorio() {
                 <TitleBox title="Relatórios"></TitleBox>
                 <ChartBox>
                     <div className='w-full flex p-2'>
-                        <div className='w-[50%] text-left '>
-                            <h2 className='font-medium text-lg mb-5'>CONFIGURAÇÃO PARA EMISSÃO</h2>
-                            <div className='flex flex-col gap-8 w-[50%] h-[100%]'>
-                                <p>lorem ipsum</p>
+                        <div className='w-[50%] text-left p-4'>
+                            <h2 className='font-medium text-lg mb-5'>RELATÓRIO DE DESEMPENHO DOS ÚLTIMOS 30 DIAS</h2>
+                            <div className='flex flex-col gap-2 w-[80%] h-[100%]'>
+                                <p>Este relatório foi elaborado para fornecer uma visão abrangente sobre os principais indicadores de desempenho das lojas nos últimos 30 dias. Com base nos dados mais recentes, ele abrange informações detalhadas sobre os seguintes aspectos:</p>
+                                <br></br>
+                                <ul>
+                                    <li><strong>Vendas</strong>: Apresentação de um ranking dos modelos mais vendidos no período, destacando as tendências do momento.</li>
+                                    <li><strong>Funcionários</strong>: Dados relacionados ao desempenho da equipe, destacando número e valor de vendas.
+                                    </li>
+                                    <li><strong>Estoque</strong>: Informações sobre o fluxo do estoque, incluindo a identificação dos produtos com estoque crítico, permitindo ações rápidas para evitar rupturas e garantir o abastecimento adequado.</li>
+                                </ul>
+                                <br></br>
+                                <p>Este relatório é uma ferramenta essencial para tomada de decisão estratégica, fornecendo uma base sólida para avaliar o desempenho das lojas, identificar oportunidades de melhoria e planejar ações para os próximos períodos.</p>
+                                <p>Clique no botão abaixo para gerar o relatório detalhado e ter acesso a todas as informações que ajudarão a direcionar os próximos passos do negócio.</p>
+                                <br></br>
                                 <div className='w-full flex flex-col bottom-0'>
                                     <ButtonModal
                                         funcao={handleFileDownload}
