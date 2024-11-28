@@ -65,11 +65,11 @@ function Relatorio() {
 
 
     useEffect(() => {
-        listarEstoque();
-        listarFuncionarios(dias);
-        listarResumoVendas(dias);
-        listarEstoqueResumo(dias);
-        listarModelosMaisVendidos(dias);
+        // listarEstoque();
+        // listarFuncionarios(dias);
+        // listarResumoVendas(dias);
+        // listarEstoqueResumo(dias);
+        // listarModelosMaisVendidos(dias);
     }, [dias])
 
     async function listarFuncionarios(dias) {
@@ -195,88 +195,7 @@ function Relatorio() {
                         <div className='w-[50%] text-left '>
                             <h2 className='font-medium text-lg mb-5'>CONFIGURAÇÃO PARA EMISSÃO</h2>
                             <div className='flex flex-col gap-8 w-[50%] h-[100%]'>
-                                <div>
-                                    <label>Modelo:</label>
-                                    <div className='flex gap-5 mt-2'>
-                                        <div>
-                                            <input
-                                                type="radio"
-                                                name="i_modelo"
-                                                value="anual"
-                                                checked={modeloSelecionado === 'anual'}
-                                                onChange={handleModelo}
-                                            /> Anual
-                                        </div>
-                                        <div>
-                                            <input
-                                                type="radio"
-                                                name="i_modelo"
-                                                value="mensal"
-                                                checked={modeloSelecionado === 'mensal'}
-                                                onChange={handleModelo}
-                                            /> Mensal
-                                        </div>
-                                        <div>
-                                            <input
-                                                type="radio"
-                                                name="i_modelo"
-                                                value="diario"
-                                                checked={modeloSelecionado === 'diario'}
-                                                onChange={handleModelo}
-                                            /> Diario
-                                        </div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label>Data referente:</label>
-                                    <div className='flex gap-5 my-2'>
-                                        <div className='flex flex-col'>
-                                            <label>Dia:</label>
-                                            <input
-                                                type='number'
-                                                min={1}
-                                                max={31}
-                                                value={diaSelecionado}
-                                                placeholder='01'
-                                                className='border rounded pl-3'
-                                                onChange={handleDia}
-                                            />
-                                        </div>
-                                        <div className='flex flex-col'>
-                                            <label>Mês:</label>
-                                            <select
-                                                value={mesSelecionado}
-                                                onChange={handleSelectMes}
-                                                className="border rounded"
-                                            >
-                                                {meses.map((mes, index) => (
-                                                    <option key={index} value={mes}>
-                                                        {mes}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                        <div className='flex flex-col'>
-                                            <label>Ano:</label>
-                                            <input
-                                                type='number'
-                                                min={2024}
-                                                max={2050}
-                                                value={anoSelecionado}
-                                                name='i_ano'
-                                                placeholder={anoAtual}
-                                                className='border rounded pl-3'
-                                                onChange={handleAno}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className='flex flex-col'>
-                                    <label>Tipo:</label>
-                                    <select className='border rounded px-1' name='i_tipo'>
-                                        <option value={0}>Geral (todas as lojas)</option>
-                                    </select>
-                                </div>
+                                <p>lorem ipsum</p>
                                 <div className='w-full flex flex-col bottom-0'>
                                     <ButtonModal
                                         funcao={handleFileDownload}
