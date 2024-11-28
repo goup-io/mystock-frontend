@@ -1,0 +1,33 @@
+name: Deploy Frontend
+
+on:
+  workflow_run:
+    workflows: ["CI Frontend"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.conclusion == 'success' }}
+    runs-on: [self-hosted, frontend, Linux, docker]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Pull latest image
+        run: sudo docker pull goupimg/mystock-frontend:latest
+
+      - name: Remove old container
+        run: |
+          sudo docker stop mystock-frontend || true
+          sudo docker rm mystock-frontend || true
+
+      - name: Run new container
+        run: |
+          sudo docker run -d --name mystock-frontend \
+          -p 3000:3000 \
+          -e REACT_APP_ENDPOINT_PROXY=${{secrets.EC2_PUBLIC_IP}} \
+          goupimg/mystock-frontend:latest
+      
+      - name: Check Docker logs
+        run: sudo docker logs mystock-frontend || true
