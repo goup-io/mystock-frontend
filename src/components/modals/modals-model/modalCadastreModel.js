@@ -17,13 +17,12 @@ function ModalCadastreModel() {
 
     const [dadosCategoria, setDadosCategoria] = useState([]);
     const [dadosTipo, setDadosTipo] = useState([]);
-    const [codigo, setCodigo] = useState("");
     const [nome, setNome] = useState("");
     const [categoria, setCategoria] = useState("");
     const [tipo, setTipo] = useState("");
 
 
-    const setters = [setCodigo, setNome, setCategoria, setTipo];
+    const setters = [ setNome, setCategoria, setTipo];
 
     function handleInputChange(event, setStateFunction) {
         setStateFunction(event.target.value);
@@ -64,7 +63,7 @@ function ModalCadastreModel() {
 
 
     const handleSave = () => {
-        if ( !codigo || !nome || !categoria || !tipo) {
+        if (  !nome || !categoria || !tipo) {
             Alert.alert(ErrorImage, "Preencha todos os campos!")
             return;
         }
@@ -80,7 +79,6 @@ function ModalCadastreModel() {
 
         const objetoAdicionado = {
             nome,
-            codigo,
             idCategoria,
             idTipo
         };
@@ -124,7 +122,7 @@ function ModalCadastreModel() {
                             handleChange={handleChangeCategoria}
                         >Categoria</ComboBoxModal>
                         <ComboBoxModal
-                            dadosBanco={dadosCategoria.map(value => value.nome)}
+                            dadosBanco={dadosTipo.map(value => value.nome)}
                             value={tipo}
                             onChange={(e) => (e, setTipo)}
                             handleChange={handleChangeTipo}
