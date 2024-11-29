@@ -173,7 +173,6 @@ function Estoque() {
             const lowerCaseFilter = filterData.toLowerCase();
 
             const searchData = dadosDoBancoModel.filter((item) =>
-                item.codigo.toLowerCase().includes(lowerCaseFilter) ||
                 item.nome.toLowerCase().includes(lowerCaseFilter) ||
                 item.categoria.toLowerCase().includes(lowerCaseFilter) ||
                 item.tipo.toLowerCase().includes(lowerCaseFilter)
@@ -215,6 +214,7 @@ function Estoque() {
             const response = await ApiRequest.excluirETP(etpId.id);
             if (response.status === 204) {
                 Alert.alertSuccess("Produto excluído com sucesso!");
+                window.location.reload();
             } else if (response.response.status === 500) {
                 Alert.alertError("Erro ao excluir produto!", "Este produto está sendo utilizado em um produto!");
             } else {
@@ -228,8 +228,9 @@ function Estoque() {
     async function excluirModel(modelId) {
         try {
             const response = await ApiRequest.modeloDelete(modelId.id);
-            if (response.response.status === 204) {
+            if (response.status === 204) {
                 Alert.alertSuccess("Modelo excluído com sucesso!");
+                window.location.reload();
             } else if (response.response.status === 500) {
                 Alert.alertError("Erro ao excluir modelo!", "Aconteceu um erro inesperado");
             } else if (response.response.status === 409) {

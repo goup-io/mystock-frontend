@@ -46,7 +46,6 @@ function ModalAddProdCart(props) {
           cor: obj.cor,
           preco: obj.preco,
           loja: obj.loja,
-          desconto: 0,
           quantidade: obj.quantidade
         }));
 
