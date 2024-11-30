@@ -221,13 +221,13 @@ function EstoqueGerente() {
     async function excluirEtp(etpId) {
         try {
             const response = await ApiRequest.excluirETP(etpId.id);
-            if (response.status === 204) {
+            if (response?.status === 204) {
                 Alert.alertSuccess("Produto excluído com sucesso!");
                 setTimeout(() => {window.location.reload()}, 1000);
-            } else if (response.response.status === 500) {
-                Alert.alertError("Erro ao excluir produto!", "Este produto está sendo utilizado em um produto!");
+            } else if (response?.status === 409) {
+                Alert.alertError("Não foi possível excluir produto!", "Algum registro é dependente do produto");
             } else {
-                Alert.alertError("Erro ao excluir produto!", response.response.data.message);
+                Alert.alertError("Erro ao excluir produto!", response?.response?.data?.message);
             }
         } catch (error) {
             console.log("Erro ao excluir etp: ", error);
@@ -237,15 +237,15 @@ function EstoqueGerente() {
     async function excluirModel(modelId) {
         try {
             const response = await ApiRequest.modeloDelete(modelId.id);
-            if (response.status === 204) {
+            if (response?.status === 204) {
                 Alert.alertSuccess("Modelo excluído com sucesso!");
                 setTimeout(() => {window.location.reload()}, 1000);
-            } else if (response.response.status === 500) {
+            } else if (response?.response?.status === 500) {
                 Alert.alertError("Erro ao excluir modelo!", "Aconteceu um erro inesperado");
-            } else if (response.response.status === 409) {
-                Alert.alertError("Não foi possível excluir o modelo!", response.response.data);
+            } else if (response?.response?.status === 409) {
+                Alert.alertError("Não foi possível excluir o modelo!", response?.response?.data);
             } else {
-                Alert.alertError("Erro ao excluir modelo!", response.response.data);
+                Alert.alertError("Erro ao excluir modelo!", response?.response?.data);
             }
         } catch (error) {
             console.log("Erro ao excluir um modelo: ", error);
