@@ -47,7 +47,7 @@ function ModalNotification() {
                 ))}
             </div>
             <div className="w-[22rem] flex justify-end h-6">
-                <ButtonModal cor="#919191">Limpar tudo</ButtonModal>
+                {/* <ButtonModal cor="#919191">Limpar tudo</ButtonModal> */}
             </div>
         </div>
     );

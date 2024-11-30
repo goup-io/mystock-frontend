@@ -189,7 +189,7 @@ function ModalEditProd({ id, onUpdate }) {
 
                 </div>
                 <div className="justify-between flex-row flex w-11/12">
-                    <ButtonModal height={"2rem"} width={"16rem"} funcao={() => AbrirModalAddDiscount(setPrecoRevenda, precoRevenda)}>Adicionar Desconto</ButtonModal>
+                    {/* <ButtonModal height={"2rem"} width={"16rem"} funcao={() => AbrirModalAddDiscount(setPrecoRevenda, precoRevenda)}>Adicionar Desconto</ButtonModal> */}
                     <div className="w-[40rem] flex justify-end  h-6 ">
                         <ButtonClear
                         setters={setters}

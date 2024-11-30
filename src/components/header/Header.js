@@ -19,7 +19,7 @@ function Header(props){
     useEffect(() => {
         const timerID = setInterval(() => tick(), 1000);
 
-        definirLoja(localStorage.getItem("loja_id"))
+        definirLoja(localStorage.getItem("loja_name"))
 
         return function cleanup() {
             clearInterval(timerID);

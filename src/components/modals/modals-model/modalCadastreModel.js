@@ -17,13 +17,12 @@ function ModalCadastreModel() {
 
     const [dadosCategoria, setDadosCategoria] = useState([]);
     const [dadosTipo, setDadosTipo] = useState([]);
-    const [codigo, setCodigo] = useState("");
     const [nome, setNome] = useState("");
     const [categoria, setCategoria] = useState("");
     const [tipo, setTipo] = useState("");
 
 
-    const setters = [setCodigo, setNome, setCategoria, setTipo];
+    const setters = [ setNome, setCategoria, setTipo];
 
     function handleInputChange(event, setStateFunction) {
         setStateFunction(event.target.value);
@@ -64,7 +63,7 @@ function ModalCadastreModel() {
 
 
     const handleSave = () => {
-        if ( !codigo || !nome || !categoria || !tipo) {
+        if (  !nome || !categoria || !tipo) {
             Alert.alert(ErrorImage, "Preencha todos os campos!")
             return;
         }
@@ -80,7 +79,6 @@ function ModalCadastreModel() {
 
         const objetoAdicionado = {
             nome,
-            codigo,
             idCategoria,
             idTipo
         };
@@ -89,6 +87,7 @@ function ModalCadastreModel() {
         ApiRequest.modeloCreate(objetoAdicionado).then((response) => {
             if (response.status === 201) {
                 Alert.alert(SucessImage, "Modelo cadastrado no sistema!")
+                setTimeout(() => {window.location.reload()}, 1000);
             }
             if (response.status === 409) {
                 Alert.alert(ErrorImage, "Modelo já está cadastrado no sistema!")
@@ -107,15 +106,7 @@ function ModalCadastreModel() {
                     ></HeaderModal>
                 </div>
                 <div className="w-[40rem] h-[16rem] flex flex-col rounded justify-around p-3 bg-[#F5F3F4] border-solid shadow-[5px_5px_10px_0_rgba(0,0,0,0.14)] border-gray-700">
-
-                    <div className="flex justify-around ">
-                        <InputAndLabelModal
-                            type="Text"
-                            placeholder="digite o código..."
-                            value={codigo}
-                            handleInput={handleInputChange}
-                            handlerAtributeChanger={setCodigo}
-                        >Código</InputAndLabelModal>
+                    <div className="px-8 flex justify-between">
                         <InputAndLabelModal
                             type="Text"
                             placeholder="digite o nome..."
@@ -124,7 +115,7 @@ function ModalCadastreModel() {
                             handlerAtributeChanger={setNome}
                         >Nome</InputAndLabelModal>
                     </div>
-                    <div className="flex justify-around">
+                    <div className="px-8 flex justify-between">
                         <ComboBoxModal
                             dadosBanco={dadosCategoria.map(value => value.nome)}
                             value={categoria}
@@ -132,7 +123,7 @@ function ModalCadastreModel() {
                             handleChange={handleChangeCategoria}
                         >Categoria</ComboBoxModal>
                         <ComboBoxModal
-                            dadosBanco={dadosCategoria.map(value => value.nome)}
+                            dadosBanco={dadosTipo.map(value => value.nome)}
                             value={tipo}
                             onChange={(e) => (e, setTipo)}
                             handleChange={handleChangeTipo}

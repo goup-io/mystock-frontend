@@ -363,6 +363,8 @@ function Venda() {
             
         }
         else{
+            console.log("ERRO: ")
+            console.log(respostaHTTP)
             Alert.alert(ErrorIcon, `Ops .... <br/> ${respostaHTTP.response.data.message}`);
         }
     }

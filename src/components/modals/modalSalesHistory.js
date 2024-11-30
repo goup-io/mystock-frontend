@@ -61,7 +61,7 @@ function ModalSalesHistory({idVenda, funcaoUpdateTable}) {
     }
 
     const handleCancelarVenda = () => {
-        Alert.alertQuestionCancelar("Deseja mesmo cancelar essa venda? Essa ação é irreversível.", "Sim", "Cancelar", () => cancelarVenda(idVenda), () => updateTable())
+        Alert.alertQuestionCancelar("Deseja mesmo cancelar essa venda? Essa ação é irreversível.", "Sim", "Voltar", () => cancelarVenda(idVenda), () => updateTable())
     }
 
     async function cancelarVenda(idVenda) {
@@ -146,9 +146,8 @@ function ModalSalesHistory({idVenda, funcaoUpdateTable}) {
                 </div>
                 <div className="w-[42rem] flex justify-between h-6 ">
                     <ButtonModal cor="#6A8ACF" funcao={hanbleAbrirModalPaymentHistory}>Histórico de pagamento</ButtonModal>
-                    <div className="w-5/12 flex justify-between">
+                    <div className="w-5/12 flex justify-end">
                         <ButtonModal cor="#919191" funcao={handleCancelarVenda} >Cancelar Venda</ButtonModal>
-                        <ButtonModal>Trocar Itens</ButtonModal>
                     </div>
 
                 </div>

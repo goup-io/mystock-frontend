@@ -3,7 +3,7 @@ import axios from 'axios'
 
 var endpointProxy = process.env.REACT_APP_ENDPOINT_PROXY;
 
-var springEndPoint = `http://${endpointProxy}:80/api/v1`
+var springEndPoint = `http://${endpointProxy}:8080/api/v1`
 
 // const springEndPoint = "http://localhost:8080/api/v1";
 
@@ -420,7 +420,8 @@ export class ApiRequest {
                 "valorCusto": produtoObj.precoC,
                 "valorRevenda": produtoObj.precoR,
                 "itemPromocional": produtoObj.isPromocional,
-                "idLoja": produtoObj.idLoja
+                "idLoja": produtoObj.idLoja,
+                "codigo": produtoObj.codigo
             }
 
             const resposta = await axios.post(springEndPoint + "/produtos", produto, {
@@ -2127,19 +2128,23 @@ export class ApiRequest {
     static async alertasGetByFilter(dataInicio, dataFim, horaInicio, horaFim, lojaId) {
         try {
             let queryParams = [];
-
+            console.log("dataInicio: ", dataInicio);
+            console.log("horaInicio: ", horaInicio);
+            console.log("dataFim: ", dataFim);
+            console.log("horaFim: ", horaFim);
             if (dataInicio !== '') {
-                queryParams.push(`dataHoraInicio=${dataInicio}T${horaInicio === '' ? '00:00:00' : horaInicio}`);
+                queryParams.push(`dataInicio=${dataInicio}T${horaInicio === '' ? '00:00:00' : horaInicio + ":00"}`);
             }
             if (dataFim !== '') {
-                queryParams.push(`dataHoraFim=${dataFim}T${horaFim === '' ? '23:59:59' : horaFim}`);
+                queryParams.push(`dataFim=${dataFim}T${horaFim === '' ? '23:59:59' : horaFim + ":00"}`);
             }
             if (lojaId !== '') {
                 queryParams.push(`id_loja=${lojaId}`);
             }
 
             const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
-
+            
+            console.log(`${springEndPoint}/alertas/filtro${queryString}`)
             const resposta = await axios.get(springEndPoint + `/alertas/filtro${queryString}`, {
                 headers: header
             });
