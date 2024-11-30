@@ -87,7 +87,7 @@ function ModalCadastreModel() {
         ApiRequest.modeloCreate(objetoAdicionado).then((response) => {
             if (response.status === 201) {
                 Alert.alert(SucessImage, "Modelo cadastrado no sistema!")
-                window.location.reload();
+                setTimeout(() => {window.location.reload()}, 1000);
             }
             if (response.status === 409) {
                 Alert.alert(ErrorImage, "Modelo já está cadastrado no sistema!")

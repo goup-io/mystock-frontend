@@ -6,7 +6,7 @@ import ComboBoxFilter from "../inputs/comboBoxFilter";
 import ApiRequest from '../../connections/ApiRequest';
 import Alert from '../alerts/Alert';
 
-function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVenda, horario, tipoAlerta, produto, funcaoFilter, funcaoOriginal, categoriaModelo, tipoModelo, statusVenda }) {
+function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVenda, horario, produto, funcaoFilter, funcaoOriginal, categoriaModelo, tipoModelo, statusVenda }) {
     const [selectedValue, setSelectedValue] = useState('estoque');
 
     const handleChange = (event) => {
@@ -224,6 +224,7 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
         };
 
         if (filterData.cor !== '' || filterData.modelo !== '' || filterData.tamanho !== '' || filterData.status !== '' || filterData.tipoVenda !== '' || filterData.vendedor !== '' || filterData.produto !== '' || filterData.dataInicio !== '' || filterData.dataFim !== '' || filterData.horaInicio !== '' || filterData.horaFim !== '' || filterData.precoInicio !== '' || filterData.precoFim !== '' || filterData.categoriaModelo !== '' || filterData.tipoModelo !== '' || filterData.statusVenda !== '') {
+            console.log(filterData);
             funcaoFilter(filterData);
         } else {
             Alert.alertTop(true, 'Nenhum campo preenchido!');
@@ -287,33 +288,6 @@ function Filter({ data, cor, modelo, tamanho, preço, status, vendedor, tipoVend
                             handleInputInicio={(e) => handleInput(e, setInputPrecoInicioSelecionado)}
                             handleInputFim={(e) => handleInput(e, setInputPrecoFimSelecionado)}
                         />
-                    </div>
-                )}
-                {tipoAlerta && (
-                    <div className="flex items-center">
-                        <label className="text-[1rem] text-black font-normal mr-3">Tipo:</label>
-                        <div className="flex gap-5 mt-1">
-                            <div className="flex items-center gap-1">
-                                <input
-                                    type="radio"
-                                    name="tpAlerta"
-                                    value="estoque"
-                                    checked={selectedValue === 'estoque'}
-                                    onChange={handleChange}
-                                />
-                                Estoque
-                            </div>
-                            <div className="flex items-center gap-1">
-                                <input
-                                    type="radio"
-                                    name="tpAlerta"
-                                    value="transferencias"
-                                    checked={selectedValue === 'transferencias'}
-                                    onChange={handleChange}
-                                />
-                                Transferências
-                            </div>
-                        </div>
                     </div>
                 )}
             </div>

@@ -74,6 +74,25 @@ function ModalAddProdCart(props) {
     }
   }
 
+  async function fetchDataFilterSearch(filterData) {
+    if (filterData === "") {
+        fetchData();
+    } else {
+        const lowerCaseFilter = filterData.toLowerCase();
+        console.log(dadosFiltradosETP);
+        const searchData = dadosFiltradosETP.filter(item => (
+            item.codigo.toLowerCase().includes(lowerCaseFilter) ||
+            item.nome.toLowerCase().includes(lowerCaseFilter) ||
+            item.modelo.toLowerCase().includes(lowerCaseFilter) ||
+            item.cor.toLowerCase().includes(lowerCaseFilter) ||
+            item.loja.toLowerCase().includes(lowerCaseFilter)
+        ));
+        setDadosFiltradosETP(searchData);
+        const filtrarIdsEtps = searchData.map(obj => ({ id: obj.id }));
+        setIdEtps(filtrarIdsEtps);
+    }
+}
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -142,7 +161,7 @@ function ModalAddProdCart(props) {
         <HeaderModal props="Adicionar Produto no Carrinho" />
       </div>
       <div className="w-[43rem] h-[2rem] flex justify-end ">
-        <InputSearcModal props="text">Pesquisar</InputSearcModal>
+        <InputSearcModal props="text" funcao={fetchDataFilterSearch}>Pesquisar</InputSearcModal>
       </div>
       <div className='w-[43rem] h-[18rem] border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto'>
         <TabelaModal
@@ -154,7 +173,7 @@ function ModalAddProdCart(props) {
         />
       </div>
       <div className="w-[43rem] flex justify-end items-end mt-1 h-7">
-        <ButtonClear setters={setters}>Limpar</ButtonClear>
+        {/* <ButtonClear setters={setters}>Limpar</ButtonClear> */}
         <ButtonModal funcao={handleCadastrar}>Adicionar</ButtonModal>
       </div>
     </div>
