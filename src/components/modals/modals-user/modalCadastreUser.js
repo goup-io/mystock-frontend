@@ -16,7 +16,6 @@ function ModalCadastreUser() {
     // const navigate = useNavigate();
 
     const [dadosCargo, setDadosCargo] = useState([]);
-    const [nomesCargos, setNomeCargos] = useState([]);
     const [dadosLoja, setDadosLoja] = useState([]);
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
@@ -25,7 +24,7 @@ function ModalCadastreUser() {
     const [loja, setLoja] = useState("");
     const [loading, setLoading] = useState(true);
 
-    const setters = [setNome, setEmail, setCelular, setDadosCargo, setLoja];
+    const setters = [setNome, setEmail, setCelular, setCargo, setLoja];
 
     function handleInputChange(event, setStateFunction) {
         setStateFunction(event.target.value);
@@ -146,6 +145,7 @@ function ModalCadastreUser() {
                             >Celular</InputAndLabelModal>
                             <ComboBoxModal
                                 dadosBanco={dadosCargo.map(value => value.nome)}
+                                value={cargo}
                                 handleChange={handleChangeCargo}
                                 // id={dadosCargo.map(value => value.id)}
                             >Cargo</ComboBoxModal>

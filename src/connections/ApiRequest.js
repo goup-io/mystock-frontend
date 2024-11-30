@@ -3,7 +3,7 @@ import axios from 'axios'
 
 var endpointProxy = process.env.REACT_APP_ENDPOINT_PROXY;
 
-var springEndPoint = `http://${endpointProxy}:80/api/v1`
+var springEndPoint = `http://${endpointProxy}:8080/api/v1`
 
 // const springEndPoint = "http://localhost:8080/api/v1";
 
