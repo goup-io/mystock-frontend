@@ -138,7 +138,7 @@ function Usuario() {
 
     const buttons = [
         { label: "Calculadora de comissão", event: AbrirModalComission },
-        { label: "NOVO USUÁRIO", event: AbrirModalCadastreUser },
+        { label: "Novo Usuário", event: AbrirModalCadastreUser },
     ]
 
     return (
