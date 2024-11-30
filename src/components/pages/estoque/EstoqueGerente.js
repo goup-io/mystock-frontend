@@ -178,7 +178,6 @@ function EstoqueGerente() {
         } else {
             const lowerCaseFilter = filterData.toLowerCase();
             const searchData = dadosDoBancoModel.filter((item) =>
-                item.codigo.toLowerCase().includes(lowerCaseFilter) ||
                 item.nome.toLowerCase().includes(lowerCaseFilter) ||
                 item.categoria.toLowerCase().includes(lowerCaseFilter) ||
                 item.tipo.toLowerCase().includes(lowerCaseFilter)

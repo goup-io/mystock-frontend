@@ -2140,7 +2140,7 @@ export class ApiRequest {
             }
 
             const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
-
+            
             const resposta = await axios.get(springEndPoint + `/alertas/filtro${queryString}`, {
                 headers: header
             });
