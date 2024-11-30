@@ -118,7 +118,7 @@ function ModalCadastreProd() {
         ApiRequest.produtoCreate(objetoAdicionado).then((response) => {
             if (response.status === 201) {
                 Alert.alert(SucessImage, "Produto cadastrado no sistema!")
-                window.location.reload();
+                setTimeout(() => {window.location.reload()}, 1000);
             }
             if (response.status === 409) {
                 Alert.alert(ErrorImage, "Produto já está cadastrado no sistema!")
