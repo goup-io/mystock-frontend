@@ -25,69 +25,84 @@ function ModalCadastreProdPreConfig({ onUpdate }) {
   }, []);
 
   const setters = [setQuantidades, setTotalItens];
+  const fetchData = async () => {
+    const colunasDoBancoETP = ['Código', 'Nome', 'Modelo', 'Tamanho', 'Cor', 'Preço', 'Loja', 'N.Itens'];
+    try {
+      const idLoja = localStorage.getItem("loja_id")
+      const response = await ApiRequest.etpsGetAllByLoja(idLoja);
 
+      if (response.status === 200) {
+        const dados = response.data;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const colunasDoBancoETP = ['Código', 'Nome', 'Modelo', 'Tamanho', 'Cor', 'Preço', 'Loja', 'N.Itens'];
-      try {
-        const idLoja = localStorage.getItem("loja_id")
-        const response = await ApiRequest.etpsGetAllByLoja(idLoja);
+        const filtrarDadosETP = dados.map(obj => ({
+          codigo: obj.codigo,
+          nome: obj.nome,
+          modelo: obj.modelo,
+          tamanho: obj.tamanho,
+          cor: obj.cor,
+          preco: obj.preco,
+          loja: obj.loja,
+          quantidade: obj.quantidade
+        }));
 
-        if (response.status === 200) {
-          const dados = response.data;
+        const ids = dados.map(obj => ({
+          id: obj.id
+        }));
 
-          const filtrarDadosETP = dados.map(obj => ({
-            codigo: obj.codigo,
-            nome: obj.nome,
-            modelo: obj.modelo,
-            tamanho: obj.tamanho,
-            cor: obj.cor,
-            preco: obj.preco,
-            loja: obj.loja,
-            quantidade: obj.quantidade
-          }));
+        setIdEtps(prevIds => {
+          const newIds = JSON.stringify(ids);
+          const oldIds = JSON.stringify(prevIds);
+          if (newIds !== oldIds) {
+            return ids;
+          }
+          return prevIds;
+        });
 
-          const ids = dados.map(obj => ({
-            id: obj.id
-          }));
-
-          setIdEtps(prevIds => {
-            const newIds = JSON.stringify(ids);
-            const oldIds = JSON.stringify(prevIds);
-            if (newIds !== oldIds) {
-              return ids;
-            }
-            return prevIds;
-          });
-
-          setDadosFiltradosETP(prevDados => {
-            const newDados = JSON.stringify(filtrarDadosETP);
-            const oldDados = JSON.stringify(prevDados);
-            if (newDados !== oldDados) {
-              return filtrarDadosETP;
-            }
-            return prevDados;
-          });
-        }
-      } catch (error) {
-        console.log("Erro ao buscar os dados", error);
+        setDadosFiltradosETP(prevDados => {
+          const newDados = JSON.stringify(filtrarDadosETP);
+          const oldDados = JSON.stringify(prevDados);
+          if (newDados !== oldDados) {
+            return filtrarDadosETP;
+          }
+          return prevDados;
+        });
       }
-
-      setColunasETP(prevColunas => {
-        const newColunas = JSON.stringify(colunasDoBancoETP);
-        const oldColunas = JSON.stringify(prevColunas);
-        if (newColunas !== oldColunas) {
-          return colunasDoBancoETP;
-        }
-        return prevColunas;
-      });
+    } catch (error) {
+      console.log("Erro ao buscar os dados", error);
     }
 
+    setColunasETP(prevColunas => {
+      const newColunas = JSON.stringify(colunasDoBancoETP);
+      const oldColunas = JSON.stringify(prevColunas);
+      if (newColunas !== oldColunas) {
+        return colunasDoBancoETP;
+      }
+      return prevColunas;
+    });
+  }
 
+  useEffect(() => {
     fetchData();
   }, []);
 
+  async function fetchDataFilterSearch(filterData) {
+    if (filterData === "") {
+        fetchData();
+    } else {
+        const lowerCaseFilter = filterData.toLowerCase();
+        console.log(dadosFiltradosETP);
+        const searchData = dadosFiltradosETP.filter(item => (
+            item.codigo.toLowerCase().includes(lowerCaseFilter) ||
+            item.nome.toLowerCase().includes(lowerCaseFilter) ||
+            item.modelo.toLowerCase().includes(lowerCaseFilter) ||
+            item.cor.toLowerCase().includes(lowerCaseFilter) ||
+            item.loja.toLowerCase().includes(lowerCaseFilter)
+        ));
+        setDadosFiltradosETP(searchData);
+        const filtrarIdsEtps = searchData.map(obj => ({ id: obj.id }));
+        setIdEtps(filtrarIdsEtps);
+    }
+  }
 
   const handleCadastrar = useCallback(async () => {
     console.log(quantidades);
@@ -135,7 +150,7 @@ function ModalCadastreProdPreConfig({ onUpdate }) {
         <HeaderModal props="Adicionar no Estoque Produto Pré-Cadastrado" />
       </div>
       <div className="w-[43rem] h-[2rem] flex justify-end ">
-        <InputSearcModal props="text">Pesquisar</InputSearcModal>
+        <InputSearcModal props="text" funcao={fetchDataFilterSearch}>Pesquisar</InputSearcModal>
       </div>
       <div className='w-[43rem] h-[18rem] border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto'>
         <TabelaModal
