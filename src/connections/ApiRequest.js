@@ -2128,12 +2128,15 @@ export class ApiRequest {
     static async alertasGetByFilter(dataInicio, dataFim, horaInicio, horaFim, lojaId) {
         try {
             let queryParams = [];
-
+            console.log("dataInicio: ", dataInicio);
+            console.log("horaInicio: ", horaInicio);
+            console.log("dataFim: ", dataFim);
+            console.log("horaFim: ", horaFim);
             if (dataInicio !== '') {
-                queryParams.push(`dataHoraInicio=${dataInicio}T${horaInicio === '' ? '00:00:00' : horaInicio}`);
+                queryParams.push(`dataInicio=${dataInicio}T${horaInicio === '' ? '00:00:00' : horaInicio + ":00"}`);
             }
             if (dataFim !== '') {
-                queryParams.push(`dataHoraFim=${dataFim}T${horaFim === '' ? '23:59:59' : horaFim}`);
+                queryParams.push(`dataFim=${dataFim}T${horaFim === '' ? '23:59:59' : horaFim + ":00"}`);
             }
             if (lojaId !== '') {
                 queryParams.push(`id_loja=${lojaId}`);
@@ -2141,6 +2144,7 @@ export class ApiRequest {
 
             const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
             
+            console.log(`${springEndPoint}/alertas/filtro${queryString}`)
             const resposta = await axios.get(springEndPoint + `/alertas/filtro${queryString}`, {
                 headers: header
             });

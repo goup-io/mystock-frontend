@@ -32,6 +32,7 @@ function Aviso() {
 
     async function fetchDataFilter(filterData) {
         try {
+            console.log(filterData);
             let response;
             if (localStorage.getItem('cargo') === 'ADMIN' && localStorage.getItem('visao_loja') === '0') {
                 response = await ApiRequest.alertasGetByFilter(filterData.dataInicio, filterData.dataFim, filterData.horaInicio, filterData.horaFim, '');
