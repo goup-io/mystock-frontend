@@ -136,9 +136,14 @@ function Usuario() {
         fetchData();
     }, []);
 
+
+    function handleAbirCriarUser(fetchDataCallback) {
+        AbrirModalCadastreUser(fetchDataCallback);
+    }
+
     const buttons = [
         { label: "Calculadora de comissão", event: AbrirModalComission },
-        { label: "Novo Usuário", event: AbrirModalCadastreUser },
+        { label: "Novo Usuário", event: () => handleAbirCriarUser(fetchData) },
     ]
 
     return (
