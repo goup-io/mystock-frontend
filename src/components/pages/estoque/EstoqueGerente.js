@@ -5,11 +5,14 @@ import ChartBox from '../../chartsBoxes/ChartBox.js'
 import ButtonDownLoad from '../../buttons/buttonDownLoad.js'
 import InputSearcModal from '../../inputs/inputSearchModal.js'
 import TabelaPage from '../../tables/tablePage.js'
+import ButtonModal from '../../buttons/buttonsModal.js'
 
 import AbrirModalCadastreKit from '../../modals/modals-kit/modalCadastreKit.js'
 import AbrirModalCadastreModel from '../../modals/modals-model/modalCadastreModel.js'
 import AbrirModalCadastreProd from '../../modals/modals-produto/modalCadastreProd.js'
-import ModalAddProdCart from '../../modals/modals-produto/modalAddProdCart.js'
+
+
+import AbrirModalCadastreProdPreConfig from '../../modals/modals-produto/modalCadastreProdPreConfig.js'
 import AbrirModalEditProd from '../../modals/modals-produto/modalEditProd.js'
 import AbrirModalEditModel from '../../modals/modals-model/modalEditModel.js'
 import Filter from '../../inputs/filter.js'
@@ -21,7 +24,8 @@ import errorImage from "../../../assets/error.png"
 function EstoqueGerente() {
 
     const buttons = [
-        { label: "ADICIONAR PRODUTO", event: ModalAddProdCart },
+        // { label: "ADICIONAR PRODUTO", event: ModalAddProdCart },
+        { label: "ADICIONAR PRODUTO", event: AbrirModalCadastreProdPreConfig },
         // { label: "NOVO KIT", event: AbrirModalCadastreKit },
         { label: "NOVO MODELO", event: AbrirModalCadastreModel },
         { label: "NOVO PRODUTO", event: AbrirModalCadastreProd },
@@ -323,7 +327,17 @@ function EstoqueGerente() {
     return (
         <>
             <PageLayoutAreaRestrita>
-                <TitleBox title="Estoque" buttons={buttons}></TitleBox>
+
+                <div className="flex items-center justify-between bg-[#FFFFFF] p-2 px-5 rounded-md drop-shadow-md">
+                    <h1 className="text-2xl font-medium">Estoque</h1>
+                    <div className="flex gap-2">
+                        <ButtonModal funcao={() => { AbrirModalCadastreProdPreConfig(updateTable) }} className="ml-3">ADICIONAR PRODUTO</ButtonModal>
+                        <ButtonModal funcao={AbrirModalCadastreModel} className="ml-3">NOVO MODELO</ButtonModal>
+                        <ButtonModal funcao={AbrirModalCadastreProd} className="ml-3">NOVO PRODUTO</ButtonModal>
+                       
+                    </div>
+                </div>
+                {/* <TitleBox title="Estoque" buttons={buttons}></TitleBox> */}
 
                 <div className='w-full flex md:flex-row md:justify-center rounded-md py-4 px-6  shadow-[1px_4px_4px_0_rgba(0,0,0,0.25)] items-center text-sm bg-white'>
                     {
