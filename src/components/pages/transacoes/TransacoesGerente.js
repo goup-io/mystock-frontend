@@ -34,8 +34,8 @@ function HistoricoVendasGerente() {
     };
 
     async function fetchData() {
-        const colunasDoBanco = ['Data', 'Solicitante', 'Liberadora', 'Cod.Modelo', 'Cor', 'Tamanho', 'N.Solic.', 'N.Lib.', 'Liberador', 'Coletor', 'Status'];
-        const colunasDoBancoAprovacao = ['Data', 'Solicitante', 'Liberadora', 'Cod.Modelo', 'Cor', 'Tamanho', 'N.Solic.', 'Coletor', 'Status'];
+        const colunasDoBanco = ['Data', 'Solicitante', 'Liberadora', 'Cod', 'Cor', 'Tamanho', 'N.Solic.', 'N.Lib.', 'Liberador', 'Coletor', 'Status'];
+        const colunasDoBancoAprovacao = ['Data', 'Solicitante', 'Liberadora', 'Cod', 'Cor', 'Tamanho', 'N.Solic.', 'Coletor', 'Status'];
 
         try {
             let response;
