@@ -3,7 +3,7 @@ import axios from 'axios'
 
 var endpointProxy = process.env.REACT_APP_ENDPOINT_PROXY;
 
-var springEndPoint = `http://${endpointProxy}:80/api/v1`
+var springEndPoint = `http://${endpointProxy}:8080/api/v1`
 
 // const springEndPoint = "http://localhost:8080/api/v1";
 
@@ -494,18 +494,20 @@ export class ApiRequest {
                 "valorCusto": produtoObj.precoC,
                 "valorRevenda": produtoObj.precoR,
                 "itemPromocional": produtoObj.isPromocional,
+                "codigo": produtoObj.codigo
             }
 
             const resposta = await axios.put(springEndPoint + "/etps/" + id, prod, {
                 headers: header,
             });
-
+            console.log(resposta);
             return resposta;
 
         } catch (erro) {
+            console.log("FODEU")
             return {
-                status: erro.response.status,
-                data: erro.response.data
+                status: erro?.response?.status,
+                data: erro?.response?.data
             };
         }
     }
@@ -883,7 +885,7 @@ export class ApiRequest {
 
         try {
             const modelo = {
-                "codigo": modeloCreate.codigo,
+                // "codigo": modeloCreate.codigo, Modelo não tem mais codigo
                 "nome": modeloCreate.nome,
                 "idCategoria": modeloCreate.idCategoria,
                 "idTipo": modeloCreate.idTipo
@@ -933,7 +935,7 @@ export class ApiRequest {
 
     }
 
-    static async modeloGetByCodigo(codigo) {
+    /*static async modeloGetByCodigo(codigo) {
 
         try {
             const resposta = await axios.get(springEndPoint + `/modelos/codigo/${codigo}`, {
@@ -945,8 +947,8 @@ export class ApiRequest {
         } catch (erro) {
             return erro
         }
-
-    }
+            // Modelo nao tem mais codigo
+    }*/
 
     static async modelGetByIdEditar(id) {
 
@@ -968,7 +970,7 @@ export class ApiRequest {
         try {
             const modelo = {
                 "nome": modeloObj.nome,
-                "codigo": modeloObj.codigo,
+                // "codigo": modeloObj.codigo, Modelo não tem mais codigo
                 "idCategoria": modeloObj.idCategoria,
                 "idTipo": modeloObj.idTipo
 
@@ -1003,6 +1005,7 @@ export class ApiRequest {
 
     }
 
+    /*
     static async modeloDeleteByCodigo(codigo) {
 
         try {
@@ -1016,14 +1019,14 @@ export class ApiRequest {
         } catch (erro) {
             return erro
         }
+    //Modelo nao tem mais codigo
+    }*/
 
-    }
-
-    static async modeloUpdate(id, codigo, nome, idCategoria, idTipo) {
+    static async modeloUpdate(id, /*codigo, Modelo nao tem mais codigo*/ nome, idCategoria, idTipo) {
 
         try {
             const modelo = {
-                "codigo": codigo,
+                // "codigo": codigo, // Modelo nao tem mais codigo
                 "nome": nome,
                 "idCategoria": idCategoria,
                 "idTipo": idTipo
@@ -1041,12 +1044,13 @@ export class ApiRequest {
 
     }
 
-    static async modeloUpdateByCodigo(codigo, nome, idCategoria, idTipo) {
+    /*
+    static async modeloUpdateByCodigo(codigo nome, idCategoria, idTipo) {
 
         try {
 
             const modelo = {
-                "codigo": codigo,
+                // "codigo": codigo, Modelo nao tem mais codigo
                 "nome": nome,
                 "idCategoria": idCategoria,
                 "idTipo": idTipo
@@ -1061,8 +1065,8 @@ export class ApiRequest {
         } catch (erro) {
             return erro
         }
-
-    }
+    // Modelo nao tem mais codigo
+    }*/
 
     static async modeloGetByFilter(modelo, categoria, tipo, lojaId) {
         let queryParams = [];

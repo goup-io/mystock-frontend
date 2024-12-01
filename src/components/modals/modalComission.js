@@ -20,7 +20,7 @@ function ModalComission() {
 
     const handleChangeFunc = (event) => {
         setFunc(event.target.value);
-        fetchFaturamentoFuncionario();
+        fetchFaturamentoFuncionario(event.target.value);
     };
 
     const handleChangeComission = (event) => {
@@ -42,11 +42,13 @@ function ModalComission() {
         }
     }
 
-    async function fetchFaturamentoFuncionario() {
+    async function fetchFaturamentoFuncionario(funcionario) {
         try {
+            console.log(funcionario)
             const response = await ApiRequest.faturamentoMesVigenteFuncionario(funcionario);
             if (response.status === 200) {
-                setFaturamentoFunc(response.data);
+                const valorFaturamentoFuncionario = response.data.reduce((acc, num) => acc + num, 0)
+                setFaturamentoFunc(valorFaturamentoFuncionario);
             }
         } catch (error) {
             console.log("Erro ao buscar os dados", error);

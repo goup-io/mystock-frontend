@@ -39,6 +39,7 @@ function ModalAddProdCart(props) {
 
         const dados = response.data;
         const filtrarDadosETP = dados.map(obj => ({
+          id: obj.id,
           codigo: obj.codigo,
           nome: obj.nome,
           modelo: obj.modelo,
@@ -166,7 +167,7 @@ function ModalAddProdCart(props) {
       <div className='w-[43rem] h-[18rem] border-solid border-[1px] border-slate-700 bg-slate-700 overflow-y-auto'>
         <TabelaModal
           colunas={colunasETP}
-          dados={dadosFiltradosETP}
+          dados={dadosFiltradosETP.map(({ id, ...dados }) => dados)}
           iptQuantidade
           onQuantityChange={handleQuantityChange}
           id={idEtps.map(({ ...id }) => id)}

@@ -11,12 +11,15 @@ import withReactContent from 'sweetalert2-react-content';
 import ApiRequest from "../../../connections/ApiRequest";
 import { useEffect } from "react";
 
-function ModalCadastreUser() {
+import Alert from '../../alerts/Alert.js';
+import ErrorImage from '../../../assets/icons/error.svg';
+import SucessImage from '../../../assets/icons/sucess.svg';
+
+function ModalCadastreUser({ onCadastro }) {
 
     // const navigate = useNavigate();
 
     const [dadosCargo, setDadosCargo] = useState([]);
-    const [nomesCargos, setNomeCargos] = useState([]);
     const [dadosLoja, setDadosLoja] = useState([]);
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
@@ -25,7 +28,7 @@ function ModalCadastreUser() {
     const [loja, setLoja] = useState("");
     const [loading, setLoading] = useState(true);
 
-    const setters = [setNome, setEmail, setCelular, setDadosCargo, setLoja];
+    const setters = [setNome, setEmail, setCelular, setCargo, setLoja];
 
     function handleInputChange(event, setStateFunction) {
         setStateFunction(event.target.value);
@@ -65,23 +68,23 @@ function ModalCadastreUser() {
 
     useEffect(() => {
         fetchDadosCargoLoja();
-    },[])
+    }, [])
 
 
     const handleSave = () => {
         // usando a function find do javascript para percorrer uma lista de objetos baseado na verificação de uma key
         const cargoObj = dadosCargo.find(objCargo => objCargo.nome === cargo);
         const idCargo = cargoObj ? cargoObj.id : null;
-        
+
         const lojaObj = dadosLoja.find(objLoja => objLoja.nome === loja);
         const idLoja = lojaObj ? lojaObj.id : null;
-    
-        if(!idCargo || !idLoja || !nome || !email || !celular){
+
+        if (!idCargo || !idLoja || !nome || !email || !celular) {
             //todo: acionar modal de cadastro incorreto
             alert("Preencha todos os campos corretamente")
             return;
         }
-        
+
         const objetoAdicionado = {
             nome,
             email,
@@ -93,15 +96,22 @@ function ModalCadastreUser() {
         if (cargo.toLowerCase() === 'Vendedor'.toLowerCase()) {
             ApiRequest.userCreate(objetoAdicionado).then((response) => {
                 if (response.status === 201) {
-                    alert("Usuário Cadastrado!!")
+                    console.log(onCadastro)
+                    onCadastro();
+                    Alert.alert(SucessImage, "Usuario cadastrado com sucesso!");
                     //todo: mostrar modal de sucesso ao cadastrar
+                } else if (response.status === 400) {
+                    Alert.alert(ErrorImage, "Dados preenchidos incorretamente!");
+                } else if (response.status === 409) {
+                    Alert.alert(ErrorImage, "Usuário já cadastrado!");
                 }
             }).catch((error) => {
                 console.log("Erro ao cadastrar um usuário: ", error)
                 //todo: mostrar modal de erro ao cadastrar
+                Alert.alert(ErrorImage, "Não foi possível cadastrar o usuário!");
             });
         } else {
-            AbrirModalCadastreLogin(objetoAdicionado);
+            AbrirModalCadastreLogin(objetoAdicionado, false, onCadastro);
         }
     }
 
@@ -146,8 +156,9 @@ function ModalCadastreUser() {
                             >Celular</InputAndLabelModal>
                             <ComboBoxModal
                                 dadosBanco={dadosCargo.map(value => value.nome)}
+                                value={cargo}
                                 handleChange={handleChangeCargo}
-                                // id={dadosCargo.map(value => value.id)}
+                            // id={dadosCargo.map(value => value.id)}
                             >Cargo</ComboBoxModal>
                         </div>
                         <div className="flex justify-start ml-[1.6rem]">
@@ -172,10 +183,10 @@ function ModalCadastreUser() {
     );
 }
 
-function AbrirModalCadastreUser() {
+function AbrirModalCadastreUser(callback) {
     const MySwal = withReactContent(Swal);
     MySwal.fire({
-        html: <ModalCadastreUser />,
+        html: <ModalCadastreUser onCadastro={callback} />,
         // width: "60rem",
         // heigth: "170rem",
         showConfirmButton: false,

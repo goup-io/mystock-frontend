@@ -229,7 +229,6 @@ function Pagamento() {
                         <div style={div1} className="bg-[#E7E7E7] p-4 rounded-md flex flex-col justify-between gap-4 overflow-auto">
                             <div className="flex flex-row justify-between">
                                 <p className="text-left font-semibold text-[1.1rem]">RESUMO DA VENDA</p>
-                                <Button><p className="text-left font-semibold text-[1.1rem]">Editar Itens</p></Button>
                             </div>
                             <div className="flex flex-col justify-between gap-4 overflow-auto pr-2">
                                 <div className="flex flex-col gap-2">
