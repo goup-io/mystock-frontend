@@ -16,6 +16,7 @@ function ModalSalesHistory({idVenda, funcaoUpdateTable}) {
     const [infosVenda, setInfosVenda] = useState([]);
     const [colunasItens, setColunasItens] = useState([]);
     const [dadosItens, setDadosItens] = useState([]);
+    const [statusVenda, setStatusVenda] = useState([]);
 
     async function fetchData() {
         const colunas = ['Código', 'Descrição ', 'Preço Un.', 'Quantidade', 'Desconto Un.', 'Preço Líquido', 'Total bruto', 'Subtotal'];
@@ -25,6 +26,9 @@ function ModalSalesHistory({idVenda, funcaoUpdateTable}) {
 
             if (response.status === 200) {
                 const dados = response.data;
+                
+                const statusVenda = response.data.statusVenda;
+                setStatusVenda(statusVenda);
 
                 const filtrarProdutosVenda = dados.produtosVenda.map(obj => ({
                     codigo: obj.codigo,
@@ -147,7 +151,11 @@ function ModalSalesHistory({idVenda, funcaoUpdateTable}) {
                 <div className="w-[42rem] flex justify-between h-6 ">
                     <ButtonModal cor="#6A8ACF" funcao={hanbleAbrirModalPaymentHistory}>Histórico de pagamento</ButtonModal>
                     <div className="w-5/12 flex justify-end">
-                        <ButtonModal cor="#919191" funcao={handleCancelarVenda} >Cancelar Venda</ButtonModal>
+                        {   
+                            statusVenda != "Cancelada" && (
+                                <ButtonModal cor="#919191" funcao={handleCancelarVenda} >Cancelar Venda</ButtonModal>
+                            )
+                        }
                     </div>
 
                 </div>

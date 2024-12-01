@@ -94,8 +94,12 @@ function TabelaPage({ colunas, dados, edit, remove, cancel, troca, verMais, nega
               </td>
             )}
             {cancel && (
-              <td >
-                <ButtonModal cor="#919191" funcao={() => cancel(id[index].id)}>Cancelar</ButtonModal>
+              <td>
+                {
+                  dados[index].status != "Cancelada" && (
+                    <ButtonModal cor="#919191" funcao={() => cancel(id[index].id)}>Cancelar</ButtonModal>
+                  )
+                }
               </td>
             )}
           </tr>
