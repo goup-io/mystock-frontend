@@ -17,13 +17,12 @@ function ModalEditModel({ id, onUpdate }) {
     const [dadosCategoria, setDadosCategoria] = useState([]);
     const [dadosTipo, setDadosTipo] = useState([]);
     const [nome, setNome] = useState("");
-    const [codigo, setCodigo] = useState("");
     const [categoria, setCategoria] = useState("");
     const [tipo, setTipo] = useState("");
     const [idModelo, setIdModelo] = useState("");
     const [loading, setLoading] = useState(true);
  
-    const setters = [setNome, setCodigo];
+    const setters = [setNome];
  
     function handleInputChange(event, setStateFunction) {
         setStateFunction(event.target.value);
@@ -61,7 +60,6 @@ function ModalEditModel({ id, onUpdate }) {
             const response = await ApiRequest.modelGetByIdEditar(id);
             if (response.status === 200) {
                 setNome(response.data.nome);
-                setCodigo(response.data.codigo);
                 setCategoria(response.data.categoria);
                 setTipo(response.data.tipo);
                 setIdModelo(response.data.id);
@@ -77,7 +75,7 @@ function ModalEditModel({ id, onUpdate }) {
     }, []);
  
     const handleSave = async () => {
-        if (!codigo || !categoria || !tipo || !nome ) {
+        if (!categoria || !tipo || !nome ) {
             alert("Preencha todos os campos corretamente");
             return;
         }
@@ -91,7 +89,6 @@ function ModalEditModel({ id, onUpdate }) {
 
         const objetoAdicionado = {
             nome,
-            codigo,
             idCategoria,
             idTipo
         };
@@ -122,15 +119,7 @@ function ModalEditModel({ id, onUpdate }) {
                     ></HeaderModal>
                 </div>
                 <div className="w-[40rem] h-[16rem] flex flex-col rounded justify-around p-3 bg-[#F5F3F4] border-solid shadow-[5px_5px_10px_0_rgba(0,0,0,0.14)] border-gray-700">
-
-                    <div className="flex justify-around ">
-                        <InputAndLabelModal
-                             type="Text"
-                             placeholder="Digite o código..."
-                             value={codigo}
-                             handleInput={handleInputChange}
-                             handlerAtributeChanger={setCodigo}
-                        >Código</InputAndLabelModal>
+                    <div className="px-8 flex justify-between ">
                         <InputAndLabelModal
                                type="Text"
                                placeholder="Digite o nome..."
@@ -139,7 +128,7 @@ function ModalEditModel({ id, onUpdate }) {
                                handlerAtributeChanger={setNome}
                         >Nome</InputAndLabelModal>
                     </div>
-                    <div className="flex justify-around">
+                    <div className="px-8 flex justify-between">
                         <ComboBoxModal
                             dadosBanco={dadosCategoria.map(value => value.nome)}
                             value={categoria}
