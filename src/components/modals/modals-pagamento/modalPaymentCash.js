@@ -68,7 +68,7 @@ function ModalPaymentCash({ idVenda, idTipoPagamento, qtdParcelas, valorPagoAteA
             <div className="w-[40rem] h-[15rem] flex flex-col rounded justify-start items-center p-3 bg-[#F5F3F4] border-solid shadow-[5px_5px_10px_0_rgba(0,0,0,0.14)] border-gray-700">
                 <div className="w-[40rem] h-[5rem] flex justify-around">
                     <InputAndLabelModal
-                        placeholder="Digite o valor aqui..."
+                        placeholder="Digite o valor"
                         type="number"
                         value={valorAPagar}
                         handleInput={handleValorAPagarChange}
@@ -76,7 +76,7 @@ function ModalPaymentCash({ idVenda, idTipoPagamento, qtdParcelas, valorPagoAteA
                         Valor a Pagar:
                     </InputAndLabelModal>
                     <InputAndLabelModal
-                        placeholder="Digite o valor aqui..."
+                        placeholder="Digite o valor"
                         type="number"
                         value={valorRecebido}
                         handleInput={handleValorRecebidoChange}
