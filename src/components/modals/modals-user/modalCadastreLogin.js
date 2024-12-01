@@ -77,11 +77,13 @@ function ModalCadastreLogin({ dadosAdicionais, editar, onUpdate }) {
         } else {
             ApiRequest.userCreate(dadosAdicionais).then((response) => {
                 if (response.status === 201) {
-                    alert("Usuário Cadastrado!!")
                     const idUsuario = response.data.id;
                     ApiRequest.loginCreate(usuario, senha, idUsuario).then((response) => {
                         Alert.alert(SucessImage, "Login criado!")
                         console.log("Login cadastrado: " + response)
+                        if(onUpdate !== undefined){
+                            onUpdate()
+                        }
                     }).catch((error) => {
                         console.log("Erro ao cadastrar o login: ", error)
                     })
