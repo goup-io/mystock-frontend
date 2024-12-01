@@ -74,6 +74,8 @@ function ModalEditProd({ id, onUpdate }) {
 
     async function fetchEtp() {
         try {
+            console.log("ABRI MODAL DE EDITAR, E O ID DO PRODUTO É:")
+            console.log(id);
             const response = await ApiRequest.etpsGetByIdEditar(id);
             if (response.status === 200) {
                 setNome(response.data.nome);
@@ -82,7 +84,7 @@ function ModalEditProd({ id, onUpdate }) {
                 setCor(response.data.cor);
                 setPrecoCusto(response.data.precoCusto);
                 setPrecoRevenda(response.data.precoRevenda);
-                setIdProduto(response.data.idProduto);
+                setIdProduto(response.data.id); // Na verdade, IdProduto é o IdEtp, foi feita uma confusao com os nomes... Isso é necessario para que cada linha esteja sendo apontada para o ID do ETP, e não ID do produto, pois o que estamos listando sõa os ETPs...
                 setCodigo(response.data.codigo);
                 if (response.data.itemPromocional === 'SIM') {
                     setItemPromocional(true);
