@@ -27,8 +27,9 @@ function ModalEditProd({ id, onUpdate }) {
     const [cor, setCor] = useState("");
     const [idProduto, setIdProduto] = useState("");
     const [itemPromocional, setItemPromocional] = useState(false);
+    const [codigo, setCodigo] = useState("");
 
-    const setters = [setNome, setPrecoCusto, setPrecoRevenda,setItemPromocional];
+    const setters = [setNome, setPrecoCusto, setPrecoRevenda,setItemPromocional, setCodigo];
 
     function handleInputChange(event, setStateFunction) {
         setStateFunction(event.target.value);
@@ -82,6 +83,7 @@ function ModalEditProd({ id, onUpdate }) {
                 setPrecoCusto(response.data.precoCusto);
                 setPrecoRevenda(response.data.precoRevenda);
                 setIdProduto(response.data.idProduto);
+                setCodigo(response.data.codigo);
                 if (response.data.itemPromocional === 'SIM') {
                     setItemPromocional(true);
                 } else {
@@ -112,16 +114,19 @@ function ModalEditProd({ id, onUpdate }) {
             nome,
             precoC,
             precoR,
-            isPromocional
+            isPromocional,
+            codigo
         };
 
         try {
+            console.log("TESTE");
             const response = await ApiRequest.editarProduto(idProduto, objetoAdicionado);
-            if (response.status === 200) {
+            console.log(response);
+            if (response?.status === 200) {
                 Alert.alertSuccess("Produto atualizado com sucesso!");
                 onUpdate();
             } else {
-                Alert.alertError("Erro ao atualizar!", response.response.data.message);
+                Alert.alertError("Erro ao atualizar!", response?.response?.data?.message);
             }
         } catch (error) {
             console.log("Erro ao atualizar um produto: ", error);
@@ -182,10 +187,41 @@ function ModalEditProd({ id, onUpdate }) {
                         >Preço Revenda</InputAndLabelModal>
                     </div>
 
+                    <div className="flex justify-around">
+                        <InputAndLabelModal
+                            type="text"
+                            placeholder="Digite o código do produto..."
+                            value={codigo}
+                            handleInput={handleInputChange}
+                            handlerAtributeChanger={setCodigo}
+                        >Código</InputAndLabelModal>
+                        <div class="w-2/2 h-1/3 flex">   
+                            <div className="flex flex-col justify-start items-start">
+                                <p className="form-floating text-lg text-black mb-2 font-normal">
+                                    Item Promocional
+                                </p>
+                                <form class="relative" className="w-[16rem] h-7 flex flex-col justify-start items-start">
+                                    <input 
+                                        type="checkbox"  
+                                        className="w-7 h-7 bg-[F5F3F4] pl-2 text-[1rem] font-[300] capitalize text-[#555] form-control border border-[0.1rem] border-slate-600"
+                                        style={{
+                                            borderRadius: '25%',
+                                            cursor: 'pointer',
+                                        }}
+                                        checked={itemPromocional} 
+                                        onChange={handleCheckboxChange}
+                                        />
+                                </form>
+                                
+                            </div>
+                        </div>
+                    </div>
+{/* 
                     <div className="mt-2 flex justify-start items-center">
+                        
                     <input type="checkbox" className="w-6 h-6 ml-6" checked={itemPromocional} onChange={handleCheckboxChange}></input>
                        <p className="form-floating text-lg text-black font-normal ml-4">Item Promocional</p>
-                    </div>
+                    </div> */}
 
                 </div>
                 <div className="justify-between flex-row flex w-11/12">
